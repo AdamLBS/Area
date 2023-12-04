@@ -4,7 +4,7 @@ name: Wep App
 on:
   push:
     branches:
-      - '*'
+      - '**'
 
 jobs:
   wep-app-lint-and-build:
