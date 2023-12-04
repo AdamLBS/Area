@@ -29,7 +29,7 @@ Route.get('/google/redirect', async ({ ally }) => {
 })
 
 Route.get('/spotify/redirect', async ({ ally }) => {
-  return ally.use('spotify').stateless().redirect()
+  return ally.use('spotify').redirect()
 })
 
 Route.get('/google/callback', async ({ ally }) => {
