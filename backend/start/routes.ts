@@ -118,3 +118,11 @@ Route.get('/discord/callback', async ({ ally }) => {
   const user = await discord.user()
   return user.email
 })
+
+/* User routes */
+Route.group(() => {
+  Route.post('/register', 'UsersController.store')
+  Route.get('/me', 'UsersController.me')
+  Route.get('/logout', 'UsersController.logout')
+  Route.get('/refresh', 'UsersController.refresh')
+}).prefix('/user')
