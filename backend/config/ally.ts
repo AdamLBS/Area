@@ -41,8 +41,6 @@ const allyConfig: AllyConfig = {
     callbackUrl: 'http://localhost:3333/discord/callback',
 
     // Discord specific
-    prompt: 'consent' | 'none',
-    guildId: '',
     disableGuildSelect: false,
     permissions: 8,
     // identify scope is always required
