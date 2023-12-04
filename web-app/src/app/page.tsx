@@ -5,7 +5,7 @@ import React from 'react'
 export default function Home() {
   return (
     <div>
-        <Button>Hello</Button>
+      <Button>Hello</Button>
     </div>
   )
 }
