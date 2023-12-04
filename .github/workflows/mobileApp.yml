@@ -4,7 +4,9 @@ name: Mobile App
 on:
   push:
     branches:
-      - '**'
+      - 'main'
+    paths:
+      - 'mobile/**'
 
 jobs:
   mobile-app-format-and-build:
@@ -12,6 +14,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+      - name: Change directory to mobile
+        run: cd mobile
       - uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
