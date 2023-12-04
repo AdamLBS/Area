@@ -4,7 +4,7 @@ import AuthValidator from 'App/Validators/User/AuthValidator'
 import RegisterValidator from 'App/Validators/User/RegisterValidator'
 
 export default class AuthController {
-    public async register({ request, response }: HttpContextContract) {
+  public async register({ request, response }: HttpContextContract) {
     const payload = await request.validate(RegisterValidator)
 
     const user = await User.create(payload)
@@ -12,21 +12,21 @@ export default class AuthController {
     return response.created(user)
   }
 
-public async me({auth, response}: HttpContextContract) {
-    const user = await auth.authenticate();
+  public async me({ auth, response }: HttpContextContract) {
+    const user = await auth.authenticate()
 
     return response.ok({
       user,
-    });
+    })
   }
 
-  public async login({auth, request, response}: HttpContextContract) {
-    const {email, password} = await request.validate(AuthValidator);
+  public async login({ auth, request, response }: HttpContextContract) {
+    const { email, password } = await request.validate(AuthValidator)
 
-    const token = await auth.attempt(email, password);
+    const token = await auth.attempt(email, password)
 
     return response.ok({
       token,
-    });
+    })
   }
 }
