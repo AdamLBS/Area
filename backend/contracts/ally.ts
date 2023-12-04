@@ -11,6 +11,10 @@ declare module '@ioc:Adonis/Addons/Ally' {
       config: GoogleDriverConfig
       implementation: GoogleDriverContract
     }
+    github: {
+      config: GithubDriverConfig
+      implementation: GithubDriverContract
+    }
     discord: {
       config: DiscordDriverConfig
       implementation: DiscordDriverContract

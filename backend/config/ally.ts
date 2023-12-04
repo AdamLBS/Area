@@ -29,6 +29,12 @@ const allyConfig: AllyConfig = {
     clientSecret: Env.get('GOOGLE_CLIENT_SECRET'),
     callbackUrl: 'http://localhost:3333/google/callback',
   },
+  github: {
+    driver: 'github',
+    clientId: Env.get('GITHUB_CLIENT_ID'),
+    clientSecret: Env.get('GITHUB_CLIENT_SECRET'),
+    callbackUrl: 'http://localhost:3333/github/callback',
+  },
   /*
 	|--------------------------------------------------------------------------
 	| Discord driver
