@@ -1,5 +1,5 @@
 
-name: Wep App Lint
+name: Wep App
 
 on:
   push:
