@@ -1,5 +1,5 @@
 name: area
-description: area mobil app
+description: Area Mobile App
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
@@ -11,8 +11,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
-  english_words: ^4.0.0
   provider: ^6.0.0
 
 dev_dependencies:
