@@ -35,7 +35,7 @@ const allyConfig: AllyConfig = {
     clientSecret: Env.get('SPOTIFY_CLIENT_SECRET'),
     callbackUrl: 'http://localhost:3333/spotify/callback',
     scopes: ['user-read-email', 'user-top-read', 'user-follow-read'],
-  }
+  },
 }
 
 export default allyConfig
