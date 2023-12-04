@@ -29,6 +29,8 @@ export default Env.rules({
   PG_DB_NAME: Env.schema.string(),
   GOOGLE_CLIENT_ID: Env.schema.string(),
   GOOGLE_CLIENT_SECRET: Env.schema.string(),
+  SPOTIFY_CLIENT_ID: Env.schema.string(),
+  SPOTIFY_CLIENT_SECRET: Env.schema.string(),
   GITHUB_CLIENT_ID: Env.schema.string(),
   GITHUB_CLIENT_SECRET: Env.schema.string(),
   DISCORD_CLIENT_ID: Env.schema.string(),

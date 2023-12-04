@@ -28,6 +28,10 @@ Route.get('/google/redirect', async ({ ally }) => {
   return ally.use('google').redirect()
 })
 
+Route.get('/spotify/redirect', async ({ ally }) => {
+  return ally.use('spotify').redirect()
+})
+
 Route.get('/google/callback', async ({ ally }) => {
   const google = ally.use('google')
   if (google.accessDenied()) {
@@ -40,6 +44,24 @@ Route.get('/google/callback', async ({ ally }) => {
     return google.getError()
   }
   const user = await google.user()
+  return user.token
+})
+
+Route.get('/spotify/callback', async ({ ally }) => {
+  const spotify = ally.use('spotify')
+  if (spotify.accessDenied()) {
+    return 'Access was denied'
+  }
+
+  if (spotify.stateMisMatch()) {
+    return 'Request expired. Retry again'
+  }
+
+  if (spotify.hasError()) {
+    return spotify.getError()
+  }
+
+  const user = await spotify.user()
   return user.token
 })
 
