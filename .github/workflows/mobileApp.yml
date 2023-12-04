@@ -2,12 +2,16 @@
 name: Mobile App
 
 on:
-  push:
-    branches:
-      - 'main'
-    paths:
-      - 'mobile/**'
-
+    push:
+      branches:
+        - 'main'
+      paths:
+        - 'mobile/**'
+    pull_request:
+      branches-ignore:
+        - 'main'
+      paths:
+        - 'mobile/**'
 jobs:
   mobile-app-format-and-build:
     runs-on: ubuntu-latest
