@@ -40,6 +40,8 @@ COPY . .
 # Run the Ace build command
 RUN npm run build
 
+COPY .env build/.env
+
 # Production stage
 FROM base
 
