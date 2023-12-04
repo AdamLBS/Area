@@ -12,13 +12,14 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-
-      - uses: dart-lang/setup-dart@v1
-      - run: dart pub get
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+      - run: flutter pub get
       - run: dart format .
       - name: Commit and push changes
         run: git diff --exit-code || { git config user.name "GitHub Actions"; git config user.email "actions@github.com"; git add .; git commit -m "Apply dart formatting"; git push origin $GITHUB_REF; }
       - name: Run analyze
-        run: dart analyze
+        run: flutter analyze
       - name: Build mobile app
         run: flutter build apk --release
