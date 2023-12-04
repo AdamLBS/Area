@@ -42,9 +42,10 @@ jobs:
       - name: Run lint
         working-directory: ./web-app
         run: yarn lint
+
   wep-app-build:
     runs-on: ubuntu-latest
-    needs: wep-app-lint
+    needs: wep-app-format-and-lint
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
