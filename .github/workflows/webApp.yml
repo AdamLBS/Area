@@ -32,12 +32,7 @@ jobs:
           echo "Prettier formatting done."
 
       - name: Commit and push changes
-        run: |
-          git config --global user.name 'GitHub Action'
-          git config --global user.email 'contact@latableronde.org'
-          git add -A
-          git commit -m "Apply Prettier formatting" || echo "No changes to commit"
-          git push
+        run: git diff --exit-code || { git config user.name "GitHub Actions"; git config user.email "actions@github.com"; git add .; git commit -m "Apply Prettier formatting"; git push origin $GITHUB_REF; }
 
       - name: Run lint
         working-directory: ./web-app
