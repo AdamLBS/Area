@@ -4,7 +4,8 @@ on:
   push:
     branches:
       - '**'
-
+    paths:
+      - 'backend/**'
 jobs:
   lint-and-test:
     runs-on: ubuntu-latest

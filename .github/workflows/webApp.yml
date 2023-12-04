@@ -5,6 +5,8 @@ on:
   push:
     branches:
       - '**'
+    paths:
+      - 'web-app/**'
 
 jobs:
   web-app-lint-and-build:
