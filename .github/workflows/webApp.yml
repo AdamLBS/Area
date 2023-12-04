@@ -22,11 +22,10 @@ jobs:
       - name: Install Yarn
         run: npm install -g yarn
 
-      - name: go to web-app
-        run: cd web-app
-
       - name: Install dependencies
+        working-directory: ./web-app
         run: yarn install
 
       - name: Run lint
+        working-directory: ./web-app
         run: yarn lint
