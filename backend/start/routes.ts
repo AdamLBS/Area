@@ -80,3 +80,37 @@ Route.get('/spotify/callback', async ({ ally }) => {
   const user = await spotify.user()
   return user.token
 })
+Route.get('/discord/redirect', async ({ ally }) => {
+  return ally.use('discord').redirect()
+})
+
+Route.get('/discord/callback', async ({ ally }) => {
+  const discord = ally.use('discord')
+
+  /**
+   * User has explicitly denied the login request
+   */
+  if (discord.accessDenied()) {
+    return 'Access was denied'
+  }
+
+  /**
+   * Unable to verify the CSRF state
+   */
+  if (discord.stateMisMatch()) {
+    return 'Request expired. Retry again'
+  }
+
+  /**
+   * There was an unknown error during the redirect
+   */
+  if (discord.hasError()) {
+    return discord.getError()
+  }
+
+  /**
+   * Finally, access the user
+   */
+  const user = await discord.user()
+  return user.email
+})

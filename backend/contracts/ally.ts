@@ -15,5 +15,9 @@ declare module '@ioc:Adonis/Addons/Ally' {
       config: SpotifyDriverConfig
       implementation: SpotifyDriverContract
     }
+    discord: {
+      config: DiscordDriverConfig
+      implementation: DiscordDriverContract
+    }
   }
 }
