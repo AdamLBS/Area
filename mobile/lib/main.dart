@@ -10,8 +10,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => MyAppState(),
+    return SafeArea(
       child: MaterialApp(
         title: 'Namer App',
         theme: ThemeData(
@@ -23,21 +22,13 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-class MyAppState extends ChangeNotifier {
-  var current = WordPair.random();
-}
-
 class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var appState = context.watch<MyAppState>();
-
     return Scaffold(
       body: Column(
         children: [
           Text('A random AWESOME idea:'),
-          Text(appState.current.asLowerCase),
           ElevatedButton(
             onPressed: () {
               print('button pressed!');
