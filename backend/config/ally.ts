@@ -18,11 +18,6 @@ import { AllyConfig } from '@ioc:Adonis/Addons/Ally'
 |
 */
 const allyConfig: AllyConfig = {
-  /*
-	|--------------------------------------------------------------------------
-	| Google driver
-	|--------------------------------------------------------------------------
-	*/
   google: {
     driver: 'google',
     clientId: Env.get('GOOGLE_CLIENT_ID'),
@@ -35,6 +30,12 @@ const allyConfig: AllyConfig = {
     clientSecret: Env.get('SPOTIFY_CLIENT_SECRET'),
     callbackUrl: 'http://localhost:3333/spotify/callback',
     scopes: ['user-read-email', 'user-top-read', 'user-follow-read'],
+  },
+  github: {
+    driver: 'github',
+    clientId: Env.get('GITHUB_CLIENT_ID'),
+    clientSecret: Env.get('GITHUB_CLIENT_SECRET'),
+    callbackUrl: 'http://localhost:3333/github/callback',
   },
   discord: {
     driver: 'discord',
