@@ -15,5 +15,9 @@ declare module '@ioc:Adonis/Addons/Ally' {
       config: DiscordDriverConfig
       implementation: DiscordDriverContract
     }
+    linkedin: {
+      config: LinkedInDriverConfig
+      implementation: LinkedInDriverContract
+    }
   }
 }
