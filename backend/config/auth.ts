@@ -52,7 +52,7 @@ const authConfig: AuthConfig = {
         type: 'api',
         driver: 'database',
         table: 'api_tokens',
-        foreignKey: 'user_id',
+        foreignKey: 'user_uuid',
       },
 
       provider: {
@@ -75,7 +75,7 @@ const authConfig: AuthConfig = {
         | the primary key is the right choice.
         |
         */
-        identifierKey: 'id',
+        identifierKey: 'uuid',
 
         /*
         |--------------------------------------------------------------------------

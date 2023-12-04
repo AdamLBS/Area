@@ -121,8 +121,7 @@ Route.get('/discord/callback', async ({ ally }) => {
 
 /* User routes */
 Route.group(() => {
-  Route.post('/register', 'UsersController.store')
-  Route.get('/me', 'UsersController.me')
-  Route.get('/logout', 'UsersController.logout')
-  Route.get('/refresh', 'UsersController.refresh')
+  Route.post('/register', 'AuthController.register')
+  Route.post('/login', 'AuthController.login')
+  Route.get('/me', 'AuthController.me').middleware(['auth'])
 }).prefix('/user')
