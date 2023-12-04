@@ -4,12 +4,7 @@ name: Mobile App
 on:
     push:
       branches:
-        - 'main'
-      paths:
-        - 'mobile/**'
-    pull_request:
-      branches-ignore:
-        - 'main'
+        - '**'
       paths:
         - 'mobile/**'
 jobs:
