@@ -13,12 +13,15 @@ The Dockerfile builds the project and the docker-compose pulls the Postgresql im
 Run these commands below:
 
 `docker pull node:18-alpine3.18`
+
 `docker-compose up --build`
 
 ### To run:
 Clone the backend project.
 Run these commands below:
+
 `yarn`
+
 `yarn dev` -> to run the dev mode
 
 All configurations for the Postgresql are for the dev mode.
