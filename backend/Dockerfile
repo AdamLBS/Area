@@ -56,7 +56,7 @@ COPY --from=production-deps /app/node_modules /app/node_modules
 COPY --from=build /app/build /app
 
 # Expose the port
-EXPOSE 8080
+EXPOSE 3333
 
 # Start the application
 CMD ["node", "./server.js"]
