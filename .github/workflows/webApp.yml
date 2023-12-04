@@ -7,7 +7,7 @@ on:
       - '**'
 
 jobs:
-  wep-app-lint-and-build:
+  web-app-lint-and-build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
