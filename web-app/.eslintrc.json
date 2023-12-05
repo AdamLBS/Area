@@ -46,6 +46,7 @@
       }
     ],
     "prettier/prettier": ["error", { "singleQuote": true }],
-    "no-console": ["error", { "allow": ["warn", "error"] }]
+    "no-console": ["error", { "allow": ["warn", "error"] }],
+    "semi": ["error", "always"]
   }
 }
