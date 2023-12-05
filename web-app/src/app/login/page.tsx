@@ -1,3 +1,3 @@
-import { LoginPage } from '@/pages';
+import { LoginPage } from '@/react/pages';
 
 export default LoginPage;
