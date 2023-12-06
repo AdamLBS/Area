@@ -53,7 +53,7 @@ const allyConfig: AllyConfig = {
     driver: 'twitch',
     clientId: Env.get('TWITCH_CLIENT_ID'),
     clientSecret: Env.get('TWITCH_CLIENT_SECRET'),
-    callbackUrl: 'http://localhost:3333/twitch/callback',
+    callbackUrl: 'http://localhost:3333/oauth/twitch/callback',
     scopes: ['user:read:email'],
   },
   linkedin: {
