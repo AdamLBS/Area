@@ -1,18 +1,12 @@
 'use client';
 import React, { memo } from 'react';
-import {
-  LeftContainer,
-  PageContainer,
-  RightContainer,
-} from './LoginPage.style';
-import { PrimaryDefault } from '@/lib/ui/design-system';
+import { PageContainer, RightContainer } from './LoginPage.style';
+import { ColumnLayout, PrimaryDefault } from '@/lib/ui/design-system';
 
 const Login = () => {
   return (
     <PageContainer>
-      <LeftContainer>
-        <PrimaryDefault>Hello</PrimaryDefault>
-      </LeftContainer>
+      <ColumnLayout />
       <RightContainer>
         <PrimaryDefault>Hello</PrimaryDefault>
       </RightContainer>
