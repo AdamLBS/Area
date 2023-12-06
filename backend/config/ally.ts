@@ -22,26 +22,26 @@ const allyConfig: AllyConfig = {
     driver: 'google',
     clientId: Env.get('GOOGLE_CLIENT_ID'),
     clientSecret: Env.get('GOOGLE_CLIENT_SECRET'),
-    callbackUrl: 'http://localhost:3333/google/callback',
+    callbackUrl: 'http://localhost:3333/oauth/google/callback',
   },
   spotify: {
     driver: 'spotify',
     clientId: Env.get('SPOTIFY_CLIENT_ID'),
     clientSecret: Env.get('SPOTIFY_CLIENT_SECRET'),
-    callbackUrl: 'http://localhost:3333/spotify/callback',
+    callbackUrl: 'http://localhost:3333/oauth/spotify/callback',
     scopes: ['user-read-email', 'user-top-read', 'user-follow-read'],
   },
   github: {
     driver: 'github',
     clientId: Env.get('GITHUB_CLIENT_ID'),
     clientSecret: Env.get('GITHUB_CLIENT_SECRET'),
-    callbackUrl: 'http://localhost:3333/github/callback',
+    callbackUrl: 'http://localhost:3333/oauth/github/callback',
   },
   discord: {
     driver: 'discord',
     clientId: Env.get('DISCORD_CLIENT_ID'),
     clientSecret: Env.get('DISCORD_CLIENT_SECRET'),
-    callbackUrl: 'http://localhost:3333/discord/callback',
+    callbackUrl: 'http://localhost:3333/oauth/discord/callback',
 
     // Discord specific
     disableGuildSelect: false,
@@ -60,7 +60,7 @@ const allyConfig: AllyConfig = {
     driver: 'linkedin',
     clientId: Env.get('LINKEDIN_CLIENT_ID'),
     clientSecret: Env.get('LINKEDIN_CLIENT_SECRET'),
-    callbackUrl: 'http://localhost:3333/linkedin/callback',
+    callbackUrl: 'http://localhost:3333/oauth/linkedin/callback',
   },
 }
 
