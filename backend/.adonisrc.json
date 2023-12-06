@@ -22,7 +22,8 @@
     "@adonisjs/core",
     "@adonisjs/lucid",
     "@adonisjs/ally",
-    "adonis-ally-twitch"
+    "@adonis-ally-twitch",
+    "@adonisjs/auth"
   ],
   "aceProviders": [
     "@adonisjs/repl"

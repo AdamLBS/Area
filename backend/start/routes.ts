@@ -21,16 +21,17 @@
 import Route from '@ioc:Adonis/Core/Route'
 
 Route.get('/', async () => {
-  return { hello: 'world' }
+  return { hello: 'world!' }
 })
 
-Route.get('/google/redirect', async ({ ally }) => {
-  return ally.use('google').redirect()
-})
+Route.get('/oauth/:provider/redirect', 'SocialAuthentificationsController.redirect')
 
-Route.get('/spotify/redirect', async ({ ally }) => {
-  return ally.use('spotify').redirect()
-})
+/* User routes */
+Route.group(() => {
+  Route.post('/register', 'AuthController.register')
+  Route.post('/login', 'AuthController.login')
+  Route.get('/me', 'AuthController.me').middleware(['auth'])
+}).prefix('/user')
 
 Route.get('/google/callback', async ({ ally }) => {
   const google = ally.use('google')
@@ -188,3 +189,4 @@ Route.get('/twitch/callback', async ({ ally }) => {
   const user = await twitch.user()
   return user
 })
+Route.get('/oauth/:provider/callback', 'SocialAuthentificationsController.callback')
