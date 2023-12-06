@@ -34,4 +34,3 @@ Route.group(() => {
 }).prefix('/user')
 
 Route.get('/oauth/:provider/callback', 'SocialAuthentificationsController.callback')
-
