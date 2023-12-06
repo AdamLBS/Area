@@ -22,5 +22,9 @@ declare module '@ioc:Adonis/Addons/Ally' {
       config: TwitchDriverConfig
       implementation: TwitchDriver
     }
+    linkedin: {
+      config: LinkedInDriverConfig
+      implementation: LinkedInDriverContract
+    }
   }
 }

@@ -119,6 +119,41 @@ Route.get('/discord/callback', async ({ ally }) => {
   return user.email
 })
 
+Route.get('/linkedin/redirect', async ({ ally }) => {
+  return ally.use('linkedin').redirect()
+})
+
+Route.get('/linkedin/callback', async ({ ally }) => {
+  const linkedin = ally.use('linkedin')
+
+  /**
+   * User has explicitly denied the login request
+   */
+  if (linkedin.accessDenied()) {
+    return 'Access was denied'
+  }
+
+  /**
+   * Unable to verify the CSRF state
+   */
+  if (linkedin.stateMisMatch()) {
+    return 'Request expired. Retry again'
+  }
+
+  /**
+   * There was an unknown error during the redirect
+   */
+  if (linkedin.hasError()) {
+    return linkedin.getError()
+  }
+
+  /**
+   * Finally, access the user
+   */
+  const user = await linkedin.user()
+  return user.name
+})
+
 Route.get('/twitch/redirect', async ({ ally }) => {
   return ally.use('twitch').redirect()
 })

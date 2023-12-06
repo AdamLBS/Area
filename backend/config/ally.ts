@@ -56,6 +56,12 @@ const allyConfig: AllyConfig = {
     callbackUrl: 'http://localhost:3333/twitch/callback',
     scopes: ['user:read:email'],
   },
+  linkedin: {
+    driver: 'linkedin',
+    clientId: Env.get('LINKEDIN_CLIENT_ID'),
+    clientSecret: Env.get('LINKEDIN_CLIENT_SECRET'),
+    callbackUrl: 'http://localhost:3333/linkedin/callback',
+  },
 }
 
 export default allyConfig
