@@ -19,8 +19,8 @@
 */
 
 import Route from '@ioc:Adonis/Core/Route'
-import './routes/user'
-import './routes/socialAuthentification'
+import './routes/AuthentificationRouter'
+import './routes/SocialAuthentificationRouter'
 
 Route.get('/', async () => {
   return { hello: 'world!' }
