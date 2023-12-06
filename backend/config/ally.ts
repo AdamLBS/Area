@@ -49,6 +49,13 @@ const allyConfig: AllyConfig = {
     // identify scope is always required
     scopes: ['identify', 'email'],
   },
+
+  linkedin: {
+    driver: 'linkedin',
+    clientId: Env.get('LINKEDIN_CLIENT_ID'),
+    clientSecret: Env.get('LINKEDIN_CLIENT_SECRET'),
+    callbackUrl: 'http://localhost:3333/linkedin/callback',
+  },
 }
 
 export default allyConfig
