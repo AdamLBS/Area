@@ -31,7 +31,7 @@
       "@japa/preset-adonis/build/adonis-typings",
       "@adonisjs/lucid",
       "@adonisjs/ally",
-      "Wadonis-ally-twitch",
+      "@adonis-ally-twitch",
       "@adonisjs/auth"
     ]
   }
