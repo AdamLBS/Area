@@ -1,0 +1,95 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "title": "User API",
+      "version": "1.0.0",
+      "description": "API for user registration, login, and user information retrieval"
+    },
+    "servers": [
+      {
+        "url": "http://localhost:3333",
+        "description": "Local development server"
+      }
+    ],
+    "paths": {
+      "/user/register": {
+        "post": {
+          "summary": "Register a new user",
+          "description": "Endpoint to register a new user",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "email": {
+                      "type": "string",
+                      "format": "email"
+                    },
+                    "username": {
+                      "type": "string"
+                    },
+                    "password": {
+                      "type": "string"
+                    },
+                    "confirm_password": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["email", "username", "password", "confirm_password"]
+                }
+              }
+            }
+          }
+        }
+      },
+      "/user/login": {
+        "post": {
+          "summary": "Login user",
+          "description": "Endpoint to login an existing user",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "email": {
+                      "type": "string",
+                      "format": "email"
+                    },
+                    "password": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["email", "password"]
+                }
+              }
+            }
+          }
+        }
+      },
+      "/user/me": {
+        "get": {
+          "summary": "Get user information",
+          "description": "Endpoint to retrieve user information",
+          "security": [
+            {
+              "tokenAuth": []
+            }
+          ]
+        }
+      }
+    },
+    "components": {
+      "securitySchemes": {
+        "tokenAuth": {
+          "type": "apiKey",
+          "in": "header",
+          "name": "Authorization",
+          "description": "JWT token for authentication"
+        }
+      }
+    }
+  }
