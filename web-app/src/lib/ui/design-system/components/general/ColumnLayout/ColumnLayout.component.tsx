@@ -4,13 +4,13 @@ import {
   HeaderContainer,
   NameContainer,
 } from './ColumnLayout.style';
-import Image from 'next/image';
+import { IconStratos } from '@/lib/ui/design-system';
 
 const ColumnLayoutComponent = () => {
   return (
     <Container>
       <HeaderContainer>
-        <Image src="/logo.svg" alt="Stratos Logo" width={20} height={32} />
+        <IconStratos />
         <NameContainer>Stratos</NameContainer>
       </HeaderContainer>
     </Container>
