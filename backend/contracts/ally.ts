@@ -1,9 +1,4 @@
-/**
- * Contract source: https://git.io/JOdiQ
- *
- * Feel free to let us know via PR, if you find something broken in this contract
- * file.
- */
+import { TwitchDriver, TwitchDriverConfig } from 'adonis-ally-twitch/build/src/TwitchDriver'
 
 declare module '@ioc:Adonis/Addons/Ally' {
   interface SocialProviders {
@@ -22,6 +17,10 @@ declare module '@ioc:Adonis/Addons/Ally' {
     discord: {
       config: DiscordDriverConfig
       implementation: DiscordDriverContract
+    }
+    twitch: {
+      config: TwitchDriverConfig
+      implementation: TwitchDriver
     }
   }
 }

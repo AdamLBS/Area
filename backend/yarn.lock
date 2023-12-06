@@ -1091,6 +1091,11 @@ acorn-walk@^8.0.2:
   resolved "https://registry.npmjs.org/acorn/-/acorn-8.11.2.tgz"
   integrity sha512-nc0Axzp/0FILLEVsm4fNwLCwMttvhEI263QtVPQcbpfZZ3ts0hLsZGOpE6czNlid7CJ9MlyH8reXkpsf3YUY4w==
 
+adonis-ally-twitch@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.npmjs.org/adonis-ally-twitch/-/adonis-ally-twitch-1.0.4.tgz"
+  integrity sha512-lY5/XCLOTV1Gmu9cSOLTBp2ZOwt2PKDyU6nojdLfE5vuxStB8f6+Sp/0cTHKBJ/FXysEGnAAaYh0VjNaUb8uRg==
+
 adonis-preset-ts@^2.1.0:
   version "2.1.0"
   resolved "https://registry.npmjs.org/adonis-preset-ts/-/adonis-preset-ts-2.1.0.tgz"

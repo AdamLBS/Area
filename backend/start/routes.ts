@@ -118,3 +118,38 @@ Route.get('/discord/callback', async ({ ally }) => {
   const user = await discord.user()
   return user.email
 })
+
+Route.get('/twitch/redirect', async ({ ally }) => {
+  return ally.use('twitch').redirect()
+})
+
+Route.get('/twitch/callback', async ({ ally }) => {
+  const twitch = ally.use('twitch')
+
+  /**
+   * User has explicitly denied the login request
+   */
+  if (twitch.accessDenied()) {
+    return 'Access was denied'
+  }
+
+  /**
+   * Unable to verify the CSRF state
+   */
+  if (twitch.stateMisMatch()) {
+    return 'Request expired. Retry again'
+  }
+
+  /**
+   * There was an unknown error during the redirect
+   */
+  if (twitch.hasError()) {
+    return twitch.getError()
+  }
+
+  /**
+   * Finally, access the user
+   */
+  const user = await twitch.user()
+  return user
+})

@@ -49,6 +49,15 @@ const allyConfig: AllyConfig = {
     // identify scope is always required
     scopes: ['identify', 'email'],
   },
+  twitch: {
+    driver: 'twitch',
+    clientId: Env.get('TWITCH_CLIENT_ID'),
+    clientSecret: Env.get('TWITCH_CLIENT_SECRET'),
+    callbackUrl: 'http://localhost:3333/twitch/callback',
+    scopes: ['user:read:email', 'user:read:follows', 'user:read:subscriptions', 'chat:read', 'chat:edit',
+      'channel:read:subscriptions', 'channel:read:redemptions', 'channel:manage:redemptions', 'channel:read:hype_train',
+    'user:read:chat', 'whispers:read', 'whispers:edit', 'user:bot'],
+  },
 }
 
 export default allyConfig
