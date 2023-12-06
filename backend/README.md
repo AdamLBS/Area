@@ -36,3 +36,12 @@ All configurations for the Postgresql are for the dev mode.
 On the docker dashboard, you can see your containers that are running called "backend".
 You can only run the "PostgreSQL" service to test your code.
 The "adonis" container builds the adonisJS project to test the "production" mode but you can just run `yarn dev` instead
+
+### Migration
+If your postgresql image is running, you should migrate all sql table to your local database.
+
+To do that, run these commands below:
+
+`node ace migration:run`
+
+> :warning: **Be carefull with the migration**: If you have already some data, the migration delete it all!
