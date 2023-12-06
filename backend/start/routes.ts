@@ -28,35 +28,60 @@ Route.get('/google/redirect', async ({ ally }) => {
   return ally.use('google').redirect()
 })
 
+Route.get('/spotify/redirect', async ({ ally }) => {
+  return ally.use('spotify').redirect()
+})
+
 Route.get('/google/callback', async ({ ally }) => {
   const google = ally.use('google')
-
-  /**
-   * User has explicitly denied the login request
-   */
   if (google.accessDenied()) {
     return 'Access was denied'
   }
-
-  /**
-   * Unable to verify the CSRF state
-   */
   if (google.stateMisMatch()) {
     return 'Request expired. Retry again'
   }
-
-  /**
-   * There was an unknown error during the redirect
-   */
   if (google.hasError()) {
     return google.getError()
   }
-
-  /**
-   * Finally, access the user
-   */
   const user = await google.user()
   return user.token
+})
+
+Route.get('/spotify/callback', async ({ ally }) => {
+  const spotify = ally.use('spotify')
+  if (spotify.accessDenied()) {
+    return 'Access was denied'
+  }
+
+  if (spotify.stateMisMatch()) {
+    return 'Request expired. Retry again'
+  }
+
+  if (spotify.hasError()) {
+    return spotify.getError()
+  }
+
+  const user = await spotify.user()
+  return user.token
+})
+
+Route.get('/github/redirect', async ({ ally }) => {
+  return ally.use('github').redirect()
+})
+
+Route.get('/github/callback', async ({ ally }) => {
+  const github = ally.use('github')
+  if (github.accessDenied()) {
+    return 'Access was denied'
+  }
+  if (github.stateMisMatch()) {
+    return 'Request expired. Retry again'
+  }
+  if (github.hasError()) {
+    return github.getError()
+  }
+  const user = await github.user()
+  return user.email
 })
 
 Route.get('/discord/redirect', async ({ ally }) => {
