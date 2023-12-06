@@ -12,7 +12,9 @@ export default class SocialAuthentificationsController {
       throw 'Access was denied' // TODO: add a better exception
     }
 
-    const { user } = service.user()
+    const user = await service.user()
+
+    console.log(user)
 
     return user
   }
