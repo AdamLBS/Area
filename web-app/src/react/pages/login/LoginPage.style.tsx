@@ -2,8 +2,8 @@ import styled from 'styled-components';
 
 export const PageContainer = styled.div`
   display: flex;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
 `;
 
 export const LeftContainer = styled.div`
