@@ -33,11 +33,11 @@
                     "password": {
                       "type": "string"
                     },
-                    "confirm_password": {
+                    "password_confirmation": {
                       "type": "string"
                     }
                   },
-                  "required": ["email", "username", "password", "confirm_password"]
+                  "required": ["email", "username", "password", "password_confirmation"]
                 }
               }
             }
