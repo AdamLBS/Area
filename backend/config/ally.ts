@@ -36,6 +36,7 @@ const allyConfig: AllyConfig = {
     clientId: Env.get('GITHUB_CLIENT_ID'),
     clientSecret: Env.get('GITHUB_CLIENT_SECRET'),
     callbackUrl: 'http://localhost:3333/github/callback',
+    scopes: ['user-read-email']
   },
   discord: {
     driver: 'discord',
