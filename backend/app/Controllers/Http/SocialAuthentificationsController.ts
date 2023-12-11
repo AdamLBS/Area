@@ -1,6 +1,5 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Oauth from 'App/Models/Oauth'
-import Axios from 'axios'
 
 export default class SocialAuthentificationsController {
   public async redirect({ ally, params }: HttpContextContract) {
