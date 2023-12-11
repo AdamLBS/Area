@@ -29,7 +29,7 @@ export default class StoreUserValidator {
       rules.unique({ table: 'users', column: 'email' }),
     ]),
     username: schema.string({ trim: true }, [rules.unique({ table: 'users', column: 'username' })]),
-    password: schema.string({ trim: true }, [rules.confirmed()]),
+    password: schema.string({ trim: true }, [rules.confirmed(), rules.minLength(8)]),
   })
 
   /**
