@@ -32,6 +32,7 @@ const LoginFormComponent = () => {
 
   const onSubmit = useCallback((values: FormValues) => {
     // Do something with the form values.
+    // eslint-disable-next-line no-console
     console.log(values.email, values.password);
   }, []);
 
