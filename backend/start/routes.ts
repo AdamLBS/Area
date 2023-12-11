@@ -27,12 +27,18 @@ Route.group(() => {
 
   Route.get('/oauth/:provider/redirect', 'SocialAuthentificationsController.redirect')
 
-  /* User routes */
+  /* Auth routes */
   Route.group(() => {
     Route.post('/register', 'AuthController.register')
     Route.post('/login', 'AuthController.login')
-    Route.get('/me', 'AuthController.me').middleware(['auth'])
-  }).prefix('/user')
+    Route.post('/logout', 'AuthController.logout')
+  }).prefix('/auth')
+
+  Route.group(() => {
+    Route.get('/me', 'AuthController.me')
+  })
+    .prefix('/user')
+    .middleware('auth')
 
   Route.get('/oauth/:provider/callback', 'SocialAuthentificationsController.callback')
 }).prefix('/api')

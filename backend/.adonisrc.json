@@ -23,7 +23,8 @@
     "@adonisjs/lucid",
     "@adonisjs/ally",
     "adonis-ally-twitch",
-    "@adonisjs/auth"
+    "@adonisjs/auth",
+    "@adonisjs/session"
   ],
   "aceProviders": [
     "@adonisjs/repl"
