@@ -1,0 +1,13 @@
+openapi: 3.0.0
+/api/user/me:
+  get:
+    tags:
+      - User
+    security:
+      - cookieAuth: []
+    description: Me
+    produces:
+      - application/json
+    responses:
+      200:
+        description: User data
