@@ -42,7 +42,7 @@ export default class AuthController {
     })
   }
 
-  public async verifyRegisterStep1({ request, response }: HttpContextContract) {
+  public async checkIfEmailExists({ request, response }: HttpContextContract) {
     const { email } = request.body()
 
     if (!email) {
@@ -54,12 +54,8 @@ export default class AuthController {
     const user = await User.query().where('email', email).first()
 
     if (user) {
-      return response.notAcceptable({
-        message: 'Email is already used',
-      })
+      return response.ok(true)
     }
-    return response.ok({
-      message: 'Email is available',
-    })
+    return response.ok(false)
   }
 }
