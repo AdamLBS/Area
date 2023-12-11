@@ -2,7 +2,7 @@ import 'package:area/constants.dart';
 import 'package:http/http.dart' as http;
 
 Future<void> logUserIn(String email, String pass) async {
-  var url = Uri.parse("$BACKEND_URL/login");
+  var url = Uri.parse("$backendUrl/login");
   var response = await http.post(url, body: {
     "email": email,
     "password": pass,

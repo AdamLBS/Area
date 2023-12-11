@@ -125,7 +125,7 @@ class _LoginPageState extends State<LoginPage> {
                 Spacer(),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: PURPLE_BACKGROUND,
+                    backgroundColor: purpleBackground,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.0),
                     ),
