@@ -13,8 +13,7 @@ import {
 } from './LoginPage.style';
 import { ColumnLayout } from '@/lib/ui/design-system';
 import { useRouter } from 'next/navigation';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui';
+import { LoginForm } from './LoginForm';
 
 const Login = () => {
   const router = useRouter();
@@ -35,9 +34,7 @@ const Login = () => {
               <Subtitle>Enter your account access below to sign in</Subtitle>
             </HeaderContainer>
             <InputsContainer>
-              <Input type="text" placeholder="name@exemple.com" />
-              <Input type="password" placeholder="password" />
-              <Button>Sign In</Button>
+              <LoginForm />
             </InputsContainer>
           </FormContainer>
         </MainContainer>
