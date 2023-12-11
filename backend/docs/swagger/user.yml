@@ -1,8 +1,10 @@
+openapi: 3.0.0
 /api/user/me:
   get:
     tags:
       - User
-    security: []
+    security:
+      - cookieAuth: []
     description: Me
     produces:
       - application/json

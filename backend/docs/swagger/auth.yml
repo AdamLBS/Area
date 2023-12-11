@@ -1,33 +1,40 @@
+openapi: 3.0.0
+components:
+  securitySchemes:
+    cookieAuth: # arbitrary name for the security scheme; will be used in the "security" key later
+      type: apiKey
+      in: cookie
+      name: adonis-session # cookie name
+
 /api/auth/register:
   post:
     tags:
       - Auth
-    security: []
     description: Register
-    parameters:
-      - name: credentials
-        in:  body
-        required: true
-        schema:
-          properties:
-            email:
-              type: string
-              example: 'test@testemail.fr'
-              required: true
-            username:
-              type: string
-              example: 'testuser'
-              required: true
-            password:
-              type: string
-              example: 'password'
-              required: true
-            password_confirmation:
-              type: string
-              example: 'password'
-              required: true
-    produces:
-      - application/json
+    summary: Register a new user
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+                example: "test@testemail.fr"
+                required: true
+              username:
+                type: string
+                example: "testuser"
+                required: true
+              password:
+                type: string
+                example: "password"
+                required: true
+              password_confirmation:
+                type: string
+                example: "password"
+                required: true
     responses:
       200:
         description: User signed up successfully
@@ -36,33 +43,40 @@
   post:
     tags:
       - Auth
-    security: []
-    description: Login
-    parameters:
-      - name: credentials
-        in:  body
-        required: true
-        schema:
-          properties:
-            email:
-              type: string
-              example: 'test@testemail.fr'
-              required: true
-            password:
-              type: string
-              example: 'password'
-              required: true
-    produces:
-      - application/json
+    summary: Authenticate a user
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+                format: email
+              password:
+                type: string
     responses:
-      200:
-        description: User logged in successfully
+      "200":
+        description: Successful login
+        headers:
+          Set-Cookie:
+            schema:
+              type: string
+              example: "adonis-session=eeee"
+      "400":
+        description: Invalid request
+      "401":
+        description: Unauthorized
+      "500":
+        description: Internal server error
 
 /api/auth/logout:
   post:
     tags:
       - Auth
-    security: []
+    security:
+      - cookieAuth: []
     description: Logout
     produces:
       - application/json
@@ -74,20 +88,17 @@
   post:
     tags:
       - Auth
-    security: []
     description: Verify the register step 1
-    parameters:
-      - name: payload
-        in: body
-        required: true
-        schema:
-          properties:
-            email:
-              type: string
-              example: 'test@testemail.fr'
-              required: true
-    produces:
-      - application/json
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+                example: "test@testemail.fr"
     responses:
       200:
         description: Email is available
