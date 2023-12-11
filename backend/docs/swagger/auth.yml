@@ -1,0 +1,93 @@
+/api/auth/register:
+  post:
+    tags:
+      - Auth
+    security: []
+    description: Register
+    parameters:
+      - name: credentials
+        in:  body
+        required: true
+        schema:
+          properties:
+            email:
+              type: string
+              example: 'test@testemail.fr'
+              required: true
+            username:
+              type: string
+              example: 'testuser'
+              required: true
+            password:
+              type: string
+              example: 'password'
+              required: true
+            password_confirmation:
+              type: string
+              example: 'password'
+              required: true
+    produces:
+      - application/json
+    responses:
+      200:
+        description: User signed up successfully
+
+/api/auth/login:
+  post:
+    tags:
+      - Auth
+    security: []
+    description: Login
+    parameters:
+      - name: credentials
+        in:  body
+        required: true
+        schema:
+          properties:
+            email:
+              type: string
+              example: 'test@testemail.fr'
+              required: true
+            password:
+              type: string
+              example: 'password'
+              required: true
+    produces:
+      - application/json
+    responses:
+      200:
+        description: User logged in successfully
+
+/api/auth/logout:
+  post:
+    tags:
+      - Auth
+    security: []
+    description: Logout
+    produces:
+      - application/json
+    responses:
+      200:
+        description: User logged out successfully
+
+/api/auth/register/verify/step/1:
+  post:
+    tags:
+      - Auth
+    security: []
+    description: Verify the register step 1
+    parameters:
+      - name: payload
+        in: body
+        required: true
+        schema:
+          properties:
+            email:
+              type: string
+              example: 'test@testemail.fr'
+              required: true
+    produces:
+      - application/json
+    responses:
+      200:
+        description: Email is available

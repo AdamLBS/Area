@@ -1,0 +1,11 @@
+/api/user/me:
+  get:
+    tags:
+      - User
+    security: []
+    description: Me
+    produces:
+      - application/json
+    responses:
+      200:
+        description: User data
