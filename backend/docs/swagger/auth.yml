@@ -53,9 +53,13 @@ components:
             properties:
               email:
                 type: string
+                example: "test@testemail.fr"
                 format: email
+                required: true
               password:
                 type: string
+                example: "password"
+                required: true
     responses:
       "200":
         description: Successful login
