@@ -112,6 +112,16 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                 ),
+                if (errorMessage != "") SizedBox(height: 8),
+                if (errorMessage != "")
+                  Text(
+                    errorMessage,
+                    style: GoogleFonts.inter(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.red,
+                    ),
+                  ),
                 Spacer(),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
@@ -148,17 +158,6 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                 ),
-                if (errorMessage != "") SizedBox(height: 8),
-                if (errorMessage != "")
-                  Text(
-                    errorMessage,
-                    style: GoogleFonts.inter(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.red,
-                    ),
-                  ),
-                if (errorMessage != "") SizedBox(height: 8),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Color(0xFF09090B),
