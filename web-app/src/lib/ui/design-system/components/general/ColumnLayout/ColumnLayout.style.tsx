@@ -4,7 +4,7 @@ import { PrimaryLarge } from '@/lib/ui/design-system';
 export const Container = styled.div`
   flex: 1;
   background-color: #18181b;
-  padding: 40px;
+  padding: 32px;
 `;
 
 export const HeaderContainer = styled.div`

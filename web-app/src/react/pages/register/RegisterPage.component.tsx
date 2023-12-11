@@ -1,14 +1,54 @@
 'use client';
-import React, { memo } from 'react';
-import { PageContainer, RightContainer } from './RegisterPage.style';
-import { ColumnLayout, PrimaryDefault } from '@/lib/ui/design-system';
+import React, { memo, useCallback, useState } from 'react';
+import {
+  FormContainer,
+  HeaderContainer,
+  InputsContainer,
+  LoginButton,
+  MainContainer,
+  PageContainer,
+  RightContainer,
+  Subtitle,
+  Title,
+} from './RegisterPage.style';
+import { ColumnLayout } from '@/lib/ui/design-system';
+import { useRouter } from 'next/navigation';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui';
+import { TABS } from './constants';
 
 const Register = () => {
+  const router = useRouter();
+  const [activeTab, setActiveTab] = useState<TABS>(TABS.STEP_1);
+
+  const handleLogin = useCallback(() => {
+    router.push('/login');
+  }, [router]);
+
   return (
     <PageContainer>
       <ColumnLayout />
       <RightContainer>
-        <PrimaryDefault>Hello</PrimaryDefault>
+        <LoginButton onClick={handleLogin}>Log in</LoginButton>
+        <MainContainer>
+          {activeTab == TABS.STEP_1 && (
+            <FormContainer>
+              <HeaderContainer>
+                <Title>Create an account</Title>
+                <Subtitle>
+                  Enter your email below to create your account
+                </Subtitle>
+              </HeaderContainer>
+              <InputsContainer>
+                <Input type="email" placeholder="name@example.com" />
+                <Button onClick={() => setActiveTab(TABS.STEP_2)}>
+                  Sign Up with Email
+                </Button>
+              </InputsContainer>
+            </FormContainer>
+          )}
+          {activeTab == TABS.STEP_2 && <p>Second step</p>}
+        </MainContainer>
       </RightContainer>
     </PageContainer>
   );
