@@ -47,7 +47,26 @@ const Register = () => {
               </InputsContainer>
             </FormContainer>
           )}
-          {activeTab == TABS.STEP_2 && <p>Second step</p>}
+          {activeTab == TABS.STEP_2 && (
+            <FormContainer>
+              <HeaderContainer>
+                <Title>Create an account</Title>
+                <Subtitle>Enter your username and your password</Subtitle>
+              </HeaderContainer>
+              <InputsContainer>
+                <Input type="text" placeholder="username" />
+                <Input type="password" placeholder="password" />
+                <Input type="password" placeholder="confirm password" />
+                <Button>Confirm your account</Button>
+                <Button
+                  variant="outline"
+                  onClick={() => setActiveTab(TABS.STEP_1)}
+                >
+                  Cancel
+                </Button>
+              </InputsContainer>
+            </FormContainer>
+          )}
         </MainContainer>
       </RightContainer>
     </PageContainer>
