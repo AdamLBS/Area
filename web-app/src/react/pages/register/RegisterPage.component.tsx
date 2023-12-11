@@ -16,7 +16,7 @@ import { useRouter } from 'next/navigation';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui';
 import { TABS } from './constants';
-import { CustomForm } from './Form';
+import { RegisterForm } from './RegisterForm';
 
 const Register = () => {
   const router = useRouter();
@@ -54,7 +54,7 @@ const Register = () => {
                 <Title>Create an account</Title>
                 <Subtitle>Enter your username and your password</Subtitle>
               </HeaderContainer>
-              <CustomForm onCancel={() => setActiveTab(TABS.STEP_1)} />
+              <RegisterForm onCancel={() => setActiveTab(TABS.STEP_1)} />
             </FormContainer>
           )}
         </MainContainer>

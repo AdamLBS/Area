@@ -12,9 +12,9 @@ import {
 } from '@/components/ui/form';
 import { Button } from '@/components/ui';
 import { Input } from '@/components/ui/input';
-import { FormContainer } from './Form.style';
+import { FormContainer } from './RegisterForm.style';
 
-export type CustomFormProps = {
+export type RegisterFormProps = {
   onCancel: () => void;
 };
 
@@ -53,7 +53,7 @@ const defaultValues: Partial<AccountFormValues> = {
   confirmPassword: '',
 };
 
-const CustomFormComponent: React.FC<CustomFormProps> = ({ onCancel }) => {
+const RegisterFormComponent: React.FC<RegisterFormProps> = ({ onCancel }) => {
   const form = useForm<AccountFormValues>({
     resolver: zodResolver(accountFormSchema),
     defaultValues,
@@ -117,4 +117,4 @@ const CustomFormComponent: React.FC<CustomFormProps> = ({ onCancel }) => {
   );
 };
 
-export const CustomForm = memo(CustomFormComponent);
+export const RegisterForm = memo(RegisterFormComponent);
