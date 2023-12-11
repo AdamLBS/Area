@@ -41,4 +41,25 @@ export default class AuthController {
       message: 'User logged out successfully',
     })
   }
+
+  public async verifyRegisterStep1({ request, response }: HttpContextContract) {
+    const { email } = request.body()
+
+    if (!email) {
+      return response.notAcceptable({
+        message: 'Email is required',
+      })
+    }
+
+    const user = await User.query().where('email', email).first()
+
+    if (user) {
+      return response.notAcceptable({
+        message: 'Email is already used',
+      })
+    }
+    return response.ok({
+      message: 'Email is available',
+    })
+  }
 }
