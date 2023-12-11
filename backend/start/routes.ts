@@ -19,6 +19,8 @@
 */
 
 import Route from '@ioc:Adonis/Core/Route'
+import './routes/AuthentificationRouter'
+import './routes/SocialAuthentificationRouter'
 
 Route.group(() => {
   Route.get('/', async () => {
