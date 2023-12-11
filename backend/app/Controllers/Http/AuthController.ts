@@ -4,12 +4,16 @@ import AuthValidator from 'App/Validators/User/AuthValidator'
 import RegisterValidator from 'App/Validators/User/RegisterValidator'
 
 export default class AuthController {
-  public async register({ request, response }: HttpContextContract) {
+  public async register({ request, response, auth }: HttpContextContract) {
     const payload = await request.validate(RegisterValidator)
 
-    const user = await User.create(payload)
+    const user = await User.firstOrCreate(payload)
 
-    return response.created(user)
+    await auth.use('web').login(user)
+
+    return response.ok({
+      message: 'User signed up successfully',
+    })
   }
 
   public async me({ auth, response }: HttpContextContract) {
@@ -23,10 +27,39 @@ export default class AuthController {
   public async login({ auth, request, response }: HttpContextContract) {
     const { email, password } = await request.validate(AuthValidator)
 
-    const token = await auth.attempt(email, password)
+    await auth.attempt(email, password)
 
     return response.ok({
-      token,
+      message: 'User logged in successfully',
+    })
+  }
+
+  public async logout({ response, auth }: HttpContextContract) {
+    await auth.logout()
+
+    return response.ok({
+      message: 'User logged out successfully',
+    })
+  }
+
+  public async verifyRegisterStep1({ request, response }: HttpContextContract) {
+    const { email } = request.body()
+
+    if (!email) {
+      return response.notAcceptable({
+        message: 'Email is required',
+      })
+    }
+
+    const user = await User.query().where('email', email).first()
+
+    if (user) {
+      return response.notAcceptable({
+        message: 'Email is already used',
+      })
+    }
+    return response.ok({
+      message: 'Email is available',
     })
   }
 }

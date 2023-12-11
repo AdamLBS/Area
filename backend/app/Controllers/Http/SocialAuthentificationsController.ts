@@ -9,7 +9,15 @@ export default class SocialAuthentificationsController {
     const service = ally.use(params.provider)
 
     if (service.accessDenied()) {
-      throw 'Access was denied' // TODO: add a better exception
+      return 'Access was denied'
+    }
+
+    if (service.stateMisMatch()) {
+      return 'Request origin could not be verified'
+    }
+
+    if (service.hasError()) {
+      return service.getError()
     }
 
     const user = await service.user()
