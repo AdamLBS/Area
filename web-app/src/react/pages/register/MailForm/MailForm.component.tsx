@@ -13,6 +13,7 @@ import {
 import { Button } from '@/components/ui';
 import { Input } from '@/components/ui/input';
 import { FormContainer } from './MailForm.style';
+import { verifyEmail } from '@/api/user';
 
 export type MailFormProps = {
   onNextStep: () => void;
@@ -40,7 +41,7 @@ const MailFormComponent: React.FC<MailFormProps> = ({ onNextStep }) => {
     // eslint-disable-next-line no-console
     console.log(values);
     // TODO: handle submit
-    onNextStep();
+    // const emailVerification = verifyEmail({ email: values.email });
   }, []);
 
   return (
