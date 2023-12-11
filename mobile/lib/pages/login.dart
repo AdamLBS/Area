@@ -142,7 +142,9 @@ class _LoginPageState extends State<LoginPage> {
                     try {
                       await logUserIn(
                           emailController.text, passController.text);
+                      Navigator.of(context).pushReplacementNamed("/home");
                     } catch (e) {
+                      print(e);
                       setState(() {
                         errorMessage = "Wrong email or password";
                       });
