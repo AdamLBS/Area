@@ -6,8 +6,7 @@ export default class extends BaseSchema {
   public async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.string('uuid').primary()
-      // table.string('user_uuid').unsigned().references('uuid').inTable('users').onDelete('CASCADE')
-      table.string('user_uuid').notNullable().unique()
+      table.string('user_uuid').unsigned().references('uuid').inTable('users').onDelete('CASCADE')
       table.string('token').notNullable()
       table.string('refresh_token')
       table.string('provider').notNullable()
