@@ -1337,6 +1337,7 @@ atomic-sleep@^1.0.0:
   integrity sha512-kNOjDqAh7px0XWNI+4QbzoiR/nTkHAWNud2uvnJquD1/x5a7EQZMJT0AczqK0Qn67oY/TTQ1LbUKajZpp3I9tQ==
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 axios@^1.6.2:
   version "1.6.2"
   resolved "https://registry.npmjs.org/axios/-/axios-1.6.2.tgz"
@@ -1346,6 +1347,8 @@ axios@^1.6.2:
     form-data "^4.0.0"
     proxy-from-env "^1.1.0"
 
+=======
+>>>>>>> parent of 3d8de10 (feat(oauth): add a table and a model for storing of oauth token access)
 =======
 >>>>>>> parent of 3d8de10 (feat(oauth): add a table and a model for storing of oauth token access)
 babel-code-frame@^6.26.0:
@@ -2608,11 +2611,14 @@ flattie@^1.1.0:
   integrity sha512-xU99gDEnciIwJdGcBmNHnzTJ/w5AT+VFJOu6sTB6WM8diOYNA3Sa+K1DiEBQ7XH4QikQq3iFW1U+jRVcotQnBw==
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 follow-redirects@^1.15.0:
   version "1.15.3"
   resolved "https://registry.npmjs.org/follow-redirects/-/follow-redirects-1.15.3.tgz"
   integrity sha512-1VzOtuEM8pC9SFU1E+8KfTjZyMztRsgEfwQl44z8A25uy13jSzTj6dyK2Df52iV0vgHCfBwLhDWevLn95w5v6Q==
 
+=======
+>>>>>>> parent of 3d8de10 (feat(oauth): add a table and a model for storing of oauth token access)
 =======
 >>>>>>> parent of 3d8de10 (feat(oauth): add a table and a model for storing of oauth token access)
 for-in@^1.0.2:
@@ -4583,11 +4589,14 @@ proxy-addr@^2.0.7:
     ipaddr.js "1.9.1"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 proxy-from-env@^1.1.0:
   version "1.1.0"
   resolved "https://registry.npmjs.org/proxy-from-env/-/proxy-from-env-1.1.0.tgz"
   integrity sha512-D+zkORCbA9f1tdWRK0RaCR3GPv50cMxcrz4X8k5LTSUD1Dkw47mKJEZQNunItRTkWwgtaUSo1RVFRIG9ZXiFYg==
 
+=======
+>>>>>>> parent of 3d8de10 (feat(oauth): add a table and a model for storing of oauth token access)
 =======
 >>>>>>> parent of 3d8de10 (feat(oauth): add a table and a model for storing of oauth token access)
 pseudomap@^1.0.2:
