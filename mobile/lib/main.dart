@@ -1,3 +1,4 @@
+import 'package:area/pages/home.dart';
 import 'package:area/pages/login.dart';
 import 'package:flutter/material.dart';
 
@@ -26,6 +27,8 @@ class MyApp extends StatelessWidget {
               return MaterialPageRoute(builder: (context) => LoginPage());
             case '/register':
               return MaterialPageRoute(builder: (context) => RegisterPage());
+            case '/home':
+              return MaterialPageRoute(builder: (context) => HomePage());
             default:
               return MaterialPageRoute(builder: (context) => LoginPage());
           }
