@@ -167,7 +167,9 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     minimumSize: Size(double.infinity, 36),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).pushNamed("/register");
+                  },
                   child: Text(
                     "I don't have an account",
                     style: GoogleFonts.inter(
