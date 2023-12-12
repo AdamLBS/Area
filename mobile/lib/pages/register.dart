@@ -10,14 +10,22 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  int index = 1;
+  int index = 0;
   @override
   Widget build(BuildContext context) {
-    if (index == 0)
-      return RegisterFirstPage();
-    else if (index == 1)
+    if (index == 0) {
+      return RegisterFirstPage(
+        onChangedStep: (value) {
+          setState(() {
+            index = value;
+          });
+        },
+      );
+    }
+    if (index == 1) {
       return RegisterSecondPage();
-    else
+    } else {
       return Placeholder();
+    }
   }
 }

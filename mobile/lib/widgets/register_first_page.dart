@@ -4,8 +4,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class RegisterFirstPage extends StatefulWidget {
-  const RegisterFirstPage({super.key});
-
+  const RegisterFirstPage({super.key, required this.onChangedStep});
+  final ValueChanged<int> onChangedStep;
   @override
   State<RegisterFirstPage> createState() => _RegisterFirstPageState();
 }
@@ -108,11 +108,9 @@ class _RegisterFirstPageState extends State<RegisterFirstPage> {
                       });
                       return;
                     } else {
-                      setState(() {
-                        errorMessage = "";
-                      });
+                      widget.onChangedStep(1);
                     }
-                    // set request to api
+                    // set request  api
                   },
                   child: Text(
                     "Sign Up",
