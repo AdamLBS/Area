@@ -24,7 +24,10 @@ export default class CreateEventValidator {
    *    ```
    */
   public schema = schema.create({
-    name: schema.string(),
+    trigger_interaction: schema.string(),
+    response_interaction: schema.string(),
+    trigger_provider: schema.string(),
+    response_provider: schema.string(),
   })
 
   /**

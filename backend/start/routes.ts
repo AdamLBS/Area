@@ -34,7 +34,7 @@ Route.group(() => {
     return { hello: 'world!' }
   })
 
-  Route.post('/event/create', 'EventsController.createEvent')
+  Route.post('/event/create', 'EventsController.createEvent').middleware('auth')
 
   /* Auth routes */
   Route.group(() => {
