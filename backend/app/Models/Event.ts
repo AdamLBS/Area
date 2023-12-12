@@ -2,7 +2,7 @@ import { DateTime } from 'luxon'
 import { BaseModel, beforeCreate, column } from '@ioc:Adonis/Lucid/Orm'
 import { v4 as uuidv4 } from 'uuid'
 
-export default class Oauth extends BaseModel {
+export default class Event extends BaseModel {
   @column({ isPrimary: true })
   public uuid: string
 
@@ -10,16 +10,22 @@ export default class Oauth extends BaseModel {
   public userUuid: string
 
   @column()
-  public provider: string
+  public triggerApi: string
 
   @column()
-  public token: string | null
+  public responseApi: string
 
   @column()
-  public refreshToken: string | null
+  public triggerInteraction: string
 
   @column()
-  public webhook: string | null
+  public responseInteraction: string
+
+  @column()
+  public timestamp: string
+
+  @column()
+  public active: boolean
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
@@ -28,7 +34,12 @@ export default class Oauth extends BaseModel {
   public updatedAt: DateTime
 
   @beforeCreate()
-  public static async generateUuid(oauth: Oauth) {
-    oauth.uuid = uuidv4()
+  public static async generateUuid(event: Event) {
+    event.uuid = uuidv4()
+  }
+
+  @beforeCreate()
+  public static async generateTimestamp(event: Event) {
+    event.timestamp = new Date().toISOString()
   }
 }
