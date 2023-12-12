@@ -10,9 +10,9 @@ export default class SocialAuthentificationsController {
     const service = ally.use(params.provider)
     const loggedUser = auth.user
 
-    if (!loggedUser) {
-      return response.unauthorized({ message: 'You must be logged in to access this resource' })
-    }
+    // if (!loggedUser) {
+    //   return response.unauthorized({ message: 'You must be logged in to access this resource' })
+    // }
 
     if (service.accessDenied()) {
       return 'Access was denied'
@@ -31,7 +31,7 @@ export default class SocialAuthentificationsController {
     const { token } = user
     await Oauth.updateOrCreate(
       {
-        userUuid: loggedUser.uuid,
+        userUuid: 'test',
         provider: params.provider,
       },
       {
