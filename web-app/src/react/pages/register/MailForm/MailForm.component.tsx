@@ -18,6 +18,7 @@ import { verifyEmail } from '@/api/user';
 
 export type MailFormProps = {
   onNextStep: () => void;
+  setMail: (mail: string) => void;
 };
 
 const accountFormSchema = z.object({
@@ -32,7 +33,10 @@ const defaultValues: Partial<AccountFormValues> = {
   email: '',
 };
 
-const MailFormComponent: React.FC<MailFormProps> = ({ onNextStep }) => {
+const MailFormComponent: React.FC<MailFormProps> = ({
+  onNextStep,
+  setMail,
+}) => {
   const form = useForm<AccountFormValues>({
     resolver: zodResolver(accountFormSchema),
     defaultValues,
@@ -42,6 +46,7 @@ const MailFormComponent: React.FC<MailFormProps> = ({ onNextStep }) => {
     onSuccess: (data) => {
       if (!data) {
         onNextStep();
+        setMail(form.getValues().email);
       } else {
         form.setError('email', {
           type: 'manual',

@@ -19,6 +19,7 @@ import { MailForm } from './MailForm';
 const Register = () => {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<TABS>(TABS.STEP_1);
+  const [email, setEmail] = useState<string>('');
 
   const handleLogin = useCallback(() => {
     router.push('/login');
@@ -38,7 +39,10 @@ const Register = () => {
                   Enter your email below to create your account
                 </Subtitle>
               </HeaderContainer>
-              <MailForm onNextStep={() => setActiveTab(TABS.STEP_2)} />
+              <MailForm
+                onNextStep={() => setActiveTab(TABS.STEP_2)}
+                setMail={setEmail}
+              />
             </FormContainer>
           )}
           {activeTab == TABS.STEP_2 && (
@@ -47,7 +51,10 @@ const Register = () => {
                 <Title>Create an account</Title>
                 <Subtitle>Enter your username and your password</Subtitle>
               </HeaderContainer>
-              <RegisterForm onCancel={() => setActiveTab(TABS.STEP_1)} />
+              <RegisterForm
+                onCancel={() => setActiveTab(TABS.STEP_1)}
+                email={email}
+              />
             </FormContainer>
           )}
         </MainContainer>
