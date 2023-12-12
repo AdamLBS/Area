@@ -56,7 +56,8 @@ class _RegisterFirstPageState extends State<RegisterFirstPage> {
                       if (value!.isEmpty) {
                         return "Please enter an email";
                       }
-                      final emailRegex = RegExp(r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$');
+                      final emailRegex = RegExp(
+                          r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$');
                       if (!emailRegex.hasMatch(value)) {
                         return "Please enter a valid email";
                       }

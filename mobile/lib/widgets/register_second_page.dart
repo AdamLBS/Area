@@ -200,7 +200,6 @@ class _RegisterSecondPageState extends State<RegisterSecondPage> {
                   onPressed: () {
                     Navigator.of(context).pushNamed("/register");
                     // set index to 0
-
                   },
                   child: Text(
                     "Cancel",
