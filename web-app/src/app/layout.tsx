@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import 'styles/global.css';
 import React from 'react';
+import TanstackProvider from '@/providers/TanstackProvider';
+import StyledComponentsRegistry from '@/lib/registry';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -14,7 +16,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <TanstackProvider>
+          <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
+        </TanstackProvider>
+      </body>
     </html>
   );
 }
