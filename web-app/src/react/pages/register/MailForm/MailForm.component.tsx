@@ -37,13 +37,20 @@ const MailFormComponent: React.FC<MailFormProps> = ({ onNextStep }) => {
     defaultValues,
   });
 
-  const onSubmit = useCallback((values: AccountFormValues) => {
-    // eslint-disable-next-line no-console
-    console.log(values);
-    // TODO: handle submit
-    // const emailVerification = verifyEmail({ email: values.email });
-  }, []);
-
+  const onSubmit = useCallback(
+    async (values: AccountFormValues) => {
+      const alreadyExist = await verifyEmail({ email: values.email });
+      if (alreadyExist) {
+        form.setError('email', {
+          type: 'manual',
+          message: 'Email already exists.',
+        });
+      } else {
+        onNextStep();
+      }
+    },
+    [onNextStep],
+  );
   return (
     <Form {...form}>
       <FormContainer onSubmit={form.handleSubmit(onSubmit)}>
