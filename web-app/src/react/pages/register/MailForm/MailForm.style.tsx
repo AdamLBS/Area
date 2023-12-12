@@ -5,5 +5,4 @@ export const FormContainer = styled.form`
   flex-direction: column;
   width: 100%;
   gap: 8px;
-  align-self: center;
 `;
