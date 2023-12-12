@@ -169,7 +169,7 @@ class _RegisterSecondPageState extends State<RegisterSecondPage> {
                     } else if (passController.text !=
                         passConfirmController.text) {
                       setState(() {
-                        errorMessage = "Passwords is not the same";
+                        errorMessage = "Passwords are not the same";
                       });
                       return;
                     } else {
@@ -180,7 +180,7 @@ class _RegisterSecondPageState extends State<RegisterSecondPage> {
                     // set request to api
                   },
                   child: Text(
-                    "Confirm sign Up",
+                    "Confirm sign up",
                     style: GoogleFonts.inter(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
