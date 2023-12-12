@@ -3,8 +3,8 @@ import { eventHandler, Content, ResponseInteraction } from '../functions/EventHa
 import Database from '@ioc:Adonis/Lucid/Database';
 import axios, { AxiosResponse } from 'axios';
 
-// Implement typings for axios response
-type TwitchResponse = {
+
+type TwitchData = {
   id: string;
   user_id: string;
   user_name: string;
@@ -16,6 +16,10 @@ type TwitchResponse = {
   language: string;
   thumbnail_url: string;
   tag_ids: string[];
+};
+
+type TwitchResponse = {
+  data:  TwitchData[];
 };
 
 // Implement trigger interaction
@@ -33,8 +37,8 @@ export default class TwitchSeed extends BaseTask {
     return false;
   }
 
-  private async fetchTwitchData(oauth: any): Promise<AxiosResponse<TwitchResponse[]>> {
-    return axios.get(`https://api.twitch.tv/helix/streams/followed`, {
+  private async fetchTwitchData(oauth: any): Promise<TwitchData[]> {
+    const response = await axios.get<TwitchResponse>(`https://api.twitch.tv/helix/streams/followed`, {
       headers: {
         'Client-ID': process.env.TWITCH_CLIENT_ID,
         'Authorization': `Bearer ${oauth.token}`,
@@ -42,7 +46,8 @@ export default class TwitchSeed extends BaseTask {
       params: {
         user_id: oauth.user_id,
       },
-    });
+    })
+    return response.data.data;
   }
 
   private async updateChannelsInLive(oauth: any, channelsJSON: { user_name: string }[]) {
@@ -52,7 +57,7 @@ export default class TwitchSeed extends BaseTask {
       .update({ twitch_in_live: JSON.stringify(channelsJSON) });
   }
 
-  private async notifyUserInLive(data: TwitchResponse) {
+  private async notifyUserInLive(data: TwitchData) {
     const content: Content = {
       title: data.title,
       message: `${data.user_name} is live on Twitch!\nhttps://www.twitch.tv/${data.user_name}`,
@@ -73,11 +78,10 @@ export default class TwitchSeed extends BaseTask {
 
     for (const oauth of oauths) {
       try {
-        const response = await this.fetchTwitchData(oauth);
-        const twitchData = response.data.data;
+        const twitchData = await this.fetchTwitchData(oauth);
 
         if (oauth.twitch_in_live === null && twitchData.length > 0) {
-          const channels = JSON.stringify(twitchData.map((data: TwitchResponse) => ({ user_name: data.user_name })));
+          const channels = JSON.stringify(twitchData.map((data: TwitchData) => ({ user_name: data.user_name })));
           await this.updateChannelsInLive(oauth, JSON.parse(channels));
         }
 
