@@ -23,6 +23,7 @@ const allyConfig: AllyConfig = {
     clientId: Env.get('GOOGLE_CLIENT_ID'),
     clientSecret: Env.get('GOOGLE_CLIENT_SECRET'),
     callbackUrl: 'http://localhost:3333/oauth/google/callback',
+    scopes: ['userinfo.email','userinfo.profile', 'openid', 'https://www.googleapis.com/auth/gmail.readonly'],
   },
   spotify: {
     driver: 'spotify',

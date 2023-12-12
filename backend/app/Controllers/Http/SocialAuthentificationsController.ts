@@ -1,4 +1,5 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import Config from '@ioc:Adonis/Core/Config'
 
 export default class SocialAuthentificationsController {
   public async redirect({ ally, params }: HttpContextContract) {
@@ -21,8 +22,6 @@ export default class SocialAuthentificationsController {
     }
 
     const user = await service.user()
-
-    console.log(user)
 
     return user
   }
