@@ -56,7 +56,7 @@ class _RegisterSecondPageState extends State<RegisterSecondPage> {
                     controller: nameController,
                     validator: (value) {
                       if (value!.isEmpty) {
-                        return "Please enter an username";
+                        return "Please enter your username";
                       }
                       return null;
                     },
