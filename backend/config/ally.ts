@@ -29,7 +29,7 @@ const allyConfig: AllyConfig = {
     clientId: Env.get('SPOTIFY_CLIENT_ID'),
     clientSecret: Env.get('SPOTIFY_CLIENT_SECRET'),
     callbackUrl: 'http://localhost:3333/oauth/spotify/callback',
-    scopes: ['user-read-email', 'user-top-read', 'user-follow-read'],
+    scopes: ['user-read-email', 'user-top-read', 'user-follow-read', 'user-read-currently-playing'],
   },
   github: {
     driver: 'github',
