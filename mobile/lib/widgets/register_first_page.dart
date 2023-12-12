@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../utils/check_email.dart';
+
 class RegisterFirstPage extends StatefulWidget {
   const RegisterFirstPage(
       {super.key, required this.onChangedStep, required this.emailController});
@@ -103,6 +105,14 @@ class _RegisterFirstPageState extends State<RegisterFirstPage> {
                     if (!emailRegex.hasMatch(widget.emailController.text)) {
                       setState(() {
                         errorMessage = "Please enter a valid email";
+                      });
+                      return;
+                    }
+                    try {
+                      await checkUserEmail(widget.emailController.text);
+                    } catch (e) {
+                      setState(() {
+                        errorMessage = "This email is already used";
                       });
                       return;
                     }
