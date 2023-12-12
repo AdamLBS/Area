@@ -29,27 +29,19 @@ export default class SocialAuthentificationsController {
     const user = await service.user()
 
     const { token } = user
-
-    const socialAuth = await Oauth.query()
-      .where('user_uuid', loggedUser.uuid)
-      .where('provider', params.provider)
-      .first()
-
-    if (socialAuth) {
-      await Oauth.firstOrCreate({
+    await Oauth.updateOrCreate(
+      {
         userUuid: loggedUser.uuid,
         provider: params.provider,
+      },
+      {
         token: token.token,
         refreshToken: token.refreshToken,
-      })
+      }
+    )
 
-      return response.ok({
-        message: `This ${params.provider} account has been linked successfully.`,
-      })
-    }
-
-    return response.unauthorized({
-      message: `This ${params.provide} account is already linked.`,
+    return response.ok({
+      message: `This ${params.provider} account has been linked successfully.`,
     })
   }
 }
