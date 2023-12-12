@@ -79,16 +79,10 @@ export default class TwitchSeed extends BaseTask {
     for (const oauth of oauths) {
       try {
         const twitchData = await this.fetchTwitchData(oauth);
-        const response = await this.fetchTwitchData(oauth)
-        const twitchData = response.data.data
 
         if (oauth.twitch_in_live === null && twitchData.length > 0) {
           const channels = JSON.stringify(twitchData.map((data: TwitchData) => ({ user_name: data.user_name })));
           await this.updateChannelsInLive(oauth, JSON.parse(channels));
-          const channels = JSON.stringify(
-            twitchData.map((data: TwitchResponse) => ({ user_name: data.user_name }))
-          )
-          await this.updateChannelsInLive(oauth, JSON.parse(channels))
         }
 
         for (const data of twitchData) {
