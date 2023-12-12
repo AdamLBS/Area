@@ -21,11 +21,14 @@
 import Route from '@ioc:Adonis/Core/Route'
 
 Route.group(() => {
+  Route.get('/redirect', 'SocialAuthentificationsController.redirect')
+  Route.get('/callback', 'SocialAuthentificationsController.callback')
+}).prefix('/oauth/:provider')
+
+Route.group(() => {
   Route.get('/', async () => {
     return { hello: 'world!' }
   })
-
-  Route.get('/oauth/:provider/redirect', 'SocialAuthentificationsController.redirect')
 
   /* Auth routes */
   Route.group(() => {
@@ -40,6 +43,4 @@ Route.group(() => {
   })
     .prefix('/user')
     .middleware('auth')
-
-  Route.get('/oauth/:provider/callback', 'SocialAuthentificationsController.callback')
 }).prefix('/api')
