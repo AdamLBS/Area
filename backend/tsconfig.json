@@ -33,7 +33,8 @@
       "@adonisjs/ally",
       "@adonisjs/auth",
       "@adonisjs/session",
-      "adonis5-swagger"
+      "adonis5-swagger",
+      "adonis5-sentry"
     ]
   }
 }
