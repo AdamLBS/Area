@@ -4,7 +4,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class RegisterFirstPage extends StatefulWidget {
-  const RegisterFirstPage({super.key, required this.onChangedStep, required this.emailController});
+  const RegisterFirstPage(
+      {super.key, required this.onChangedStep, required this.emailController});
   final TextEditingController emailController;
   final ValueChanged<int> onChangedStep;
   @override
