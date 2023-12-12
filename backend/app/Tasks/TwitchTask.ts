@@ -1,7 +1,7 @@
 import { BaseTask, CronTimeV2 } from 'adonis5-scheduler/build/src/Scheduler/Task'
 import { eventHandler, Content, ResponseInteraction } from '../functions/EventHandler'
 import Database from '@ioc:Adonis/Lucid/Database'
-import axios, { AxiosResponse } from 'axios'
+import axios from 'axios'
 
 type TwitchData = {
   id: string
@@ -29,7 +29,7 @@ enum TriggerInteraction {
 export default class TwitchSeed extends BaseTask {
   public static get schedule() {
     console.log('[Twitch] schedule')
-    return CronTimeV2.everySecond()
+    return CronTimeV2.everyFifteenSeconds()
   }
 
   public static get useLock() {
@@ -67,8 +67,8 @@ export default class TwitchSeed extends BaseTask {
     // await eventHandler(ResponseInteraction.SEND_DISCORD_MESSAGE, content);
   }
 
-  private isUserPresent(channelsJSON: { user_name: string }[], userName: string): boolean {
-    return channelsJSON.some((channel) => channel.user_name === userName)
+  private isUserNotPresent(channelsJSON: { user_name: string }[], userName: string): boolean {
+    return !channelsJSON.some((channel) => channel.user_name === userName)
   }
 
   private logAlreadyInLive(userName: string) {
@@ -83,10 +83,23 @@ export default class TwitchSeed extends BaseTask {
         const twitchData = await this.fetchTwitchData(oauth)
 
         if (oauth.twitch_in_live === null && twitchData.length > 0) {
-          const channels = JSON.stringify(
-            twitchData.map((data: TwitchData) => ({ user_name: data.user_name }))
-          )
-          await this.updateChannelsInLive(oauth, JSON.parse(channels))
+          const channels = twitchData.map((data: TwitchData) => ({ user_name: data.user_name }))
+          if (channels === null) {
+            return
+          }
+          await this.updateChannelsInLive(oauth, channels)
+          return
+        }
+
+        const channelsJSON = JSON.parse(oauth.twitch_in_live)
+
+        for (const channel of channelsJSON) {
+          const data = twitchData.find((data: TwitchData) => data.user_name === channel.user_name)
+          if (data === undefined) {
+            channelsJSON.splice(channelsJSON.indexOf(channel), 1)
+            console.log('removed', channel.user_name)
+            await this.updateChannelsInLive(oauth, channelsJSON)
+          }
         }
 
         for (const data of twitchData) {
@@ -94,8 +107,7 @@ export default class TwitchSeed extends BaseTask {
             return
           }
 
-          const channelsJSON = JSON.parse(oauth.twitch_in_live)
-          if (!this.isUserPresent(channelsJSON, data.user_name)) {
+          if (this.isUserNotPresent(channelsJSON, data.user_name)) {
             channelsJSON.push({ user_name: data.user_name })
             await this.updateChannelsInLive(oauth, channelsJSON)
             await this.notifyUserInLive(data)
