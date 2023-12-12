@@ -4,10 +4,6 @@ import 'package:http/http.dart' as http;
 Future<void> signUserUp(
     String email, String username, String pass, String passConfirm) async {
   var url = Uri.parse("$backendUrl/api/auth/register");
-  print(email);
-  print(username);
-  print(pass);
-  print(passConfirm);
   var response = await http.post(url, body: {
     "email": email,
     "username": username,
