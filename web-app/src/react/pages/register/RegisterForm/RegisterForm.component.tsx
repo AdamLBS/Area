@@ -9,9 +9,9 @@ import {
   FormField,
   FormItem,
   FormMessage,
-} from '@/components/ui/form';
-import { Button } from '@/components/ui';
-import { Input } from '@/components/ui/input';
+  Button,
+  Input,
+} from '@/components/ui';
 import { FormContainer } from './RegisterForm.style';
 
 export type RegisterFormProps = {

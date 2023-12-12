@@ -11,3 +11,14 @@ export const verifyEmail = async (payload: {
     throw new Error('Error verifying email');
   }
 };
+
+export const logIn = async (payload: {
+  email: string;
+  password: string;
+}): Promise<void> => {
+  try {
+    return await axios.post(API_URL + '/auth/login', payload);
+  } catch (error) {
+    throw new Error('Error logging in');
+  }
+};
