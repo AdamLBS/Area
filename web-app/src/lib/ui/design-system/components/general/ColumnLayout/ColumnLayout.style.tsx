@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { H1 } from '@/lib/ui/design-system';
+import { H1, H4 } from '@/lib/ui/design-system';
 import { IconStratos } from '@/lib/ui/design-system/components/icons/IconStratos.svg';
 
 export const Container = styled.div`
@@ -26,16 +26,28 @@ export const FormContainer = styled.div`
   gap: 24px;
 `;
 
-export const HeaderContainer = styled.div`
-  flex: 1;
-  padding: 32px;
+export const DescriptionContainer = styled.div`
   display: flex;
+  padding: 32px;
   flex-direction: column;
-  align-items: center;
+  justify-content: center;
+`;
+
+export const ServiceContainer = styled.div`
+  display: flex;
+  padding: 32px;
+  flex-direction: row;
+  justify-content: space-between;
+  align-self: stretch;
 `;
 
 export const NameContainer = styled(H1)`
   font-size: 48px;
+  text-align: center;
+`;
+
+export const Description = styled(H4)`
+  font-size: 24px;
   text-align: center;
 `;
 
