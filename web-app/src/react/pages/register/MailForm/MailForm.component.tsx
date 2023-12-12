@@ -13,6 +13,7 @@ import {
 import { Button } from '@/components/ui';
 import { Input } from '@/components/ui/input';
 import { FormContainer } from './MailForm.style';
+import { useMutation } from '@tanstack/react-query';
 import { verifyEmail } from '@/api/user';
 
 export type MailFormProps = {
@@ -36,18 +37,23 @@ const MailFormComponent: React.FC<MailFormProps> = ({ onNextStep }) => {
     resolver: zodResolver(accountFormSchema),
     defaultValues,
   });
-
-  const onSubmit = useCallback(
-    async (values: AccountFormValues) => {
-      const alreadyExist = await verifyEmail({ email: values.email });
-      if (alreadyExist) {
+  const mutation = useMutation({
+    mutationFn: verifyEmail,
+    onSuccess: (data) => {
+      if (!data) {
+        onNextStep();
+      } else {
         form.setError('email', {
           type: 'manual',
           message: 'Email already exists.',
         });
-      } else {
-        onNextStep();
       }
+    },
+  });
+
+  const onSubmit = useCallback(
+    async (values: AccountFormValues) => {
+      mutation.mutate(values);
     },
     [onNextStep],
   );

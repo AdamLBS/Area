@@ -5,6 +5,7 @@ export const Container = styled.div`
   flex: 1;
   background-color: #18181b;
   padding: 32px;
+  height: 100vh;
 `;
 
 export const HeaderContainer = styled.div`
