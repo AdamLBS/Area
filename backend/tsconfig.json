@@ -34,6 +34,7 @@
       "@adonisjs/auth",
       "@adonisjs/session",
       "adonis5-swagger",
+      "adonis5-sentry",
       "adonis5-scheduler"
     ]
   }
