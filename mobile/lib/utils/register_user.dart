@@ -1,6 +1,5 @@
 import 'package:area/constants.dart';
 import 'package:http/http.dart' as http;
-import 'package:area/globals.dart' as globals;
 
 Future<void> signUserUp(
     String email, String username, String pass, String passConfirm) async {
