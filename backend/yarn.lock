@@ -161,6 +161,14 @@
   dependencies:
     "@poppinss/utils" "^4.0.4"
 
+"@adonisjs/generic-exceptions@^3.0.1":
+  version "3.0.1"
+  resolved "https://registry.npmjs.org/@adonisjs/generic-exceptions/-/generic-exceptions-3.0.1.tgz"
+  integrity sha512-AHBSvgKj17cQYkj7QL7la8KCB6WeBQPyHlgzX9nimLPY9ViWWmwozuy2skEjsh7+XNIg8vQdZphJyoIf8QzzCQ==
+  dependencies:
+    node-exceptions "^4.0.1"
+    upcast "^4.0.0"
+
 "@adonisjs/hash@^7.2.2":
   version "7.2.2"
   resolved "https://registry.npmjs.org/@adonisjs/hash/-/hash-7.2.2.tgz"
@@ -1118,6 +1126,19 @@ adonis-preset-ts@^2.1.0:
   resolved "https://registry.npmjs.org/adonis-preset-ts/-/adonis-preset-ts-2.1.0.tgz"
   integrity sha512-cQH/NP250gOF9k3TTDhVsTOPSAvyH4MhKVZ4ryYiihA+vnP27sut1gVIrRas3Evl5d2wEgWVGI5DgdP/ZFSk0w==
 
+adonis5-scheduler@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.npmjs.org/adonis5-scheduler/-/adonis5-scheduler-2.1.1.tgz"
+  integrity sha512-hVL86mLBONd9IY8ZAb5rS1TMerUH1dK94hl5HvIoCopmnZYRZlDokTxY9lD6vk/yssEmg6reirL/NG9HNJKS/g==
+  dependencies:
+    "@adonisjs/generic-exceptions" "^3.0.1"
+    cron-time-generator "^2.0.1"
+    cronstrue "^2.41.0"
+    debug "^4.3.4"
+    ms "^2.1.3"
+    node-schedule "^2.1.1"
+    proper-lockfile "^4.1.2"
+
 adonis5-swagger@^1.4.1:
   version "1.4.1"
   resolved "https://registry.npmjs.org/adonis5-swagger/-/adonis5-swagger-1.4.1.tgz"
@@ -1868,6 +1889,23 @@ cpy@^8.1.2:
     p-filter "^2.1.0"
     p-map "^3.0.0"
 
+cron-parser@^4.2.0:
+  version "4.9.0"
+  resolved "https://registry.npmjs.org/cron-parser/-/cron-parser-4.9.0.tgz"
+  integrity sha512-p0SaNjrHOnQeR8/VnfGbmg9te2kfyYSQ7Sc/j/6DtPL3JQvKxmjO9TSjNFpujqV3vEYYBvNNvXSxzyksBWAx1Q==
+  dependencies:
+    luxon "^3.2.1"
+
+cron-time-generator@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.npmjs.org/cron-time-generator/-/cron-time-generator-2.0.1.tgz"
+  integrity sha512-InQQ4vvnFuaM/fpRHkJ0/EzxVfPstVEXo4wJfZwBJutCJ3x6AESnc0A8Kj7TlorpqTbH601ZZJtnFZuFZaMJyQ==
+
+cronstrue@^2.41.0:
+  version "2.47.0"
+  resolved "https://registry.npmjs.org/cronstrue/-/cronstrue-2.47.0.tgz"
+  integrity sha512-fnFwJy7zslTEz6h7O7BkwgHNBvuuPmkhAYKqPDxK5mBQLz2nG08T9afbnjm+yrvcc/wxrd+otaVSnoXT9ulUOw==
+
 cross-spawn@^7.0.2, cross-spawn@^7.0.3:
   version "7.0.3"
   resolved "https://registry.npmjs.org/cross-spawn/-/cross-spawn-7.0.3.tgz"
@@ -2278,7 +2316,7 @@ eslint@*, "eslint@^6.0.0 || ^7.0.0 || ^8.0.0", "eslint@^6.0.0 || ^7.0.0 || >=8.0
     strip-ansi "^6.0.1"
     text-table "^0.2.0"
 
-esm@^3.2.25:
+esm@^3.0.84, esm@^3.2.25:
   version "3.2.25"
   resolved "https://registry.npmjs.org/esm/-/esm-3.2.25.tgz"
   integrity sha512-U1suiZ2oDVWv4zPO56S0NcR5QriEahGtdN2OR6FiOG4WJvcjBVFB0qI4+eKoWFH483PKGuLuu6V8Z4T5g63UVA==
@@ -2864,7 +2902,7 @@ got@^11.8.2:
     p-cancelable "^2.0.0"
     responselike "^2.0.0"
 
-graceful-fs@^4.1.2, graceful-fs@^4.1.6, graceful-fs@^4.2.0:
+graceful-fs@^4.1.2, graceful-fs@^4.1.6, graceful-fs@^4.2.0, graceful-fs@^4.2.4:
   version "4.2.11"
   resolved "https://registry.npmjs.org/graceful-fs/-/graceful-fs-4.2.11.tgz"
   integrity sha512-RbJ5/jmFcNNCcDV5o9eTnBLJ/HszWV0P73bc+Ff4nS/rJj+YaS6IGyiOL0VoBYX+l1Wrl3k63h/KrH+nhJ0XvQ==
@@ -3615,6 +3653,11 @@ log-update@^4.0.0:
     slice-ansi "^4.0.0"
     wrap-ansi "^6.2.0"
 
+long-timeout@0.1.1:
+  version "0.1.1"
+  resolved "https://registry.npmjs.org/long-timeout/-/long-timeout-0.1.1.tgz"
+  integrity sha512-BFRuQUqc7x2NWxfJBCyUrN8iYUYznzL9JROmRz1gZ6KlOIgmoD+njPVbb+VNn2nGMKggMsK79iUNErillsrx7w==
+
 loupe@^2.3.6:
   version "2.3.7"
   resolved "https://registry.npmjs.org/loupe/-/loupe-2.3.7.tgz"
@@ -3654,7 +3697,7 @@ luxon@^2.3.1:
   resolved "https://registry.npmjs.org/luxon/-/luxon-2.5.2.tgz"
   integrity sha512-Yg7/RDp4nedqmLgyH0LwgGRvMEKVzKbUdkBYyCosbHgJ+kaOUx0qzSiSatVc3DFygnirTPYnMM2P5dg2uH1WvA==
 
-luxon@^3.0.4, luxon@^3.3.0, luxon@^3.4.1, luxon@^3.4.4:
+luxon@^3.0.4, luxon@^3.2.1, luxon@^3.3.0, luxon@^3.4.1, luxon@^3.4.4:
   version "3.4.4"
   resolved "https://registry.npmjs.org/luxon/-/luxon-3.4.4.tgz"
   integrity sha512-zobTr7akeGHnv7eBOXcRgMeCP6+uyYsczwmeRCauvpvaAltgNyTbLH/+VaEAPUeWBT+1GuNmz4wC/6jtQzbbVA==
@@ -3965,6 +4008,11 @@ node-emoji@^1.11.0:
   dependencies:
     lodash "^4.17.21"
 
+node-exceptions@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.npmjs.org/node-exceptions/-/node-exceptions-4.0.1.tgz"
+  integrity sha512-KJI+FawYOv74x60H6+zrBPfO2vvp9m0pHZi6SH8BBBuc67Irv11DsqY4Le4EBFq1/T5aXFU3hkLrMgtW7RNXxA==
+
 node-repl-await@^0.1.2:
   version "0.1.2"
   resolved "https://registry.npmjs.org/node-repl-await/-/node-repl-await-0.1.2.tgz"
@@ -3975,6 +4023,15 @@ node-repl-await@^0.1.2:
     acorn-private-methods "^1.0.0"
     acorn-static-class-features "^1.0.0"
     acorn-walk "^8.0.2"
+
+node-schedule@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.npmjs.org/node-schedule/-/node-schedule-2.1.1.tgz"
+  integrity sha512-OXdegQq03OmXEjt2hZP33W2YPs/E5BcFQks46+G2gAxs4gHOIVD1u7EqlYLYSKsaIpyKCK9Gbk0ta1/gjRSMRQ==
+  dependencies:
+    cron-parser "^4.2.0"
+    long-timeout "0.1.1"
+    sorted-array-functions "^1.3.0"
 
 normalize-path@^3.0.0, normalize-path@~3.0.0:
   version "3.0.0"
@@ -4554,6 +4611,15 @@ prop-ini@^0.0.2:
   dependencies:
     extend "^3.0.0"
 
+proper-lockfile@^4.1.2:
+  version "4.1.2"
+  resolved "https://registry.npmjs.org/proper-lockfile/-/proper-lockfile-4.1.2.tgz"
+  integrity sha512-TjNPblN4BwAWMXU8s9AEz4JmQxnD1NNL7bNOY/AKUzyamc379FWASUhc/K1pL2noVb+XmZKLL68cjzLsiOAMaA==
+  dependencies:
+    graceful-fs "^4.2.4"
+    retry "^0.12.0"
+    signal-exit "^3.0.2"
+
 proxy-addr@^2.0.7:
   version "2.0.7"
   resolved "https://registry.npmjs.org/proxy-addr/-/proxy-addr-2.0.7.tgz"
@@ -4773,6 +4839,11 @@ ret@~0.1.10:
   version "0.1.15"
   resolved "https://registry.npmjs.org/ret/-/ret-0.1.15.tgz"
   integrity sha512-TTlYpa+OL+vMMNG24xSlQGEJ3B/RzEfUlLct7b5G/ytav+wPrplCpVMFuwzXbkecJrb6IYo1iFb0S9v37754mg==
+
+retry@^0.12.0:
+  version "0.12.0"
+  resolved "https://registry.npmjs.org/retry/-/retry-0.12.0.tgz"
+  integrity sha512-9LkiTwjUh6rT555DtE9rTX+BKByPfrMzEAtnlEtdEwr3Nkffwiihqe2bWADg+OQRjt9gl6ICdmB/ZFDCGAtSow==
 
 retry@0.13.1:
   version "0.13.1"
@@ -5055,6 +5126,11 @@ sonic-boom@^3.0.0:
   integrity sha512-IudtNvSqA/ObjN97tfgNmOKyDOs4dNcg4cUUsHDebqsgb8wGBBwb31LIgShNO8fye0dFI52X1+tFoKKI6Rq1Gg==
   dependencies:
     atomic-sleep "^1.0.0"
+
+sorted-array-functions@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.npmjs.org/sorted-array-functions/-/sorted-array-functions-1.3.0.tgz"
+  integrity sha512-2sqgzeFlid6N4Z2fUQ1cvFmTOLRi/sEDzSQ0OKYchqgoPmQBVyM3959qYx3fpS6Esef80KjmpgPeEr028dP3OA==
 
 source-map-resolve@^0.5.0:
   version "0.5.3"
@@ -5486,6 +5562,13 @@ untildify@^4.0.0:
   version "4.0.0"
   resolved "https://registry.npmjs.org/untildify/-/untildify-4.0.0.tgz"
   integrity sha512-KK8xQ1mkzZeg9inewmFVDNkg3l5LUhoq9kN6iWYB/CC9YMG8HA+c1Q8HwDe6dEX7kErrEVNVBO3fWsVq5iDgtw==
+
+upcast@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.npmjs.org/upcast/-/upcast-4.0.0.tgz"
+  integrity sha512-LS0LmQtEPyyM3Zk4Bb7dNpDVha0xD4Z/Ne3zAqal0hCU/nYjoYU7qic2MPKB+Lu+3h5vKSe2iVqvYnZjmLrAyQ==
+  dependencies:
+    esm "^3.0.84"
 
 upper-case-first@^2.0.2:
   version "2.0.2"
