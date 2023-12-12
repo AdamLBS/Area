@@ -1,20 +1,19 @@
+import 'package:area/widgets/bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../widgets/bottom_bar.dart';
-
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class UserPage extends StatefulWidget {
+  const UserPage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<UserPage> createState() => _UserPageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _UserPageState extends State<UserPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        bottomNavigationBar: BottomNavBar(index: 0),
+        bottomNavigationBar: BottomNavBar(index: 1),
         resizeToAvoidBottomInset: false,
         backgroundColor: Color(0xFF09090B),
         body: Center(
@@ -36,7 +35,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                       SizedBox(width: 10),
                       Text(
-                        "Dashboard",
+                        "User",
                         style: TextStyle(
                           fontSize: 30,
                           fontWeight: FontWeight.w600,
