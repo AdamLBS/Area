@@ -11,6 +11,10 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   int index = 0;
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController passController = TextEditingController();
+  final TextEditingController passConfirmController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     if (index == 0) {
@@ -20,10 +24,20 @@ class _RegisterPageState extends State<RegisterPage> {
             index = value;
           });
         },
+        emailController: emailController,
       );
     }
     if (index == 1) {
-      return RegisterSecondPage();
+      return RegisterSecondPage(
+          onChangedStep: (value) {
+            setState(() {
+              index = value;
+            });
+          },
+          nameController: nameController,
+          passController: passController,
+          passConfirmController: passConfirmController,
+          emailController: emailController);
     } else {
       return Placeholder();
     }
