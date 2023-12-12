@@ -28,6 +28,7 @@ export default Env.rules({
   PG_PASSWORD: Env.schema.string.optional(),
   PG_DB_NAME: Env.schema.string(),
   SESSION_DRIVER: Env.schema.string(),
+  SENTRY_DSN: Env.schema.string(),
   GOOGLE_CLIENT_ID: Env.schema.string(),
   GOOGLE_CLIENT_SECRET: Env.schema.string(),
   SPOTIFY_CLIENT_ID: Env.schema.string(),
