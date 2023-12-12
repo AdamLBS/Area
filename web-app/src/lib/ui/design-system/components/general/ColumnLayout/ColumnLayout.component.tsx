@@ -1,18 +1,29 @@
 import React, { memo } from 'react';
 import {
   Container,
-  HeaderContainer,
+  FormContainer,
+  Logo,
+  LogoContainer,
+  MainContainer,
   NameContainer,
+  TitleContainer,
 } from './ColumnLayout.style';
-import { IconStratos } from '@/lib/ui/design-system';
 
 const ColumnLayoutComponent = () => {
   return (
     <Container>
-      <HeaderContainer>
-        <IconStratos />
-        <NameContainer>Stratos</NameContainer>
-      </HeaderContainer>
+      <MainContainer>
+        <FormContainer>
+          <LogoContainer>
+            <Logo />
+          </LogoContainer>
+          <TitleContainer>
+            <NameContainer>
+              Link all your services. Simple. Fast. Efficient.
+            </NameContainer>
+          </TitleContainer>
+        </FormContainer>
+      </MainContainer>
     </Container>
   );
 };
