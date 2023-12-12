@@ -11,7 +11,9 @@ export default class extends BaseSchema {
       table.string('provider').notNullable()
       table.string('token')
       table.string('refresh_token')
-      table.string('webhook')
+      table.string('webhook').nullable()
+      table.string('user_id').nullable()
+      table.text('twitch_in_live').nullable()
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
        */
