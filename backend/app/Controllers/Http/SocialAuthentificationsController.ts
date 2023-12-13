@@ -9,11 +9,10 @@ export default class SocialAuthentificationsController {
   public async callback({ ally, params, auth, response }: HttpContextContract) {
     const service = ally.use(params.provider)
     const loggedUser = auth.user
-    console.log('loggedUser', loggedUser)
 
-    // if (!loggedUser) {
-    //   return response.unauthorized({ message: 'You must be logged in to access this resource' })
-    // }
+    if (!loggedUser) {
+      return response.unauthorized({ message: 'You must be logged in to access this resource' })
+    }
 
     if (service.accessDenied()) {
       return 'Access was denied'
@@ -39,7 +38,7 @@ export default class SocialAuthentificationsController {
       {
         token: token.token,
         refreshToken: token.refreshToken,
-        oa: id,
+        oauthUserId: id,
       }
     )
 
