@@ -12,6 +12,7 @@ export type Content = {
 }
 
 export const eventHandler = async (eventTrigger: ResponseInteraction, content: Content) => {
+  console.log(`[EventHandler] ${eventTrigger} triggered`)
   if (eventTrigger === ResponseInteraction.SEND_DISCORD_MESSAGE) {
     try {
       await axios.post(

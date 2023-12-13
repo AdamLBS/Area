@@ -29,7 +29,7 @@ enum TriggerInteraction {
 export default class TwitchSeed extends BaseTask {
   public static get schedule() {
     console.log('[Twitch] schedule')
-    return CronTimeV2.everyFifteenSeconds()
+    return CronTimeV2.everyFiveSeconds()
   }
 
   public static get useLock() {
@@ -56,7 +56,7 @@ export default class TwitchSeed extends BaseTask {
     await Database.from('oauths')
       .where('provider', 'twitch')
       .where('user_uuid', oauth.user_uuid)
-      .update({ twitch_in_live: JSON.stringify(channelsJSON) })
+      .update({ twitch_in_live: JSON.stringify(channelsJSON) }) //  create a new element of a new table twitch_history
   }
 
   private async notifyUserInLive(data: TwitchData) {
@@ -64,7 +64,7 @@ export default class TwitchSeed extends BaseTask {
       title: data.title,
       message: `${data.user_name} is live on Twitch!\nhttps://www.twitch.tv/${data.user_name}`,
     }
-    // await eventHandler(ResponseInteraction.SEND_DISCORD_MESSAGE, content);
+    // await eventHandler(ResponseInteraction.SEND_DISCORD_MESSAGE, content)
   }
 
   private isUserNotPresent(channelsJSON: { user_name: string }[], userName: string): boolean {
@@ -73,6 +73,33 @@ export default class TwitchSeed extends BaseTask {
 
   private logAlreadyInLive(userName: string) {
     console.log(`[Twitch] ${userName} is already in live`)
+  }
+
+  private async refreshTwitchToken(oauth: any) {
+    try {
+      const params = {
+        grant_type: 'refresh_token',
+        refresh_token: oauth.refresh_token,
+        client_id: process.env.TWITCH_CLIENT_ID,
+        client_secret: process.env.TWITCH_CLIENT_SECRET,
+      }
+      const response = await axios.post(
+        `https://id.twitch.tv/oauth2/token`,
+        {},
+        {
+          params: params,
+        }
+      )
+      await Database.from('oauths')
+        .where('provider', 'twitch')
+        .where('user_uuid', oauth.user_uuid)
+        .update([
+          { token: response.data.access_token },
+          { refresh_token: response.data.refresh_token },
+        ])
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   public async inLive() {
@@ -116,13 +143,16 @@ export default class TwitchSeed extends BaseTask {
           }
         }
       } catch (error) {
-        console.log(error)
+        if (error.response.status === 401) {
+          await this.refreshTwitchToken(oauth)
+        }
       }
     }
   }
 
   public async handle() {
     console.log('[Twitch] handle')
+    //if eventTrigger === TriggerInteraction.IN_LIVE
     await this.inLive()
   }
 }
