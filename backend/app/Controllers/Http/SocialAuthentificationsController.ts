@@ -38,7 +38,7 @@ export default class SocialAuthentificationsController {
       {
         token: token.token,
         refreshToken: token.refreshToken,
-        userId: id,
+        oauthUserId: id,
       }
     )
 

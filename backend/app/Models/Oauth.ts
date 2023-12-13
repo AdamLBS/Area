@@ -22,7 +22,7 @@ export default class Oauth extends BaseModel {
   public webhook: string | null
 
   @column()
-  public userId: string | null
+  public oauthUserId: string | null
 
   @column()
   public twitchInLive: string | null

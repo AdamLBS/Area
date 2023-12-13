@@ -45,7 +45,7 @@ export default class TwitchSeed extends BaseTask {
           'Authorization': `Bearer ${oauth.token}`,
         },
         params: {
-          user_id: oauth.user_id,
+          user_id: oauth.oauth_user_id,
         },
       }
     )
@@ -72,7 +72,7 @@ export default class TwitchSeed extends BaseTask {
   }
 
   private logAlreadyInLive(userName: string) {
-    console.log(`[Twitch] ${userName} is already in live`)
+    // console.log(`[Twitch] ${userName} is already in live`)
   }
 
   private async refreshTwitchToken(oauth: any) {
@@ -104,7 +104,6 @@ export default class TwitchSeed extends BaseTask {
 
   public async inLive() {
     const oauths = await Database.query().from('oauths').select('*').where('provider', 'twitch')
-
     for (const oauth of oauths) {
       try {
         const twitchData = await this.fetchTwitchData(oauth)
@@ -143,6 +142,7 @@ export default class TwitchSeed extends BaseTask {
           }
         }
       } catch (error) {
+        console.log(error)
         if (error.response.status === 401) {
           await this.refreshTwitchToken(oauth)
         }
