@@ -16,6 +16,7 @@ class RegisterFirstPage extends StatefulWidget {
 
 class _RegisterFirstPageState extends State<RegisterFirstPage> {
   String errorMessage = "";
+  bool loading = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -86,47 +87,61 @@ class _RegisterFirstPageState extends State<RegisterFirstPage> {
                   ),
                 Spacer(),
                 ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: purpleBackground,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: purpleBackground,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      minimumSize: Size(double.infinity, 36),
                     ),
-                    minimumSize: Size(double.infinity, 36),
-                  ),
-                  onPressed: () async {
-                    if (widget.emailController.text.isEmpty) {
-                      setState(() {
-                        errorMessage = "Please fill the email fields";
-                      });
-                      return;
-                    }
-                    final emailRegex =
-                        RegExp(r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$');
-                    if (!emailRegex.hasMatch(widget.emailController.text)) {
-                      setState(() {
-                        errorMessage = "Please enter a valid email";
-                      });
-                      return;
-                    }
-                    try {
-                      await checkUserEmail(widget.emailController.text);
-                    } catch (e) {
-                      setState(() {
-                        errorMessage = "This email is already used";
-                      });
-                      return;
-                    }
-                    widget.onChangedStep(1);
-                  },
-                  child: Text(
-                    "Sign Up",
-                    style: GoogleFonts.inter(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
+                    onPressed: () async {
+                      if (loading) return;
+                      if (widget.emailController.text.isEmpty) {
+                        setState(() {
+                          errorMessage = "Please fill the email fields";
+                        });
+                        return;
+                      }
+                      final emailRegex = RegExp(
+                          r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$');
+                      if (!emailRegex.hasMatch(widget.emailController.text)) {
+                        setState(() {
+                          errorMessage = "Please enter a valid email";
+                        });
+                        return;
+                      }
+                      try {
+                        print("checking here");
+                        setState(() {
+                          loading = true;
+                        });
+                        await checkUserEmail(widget.emailController.text);
+                      } catch (e) {
+                        setState(() {
+                          errorMessage = "This email is already used";
+                          loading = false;
+                        });
+                        return;
+                      }
+                      loading = false;
+                      widget.onChangedStep(1);
+                    },
+                    child: loading == false
+                        ? Text(
+                            "Sign Up",
+                            style: GoogleFonts.inter(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
+                            ),
+                          )
+                        : SizedBox(
+                            height: 20,
+                            width: 20,
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                            ),
+                          )),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Color(0xFF09090B),

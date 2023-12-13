@@ -1,3 +1,5 @@
+import 'package:area/constants.dart';
+import 'package:area/widgets/web_view_oauth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -46,6 +48,15 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ],
                   ),
+                  ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => OAuthWebViewWidget(
+                                    url: "$backendUrl/oauth/google/redirect")));
+                      },
+                      child: Text("Se connecter à Google"))
                 ],
               )),
         ));
