@@ -32,7 +32,7 @@ export default class SocialAuthentificationsController {
 
     await Oauth.updateOrCreate(
       {
-        userUuid: 'test',
+        userUuid: loggedUser.uuid,
         provider: params.provider,
       },
       {
