@@ -84,69 +84,66 @@ export default class TwitchSeed extends BaseTask {
         client_secret: process.env.TWITCH_CLIENT_SECRET,
       }
       const response = await axios.post(
-        `https://id.twitch.tv/oauth2/token`,
-        {},
-        {
-          params: params,
-        }
+        `https://id.twitch.tv/oauth2/token?grant_type=${params.grant_type}&refresh_token=${params.refresh_token}&client_id=${params.client_id}&client_secret=${params.client_secret}`
       )
+      console.log(oauth)
       await Database.from('oauths')
         .where('provider', 'twitch')
         .where('user_uuid', oauth.user_uuid)
-        .update([
-          { token: response.data.access_token },
-          { refresh_token: response.data.refresh_token },
-        ])
+        .update({ token: response.data.access_token, refresh_token: response.data.refresh_token })
     } catch (error) {
       console.log(error)
     }
   }
 
   public async inLive() {
-    const oauths = await Database.query().from('oauths').select('*').where('provider', 'twitch')
-    for (const oauth of oauths) {
-      try {
-        const twitchData = await this.fetchTwitchData(oauth)
+    try {
+      const oauths = await Database.query().from('oauths').select('*').where('provider', 'twitch')
 
-        if (oauth.twitch_in_live === null && twitchData.length > 0) {
-          const channels = twitchData.map((data: TwitchData) => ({ user_name: data.user_name }))
-          if (channels === null) {
-            return
-          }
-          await this.updateChannelsInLive(oauth, channels)
-          return
-        }
-
-        const channelsJSON = JSON.parse(oauth.twitch_in_live)
-
-        for (const channel of channelsJSON) {
-          const data = twitchData.find((data: TwitchData) => data.user_name === channel.user_name)
-          if (data === undefined) {
-            channelsJSON.splice(channelsJSON.indexOf(channel), 1)
-            console.log('removed', channel.user_name)
-            await this.updateChannelsInLive(oauth, channelsJSON)
-          }
-        }
-
-        for (const data of twitchData) {
-          if (oauth.twitch_in_live === null) {
-            return
-          }
-
-          if (this.isUserNotPresent(channelsJSON, data.user_name)) {
-            channelsJSON.push({ user_name: data.user_name })
-            await this.updateChannelsInLive(oauth, channelsJSON)
-            await this.notifyUserInLive(data)
-          } else {
-            this.logAlreadyInLive(data.user_name)
-          }
-        }
-      } catch (error) {
-        console.log(error)
-        if (error.response.status === 401) {
+      for (const oauth of oauths) {
+        try {
           await this.refreshTwitchToken(oauth)
+          const twitchData = await this.fetchTwitchData(oauth)
+
+          if (oauth.twitch_in_live === null && twitchData.length > 0) {
+            const channels = twitchData.map((data: TwitchData) => ({ user_name: data.user_name }))
+            if (channels === null) {
+              return
+            }
+            await this.updateChannelsInLive(oauth, channels)
+            return
+          }
+
+          const channelsJSON = JSON.parse(oauth.twitch_in_live)
+
+          for (const channel of channelsJSON) {
+            const data = twitchData.find((data: TwitchData) => data.user_name === channel.user_name)
+            if (data === undefined) {
+              channelsJSON.splice(channelsJSON.indexOf(channel), 1)
+              console.log('removed', channel.user_name)
+              await this.updateChannelsInLive(oauth, channelsJSON)
+            }
+          }
+
+          for (const data of twitchData) {
+            if (oauth.twitch_in_live === null) {
+              return
+            }
+
+            if (this.isUserNotPresent(channelsJSON, data.user_name)) {
+              channelsJSON.push({ user_name: data.user_name })
+              await this.updateChannelsInLive(oauth, channelsJSON)
+              await this.notifyUserInLive(data)
+            } else {
+              this.logAlreadyInLive(data.user_name)
+            }
+          }
+        } catch (error) {
+          console.log(error)
         }
       }
+    } catch (error) {
+      console.log(error)
     }
   }
 
