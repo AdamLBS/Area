@@ -30,12 +30,13 @@ export const DescriptionContainer = styled.div`
   flex-direction: column;
   gap: 20px;
   padding-bottom: 18px;
+  align-items: center;
 `;
 
 export const ServicesContainer = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  gap: 48px;
 `;
 
 export const NameContainer = styled(H1)`
