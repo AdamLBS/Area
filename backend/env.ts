@@ -37,4 +37,6 @@ export default Env.rules({
   GITHUB_CLIENT_SECRET: Env.schema.string(),
   DISCORD_CLIENT_ID: Env.schema.string(),
   DISCORD_CLIENT_SECRET: Env.schema.string(),
+  TWITCH_CLIENT_ID: Env.schema.string(),
+  TWITCH_CLIENT_SECRET: Env.schema.string(),
 })

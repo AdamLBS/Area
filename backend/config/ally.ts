@@ -54,7 +54,7 @@ const allyConfig: AllyConfig = {
     clientId: Env.get('TWITCH_CLIENT_ID'),
     clientSecret: Env.get('TWITCH_CLIENT_SECRET'),
     callbackUrl: 'http://localhost:3333/oauth/twitch/callback',
-    scopes: ['user:read:email'],
+    scopes: ['user:read:email', 'user:read:follows', 'channel:read:subscriptions'],
   },
   linkedin: {
     driver: 'linkedin',

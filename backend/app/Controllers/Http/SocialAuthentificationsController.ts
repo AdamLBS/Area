@@ -28,7 +28,8 @@ export default class SocialAuthentificationsController {
 
     const user = await service.user()
 
-    const { token } = user
+    const { token, id } = user
+
     await Oauth.updateOrCreate(
       {
         userUuid: loggedUser.uuid,
@@ -37,6 +38,7 @@ export default class SocialAuthentificationsController {
       {
         token: token.token,
         refreshToken: token.refreshToken,
+        oauthUserId: id,
       }
     )
 
