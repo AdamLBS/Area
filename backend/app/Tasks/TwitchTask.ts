@@ -64,7 +64,7 @@ export default class TwitchSeed extends BaseTask {
       title: data.title,
       message: `${data.user_name} is live on Twitch!\nhttps://www.twitch.tv/${data.user_name}`,
     }
-    // await eventHandler(ResponseInteraction.SEND_DISCORD_MESSAGE, content)
+    await eventHandler(ResponseInteraction.SEND_DISCORD_MESSAGE, content, 'test') //TODO: change test to oauth_service_uuid
   }
 
   private isUserNotPresent(channelsJSON: { user_name: string }[], userName: string): boolean {
@@ -72,7 +72,7 @@ export default class TwitchSeed extends BaseTask {
   }
 
   private logAlreadyInLive(userName: string) {
-    // console.log(`[Twitch] ${userName} is already in live`)
+    console.log(`[Twitch] ${userName} is already in live`)
   }
 
   private async refreshTwitchToken(oauth: any) {

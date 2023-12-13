@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { discordEvent } from './DiscordEvent'
 
 export enum ResponseInteraction {
   SEND_EMAIL = 'send_email',
@@ -11,18 +12,10 @@ export type Content = {
   url?: string
 }
 
-export const eventHandler = async (eventTrigger: ResponseInteraction, content: Content) => {
+export const eventHandler = async (eventTrigger: ResponseInteraction, content: Content, oauth_service_uuid: string) => {
   console.log(`[EventHandler] ${eventTrigger} triggered`)
   if (eventTrigger === ResponseInteraction.SEND_DISCORD_MESSAGE) {
-    try {
-      await axios.post(
-        `https://discord.com/api/webhooks/1184108920436953098/HpXo-M737CvNJxvY3Y-pqnxddgXnw1JhiIQS1YHYURXPiDgB7SddR9qTkMj6aCD290Xm?wait=true`,
-        {
-          content: `@everyone ${content.message}`,
-        }
-      )
-    } catch (error) {
-      console.log(error)
-    }
+    console.log(`[EventHandler] Sending message to Discord`)
+    await discordEvent(content, oauth_service_uuid)
   }
 }
