@@ -74,7 +74,7 @@ export default class TwitchSeed extends BaseTask {
   private logAlreadyInLive(userName: string) {
     console.log(`[Twitch] ${userName} is already in live`)
   }
-
+  //TODO: Check if it works
   private async refreshTwitchToken(oauth: any) {
     try {
       const params = {
