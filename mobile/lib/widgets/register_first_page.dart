@@ -3,15 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class RegisterFirstPage extends StatefulWidget {
-  const RegisterFirstPage({super.key});
+import '../utils/check_email.dart';
 
+class RegisterFirstPage extends StatefulWidget {
+  const RegisterFirstPage(
+      {super.key, required this.onChangedStep, required this.emailController});
+  final TextEditingController emailController;
+  final ValueChanged<int> onChangedStep;
   @override
   State<RegisterFirstPage> createState() => _RegisterFirstPageState();
 }
 
 class _RegisterFirstPageState extends State<RegisterFirstPage> {
-  final emailController = TextEditingController();
   String errorMessage = "";
   @override
   Widget build(BuildContext context) {
@@ -51,18 +54,7 @@ class _RegisterFirstPageState extends State<RegisterFirstPage> {
                 SizedBox(
                   height: 40,
                   child: TextFormField(
-                    controller: emailController,
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return "Please enter an email";
-                      }
-                      final emailRegex = RegExp(
-                          r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$');
-                      if (!emailRegex.hasMatch(value)) {
-                        return "Please enter a valid email";
-                      }
-                      return null;
-                    },
+                    controller: widget.emailController,
                     decoration: InputDecoration(
                         labelText: "name@exemple.com",
                         labelStyle: GoogleFonts.inter(
@@ -102,17 +94,29 @@ class _RegisterFirstPageState extends State<RegisterFirstPage> {
                     minimumSize: Size(double.infinity, 36),
                   ),
                   onPressed: () async {
-                    if (emailController.text.isEmpty) {
+                    if (widget.emailController.text.isEmpty) {
                       setState(() {
                         errorMessage = "Please fill the email fields";
                       });
                       return;
-                    } else {
-                      setState(() {
-                        errorMessage = "";
-                      });
                     }
-                    // set request to api
+                    final emailRegex =
+                        RegExp(r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$');
+                    if (!emailRegex.hasMatch(widget.emailController.text)) {
+                      setState(() {
+                        errorMessage = "Please enter a valid email";
+                      });
+                      return;
+                    }
+                    try {
+                      await checkUserEmail(widget.emailController.text);
+                    } catch (e) {
+                      setState(() {
+                        errorMessage = "This email is already used";
+                      });
+                      return;
+                    }
+                    widget.onChangedStep(1);
                   },
                   child: Text(
                     "Sign Up",

@@ -7,12 +7,17 @@ import {
   FormField,
   FormItem,
   FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
+  Input,
+  Button,
+} from '@/components/ui';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
+import { useRouter } from 'next/navigation';
+import { useMutation } from '@tanstack/react-query';
+import { logIn } from '@/api/user';
+import { useToast } from '@/components/ui/use-toast';
+import { Toaster } from '@/components/ui/toaster';
 
 const formSchema = z.object({
   email: z.string().email({ message: 'Email is required' }),
@@ -20,6 +25,8 @@ const formSchema = z.object({
 });
 
 const LoginFormComponent = () => {
+  const router = useRouter();
+  const { toast } = useToast();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -27,13 +34,24 @@ const LoginFormComponent = () => {
       password: '',
     },
   });
+  const logInMutation = useMutation({
+    mutationFn: logIn,
+    onSuccess: () => {
+      router.push('/dashboard');
+    },
+    onError: () => {
+      toast({
+        variant: 'destructive',
+        title: 'Uh oh! Something went wrong.',
+        description: 'Password or email is incorrect.',
+      });
+    },
+  });
 
   type FormValues = z.infer<typeof formSchema>;
 
   const onSubmit = useCallback((values: FormValues) => {
-    // Do something with the form values.
-    // eslint-disable-next-line no-console
-    console.log(values.email, values.password);
+    logInMutation.mutate(values);
   }, []);
 
   return (
@@ -65,6 +83,7 @@ const LoginFormComponent = () => {
         />
         <Button type="submit">Sign In</Button>
       </FormContainer>
+      <Toaster />
     </Form>
   );
 };

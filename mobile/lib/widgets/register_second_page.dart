@@ -1,19 +1,27 @@
 import 'package:area/constants.dart';
+import 'package:area/utils/register_user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class RegisterSecondPage extends StatefulWidget {
-  const RegisterSecondPage({super.key});
-
+  const RegisterSecondPage(
+      {super.key,
+      required this.onChangedStep,
+      required this.nameController,
+      required this.passController,
+      required this.passConfirmController,
+      required this.emailController});
+  final ValueChanged<int> onChangedStep;
+  final TextEditingController nameController;
+  final TextEditingController passController;
+  final TextEditingController passConfirmController;
+  final TextEditingController emailController;
   @override
   State<RegisterSecondPage> createState() => _RegisterSecondPageState();
 }
 
 class _RegisterSecondPageState extends State<RegisterSecondPage> {
-  final nameController = TextEditingController();
-  final passController = TextEditingController();
-  final passConfirmController = TextEditingController();
   String errorMessage = "";
   @override
   Widget build(BuildContext context) {
@@ -53,7 +61,7 @@ class _RegisterSecondPageState extends State<RegisterSecondPage> {
                 SizedBox(
                   height: 40,
                   child: TextFormField(
-                    controller: nameController,
+                    controller: widget.nameController,
                     validator: (value) {
                       if (value!.isEmpty) {
                         return "Please enter your username";
@@ -83,7 +91,7 @@ class _RegisterSecondPageState extends State<RegisterSecondPage> {
                 SizedBox(
                   height: 40,
                   child: TextFormField(
-                    controller: passController,
+                    controller: widget.passController,
                     validator: (value) {
                       if (value!.isEmpty) {
                         return "Please enter a password";
@@ -113,7 +121,7 @@ class _RegisterSecondPageState extends State<RegisterSecondPage> {
                 SizedBox(
                   height: 40,
                   child: TextFormField(
-                    controller: passConfirmController,
+                    controller: widget.passConfirmController,
                     validator: (value) {
                       if (value!.isEmpty) {
                         return "Please confirm your password";
@@ -159,23 +167,40 @@ class _RegisterSecondPageState extends State<RegisterSecondPage> {
                     minimumSize: Size(double.infinity, 36),
                   ),
                   onPressed: () async {
-                    if (nameController.text.isEmpty ||
-                        passController.text.isEmpty ||
-                        passConfirmController.text.isEmpty) {
+                    if (widget.nameController.text.isEmpty ||
+                        widget.passController.text.isEmpty ||
+                        widget.passConfirmController.text.isEmpty) {
                       setState(() {
                         errorMessage = "Please fill all the fields";
                       });
                       return;
-                    } else if (passController.text !=
-                        passConfirmController.text) {
+                    } else if (widget.passController.text !=
+                        widget.passConfirmController.text) {
                       setState(() {
                         errorMessage = "Passwords are not the same";
                       });
                       return;
-                    } else {
+                    }
+                    if (widget.passController.text.length < 8) {
                       setState(() {
-                        errorMessage = "";
+                        errorMessage = "Password must be at least 8 characters";
                       });
+                      return;
+                    }
+                    try {
+                      await signUserUp(
+                          widget.emailController.text,
+                          widget.nameController.text,
+                          widget.passController.text,
+                          widget.passConfirmController.text);
+                      if (context.mounted) {
+                        Navigator.pushNamed(context, '/login');
+                      }
+                    } catch (e) {
+                      setState(() {
+                        errorMessage = "An error occured";
+                      });
+                      return;
                     }
                     // set request to api
                   },
@@ -198,8 +223,7 @@ class _RegisterSecondPageState extends State<RegisterSecondPage> {
                     minimumSize: Size(double.infinity, 36),
                   ),
                   onPressed: () {
-                    Navigator.of(context).pushNamed("/register");
-                    // set index to 0
+                    widget.onChangedStep(0);
                   },
                   child: Text(
                     "Cancel",
