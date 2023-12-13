@@ -1,12 +1,11 @@
 import styled from 'styled-components';
-import { H1, H4 } from '@/lib/ui/design-system';
+import { H1, H3 } from '@/lib/ui/design-system';
 import { IconStratos } from '@/lib/ui/design-system/components/icons/IconStratos.svg';
 
 export const Container = styled.div`
   flex: 1;
   background-color: #18181b;
   padding: 32px;
-  align-items: stretch;
 `;
 
 export const MainContainer = styled.div`
@@ -17,7 +16,7 @@ export const MainContainer = styled.div`
   width: 100%;
 `;
 
-export const FormContainer = styled.div`
+export const ColumnContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -28,17 +27,15 @@ export const FormContainer = styled.div`
 
 export const DescriptionContainer = styled.div`
   display: flex;
-  padding: 32px;
   flex-direction: column;
-  justify-content: center;
+  gap: 20px;
+  padding-bottom: 18px;
 `;
 
-export const ServiceContainer = styled.div`
+export const ServicesContainer = styled.div`
   display: flex;
-  padding: 32px;
   flex-direction: row;
   justify-content: space-between;
-  align-self: stretch;
 `;
 
 export const NameContainer = styled(H1)`
@@ -46,8 +43,7 @@ export const NameContainer = styled(H1)`
   text-align: center;
 `;
 
-export const Description = styled(H4)`
-  font-size: 24px;
+export const Description = styled(H3)`
   text-align: center;
 `;
 
@@ -70,7 +66,5 @@ export const LogoContainer = styled.div`
 export const Logo = styled(IconStratos)`
   width: 260px;
   height: 437.064px;
-  top: 101px;
-  left: 203px;
   opacity: 0.5;
 `;

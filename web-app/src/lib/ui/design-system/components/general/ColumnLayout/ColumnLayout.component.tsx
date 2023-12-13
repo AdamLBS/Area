@@ -3,12 +3,12 @@ import {
   Container,
   Description,
   DescriptionContainer,
-  FormContainer,
+  ColumnContainer,
   Logo,
   LogoContainer,
   MainContainer,
   NameContainer,
-  ServiceContainer,
+  ServicesContainer,
   TitleContainer,
 } from './ColumnLayout.style';
 import { IconGoogle } from '../../icons';
@@ -22,7 +22,7 @@ const ColumnLayoutComponent = () => {
   return (
     <Container>
       <MainContainer>
-        <FormContainer>
+        <ColumnContainer>
           <LogoContainer>
             <Logo />
           </LogoContainer>
@@ -31,17 +31,17 @@ const ColumnLayoutComponent = () => {
               Link all your services. Simple. Fast. Efficient.
             </NameContainer>
           </TitleContainer>
-        </FormContainer>
+        </ColumnContainer>
         <DescriptionContainer>
           <Description>Some services available</Description>
-          <ServiceContainer>
+          <ServicesContainer>
             <IconGoogle />
             <IconLinkedin />
             <IconTwitch />
             <IconGithub />
             <IconDiscord />
             <IconSpotify />
-          </ServiceContainer>
+          </ServicesContainer>
         </DescriptionContainer>
       </MainContainer>
     </Container>
