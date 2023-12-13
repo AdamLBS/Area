@@ -53,5 +53,5 @@ Route.group(() => {
     Route.get('/me', 'AuthController.me')
   })
     .prefix('/user')
-    .middleware('auth')
+    .middleware(['auth:web,api'])
 }).prefix('/api')

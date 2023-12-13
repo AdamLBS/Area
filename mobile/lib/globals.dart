@@ -1,1 +1,1 @@
-String sessionCookie = "";
+String token = "";
