@@ -15,8 +15,8 @@ Future<void> logUserIn(String email, String pass) async {
     var token = JsonDecoder().convert(response.body)["token"];
     globals.token = token;
     var url = Uri.parse("$backendUrl/api/user/me");
-    var secResponse = await http.get(url, headers: {"Authorization"
-    : 'Bearer $token'});
+    var secResponse =
+        await http.get(url, headers: {"Authorization": 'Bearer $token'});
     print(secResponse.body);
     print("User logged in");
   } else {
