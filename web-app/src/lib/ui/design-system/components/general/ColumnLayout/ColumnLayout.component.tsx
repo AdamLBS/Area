@@ -11,12 +11,14 @@ import {
   ServicesContainer,
   TitleContainer,
 } from './ColumnLayout.style';
-import { IconGoogle } from '../../icons';
-import { IconLinkedin } from '../../icons/IconLinkedin.svg';
-import { IconTwitch } from '../../icons/IconTwitch.svg';
-import { IconGithub } from '../../icons/IconGithub.svg';
-import { IconDiscord } from '../../icons/IconDiscord.svg';
-import { IconSpotify } from '../../icons/IconSpotify.svg';
+import {
+  IconDiscord,
+  IconGithub,
+  IconGoogle,
+  IconLinkedin,
+  IconSpotify,
+  IconTwitch,
+} from '@/lib/ui/design-system';
 
 const ColumnLayoutComponent = () => {
   return (
