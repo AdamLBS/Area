@@ -21,10 +21,10 @@ type TwitchResponse = {
   data: TwitchData[]
 }
 
-// Implement trigger interaction
-enum TriggerInteraction {
-  IN_LIVE = 'in_live',
-}
+// TODO: Implement trigger interaction
+// enum TriggerInteraction {
+//   IN_LIVE = 'in_live',
+// }
 
 export default class TwitchSeed extends BaseTask {
   public static get schedule() {
