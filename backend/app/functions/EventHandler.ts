@@ -11,7 +11,11 @@ export type Content = {
   url?: string
 }
 
-export const eventHandler = async (eventTrigger: ResponseInteraction, content: Content, oauth_service_uuid: string) => {
+export const eventHandler = async (
+  eventTrigger: ResponseInteraction,
+  content: Content,
+  oauth_service_uuid: string
+) => {
   console.log(`[EventHandler] ${eventTrigger} triggered`)
   if (eventTrigger === ResponseInteraction.SEND_DISCORD_MESSAGE) {
     console.log(`[EventHandler] Sending message to Discord`)
