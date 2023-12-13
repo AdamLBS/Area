@@ -8,9 +8,9 @@ export default class extends BaseSchema {
       table.string('uuid').primary()
       table.string('user_uuid').unsigned().references('uuid').inTable('users').onDelete('CASCADE')
       table.string('provider').notNullable()
-      table.string('token')
-      table.string('refresh_token')
-      table.string('webhook')
+      table.string('token').nullable()
+      table.string('refresh_token').nullable()
+      table.string('webhook').nullable()
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
        */
