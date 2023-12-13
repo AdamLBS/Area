@@ -23,6 +23,7 @@ class RegisterSecondPage extends StatefulWidget {
 
 class _RegisterSecondPageState extends State<RegisterSecondPage> {
   String errorMessage = "";
+  bool loading = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -167,27 +168,34 @@ class _RegisterSecondPageState extends State<RegisterSecondPage> {
                     minimumSize: Size(double.infinity, 36),
                   ),
                   onPressed: () async {
+                    if (loading) return;
                     if (widget.nameController.text.isEmpty ||
                         widget.passController.text.isEmpty ||
                         widget.passConfirmController.text.isEmpty) {
                       setState(() {
                         errorMessage = "Please fill all the fields";
+                        loading = false;
                       });
                       return;
                     } else if (widget.passController.text !=
                         widget.passConfirmController.text) {
                       setState(() {
                         errorMessage = "Passwords are not the same";
+                        loading = false;
                       });
                       return;
                     }
                     if (widget.passController.text.length < 8) {
                       setState(() {
                         errorMessage = "Password must be at least 8 characters";
+                        loading = false;
                       });
                       return;
                     }
                     try {
+                      setState(() {
+                        loading = true;
+                      });
                       await signUserUp(
                           widget.emailController.text,
                           widget.nameController.text,
@@ -199,19 +207,28 @@ class _RegisterSecondPageState extends State<RegisterSecondPage> {
                     } catch (e) {
                       setState(() {
                         errorMessage = "An error occured";
+                        loading = false;
                       });
                       return;
                     }
                     // set request to api
                   },
-                  child: Text(
-                    "Confirm sign up",
-                    style: GoogleFonts.inter(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white,
-                    ),
-                  ),
+                  child: loading == false
+                      ? Text(
+                          "Confirm sign up",
+                          style: GoogleFonts.inter(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                          ),
+                        )
+                      : SizedBox(
+                          height: 20,
+                          width: 20,
+                          child: CircularProgressIndicator(
+                            color: Colors.white,
+                          ),
+                        ),
                 ),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
