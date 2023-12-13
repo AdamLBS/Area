@@ -29,6 +29,14 @@ export const PrimaryLarge = styled.p.attrs({
   className: 'text-lg font-semibold',
 })``;
 
+export const PrimaryMedium = styled.p.attrs({
+  className: 'text-md',
+})``;
+
+export const PrimaryMediumMutted = styled.p.attrs({
+  className: 'text-md text-muted-foreground',
+})``;
+
 export const PrimarySmall = styled.p.attrs({
   className: 'text-sm font-medium leading-none',
 })``;
