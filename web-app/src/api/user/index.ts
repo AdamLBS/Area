@@ -22,3 +22,21 @@ export const logIn = async (payload: {
     throw new Error('Error logging in');
   }
 };
+
+export const signUp = async (payload: {
+  email: string;
+  username: string;
+  password: string;
+  password_confirmation: string;
+}): Promise<void> => {
+  try {
+    return await axios.post(API_URL + '/auth/register', payload);
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      if (error.response?.status === 422)
+        throw new Error('Username already taken');
+    } else {
+      throw new Error('Error signing up');
+    }
+  }
+};
