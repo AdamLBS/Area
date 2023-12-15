@@ -24,11 +24,8 @@ const Accounts = () => {
     }
   }, [theme]);
 
-  //TODO: Implement handleConnect
-  const handleConnect = (provider: string) => {
-    // eslint-disable-next-line no-console
-    console.log('Connect with', provider);
-  };
+  //TODO: Implement handleConnect and add argument to the function handleConnect = (provider: string) => {}
+  const handleConnect = () => {};
 
   const displaySocialCards = () => {
     const socialCards = [
