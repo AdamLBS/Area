@@ -14,6 +14,7 @@ import {
 } from './SettingsPage.style';
 import { H4, PrimaryMutted } from '@/lib/ui/design-system';
 import { UpdateForm } from './UpdateForm';
+import { SocialAccounts } from './Accounts';
 
 enum Options {
   PROFILE = 'profile',
@@ -22,7 +23,7 @@ enum Options {
 }
 
 const Settings = () => {
-  const [option, setCurrentOption] = React.useState('profile');
+  const [option, setCurrentOption] = React.useState(Options.ACCOUNTS);
 
   const handleActive = (value: Options) => {
     setCurrentOption(value);
@@ -33,7 +34,7 @@ const Settings = () => {
       case Options.PROFILE:
         return <UpdateForm />;
       case Options.ACCOUNTS:
-        return <div>Accounts</div>;
+        return <SocialAccounts />;
       case Options.ADVANCED:
         return <div>Advanced</div>;
       default:
@@ -41,10 +42,46 @@ const Settings = () => {
     }
   };
 
+  const getTitles = (option: Options) => {
+    const titles = {
+      profile: 'Profile',
+      accounts: 'Accounts',
+      advanced: 'Settings',
+    };
+    return titles[option] || 'Update Credentials';
+  };
+
+  const getSubTitles = (option: Options) => {
+    const subTitles = {
+      profile: 'Manage your account settings',
+      accounts: 'Manage your credentials for the services',
+      advanced: 'Manage your settings for the web application',
+    };
+    return subTitles[option] || 'Manage your login credentials';
+  };
+
+  const getBodyTitle = (option: Options) => {
+    const titles = {
+      profile: 'Update credentials',
+      accounts: 'Connect social accounts',
+      advanced: 'Advanced settings',
+    };
+    return titles[option] || 'Update Credentials';
+  };
+
+  const getDescription = (option: Options) => {
+    const descriptions: Record<Options, string> = {
+      profile: 'Manage your login credentials',
+      accounts: 'Manage all your social accounts',
+      advanced: 'Manage your advanced settings',
+    };
+    return descriptions[option] || 'Manage your login credentials';
+  };
+
   return (
     <PageContainer>
-      <Title>Profile</Title>
-      <SubTitle>Manage your account settings</SubTitle>
+      <Title>{getTitles(option)}</Title>
+      <SubTitle>{getSubTitles(option)}</SubTitle>
       <Separator />
       <SettingsContainer>
         <SettingsOptions>
@@ -72,8 +109,8 @@ const Settings = () => {
         </SettingsOptions>
         <SettingsContent>
           <SettingsContentHeader>
-            <H4>Update Credentials</H4>
-            <PrimaryMutted>Manage your login credentials</PrimaryMutted>
+            <H4>{getBodyTitle(option)}</H4>
+            <PrimaryMutted>{getDescription(option)}</PrimaryMutted>
           </SettingsContentHeader>
           <Separator />
           <SettingsContentBody>{formRender()}</SettingsContentBody>
