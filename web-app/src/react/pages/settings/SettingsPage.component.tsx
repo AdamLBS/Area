@@ -15,6 +15,7 @@ import {
 import { H4, PrimaryMutted } from '@/lib/ui/design-system';
 import { UpdateForm } from './UpdateForm';
 import { SocialAccounts } from './Accounts';
+import { AdvancedSettings } from './Advanced';
 
 enum Options {
   PROFILE = 'profile',
@@ -23,7 +24,7 @@ enum Options {
 }
 
 const Settings = () => {
-  const [option, setCurrentOption] = React.useState(Options.ACCOUNTS);
+  const [option, setCurrentOption] = React.useState(Options.ADVANCED);
 
   const handleActive = (value: Options) => {
     setCurrentOption(value);
@@ -36,7 +37,7 @@ const Settings = () => {
       case Options.ACCOUNTS:
         return <SocialAccounts />;
       case Options.ADVANCED:
-        return <div>Advanced</div>;
+        return <AdvancedSettings />;
       default:
         return <UpdateForm />;
     }

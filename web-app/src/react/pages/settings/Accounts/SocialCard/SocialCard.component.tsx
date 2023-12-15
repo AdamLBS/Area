@@ -7,14 +7,18 @@ type Props = {
   serviceName: string;
   connected: boolean;
   icon: React.ReactNode;
-  handleConnect: () => void;
+  provider: string;
+  handleConnect: (provider: string) => void;
 };
 
 const Cards = (props: Props) => {
-  const { serviceName, connected, icon, handleConnect } = props;
+  const { serviceName, connected, icon, provider, handleConnect } = props;
 
   return (
-    <SocialCardContainer variant="outline" onClick={handleConnect}>
+    <SocialCardContainer
+      variant="outline"
+      onClick={() => handleConnect(provider)}
+    >
       <TitleContainer>
         {icon}
         {serviceName}
