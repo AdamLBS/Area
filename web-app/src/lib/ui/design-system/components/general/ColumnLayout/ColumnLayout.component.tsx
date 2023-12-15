@@ -19,10 +19,14 @@ import {
   IconSpotify,
   IconTwitch,
 } from '@/lib/ui/design-system';
+import { useTheme } from 'next-themes';
 
 const ColumnLayoutComponent = () => {
+  const { theme } = useTheme();
+  const color = theme === 'dark' ? '#fff' : '#000';
+
   return (
-    <Container>
+    <Container backgroundColor={theme === 'dark' ? '#18181b' : '#f3f4f6'}>
       <MainContainer>
         <ColumnContainer>
           <LogoContainer>
@@ -37,12 +41,12 @@ const ColumnLayoutComponent = () => {
         <DescriptionContainer>
           <Description>Some services available</Description>
           <ServicesContainer>
-            <IconGoogle />
-            <IconLinkedin />
-            <IconTwitch />
-            <IconGithub />
-            <IconDiscord />
-            <IconSpotify />
+            <IconGoogle color={color} />
+            <IconLinkedin color={color} />
+            <IconTwitch color={color} />
+            <IconGithub color={color} />
+            <IconDiscord color={color} />
+            <IconSpotify color={color} />
           </ServicesContainer>
         </DescriptionContainer>
       </MainContainer>

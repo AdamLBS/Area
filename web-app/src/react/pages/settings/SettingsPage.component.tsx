@@ -24,7 +24,7 @@ enum Options {
 }
 
 const Settings = () => {
-  const [option, setCurrentOption] = React.useState(Options.ADVANCED);
+  const [option, setCurrentOption] = React.useState(Options.ACCOUNTS);
 
   const handleActive = (value: Options) => {
     setCurrentOption(value);

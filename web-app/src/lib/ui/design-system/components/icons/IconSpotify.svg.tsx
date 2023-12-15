@@ -12,7 +12,7 @@ export const IconSpotify = memo(({ ...props }: IconProps) => (
     {...props}
   >
     <path
-      stroke="#fff"
+      stroke={props.color}
       strokeLinecap="round"
       strokeLinejoin="round"
       strokeWidth="4.778"

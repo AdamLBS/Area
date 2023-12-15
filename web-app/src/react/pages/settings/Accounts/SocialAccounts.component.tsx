@@ -10,7 +10,13 @@ import {
   IconTwitchStyled,
   IconDiscordStyled,
 } from './SocialAccounts.style';
+import { useTheme } from 'next-themes';
+
 const Accounts = () => {
+  const { theme } = useTheme();
+
+  const color = theme === 'dark' ? '#fff' : '#000';
+
   const handleConnect = (provider: string) => {
     console.log(provider);
   };
@@ -21,37 +27,37 @@ const Accounts = () => {
         serviceName: 'Google',
         provider: 'google',
         connected: false,
-        icon: <IconGoogleStyled />,
+        icon: <IconGoogleStyled color={color} />,
       },
       {
         serviceName: 'Github',
         provider: 'github',
         connected: false,
-        icon: <IconGithubStyled />,
+        icon: <IconGithubStyled color={color} />,
       },
       {
         serviceName: 'Linkedin',
         provider: 'linkedin',
         connected: false,
-        icon: <IconLinkedinStyled />,
+        icon: <IconLinkedinStyled color={color} />,
       },
       {
         serviceName: 'Spotify',
         provider: 'spotify',
         connected: false,
-        icon: <IconSpotifyStyled />,
+        icon: <IconSpotifyStyled color={color} />,
       },
       {
         serviceName: 'Twitch',
         provider: 'twitch',
         connected: false,
-        icon: <IconTwitchStyled />,
+        icon: <IconTwitchStyled color={color} />,
       },
       {
         serviceName: 'Discord',
         provider: 'discord',
         connected: false,
-        icon: <IconDiscordStyled />,
+        icon: <IconDiscordStyled color={color} />,
       },
     ];
 

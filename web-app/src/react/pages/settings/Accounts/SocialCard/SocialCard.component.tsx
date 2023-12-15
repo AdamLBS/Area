@@ -1,6 +1,6 @@
 'use client';
 import React, { memo } from 'react';
-import { SocialCardContainer, TitleContainer, Icon } from './SocialCard.style';
+import { SocialCardContainer, TitleContainer } from './SocialCard.style';
 import { PrimaryMutted } from '@/lib/ui/design-system';
 
 type Props = {
