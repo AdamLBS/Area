@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 import {
   Container,
   Description,
@@ -23,10 +23,18 @@ import { useTheme } from 'next-themes';
 
 const ColumnLayoutComponent = () => {
   const { theme } = useTheme();
-  const color = theme === 'dark' ? '#fff' : '#000';
+  const [color, setColor] = React.useState('');
+
+  useEffect(() => {
+    if (theme === 'dark') {
+      setColor('#18181b');
+    } else {
+      setColor('#f3f4f6');
+    }
+  }, [theme]);
 
   return (
-    <Container backgroundColor={theme === 'dark' ? '#18181b' : '#f3f4f6'}>
+    <Container backgroundColor={color}>
       <MainContainer>
         <ColumnContainer>
           <LogoContainer>

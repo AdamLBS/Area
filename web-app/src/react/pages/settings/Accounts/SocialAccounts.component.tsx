@@ -1,5 +1,5 @@
 'use client';
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 import { MainContainer } from './SocialAccounts.style';
 import { SocialCard } from './SocialCard';
 import {
@@ -14,11 +14,20 @@ import { useTheme } from 'next-themes';
 
 const Accounts = () => {
   const { theme } = useTheme();
+  const [color, setColor] = React.useState('');
 
-  const color = theme === 'dark' ? '#fff' : '#000';
+  useEffect(() => {
+    if (theme === 'dark') {
+      setColor('#fff');
+    } else {
+      setColor('#000');
+    }
+  }, [theme]);
 
+  //TODO: Implement handleConnect
   const handleConnect = (provider: string) => {
-    console.log(provider);
+    // eslint-disable-next-line no-console
+    console.log('Connect with', provider);
   };
 
   const displaySocialCards = () => {
