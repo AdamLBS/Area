@@ -16,7 +16,7 @@ class _OAuthWebViewWidgetState extends State<OAuthWebViewWidget> {
   InAppWebViewSettings settings = InAppWebViewSettings(
       userAgent:
           "Mozilla/5.0 (Linux; Android 10; SM-G973F) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Mobile Safari/537.36",
-          useShouldOverrideUrlLoading: true);
+      useShouldOverrideUrlLoading: true);
   final expiresDate =
       DateTime.now().add(Duration(days: 1)).millisecondsSinceEpoch;
   final url = Uri.parse(backendUrl);
@@ -44,10 +44,9 @@ class _OAuthWebViewWidgetState extends State<OAuthWebViewWidget> {
                 shouldOverrideUrlLoading: (controller, navigationAction) async {
                   var uri = navigationAction.request.url!;
                   controller.loadUrl(
-                      urlRequest: URLRequest(url: WebUri.uri(uri),
-                      headers: {
-                        'Authorization': 'Bearer ${globals.token}'
-                      }));
+                      urlRequest: URLRequest(url: WebUri.uri(uri), headers: {
+                    'Authorization': 'Bearer ${globals.token}'
+                  }));
                 },
                 onLoadStop: (controller, url) {
                   print("onLoadStop $url");
