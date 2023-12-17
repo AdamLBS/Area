@@ -45,10 +45,13 @@ class _OAuthWebViewWidgetState extends State<OAuthWebViewWidget> {
                   return;
                 },
                 onLoadStop: (controller, url) async {
-                  var result = await controller.evaluateJavascript(source: "new XMLSerializer().serializeToString(document);");
+                  var result = await controller.evaluateJavascript(
+                      source:
+                          "new XMLSerializer().serializeToString(document);");
                   if (result.contains("successfully")) {
                     if (context.mounted) {
-                      Navigator.pop(context); //Quand la connexion est réussie, on ferme la webview
+                      Navigator.pop(
+                          context); //Quand la connexion est réussie, on ferme la webview
                     }
                   }
                 },
