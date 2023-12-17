@@ -12,7 +12,6 @@ class OAuthWebViewWidget extends StatefulWidget {
 }
 
 class _OAuthWebViewWidgetState extends State<OAuthWebViewWidget> {
-  InAppWebViewController? _webViewController;
   InAppWebViewSettings settings = InAppWebViewSettings(
       userAgent:
           "Mozilla/5.0 (Linux; Android 10; SM-G973F) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Mobile Safari/537.36",
@@ -29,7 +28,6 @@ class _OAuthWebViewWidgetState extends State<OAuthWebViewWidget> {
   final GlobalKey webViewKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
-    print("Token : ${globals.token}");
     return cookieSet == true
         ? Scaffold(
             body: SafeArea(
@@ -38,18 +36,21 @@ class _OAuthWebViewWidgetState extends State<OAuthWebViewWidget> {
                 initialSettings: settings,
                 initialUrlRequest:
                     URLRequest(url: WebUri.uri(Uri.parse(widget.url))),
-                onWebViewCreated: (controller) {
-                  _webViewController = controller;
-                },
                 shouldOverrideUrlLoading: (controller, navigationAction) async {
                   var uri = navigationAction.request.url!;
                   controller.loadUrl(
                       urlRequest: URLRequest(url: WebUri.uri(uri), headers: {
                     'Authorization': 'Bearer ${globals.token}'
                   }));
+                  return;
                 },
-                onLoadStop: (controller, url) {
-                  print("onLoadStop $url");
+                onLoadStop: (controller, url) async {
+                  var result = await controller.evaluateJavascript(source: "new XMLSerializer().serializeToString(document);");
+                  if (result.contains("successfully")) {
+                    if (context.mounted) {
+                      Navigator.pop(context); //Quand la connexion est réussie, on ferme la webview
+                    }
+                  }
                 },
               ),
             ),
