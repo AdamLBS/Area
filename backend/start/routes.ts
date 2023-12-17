@@ -21,8 +21,8 @@
 import Route from '@ioc:Adonis/Core/Route'
 
 Route.group(() => {
-  Route.get('/redirect', 'SocialAuthentificationsController.redirect')
-  Route.get('/callback', 'SocialAuthentificationsController.callback')
+  Route.get('/redirect', 'SocialAuthentificationsController.redirect').middleware('auth')
+  Route.get('/callback', 'SocialAuthentificationsController.callback').middleware('auth')
 }).prefix('/oauth/:provider')
 
 Route.group(() => {
