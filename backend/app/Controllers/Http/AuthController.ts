@@ -11,8 +11,13 @@ export default class AuthController {
 
     await auth.use('web').login(user)
 
+    const userToken = await auth.use('api').generate(user, {
+      expiresIn: '7 days',
+    })
+
     return response.ok({
       message: 'User signed up successfully',
+      token: userToken.token,
     })
   }
 
@@ -28,9 +33,14 @@ export default class AuthController {
     const { email, password } = await request.validate(AuthValidator)
 
     await auth.attempt(email, password)
+    const user = await auth.authenticate()
+    const userToken = await auth.use('api').generate(user, {
+      expiresIn: '7 days',
+    })
 
     return response.ok({
       message: 'User logged in successfully',
+      token: userToken.token,
     })
   }
 

@@ -36,6 +36,11 @@ Route.group(() => {
 
   Route.post('/event/create', 'EventsController.createEvent').middleware('auth')
 
+  Route.group(() => {
+    Route.get('/trigger', 'EventsController.getAvailableTriggerEvents')
+    Route.get('/response', 'EventsController.getAvailableResponseEvents')
+  }).prefix('/events')
+
   /* Auth routes */
   Route.group(() => {
     Route.post('/register', 'AuthController.register')
@@ -48,5 +53,5 @@ Route.group(() => {
     Route.get('/me', 'AuthController.me')
   })
     .prefix('/user')
-    .middleware('auth')
+    .middleware(['auth:web,api'])
 }).prefix('/api')

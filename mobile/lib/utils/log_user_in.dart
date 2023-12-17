@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:area/constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:area/globals.dart' as globals;
@@ -9,16 +11,13 @@ Future<void> logUserIn(String email, String pass) async {
     "password": pass,
   });
   if (response.statusCode == 200) {
-    String sessiontoken = response.headers["set-cookie"]!;
-    List<String> cookies = sessiontoken.split(";");
-    for (var cookie in cookies) {
-      if (cookie.contains("adonis-session")) {
-        var value = cookie.split("=");
-        sessiontoken = value[1];
-        globals.sessionCookie = sessiontoken;
-        break;
-      }
-    }
+    print(response.body);
+    var token = JsonDecoder().convert(response.body)["token"];
+    globals.token = token;
+    var url = Uri.parse("$backendUrl/api/user/me");
+    var secResponse =
+        await http.get(url, headers: {"Authorization": 'Bearer $token'});
+    print(secResponse.body);
     print("User logged in");
   } else {
     print("User not logged in");

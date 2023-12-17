@@ -2,6 +2,8 @@ import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Oauth from 'App/Models/Oauth'
 import Event from 'App/Models/Event'
 import CreateEventValidator from 'App/Validators/CreateEventValidator'
+import { TRIGGER_EVENTS } from 'App/params/triggerEvents'
+import { RESPONSE_EVENTS } from 'App/params/responseEvents'
 
 export default class EventsController {
   public async createEvent({ request, response, auth }: HttpContextContract) {
@@ -38,5 +40,14 @@ export default class EventsController {
     return response.internalServerError({
       message: 'Event could not be created',
     })
+  }
+
+  public async getAvailableTriggerEvents({ response }: HttpContextContract) {
+    console.log(TRIGGER_EVENTS)
+    return response.ok(TRIGGER_EVENTS)
+  }
+
+  public async getAvailableResponseEvents({ response }: HttpContextContract) {
+    return response.ok(RESPONSE_EVENTS)
   }
 }

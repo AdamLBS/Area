@@ -13,9 +13,15 @@ import {
   Input,
 } from '@/components/ui';
 import { FormContainer } from './RegisterForm.style';
+import { signUp } from '@/api/user';
+import { useMutation } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
+import { useToast } from '@/components/ui/use-toast';
+import { Toaster } from '@/components/ui/toaster';
 
 export type RegisterFormProps = {
   onCancel: () => void;
+  email: string;
 };
 
 const accountFormSchema = z.object({
@@ -53,16 +59,45 @@ const defaultValues: Partial<AccountFormValues> = {
   confirmPassword: '',
 };
 
-const RegisterFormComponent: React.FC<RegisterFormProps> = ({ onCancel }) => {
+const RegisterFormComponent: React.FC<RegisterFormProps> = ({
+  onCancel,
+  email,
+}) => {
+  const router = useRouter();
+  const { toast } = useToast();
   const form = useForm<AccountFormValues>({
     resolver: zodResolver(accountFormSchema),
     defaultValues,
   });
 
+  const signUpMutation = useMutation({
+    mutationFn: signUp,
+    onSuccess: () => {
+      router.push('/dashboard');
+    },
+    onError: (error) => {
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: error.message,
+      });
+    },
+  });
+
   const onSubmit = useCallback((values: AccountFormValues) => {
-    // eslint-disable-next-line no-console
-    console.log(values);
-    // TODO: handle submit
+    if (values.password !== values.confirmPassword) {
+      form.setError('confirmPassword', {
+        type: 'manual',
+        message: 'Passwords do not match.',
+      });
+      return;
+    }
+    signUpMutation.mutate({
+      email,
+      username: values.username,
+      password: values.password,
+      password_confirmation: values.confirmPassword,
+    });
   }, []);
 
   return (
@@ -113,6 +148,7 @@ const RegisterFormComponent: React.FC<RegisterFormProps> = ({ onCancel }) => {
           Cancel
         </Button>
       </FormContainer>
+      <Toaster />
     </Form>
   );
 };
