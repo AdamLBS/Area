@@ -1,18 +1,12 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import Oauth from 'App/Models/Oauth'
 
 export default class SocialAuthentificationsController {
   public async redirect({ ally, params }: HttpContextContract) {
     await ally.use(params.provider).redirect()
   }
 
-  public async callback({ ally, params, auth, response }: HttpContextContract) {
+  public async callback({ ally, params, response }: HttpContextContract) {
     const service = ally.use(params.provider)
-    const loggedUser = await auth.authenticate()
-
-    if (!loggedUser) {
-      return response.unauthorized({ message: 'You must be logged in to access this resource' })
-    }
 
     if (service.accessDenied()) {
       return 'Access was denied'
@@ -30,20 +24,24 @@ export default class SocialAuthentificationsController {
 
     const { token, id } = user
 
-    await Oauth.updateOrCreate(
-      {
-        userUuid: loggedUser.uuid,
-        provider: params.provider,
-      },
-      {
+    return response.ok({
+      message: {
         token: token.token,
         refreshToken: token.refreshToken,
         oauthUserId: id,
-      }
-    )
-
-    return response.ok({
-      message: `This ${params.provider} account has been linked successfully.`,
+      },
     })
+
+    // await Oauth.updateOrCreate(
+    //   {
+    //     userUuid: loggedUser.uuid,
+    //     provider: params.provider,
+    //   },
+    //   {
+    //     token: token.token,
+    //     refreshToken: token.refreshToken,
+    //     oauthUserId: id,
+    //   }
+    // )
   }
 }

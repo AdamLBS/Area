@@ -22,11 +22,11 @@ import Route from '@ioc:Adonis/Core/Route'
 
 Route.group(() => {
   Route.get('/redirect', 'SocialAuthentificationsController.redirect')
-  Route.get('/callback', 'SocialAuthentificationsController.callback').middleware(['auth:web,api'])
+  Route.get('/callback', 'SocialAuthentificationsController.callback')
 }).prefix('/oauth/:provider')
 
 Route.group(() => {
-  Route.post('/', 'DiscordsController.add').middleware('auth')
+  Route.post('/', 'DiscordsController.add').middleware(['auth:api'])
 }).prefix('/oauth/discord/add-webhook')
 
 Route.group(() => {
@@ -34,7 +34,7 @@ Route.group(() => {
     return { hello: 'world!' }
   })
 
-  Route.post('/event/create', 'EventsController.createEvent').middleware('auth')
+  Route.post('/event/create', 'EventsController.createEvent').middleware(['auth:api'])
 
   Route.group(() => {
     Route.get('/trigger', 'EventsController.getAvailableTriggerEvents')
@@ -54,5 +54,5 @@ Route.group(() => {
     Route.post('/me/update', 'AuthController.update')
   })
     .prefix('/user')
-    .middleware(['auth:web,api'])
+    .middleware(['auth:api'])
 }).prefix('/api')

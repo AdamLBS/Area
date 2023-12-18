@@ -10,8 +10,6 @@ export default class AuthController {
 
     const user = await User.firstOrCreate(payload)
 
-    await auth.use('web').login(user)
-
     const userToken = await auth.use('api').generate(user, {
       expiresIn: '7 days',
     })
