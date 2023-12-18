@@ -17,9 +17,9 @@ export type NavBarProps = {
   pageName: string;
 };
 
-const NavigationBarComponent: React.FC<NavBarProps> = (pageName) => {
+const NavigationBarComponent: React.FC<NavBarProps> = ({ pageName }) => {
   const router = useRouter();
-  const name = pageName.pageName;
+  const name = pageName;
 
   const handleDashboard = useCallback(() => {
     router.push('/dashboard');
