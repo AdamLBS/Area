@@ -8,8 +8,9 @@ import {
   MenuButton,
   DarkContainer,
   DarkModeButton,
+  Stratos,
 } from './NavigationBar.style';
-import { IconStratos, IconMoon } from '@/lib/ui/design-system';
+import { IconMoon } from '@/lib/ui/design-system';
 import { useRouter } from 'next/navigation';
 
 export type NavBarProps = {
@@ -36,7 +37,7 @@ const NavigationBarComponent: React.FC<NavBarProps> = (pageName) => {
     <PageContainer>
       <HeaderContainer>
         <TitleContainer>
-          <IconStratos />
+          <Stratos />
           <Title>{name}</Title>
         </TitleContainer>
         <MenuContainer>

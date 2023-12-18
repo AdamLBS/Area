@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import { H2 } from '@/lib/ui/design-system';
+import { IconStratos } from '@/lib/ui/design-system/components/icons/IconStratos.svg';
 
 export const PageContainer = styled.div`
   flex: 1;
@@ -24,13 +26,15 @@ export const TitleContainer = styled.div`
 
 export const MenuContainer = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  gap: 20px;
   flex: 1 0 0;
 `;
 
-export const Title = styled.h2`
-  font-size: 30px;
+export const Title = styled(H2)`
+  padding-top: 10px;
+  color: var(--text-text-foreground, #fafafa);
+  border-bottom: none;
 `;
 
 export const MenuButton = styled.button`
@@ -67,4 +71,9 @@ export const DarkModeButton = styled.button`
   &:hover {
     background-color: #1b1b1d;
   }
+`;
+
+export const Stratos = styled(IconStratos)`
+  width: 25px;
+  height: 42px;
 `;
