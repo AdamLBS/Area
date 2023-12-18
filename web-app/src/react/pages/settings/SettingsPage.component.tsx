@@ -1,0 +1,126 @@
+'use client';
+import React, { memo, useMemo } from 'react';
+import {
+  PageContainer,
+  Title,
+  SubTitle,
+  Separator,
+  SettingsContainer,
+  SettingsContent,
+  SettingsOptions,
+  ButtonOption,
+  SettingsContentHeader,
+  SettingsContentBody,
+} from './SettingsPage.style';
+import { H4, PrimaryMutted } from '@/lib/ui/design-system';
+import { UpdateForm } from './UpdateForm';
+import { SocialAccounts } from './Accounts';
+import { AdvancedSettings } from './Advanced';
+
+enum Options {
+  PROFILE = 'profile',
+  ACCOUNTS = 'accounts',
+  ADVANCED = 'advanced',
+}
+
+const TITLES = {
+  [Options.PROFILE]: 'Profile',
+  [Options.ACCOUNTS]: 'Accounts',
+  [Options.ADVANCED]: 'Settings',
+};
+
+const SUBTITLES = {
+  [Options.PROFILE]: 'Manage your account settings',
+  [Options.ACCOUNTS]: 'Manage your credentials for the services',
+  [Options.ADVANCED]: 'Manage your settings for the web application',
+};
+
+const BODY_TITLES = {
+  [Options.PROFILE]: 'Update credentials',
+  [Options.ACCOUNTS]: 'Connect social accounts',
+  [Options.ADVANCED]: 'Advanced settings',
+};
+
+const DESCRIPTIONS = {
+  [Options.PROFILE]: 'Manage your login credentials',
+  [Options.ACCOUNTS]: 'Manage all your social accounts',
+  [Options.ADVANCED]: 'Manage your advanced settings',
+};
+
+const Settings = () => {
+  const [option, setCurrentOption] = React.useState(Options.PROFILE);
+
+  const handleActive = (value: Options) => {
+    setCurrentOption(value);
+  };
+
+  const { displayFormRender } = useMemo(() => {
+    const formRender = () => {
+      switch (option) {
+        case Options.PROFILE:
+          return <UpdateForm />;
+        case Options.ACCOUNTS:
+          return <SocialAccounts />;
+        case Options.ADVANCED:
+          return <AdvancedSettings />;
+        default:
+          return <UpdateForm />;
+      }
+    };
+
+    return {
+      displayFormRender: formRender(),
+    };
+  }, [option]);
+
+  const { displayOptionsButtons } = useMemo(() => {
+    const optionButtons = [
+      {
+        option: Options.PROFILE,
+        label: 'Profile',
+      },
+      {
+        option: Options.ACCOUNTS,
+        label: 'Accounts',
+      },
+      {
+        option: Options.ADVANCED,
+        label: 'Advanced settings',
+      },
+    ];
+
+    const displayOptionsButtons = optionButtons.map((item) => (
+      <ButtonOption
+        key={item.option}
+        onClick={() => handleActive(item.option)}
+        active={option === item.option}
+        variant="ghost"
+      >
+        {item.label}
+      </ButtonOption>
+    ));
+
+    return { displayOptionsButtons };
+  }, [option]);
+
+  return (
+    <PageContainer>
+      <Title>{TITLES[option]}</Title>
+      <SubTitle>{SUBTITLES[option]}</SubTitle>
+      <Separator />
+      <SettingsContainer>
+        <SettingsOptions>{displayOptionsButtons}</SettingsOptions>
+        <SettingsContent>
+          <SettingsContentHeader>
+            <H4>{BODY_TITLES[option]}</H4>
+            <PrimaryMutted>{DESCRIPTIONS[option]}</PrimaryMutted>
+          </SettingsContentHeader>
+          <Separator />
+          <SettingsContentBody>{displayFormRender}</SettingsContentBody>
+        </SettingsContent>
+      </SettingsContainer>
+    </PageContainer>
+  );
+};
+
+export const SettingsPage = memo(Settings);

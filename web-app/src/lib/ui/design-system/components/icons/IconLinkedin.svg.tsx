@@ -12,7 +12,7 @@ export const IconLinkedin = memo(({ ...props }: IconProps) => (
     {...props}
   >
     <path
-      stroke="#fff"
+      stroke="currentColor"
       strokeLinecap="round"
       strokeLinejoin="round"
       strokeWidth="4.778"
