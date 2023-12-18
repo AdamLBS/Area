@@ -1,4 +1,5 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import Oauth from 'App/Models/Oauth'
 
 export default class SocialAuthentificationsController {
   public async redirect({ ally, params }: HttpContextContract) {
@@ -32,16 +33,27 @@ export default class SocialAuthentificationsController {
       },
     })
 
-    // await Oauth.updateOrCreate(
-    //   {
-    //     userUuid: loggedUser.uuid,
-    //     provider: params.provider,
-    //   },
-    //   {
-    //     token: token.token,
-    //     refreshToken: token.refreshToken,
-    //     oauthUserId: id,
-    //   }
-    // )
+  }
+  public async save({ params, auth, response }: HttpContextContract) {
+    const loggedUser  = await auth.authenticate()
+    if (!loggedUser) {
+      return 'You need to be logged in to do this'
+    }
+
+    if (!loggedUser) {
+      return response.unauthorized({ message: 'You must be logged in to access this resource' })
+    }
+
+    await Oauth.updateOrCreate(
+      {
+        userUuid: loggedUser.uuid,
+        provider: params.provider,
+      },
+      {
+        token: params.token,
+        refreshToken: params.refreshToken,
+        oauthUserId: params.oauthUserId,
+      }
+    )
   }
 }
