@@ -30,7 +30,7 @@ export const SettingsContainer = styled.div`
   width: 100%;
   height: 100%;
   margin-top: 20px;
-  gap: 3em;
+  gap: 48px;
 `;
 
 export const SettingsOptions = styled.div`
