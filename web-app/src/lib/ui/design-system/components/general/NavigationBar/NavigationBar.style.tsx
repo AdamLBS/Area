@@ -2,7 +2,6 @@ import styled from 'styled-components';
 import { IconStratos } from '@/lib/ui/design-system/components/icons/IconStratos.svg';
 
 export const NavBarContainer = styled.div`
-  flex: 1;
   display: flex;
   padding: 20px;
   flex-direction: column;
