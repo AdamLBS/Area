@@ -33,10 +33,9 @@ export default class SocialAuthentificationsController {
         provider: params.provider,
       },
     })
-
   }
   public async save({ auth, response, request }: HttpContextContract) {
-    const loggedUser  = await auth.authenticate()
+    const loggedUser = await auth.authenticate()
     if (!loggedUser) {
       return 'You need to be logged in to do this'
     }
@@ -45,7 +44,12 @@ export default class SocialAuthentificationsController {
       return response.unauthorized({ message: 'You must be logged in to access this resource' })
     }
     console.log(request['requestBody'])
-    if (!request['requestBody'].token || !request['requestBody'].refreshToken || !request['requestBody'].oauthUserId || !request['requestBody'].provider) {
+    if (
+      !request['requestBody'].token ||
+      !request['requestBody'].refreshToken ||
+      !request['requestBody'].oauthUserId ||
+      !request['requestBody'].provider
+    ) {
       return response.badRequest({ message: 'Missing parameters' })
     }
 
@@ -59,16 +63,18 @@ export default class SocialAuthentificationsController {
         refreshToken: request['requestBody'].refreshToken,
         oauthUserId: request['requestBody'].oauthUserId,
       }
-    ).then((oauth) => {
-      return response.ok({
-        message: 'Oauth saved successfully',
-        oauth,
+    )
+      .then((oauth) => {
+        return response.ok({
+          message: 'Oauth saved successfully',
+          oauth,
+        })
       })
-    }).catch((error) => {
-      return response.badRequest({
-        message: 'An error occured while saving the oauth',
-        error,
+      .catch((error) => {
+        return response.badRequest({
+          message: 'An error occured while saving the oauth',
+          error,
+        })
       })
-    })
   }
 }
