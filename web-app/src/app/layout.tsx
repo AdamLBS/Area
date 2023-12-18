@@ -3,6 +3,7 @@ import 'styles/global.css';
 import React from 'react';
 import TanstackProvider from '@/providers/TanstackProvider';
 import StyledComponentsRegistry from '@/lib/registry';
+import { ThemeProvider } from '@/components/theme-provider';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -18,7 +19,16 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <TanstackProvider>
-          <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
+          <StyledComponentsRegistry>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="dark"
+              enableSystem
+              disableTransitionOnChange
+            >
+              {children}
+            </ThemeProvider>
+          </StyledComponentsRegistry>
         </TanstackProvider>
       </body>
     </html>

@@ -2,9 +2,9 @@ import styled from 'styled-components';
 import { H1, H3 } from '@/lib/ui/design-system';
 import { IconStratos } from '@/lib/ui/design-system/components/icons/IconStratos.svg';
 
-export const Container = styled.div`
+export const Container = styled.div<{ backgroundColor: string }>`
   flex: 1;
-  background-color: #18181b;
+  background-color: ${(props) => props.backgroundColor};
   padding: 32px;
   height: 100vh;
 `;

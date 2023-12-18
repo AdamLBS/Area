@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 import {
   Container,
   Description,
@@ -19,10 +19,25 @@ import {
   IconSpotify,
   IconTwitch,
 } from '@/lib/ui/design-system';
+import { useTheme } from 'next-themes';
 
 const ColumnLayoutComponent = () => {
+  const { theme } = useTheme();
+  const [backgroundColor, setBackgroundColor] = React.useState('');
+  const [color, setColor] = React.useState('');
+
+  useEffect(() => {
+    if (theme === 'dark') {
+      setBackgroundColor('#18181b');
+      setColor('#fff');
+    } else {
+      setBackgroundColor('#f3f4f6');
+      setColor('#000');
+    }
+  }, [theme]);
+
   return (
-    <Container>
+    <Container backgroundColor={backgroundColor}>
       <MainContainer>
         <ColumnContainer>
           <LogoContainer>
@@ -37,12 +52,12 @@ const ColumnLayoutComponent = () => {
         <DescriptionContainer>
           <Description>Some services available</Description>
           <ServicesContainer>
-            <IconGoogle />
-            <IconLinkedin />
-            <IconTwitch />
-            <IconGithub />
-            <IconDiscord />
-            <IconSpotify />
+            <IconGoogle color={color} />
+            <IconLinkedin color={color} />
+            <IconTwitch color={color} />
+            <IconGithub color={color} />
+            <IconDiscord color={color} />
+            <IconSpotify color={color} />
           </ServicesContainer>
         </DescriptionContainer>
       </MainContainer>
