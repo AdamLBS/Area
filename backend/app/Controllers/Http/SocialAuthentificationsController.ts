@@ -31,5 +31,17 @@ export default class SocialAuthentificationsController {
         oauthUserId: id,
       },
     })
+
+    // await Oauth.updateOrCreate(
+    //   {
+    //     userUuid: loggedUser.uuid,
+    //     provider: params.provider,
+    //   },
+    //   {
+    //     token: token.token,
+    //     refreshToken: token.refreshToken,
+    //     oauthUserId: id,
+    //   }
+    // )
   }
 }
