@@ -1,8 +1,9 @@
 import styled from 'styled-components';
 import { H2 } from '@/lib/ui/design-system';
 import { IconStratos } from '@/lib/ui/design-system/components/icons/IconStratos.svg';
+import { Button } from '@/components/ui';
 
-export const PageContainer = styled.div`
+export const NavBarContainer = styled.div`
   flex: 1;
   background-color: #09090b;
   display: flex;
@@ -21,28 +22,22 @@ export const TitleContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 20px;
-  flex: 1 0 0;
+  flex: 1;
 `;
 
 export const MenuContainer = styled.div`
   display: flex;
-  align-items: center;
-  gap: 20px;
-  flex: 1 0 0;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex: 1;
 `;
 
 export const Title = styled(H2)`
-  padding-top: 10px;
-  color: var(--text-text-foreground, #fafafa);
-  border-bottom: none;
+  color: #fafafa;
 `;
 
-export const MenuButton = styled.button`
+export const MenuButton = styled(Button)`
   background-color: #09090b;
-  border: none;
-  font-size: 14px;
-  padding: 10px;
-  border-radius: 5px;
   &:hover {
     background-color: #1b1b1d;
   }
@@ -54,20 +49,12 @@ export const DarkContainer = styled.div`
   flex-direction: column;
   justify-content: space-between;
   align-items: flex-end;
-  flex: 1 0 0;
+  flex: 1;
 `;
 
-export const DarkModeButton = styled.button`
-  display: flex;
-  height: 40px;
-  padding: 8px 16px;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-  flex-shrink: 0;
-  border-radius: var(--radius-rounded-md, 10px);
+export const DarkModeButton = styled(Button)`
+  background-color: #09090b;
   border: 1px solid var(--border-border-input, #27272a);
-  border-radius: 5px;
   &:hover {
     background-color: #1b1b1d;
   }

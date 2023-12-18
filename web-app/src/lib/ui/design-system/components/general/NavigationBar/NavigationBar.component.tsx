@@ -1,7 +1,7 @@
 import React, { memo, useCallback } from 'react';
 import {
   HeaderContainer,
-  PageContainer,
+  NavBarContainer,
   TitleContainer,
   Title,
   MenuContainer,
@@ -19,31 +19,31 @@ export type NavBarProps = {
 
 const NavigationBarComponent: React.FC<NavBarProps> = ({ pageName }) => {
   const router = useRouter();
-  const name = pageName;
 
-  const handleDashboard = useCallback(() => {
-    router.push('/dashboard');
-  }, [router]);
-
-  const handleSettings = useCallback(() => {
-    router.push('/settings');
-  }, [router]);
-
-  const handleDocumentation = useCallback(() => {
-    router.push('/documentation');
-  }, [router]);
+  const handleRedirection = useCallback(
+    (page: string) => {
+      router.push(`/${page}`);
+    },
+    [router],
+  );
 
   return (
-    <PageContainer>
+    <NavBarContainer>
       <HeaderContainer>
         <TitleContainer>
           <Stratos />
-          <Title>{name}</Title>
+          <Title>{pageName}</Title>
         </TitleContainer>
         <MenuContainer>
-          <MenuButton onClick={handleDashboard}>Dashboard</MenuButton>
-          <MenuButton onClick={handleSettings}>Settings</MenuButton>
-          <MenuButton onClick={handleDocumentation}>Documentation</MenuButton>
+          <MenuButton onClick={() => handleRedirection(`dashboard`)}>
+            Dashboard
+          </MenuButton>
+          <MenuButton onClick={() => handleRedirection(`settings`)}>
+            Settings
+          </MenuButton>
+          <MenuButton onClick={() => handleRedirection(`documentation`)}>
+            Documentation
+          </MenuButton>
         </MenuContainer>
         <DarkContainer>
           <DarkModeButton>
@@ -51,7 +51,7 @@ const NavigationBarComponent: React.FC<NavBarProps> = ({ pageName }) => {
           </DarkModeButton>
         </DarkContainer>
       </HeaderContainer>
-    </PageContainer>
+    </NavBarContainer>
   );
 };
 
