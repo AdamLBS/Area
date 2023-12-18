@@ -2,6 +2,7 @@ import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import User from 'App/Models/User'
 import AuthValidator from 'App/Validators/User/AuthValidator'
 import RegisterValidator from 'App/Validators/User/RegisterValidator'
+import UpdateValidator from 'App/Validators/User/UpdateValidator'
 
 export default class AuthController {
   public async register({ request, response, auth }: HttpContextContract) {
@@ -25,6 +26,36 @@ export default class AuthController {
     const user = await auth.authenticate()
 
     return response.ok({
+      user,
+    })
+  }
+
+  public async update({ auth, request, response }: HttpContextContract) {
+    const user = await auth.authenticate()
+    const payload = await request.validate(UpdateValidator)
+
+    if (payload.currentPassword) {
+      const isCurrentPasswordValid = await auth.attempt(user.email, payload.currentPassword)
+
+      if (!isCurrentPasswordValid) {
+        return response.badRequest({
+          message: 'Current password is invalid',
+        })
+      } else {
+        delete payload.currentPassword
+        if (payload.newPassword) {
+          user.password = payload.newPassword
+          delete payload.newPassword
+          delete payload.newPasswordConfirmation
+        }
+      }
+    }
+
+    user.merge(payload)
+    await user.save()
+
+    return response.ok({
+      message: 'User updated successfully',
       user,
     })
   }
