@@ -1,9 +1,14 @@
 'use client';
 import React, { memo } from 'react';
-import { NavBar } from '@/lib/ui/design-system';
+import { PageContainer } from './DashboardPage.style';
+import { PrimaryDefault } from '@/lib/ui/design-system';
 
 const Dashboard = () => {
-  return <NavBar pageName="Dashboard" />;
+  return (
+    <PageContainer>
+      <PrimaryDefault>Dashboard Page</PrimaryDefault>
+    </PageContainer>
+  );
 };
 
 export const DashboardPage = memo(Dashboard);
