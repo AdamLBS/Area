@@ -52,12 +52,12 @@ const ColumnLayoutComponent = () => {
         <DescriptionContainer>
           <Description>Some services available</Description>
           <ServicesContainer>
-            <IconGoogle color={color} />
-            <IconLinkedin color={color} />
-            <IconTwitch color={color} />
-            <IconGithub color={color} />
-            <IconDiscord color={color} />
-            <IconSpotify color={color} />
+            <IconGoogle color={color} size={43} />
+            <IconLinkedin color={color} size={43} />
+            <IconTwitch color={color} size={43} />
+            <IconGithub color={color} size={43} />
+            <IconDiscord color={color} size={43} />
+            <IconSpotify color={color} size={43} />
           </ServicesContainer>
         </DescriptionContainer>
       </MainContainer>
