@@ -3,15 +3,13 @@ import {
   HeaderContainer,
   NavBarContainer,
   TitleContainer,
-  Title,
   MenuContainer,
-  MenuButton,
   DarkContainer,
-  DarkModeButton,
   Stratos,
 } from './NavigationBar.style';
-import { IconMoon } from '@/lib/ui/design-system';
+import { H2, IconMoon } from '@/lib/ui/design-system';
 import { useRouter } from 'next/navigation';
+import { Button } from '@/components/ui';
 
 export type NavBarProps = {
   pageName: string;
@@ -32,23 +30,29 @@ const NavigationBarComponent: React.FC<NavBarProps> = ({ pageName }) => {
       <HeaderContainer>
         <TitleContainer>
           <Stratos />
-          <Title>{pageName}</Title>
+          <H2>{pageName}</H2>
         </TitleContainer>
         <MenuContainer>
-          <MenuButton onClick={() => handleRedirection(`dashboard`)}>
+          <Button
+            variant="ghost"
+            onClick={() => handleRedirection(`dashboard`)}
+          >
             Dashboard
-          </MenuButton>
-          <MenuButton onClick={() => handleRedirection(`settings`)}>
+          </Button>
+          <Button variant="ghost" onClick={() => handleRedirection(`settings`)}>
             Settings
-          </MenuButton>
-          <MenuButton onClick={() => handleRedirection(`documentation`)}>
+          </Button>
+          <Button
+            variant="ghost"
+            onClick={() => handleRedirection(`documentation`)}
+          >
             Documentation
-          </MenuButton>
+          </Button>
         </MenuContainer>
         <DarkContainer>
-          <DarkModeButton>
+          <Button variant="outline" size="icon">
             <IconMoon />
-          </DarkModeButton>
+          </Button>
         </DarkContainer>
       </HeaderContainer>
     </NavBarContainer>
