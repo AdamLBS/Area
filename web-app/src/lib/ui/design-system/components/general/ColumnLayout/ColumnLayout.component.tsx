@@ -23,18 +23,21 @@ import { useTheme } from 'next-themes';
 
 const ColumnLayoutComponent = () => {
   const { theme } = useTheme();
+  const [backgroundColor, setBackgroundColor] = React.useState('');
   const [color, setColor] = React.useState('');
 
   useEffect(() => {
     if (theme === 'dark') {
-      setColor('#18181b');
+      setBackgroundColor('#18181b');
+      setColor('#fff');
     } else {
-      setColor('#f3f4f6');
+      setBackgroundColor('#f3f4f6');
+      setColor('#000');
     }
   }, [theme]);
 
   return (
-    <Container backgroundColor={color}>
+    <Container backgroundColor={backgroundColor}>
       <MainContainer>
         <ColumnContainer>
           <LogoContainer>

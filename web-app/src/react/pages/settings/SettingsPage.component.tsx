@@ -1,5 +1,5 @@
 'use client';
-import React, { memo } from 'react';
+import React, { memo, useMemo } from 'react';
 import {
   PageContainer,
   Title,
@@ -23,98 +23,100 @@ enum Options {
   ADVANCED = 'advanced',
 }
 
+const TITLES = {
+  [Options.PROFILE]: 'Profile',
+  [Options.ACCOUNTS]: 'Accounts',
+  [Options.ADVANCED]: 'Settings',
+};
+
+const SUBTITLES = {
+  [Options.PROFILE]: 'Manage your account settings',
+  [Options.ACCOUNTS]: 'Manage your credentials for the services',
+  [Options.ADVANCED]: 'Manage your settings for the web application',
+};
+
+const BODY_TITLES = {
+  [Options.PROFILE]: 'Update credentials',
+  [Options.ACCOUNTS]: 'Connect social accounts',
+  [Options.ADVANCED]: 'Advanced settings',
+};
+
+const DESCRIPTIONS = {
+  [Options.PROFILE]: 'Manage your login credentials',
+  [Options.ACCOUNTS]: 'Manage all your social accounts',
+  [Options.ADVANCED]: 'Manage your advanced settings',
+};
+
 const Settings = () => {
-  const [option, setCurrentOption] = React.useState(Options.ACCOUNTS);
+  const [option, setCurrentOption] = React.useState(Options.PROFILE);
 
   const handleActive = (value: Options) => {
     setCurrentOption(value);
   };
 
-  const formRender = () => {
-    switch (option) {
-      case Options.PROFILE:
-        return <UpdateForm />;
-      case Options.ACCOUNTS:
-        return <SocialAccounts />;
-      case Options.ADVANCED:
-        return <AdvancedSettings />;
-      default:
-        return <UpdateForm />;
-    }
-  };
-
-  const getTitles = (option: Options) => {
-    const titles = {
-      profile: 'Profile',
-      accounts: 'Accounts',
-      advanced: 'Settings',
+  const { displayFormRender } = useMemo(() => {
+    const formRender = () => {
+      switch (option) {
+        case Options.PROFILE:
+          return <UpdateForm />;
+        case Options.ACCOUNTS:
+          return <SocialAccounts />;
+        case Options.ADVANCED:
+          return <AdvancedSettings />;
+        default:
+          return <UpdateForm />;
+      }
     };
-    return titles[option] || 'Update Credentials';
-  };
 
-  const getSubTitles = (option: Options) => {
-    const subTitles = {
-      profile: 'Manage your account settings',
-      accounts: 'Manage your credentials for the services',
-      advanced: 'Manage your settings for the web application',
+    return {
+      displayFormRender: formRender(),
     };
-    return subTitles[option] || 'Manage your login credentials';
-  };
+  }, [option]);
 
-  const getBodyTitle = (option: Options) => {
-    const titles = {
-      profile: 'Update credentials',
-      accounts: 'Connect social accounts',
-      advanced: 'Advanced settings',
-    };
-    return titles[option] || 'Update Credentials';
-  };
+  const { displayOptionsButtons } = useMemo(() => {
+    const optionButtons = [
+      {
+        option: Options.PROFILE,
+        label: 'Profile',
+      },
+      {
+        option: Options.ACCOUNTS,
+        label: 'Accounts',
+      },
+      {
+        option: Options.ADVANCED,
+        label: 'Advanced settings',
+      },
+    ];
 
-  const getDescription = (option: Options) => {
-    const descriptions: Record<Options, string> = {
-      profile: 'Manage your login credentials',
-      accounts: 'Manage all your social accounts',
-      advanced: 'Manage your advanced settings',
-    };
-    return descriptions[option] || 'Manage your login credentials';
-  };
+    const displayOptionsButtons = optionButtons.map((item) => (
+      <ButtonOption
+        key={item.option}
+        onClick={() => handleActive(item.option)}
+        active={option === item.option}
+        variant="ghost"
+      >
+        {item.label}
+      </ButtonOption>
+    ));
+
+    return { displayOptionsButtons };
+  }, [option]);
 
   return (
     <PageContainer>
-      <Title>{getTitles(option)}</Title>
-      <SubTitle>{getSubTitles(option)}</SubTitle>
+      <Title>{TITLES[option]}</Title>
+      <SubTitle>{SUBTITLES[option]}</SubTitle>
       <Separator />
       <SettingsContainer>
-        <SettingsOptions>
-          <ButtonOption
-            onClick={() => handleActive(Options.PROFILE)}
-            active={option === Options.PROFILE}
-            variant="ghost"
-          >
-            Profile
-          </ButtonOption>
-          <ButtonOption
-            onClick={() => handleActive(Options.ACCOUNTS)}
-            active={option === Options.ACCOUNTS}
-            variant="ghost"
-          >
-            Accounts
-          </ButtonOption>
-          <ButtonOption
-            onClick={() => handleActive(Options.ADVANCED)}
-            active={option === Options.ADVANCED}
-            variant="ghost"
-          >
-            Advanced settings
-          </ButtonOption>
-        </SettingsOptions>
+        <SettingsOptions>{displayOptionsButtons}</SettingsOptions>
         <SettingsContent>
           <SettingsContentHeader>
-            <H4>{getBodyTitle(option)}</H4>
-            <PrimaryMutted>{getDescription(option)}</PrimaryMutted>
+            <H4>{BODY_TITLES[option]}</H4>
+            <PrimaryMutted>{DESCRIPTIONS[option]}</PrimaryMutted>
           </SettingsContentHeader>
           <Separator />
-          <SettingsContentBody>{formRender()}</SettingsContentBody>
+          <SettingsContentBody>{displayFormRender}</SettingsContentBody>
         </SettingsContent>
       </SettingsContainer>
     </PageContainer>

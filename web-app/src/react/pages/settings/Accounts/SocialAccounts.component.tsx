@@ -1,5 +1,5 @@
 'use client';
-import React, { memo, useEffect } from 'react';
+import React, { memo, useEffect, useMemo } from 'react';
 import { MainContainer } from './SocialAccounts.style';
 import { SocialCard } from './SocialCard';
 import {
@@ -24,10 +24,10 @@ const Accounts = () => {
     }
   }, [theme]);
 
-  //TODO: Implement handleConnect and add argument to the function handleConnect = (provider: string) => {}
+  //TODO: Implement handleConnect and get the provider from the card handleConnect = (provider: string)...
   const handleConnect = () => {};
 
-  const displaySocialCards = () => {
+  const { displaySocialCards } = useMemo(() => {
     const socialCards = [
       {
         serviceName: 'Google',
@@ -67,7 +67,7 @@ const Accounts = () => {
       },
     ];
 
-    return socialCards.map((card, index) => (
+    const displaySocialCards = socialCards.map((card, index) => (
       <SocialCard
         key={index}
         serviceName={card.serviceName}
@@ -77,9 +77,11 @@ const Accounts = () => {
         handleConnect={handleConnect}
       />
     ));
-  };
 
-  return <MainContainer>{displaySocialCards()}</MainContainer>;
+    return { displaySocialCards };
+  }, [color]);
+
+  return <MainContainer>{displaySocialCards}</MainContainer>;
 };
 
 export const SocialAccounts = memo(Accounts);

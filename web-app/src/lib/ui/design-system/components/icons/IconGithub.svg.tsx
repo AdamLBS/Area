@@ -12,7 +12,7 @@ export const IconGithub = memo(({ ...props }: IconProps) => (
     {...props}
   >
     <path
-      stroke={props.color}
+      stroke="currentColor"
       strokeLinecap="round"
       strokeLinejoin="round"
       strokeWidth="4.778"

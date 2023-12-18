@@ -10,41 +10,37 @@ import {
 
 export const MainContainer = styled.div`
   width: fit-content;
-  gap: 1.25em;
+  gap: 20px;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
 `;
 
 export const IconDiscordStyled = styled(IconDiscord)`
-  width: 2em;
-  height: 2em;
+  width: 32px;
+  height: 32px;
 `;
 
 export const IconGithubStyled = styled(IconGithub)`
-  width: 2em;
-  height: 2em;
+  width: 32px;
+  height: 32px;
 `;
 
 export const IconGoogleStyled = styled(IconGoogle)`
-  width: 2em;
-  height: 2em;
+  width: 32px;
+  height: 32px;
 `;
 
 export const IconLinkedinStyled = styled(IconLinkedin)`
-  width: 2em;
-  height: 2em;
+  width: 32px;
+  height: 32px;
 `;
 
 export const IconSpotifyStyled = styled(IconSpotify)`
-  width: 2em;
-  height: 2em;
+  width: 32px;
+  height: 32px;
 `;
 
 export const IconTwitchStyled = styled(IconTwitch)`
-  width: 2em;
-  height: 2em;
-`;
-
-export const SocialCardContainer = styled.div`
-  max-width: 17.3125em;
+  width: 32px;
+  height: 32px;
 `;

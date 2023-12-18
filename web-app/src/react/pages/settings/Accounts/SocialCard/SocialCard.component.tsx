@@ -1,9 +1,9 @@
 'use client';
-import React, { memo } from 'react';
+import React, { memo, useCallback } from 'react';
 import { SocialCardContainer, TitleContainer } from './SocialCard.style';
 import { PrimaryMutted } from '@/lib/ui/design-system';
 
-type Props = {
+type CardsProps = {
   serviceName: string;
   connected: boolean;
   icon: React.ReactNode;
@@ -11,14 +11,19 @@ type Props = {
   handleConnect: (provider: string) => void;
 };
 
-const Cards = (props: Props) => {
-  const { serviceName, connected, icon, provider, handleConnect } = props;
+const Cards: React.FC<CardsProps> = ({
+  serviceName,
+  connected,
+  icon,
+  provider,
+  handleConnect,
+}) => {
+  const onCardClick = useCallback(() => {
+    handleConnect(provider);
+  }, [handleConnect, provider]);
 
   return (
-    <SocialCardContainer
-      variant="outline"
-      onClick={() => handleConnect(provider)}
-    >
+    <SocialCardContainer variant="outline" onClick={onCardClick}>
       <TitleContainer>
         {icon}
         {serviceName}

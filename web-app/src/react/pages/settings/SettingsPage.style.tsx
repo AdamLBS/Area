@@ -7,7 +7,7 @@ export const PageContainer = styled.div`
   flex-direction: column;
   width: 100%;
   height: 100%;
-  padding: 1.25em;
+  padding: 20px;
 `;
 
 export const Title = styled(H3)`
@@ -19,7 +19,7 @@ export const SubTitle = styled(PrimaryMediumMutted)`
 `;
 
 export const Separator = styled.hr`
-  margin: 1.5em 0 0;
+  margin: 24px 0 0;
   border: 0;
   border-top: 1px solid #27272a;
 `;
@@ -29,7 +29,7 @@ export const SettingsContainer = styled.div`
   flex-direction: row;
   width: 100%;
   height: 100%;
-  margin-top: 1.25em;
+  margin-top: 20px;
   gap: 3em;
 `;
 
@@ -39,7 +39,7 @@ export const SettingsOptions = styled.div`
   text-align: start;
   justify-content: flex-start;
   width: 14%;
-  gap: 0.25em;
+  gap: 4px;
 `;
 
 export const SettingsContent = styled.div`
@@ -64,5 +64,5 @@ export const SettingsContentHeader = styled.div`
 export const SettingsContentBody = styled.div`
   width: 100%;
   height: 100%;
-  margin-top: 1.25em;
+  margin-top: 20px;
 `;
