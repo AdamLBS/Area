@@ -66,8 +66,7 @@ export const updateCredentials = async (payload: {
     ).data as Token;
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      if (error.response?.status === 400)
-        throw new Error('Current password is incorrect.');
+      if (error.response?.status === 400) throw new Error(error.response?.data.message);
       throw new Error(error.response?.data.errors[0].message);
     }
   }
