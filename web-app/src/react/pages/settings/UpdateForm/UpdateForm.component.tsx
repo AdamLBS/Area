@@ -48,7 +48,6 @@ const UpdateFormComponent = () => {
         title: 'Success!',
         description: 'Your credentials have been updated.',
       });
-      form.setValue('username', undefined);
     },
     onError: (error) => {
       toast({

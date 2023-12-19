@@ -1,4 +1,4 @@
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 import { API_URL, Token } from '../constants';
 
 export const verifyEmail = async (payload: {
