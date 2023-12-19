@@ -72,7 +72,8 @@ const RegisterFormComponent: React.FC<RegisterFormProps> = ({
 
   const signUpMutation = useMutation({
     mutationFn: signUp,
-    onSuccess: () => {
+    onSuccess: (res) => {
+      localStorage.setItem('authToken', res.token);
       router.push('/dashboard');
     },
     onError: (error) => {

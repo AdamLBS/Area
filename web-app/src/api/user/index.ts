@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { API_URL } from '../constants';
+import { API_URL, Token } from '../constants';
 
 export const verifyEmail = async (payload: {
   email: string;
@@ -15,9 +15,9 @@ export const verifyEmail = async (payload: {
 export const logIn = async (payload: {
   email: string;
   password: string;
-}): Promise<void> => {
+}): Promise<Token> => {
   try {
-    return await axios.post(API_URL + '/auth/login', payload);
+    return (await axios.post(API_URL + '/auth/login', payload)).data as Token;
   } catch (error) {
     throw new Error('Error logging in');
   }
@@ -28,15 +28,15 @@ export const signUp = async (payload: {
   username: string;
   password: string;
   password_confirmation: string;
-}): Promise<void> => {
+}): Promise<Token> => {
   try {
-    return await axios.post(API_URL + '/auth/register', payload);
+    return (await axios.post(API_URL + '/auth/register', payload))
+      .data as Token;
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.response?.status === 422)
         throw new Error('Username already taken');
-    } else {
-      throw new Error('Error signing up');
     }
+    throw new Error('Error signing up');
   }
 };
