@@ -36,19 +36,15 @@ export default class SocialAuthentificationsController {
   }
   public async save({ auth, response, request }: HttpContextContract) {
     const loggedUser = await auth.authenticate()
-    if (!loggedUser) {
-      return 'You need to be logged in to do this'
-    }
 
     if (!loggedUser) {
       return response.unauthorized({ message: 'You must be logged in to access this resource' })
     }
-    console.log(request['requestBody'])
+    console.log(request['requestBody'], request.param('provider'))
     if (
       !request['requestBody'].token ||
       !request['requestBody'].refreshToken ||
-      !request['requestBody'].oauthUserId ||
-      !request['requestBody'].provider
+      !request['requestBody'].oauthUserId
     ) {
       return response.badRequest({ message: 'Missing parameters' })
     }
@@ -56,7 +52,7 @@ export default class SocialAuthentificationsController {
     await Oauth.updateOrCreate(
       {
         userUuid: loggedUser.uuid,
-        provider: request['requestBody'].provider,
+        provider: request.param('provider'),
       },
       {
         token: request['requestBody'].token,
