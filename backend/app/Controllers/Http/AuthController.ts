@@ -37,6 +37,11 @@ export default class AuthController {
 
     try {
       if (currentPassword) {
+        if (!newPassword) {
+          return response.badRequest({
+            message: 'New password is required',
+          })
+        }
         await auth.attempt(user.email, currentPassword)
       }
     } catch (error) {
