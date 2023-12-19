@@ -5,3 +5,8 @@ export const API_URL_OAUTH =
 export type Token = {
   token: string;
 };
+export interface Service {
+  provider: string;
+}
+
+export type Services = Service[];

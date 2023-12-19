@@ -9,6 +9,7 @@ import {
 import { BadgeCheck } from 'lucide-react';
 import { PrimaryMutted } from '@/lib/ui/design-system';
 import { signIn } from 'next-auth/react';
+import { useQueryClient } from '@tanstack/react-query';
 
 type CardsProps = {
   serviceName: string;
@@ -23,8 +24,11 @@ const Cards: React.FC<CardsProps> = ({
   icon,
   provider,
 }) => {
-  const onCardClick = useCallback(() => {
-    signIn(provider);
+  const queryClient = useQueryClient();
+
+  const onCardClick = useCallback(async () => {
+    await signIn(provider);
+    queryClient.invalidateQueries({ queryKey: ['services'] });
   }, [provider]);
 
   return (

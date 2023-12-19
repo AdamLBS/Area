@@ -11,10 +11,12 @@ import {
   IconTwitch,
 } from '@/lib/ui/design-system';
 import { useTheme } from 'next-themes';
+import { useServices } from '@/react/hooks/oauth';
 
 const Accounts = () => {
   const { theme } = useTheme();
   const [color, setColor] = React.useState('');
+  const { data: services } = useServices();
 
   useEffect(() => {
     if (theme === 'dark') {
@@ -24,60 +26,61 @@ const Accounts = () => {
     }
   }, [theme]);
 
-  const { displaySocialCards } = useMemo(() => {
-    const socialCards = [
+  const socialCards = useMemo(
+    () => [
       {
         serviceName: 'Google',
         provider: 'google',
-        connected: true,
+        connected: services?.some((service) => service.provider === 'google'),
         icon: <IconGoogle color={color} />,
       },
       {
         serviceName: 'Github',
         provider: 'github',
-        connected: false,
+        connected: services?.some((service) => service.provider === 'github'),
         icon: <IconGithub color={color} />,
       },
       {
         serviceName: 'Linkedin',
         provider: 'linkedin',
-        connected: false,
+        connected: services?.some((service) => service.provider === 'linkedin'),
         icon: <IconLinkedin color={color} />,
       },
       {
         serviceName: 'Spotify',
         provider: 'spotify',
-        connected: false,
+        connected: services?.some((service) => service.provider === 'spotify'),
         icon: <IconSpotify color={color} />,
       },
       {
         serviceName: 'Twitch',
         provider: 'twitch',
-        connected: false,
+        connected: services?.some((service) => service.provider === 'twitch'),
         icon: <IconTwitch color={color} />,
       },
       {
         serviceName: 'Discord',
         provider: 'discord',
-        connected: false,
+        connected: services?.some((service) => service.provider === 'discord'),
         icon: <IconDiscord color={color} />,
       },
-    ];
+    ],
+    [color, services],
+  );
 
-    const displaySocialCards = socialCards.map((card, index) => (
-      <SocialCard
-        key={index}
-        serviceName={card.serviceName}
-        connected={card.connected}
-        icon={card.icon}
-        provider={card.provider}
-      />
-    ));
-
-    return { displaySocialCards };
-  }, [color]);
-
-  return <MainContainer>{displaySocialCards}</MainContainer>;
+  return (
+    <MainContainer>
+      {socialCards.map((card, index) => (
+        <SocialCard
+          key={index}
+          serviceName={card.serviceName}
+          connected={card.connected || false}
+          icon={card.icon}
+          provider={card.provider}
+        />
+      ))}
+    </MainContainer>
+  );
 };
 
 export const SocialAccounts = memo(Accounts);

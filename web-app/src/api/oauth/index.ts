@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { API_URL_OAUTH } from '../constants';
+import { API_URL, API_URL_OAUTH, Services } from '../constants';
 
 export const saveOAuth = async (payload: {
   provider: string;
@@ -22,5 +22,19 @@ export const saveOAuth = async (payload: {
     );
   } catch (error) {
     throw new Error('Error saving OAuth token');
+  }
+};
+
+export const getServices = async (): Promise<Services> => {
+  try {
+    return (
+      await axios.get(`${API_URL}/user/me/services`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+        },
+      })
+    ).data as Services;
+  } catch (error) {
+    throw new Error('Error getting services');
   }
 };
