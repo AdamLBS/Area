@@ -49,6 +49,7 @@ const allyConfig: AllyConfig = {
     // identify scope is always required
     scopes: ['identify', 'email'],
   },
+  //TODO: add scope 'user:edit'
   twitch: {
     driver: 'twitch',
     clientId: Env.get('TWITCH_CLIENT_ID'),
