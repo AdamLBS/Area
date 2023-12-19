@@ -53,6 +53,7 @@ Route.group(() => {
   Route.group(() => {
     Route.get('/me', 'AuthController.me')
     Route.post('/me/update', 'AuthController.update')
+    Route.get('/me/services', 'AuthController.getServices')
   })
     .prefix('/user')
     .middleware(['auth:api'])

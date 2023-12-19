@@ -1,4 +1,5 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import Oauth from 'App/Models/Oauth'
 import User from 'App/Models/User'
 import AuthValidator from 'App/Validators/User/AuthValidator'
 import RegisterValidator from 'App/Validators/User/RegisterValidator'
@@ -96,5 +97,16 @@ export default class AuthController {
       return response.ok(true)
     }
     return response.ok(false)
+  }
+
+  public async getServices({ auth, response }: HttpContextContract) {
+    const user = await auth.authenticate()
+
+    if (!user) {
+      return response.unauthorized({
+        message: 'You must be logged in to access this resource',
+      })
+    }
+    return Oauth.query().where('userUuid', user.uuid).select('provider')
   }
 }
