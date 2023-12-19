@@ -1,5 +1,6 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Oauth from 'App/Models/Oauth'
+import OAuthValidator from 'App/Validators/OAuthValidator'
 
 export default class SocialAuthentificationsController {
   public async redirect({ ally, params }: HttpContextContract) {
@@ -40,25 +41,15 @@ export default class SocialAuthentificationsController {
     if (!loggedUser) {
       return response.unauthorized({ message: 'You must be logged in to access this resource' })
     }
-    console.log(request['requestBody'], request.param('provider'))
-    if (
-      !request['requestBody'].token ||
-      !request['requestBody'].refreshToken ||
-      !request['requestBody'].oauthUserId
-    ) {
-      return response.badRequest({ message: 'Missing parameters' })
-    }
+
+    const payload = await request.validate(OAuthValidator)
 
     await Oauth.updateOrCreate(
       {
         userUuid: loggedUser.uuid,
         provider: request.param('provider'),
       },
-      {
-        token: request['requestBody'].token,
-        refreshToken: request['requestBody'].refreshToken,
-        oauthUserId: request['requestBody'].oauthUserId,
-      }
+      payload
     )
       .then((oauth) => {
         return response.ok({
