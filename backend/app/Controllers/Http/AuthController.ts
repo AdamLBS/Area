@@ -31,9 +31,7 @@ export default class AuthController {
   public async update({ auth, request, response }: HttpContextContract) {
     const user = await auth.authenticate()
 
-    const { currentPassword, newPassword, ...payload } = await request.validate(
-      UpdateValidator
-    )
+    const { currentPassword, newPassword, ...payload } = await request.validate(UpdateValidator)
 
     try {
       if (currentPassword) {
@@ -50,12 +48,10 @@ export default class AuthController {
       })
     }
 
-    user.merge(
-      {
-        'password': newPassword,
-        ...payload,
-      }
-    )
+    user.merge({
+      password: newPassword,
+      ...payload,
+    })
     await user.save()
 
     return response.ok({
