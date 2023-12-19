@@ -23,6 +23,7 @@ const allyConfig: AllyConfig = {
     clientId: Env.get('GOOGLE_CLIENT_ID'),
     clientSecret: Env.get('GOOGLE_CLIENT_SECRET'),
     callbackUrl: Env.get('URL') + '/oauth/google/callback',
+    accessType: 'offline',
   },
   spotify: {
     driver: 'spotify',
