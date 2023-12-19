@@ -1,3 +1,1 @@
-class OAuthModel {
-  
-}
+class OAuthModel {}
