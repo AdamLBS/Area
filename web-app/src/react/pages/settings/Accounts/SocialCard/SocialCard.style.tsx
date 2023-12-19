@@ -6,11 +6,12 @@ export const SocialCardContainer = styled(Button)`
   display: flex;
   flex-direction: column;
   min-width: 277px;
-  min-height: 106px;
   width: 100%;
   height: 100%;
   gap: 6px;
+  padding: 24px;
   align-items: flex-start;
+  border-radius: 12px;
 `;
 
 export const TitleContainer = styled.div`
@@ -23,7 +24,7 @@ export const TitleContainer = styled.div`
 export const ConnectContainer = styled.div`
   display: flex;
   flex-direction: row;
-  gap: 10px;
+  gap: 2px;
   align-items: center;
 `;
 
