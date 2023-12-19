@@ -1,7 +1,12 @@
 import 'package:area/constants.dart';
-import 'package:area/widgets/web_view_oauth.dart';
+import 'package:area/oauth/discord.dart';
+import 'package:area/oauth/google.dart';
+import 'package:area/oauth/spotify.dart';
+import 'package:area/oauth/twitch.dart';
+import 'package:area/utils/handle_oauth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:oauth2_client/github_oauth2_client.dart';
 
 import '../widgets/bottom_bar.dart';
 
@@ -49,14 +54,61 @@ class _HomePageState extends State<HomePage> {
                     ],
                   ),
                   ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => OAuthWebViewWidget(
-                                    url: "$backendUrl/oauth/google/redirect")));
+                      onPressed: () async {
+                        List<String> scopes = [
+                          'https://www.googleapis.com/auth/userinfo.email',
+                          'https://www.googleapis.com/auth/userinfo.profile'
+                        ];
+                        MyGoogleOAuth2Client client = MyGoogleOAuth2Client();
+                        await handleOAuthFlow(
+                            client, "google", scopes, googleClientId, null);
                       },
-                      child: Text("Se connecter à Google"))
+                      child: Text("Se connecter à Google")),
+                  ElevatedButton(
+                      onPressed: () async {
+                        List<String> scopes = [
+                          'user-read-email',
+                          'user-top-read',
+                          'user-follow-read'
+                        ];
+                        MySpotifyOAuth2Client client = MySpotifyOAuth2Client();
+                        await handleOAuthFlow(
+                            client, "spotify", scopes, spotifyClientId, null);
+                      },
+                      child: Text("Se connecter à Spotify")),
+                  ElevatedButton(
+                      onPressed: () async {
+                        GitHubOAuth2Client client = GitHubOAuth2Client(
+                            redirectUri: "my.test.app://oauth2redirect",
+                            customUriScheme: "my.test.app");
+                        List<String> scopes = ['user:email'];
+                        await handleOAuthFlow(client, "github", scopes,
+                            githubClientId, githubClientSecret);
+                      },
+                      child: Text("Se connecter à Github")),
+                  ElevatedButton(
+                      onPressed: () async {
+                        MyTwitchOAuth2Client client = MyTwitchOAuth2Client();
+                        List<String> scopes = [
+                          'user:read:email',
+                          'user:read:follows',
+                          'channel:read:subscriptions'
+                        ];
+                        // await handleOAuthFlow(client, "github", scopes,
+                        //     githubClientId, githubClientSecret);
+                      },
+                      child: Text("Se connecter à Twitch")),
+                  ElevatedButton(
+                      onPressed: () async {
+                        MyDiscordOAuth2Client client = MyDiscordOAuth2Client();
+                        List<String> scopes = [
+                          'identify',
+                          'email',
+                        ];
+                        await handleOAuthFlow(client, "discord", scopes,
+                            discordClientId, discordClientSecret);
+                      },
+                      child: Text("Se connecter à Discord")),
                 ],
               )),
         ));
