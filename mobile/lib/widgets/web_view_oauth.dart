@@ -48,6 +48,20 @@ class _OAuthWebViewWidgetState extends State<OAuthWebViewWidget> {
                   var result = await controller.evaluateJavascript(
                       source:
                           "new XMLSerializer().serializeToString(document);");
+                  var htmlData = result.split(">");
+                  RegExp regExp = RegExp(r'\{.*\}');
+
+                  for (String htmlString in htmlData) {
+                    Iterable<Match> matches = regExp.allMatches(htmlString);
+
+                    if (matches.isNotEmpty) {
+                      String? messageData = matches.first.group(0);
+                      print(messageData);
+                    } else {
+                      print('Message data not found in: $htmlString');
+                    }
+                  }
+
                   if (result.contains("successfully")) {
                     if (context.mounted) {
                       Navigator.pop(
