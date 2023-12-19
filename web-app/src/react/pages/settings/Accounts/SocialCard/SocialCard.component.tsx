@@ -2,13 +2,13 @@
 import React, { memo, useCallback } from 'react';
 import { SocialCardContainer, TitleContainer } from './SocialCard.style';
 import { PrimaryMutted } from '@/lib/ui/design-system';
+import { signIn } from 'next-auth/react';
 
 type CardsProps = {
   serviceName: string;
   connected: boolean;
   icon: React.ReactNode;
   provider: string;
-  handleConnect: (provider: string) => void;
 };
 
 const Cards: React.FC<CardsProps> = ({
@@ -16,11 +16,10 @@ const Cards: React.FC<CardsProps> = ({
   connected,
   icon,
   provider,
-  handleConnect,
 }) => {
   const onCardClick = useCallback(() => {
-    handleConnect(provider);
-  }, [handleConnect, provider]);
+    signIn(provider);
+  }, [provider]);
 
   return (
     <SocialCardContainer variant="outline" onClick={onCardClick}>

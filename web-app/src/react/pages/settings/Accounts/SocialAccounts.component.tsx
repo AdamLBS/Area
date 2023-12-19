@@ -24,9 +24,6 @@ const Accounts = () => {
     }
   }, [theme]);
 
-  //TODO: Implement handleConnect and get the provider from the card handleConnect = (provider: string)...
-  const handleConnect = () => {};
-
   const { displaySocialCards } = useMemo(() => {
     const socialCards = [
       {
@@ -74,7 +71,6 @@ const Accounts = () => {
         connected={card.connected}
         icon={card.icon}
         provider={card.provider}
-        handleConnect={handleConnect}
       />
     ));
 
