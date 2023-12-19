@@ -66,9 +66,9 @@ export const updateCredentials = async (payload: {
     ).data as Token;
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      if (error.response?.status === 422)
-        throw new Error('Username already taken.');
-      throw new Error(error.response?.data.message);
+      if (error.response?.status === 400)
+        throw new Error('Current password is incorrect.');
+      throw new Error(error.response?.data.errors[0].message);
     }
   }
   return {} as Token;
