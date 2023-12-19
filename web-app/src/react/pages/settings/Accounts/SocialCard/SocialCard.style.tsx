@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { Button } from '@/components/ui/button';
+import { PrimaryMutted } from '@/lib/ui/design-system';
 
 export const SocialCardContainer = styled(Button)`
   display: flex;
@@ -17,4 +18,15 @@ export const TitleContainer = styled.div`
   flex-direction: row;
   gap: 10px;
   align-items: center;
+`;
+
+export const ConnectContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+`;
+
+export const Connected = styled(PrimaryMutted)`
+  color: #6d28d9;
 `;

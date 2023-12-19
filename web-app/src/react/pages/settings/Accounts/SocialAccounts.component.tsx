@@ -32,7 +32,7 @@ const Accounts = () => {
       {
         serviceName: 'Google',
         provider: 'google',
-        connected: false,
+        connected: true,
         icon: <IconGoogle color={color} />,
       },
       {
