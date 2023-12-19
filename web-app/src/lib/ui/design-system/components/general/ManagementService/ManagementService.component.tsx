@@ -12,7 +12,6 @@ import { ChevronRight, LucideIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { PrimaryMutted } from '@/lib/ui/design-system/components/general/Text';
 
-
 export type ManagementServiceProps = {
   title: string;
   Icon: LucideIcon;
