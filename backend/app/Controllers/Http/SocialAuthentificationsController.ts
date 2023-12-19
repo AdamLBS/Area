@@ -1,4 +1,6 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import Oauth from 'App/Models/Oauth'
+import OAuthValidator from 'App/Validators/OAuthValidator'
 
 export default class SocialAuthentificationsController {
   public async redirect({ ally, params }: HttpContextContract) {
@@ -29,19 +31,37 @@ export default class SocialAuthentificationsController {
         token: token.token,
         refreshToken: token.refreshToken,
         oauthUserId: id,
+        provider: params.provider,
       },
     })
+  }
+  public async save({ auth, response, request }: HttpContextContract) {
+    const loggedUser = await auth.authenticate()
 
-    // await Oauth.updateOrCreate(
-    //   {
-    //     userUuid: loggedUser.uuid,
-    //     provider: params.provider,
-    //   },
-    //   {
-    //     token: token.token,
-    //     refreshToken: token.refreshToken,
-    //     oauthUserId: id,
-    //   }
-    // )
+    if (!loggedUser) {
+      return response.unauthorized({ message: 'You must be logged in to access this resource' })
+    }
+
+    const payload = await request.validate(OAuthValidator)
+
+    await Oauth.updateOrCreate(
+      {
+        userUuid: loggedUser.uuid,
+        provider: request.param('provider'),
+      },
+      payload
+    )
+      .then((oauth) => {
+        return response.ok({
+          message: 'Oauth saved successfully',
+          oauth,
+        })
+      })
+      .catch((error) => {
+        return response.badRequest({
+          message: 'An error occured while saving the oauth',
+          error,
+        })
+      })
   }
 }
