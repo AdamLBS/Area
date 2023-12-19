@@ -47,7 +47,7 @@ export const updateCredentials = async (payload: {
   password?: string;
   password_confirmation?: string;
   current_password?: string;
-}): Promise<Token> => {
+}): Promise<void> => {
   try {
     const filteredPayload: { [key: string]: string } = {};
 
@@ -57,18 +57,16 @@ export const updateCredentials = async (payload: {
       }
       filteredPayload[key] = value;
     }
-    return (
-      await axios.post(API_URL + '/user/me/update', payload, {
-        headers: {
-          Authorization: 'Bearer ' + localStorage.getItem('authToken'),
-        },
-      })
-    ).data as Token;
+    return await axios.post(API_URL + '/user/me/update', payload, {
+      headers: {
+        Authorization: 'Bearer ' + localStorage.getItem('authToken'),
+      },
+    });
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      if (error.response?.status === 400) throw new Error(error.response?.data.message);
+      if (error.response?.status === 400)
+        throw new Error(error.response?.data.message);
       throw new Error(error.response?.data.errors[0].message);
     }
   }
-  return {} as Token;
 };
