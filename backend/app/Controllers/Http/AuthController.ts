@@ -31,54 +31,32 @@ export default class AuthController {
   public async update({ auth, request, response }: HttpContextContract) {
     const user = await auth.authenticate()
 
+    const { currentPassword, newPassword, ...payload } = await request.validate(
+      UpdateValidator
+    )
+
     try {
-      const payload = await request.validate(UpdateValidator)
-
-      try {
-        if (payload.currentPassword) {
-          await auth.attempt(user.email, payload.currentPassword)
-
-          if (payload.newPassword) {
-            user.password = payload.newPassword
-            delete payload.newPassword
-          }
-
-          delete payload.currentPassword
-        }
-      } catch (error) {
-        return response.badRequest({
-          message: 'Current password is invalid.',
-        })
+      if (currentPassword) {
+        await auth.attempt(user.email, currentPassword)
       }
-
-      user.merge(payload)
-      await user.save()
-
-      return response.ok({
-        message: 'User updated successfully',
-        user,
-      })
     } catch (error) {
-      if (error.messages.errors[0]) {
-        const field = error.messages.errors[0].field
-
-        switch (field) {
-          case 'username':
-            return response.badRequest({
-              message: 'Username already taken!',
-            })
-          case 'email':
-            return response.badRequest({
-              message: 'Email already taken!',
-            })
-          default:
-            break
-        }
-      }
       return response.badRequest({
-        message: 'Invalid update request.',
+        message: 'Current password is incorrect',
       })
     }
+
+    user.merge(
+      {
+        'password': newPassword,
+        ...payload,
+      }
+    )
+    await user.save()
+
+    return response.ok({
+      message: 'User updated successfully',
+      user,
+    })
   }
 
   public async login({ auth, request, response }: HttpContextContract) {

@@ -46,5 +46,11 @@ export default class UpdateValidator {
    * }
    *
    */
-  public messages: CustomMessages = {}
+  public messages: CustomMessages = {
+    'email.unique': 'Email is already taken.',
+    'username.unique': 'Username is already taken.',
+    'newPassword.minLength': 'New password must be at least 8 characters long.',
+    'currentPassword.minLength': 'Current password must be at least 8 characters long.',
+    'currentPassword.confirmed': 'Current password confirmation does not match.',
+  }
 }
