@@ -24,13 +24,12 @@ export default class SocialAuthentificationsController {
 
     const user = await service.user()
 
-    const { token, id } = user
+    const { token } = user
 
     return response.ok({
       message: {
         token: token.token,
         refreshToken: token.refreshToken,
-        oauthUserId: id,
         provider: params.provider,
       },
     })

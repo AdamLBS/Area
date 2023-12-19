@@ -8,7 +8,6 @@ Future<void> uploadOAuth(OAuthModel model) async {
   var request = await http.post(url, body: {
     "token": model.token,
     "refreshToken": model.refreshToken,
-    "oauthUserId": "eee",
   }, headers: {
     "Authorization": "Bearer ${globals.token}"
   });

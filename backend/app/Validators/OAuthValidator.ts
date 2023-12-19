@@ -26,7 +26,6 @@ export default class OAuthValidator {
   public schema = schema.create({
     token: schema.string({ trim: true }),
     refreshToken: schema.string({ trim: true }),
-    oauthUserId: schema.string({ trim: true }),
   })
 
   /**
