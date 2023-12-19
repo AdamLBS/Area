@@ -7,10 +7,9 @@ import {
   Redirection,
   TitleContainer,
 } from './ManagementService.style';
-import { H3 } from '../Text';
 import { ChevronRight, LucideIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { PrimaryMutted } from '@/lib/ui/design-system/components/general/Text';
+import { PrimaryMutted, H3 } from '@/lib/ui/design-system';
 
 export type ManagementServiceProps = {
   title: string;
