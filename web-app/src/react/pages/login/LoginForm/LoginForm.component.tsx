@@ -36,7 +36,8 @@ const LoginFormComponent = () => {
   });
   const logInMutation = useMutation({
     mutationFn: logIn,
-    onSuccess: () => {
+    onSuccess: (res) => {
+      localStorage.setItem('authToken', res.token);
       router.push('/dashboard');
     },
     onError: () => {
