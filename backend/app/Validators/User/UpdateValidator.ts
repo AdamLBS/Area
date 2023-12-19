@@ -51,6 +51,5 @@ export default class UpdateValidator {
     'username.unique': 'Username is already taken.',
     'newPassword.minLength': 'New password must be at least 8 characters long.',
     'currentPassword.minLength': 'Current password must be at least 8 characters long.',
-    'currentPassword.confirmed': 'Current password confirmation does not match.',
   }
 }
