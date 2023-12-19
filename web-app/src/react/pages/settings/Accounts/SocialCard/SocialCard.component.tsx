@@ -1,6 +1,12 @@
 'use client';
 import React, { memo, useCallback } from 'react';
-import { SocialCardContainer, TitleContainer } from './SocialCard.style';
+import {
+  SocialCardContainer,
+  TitleContainer,
+  ConnectContainer,
+  Connected,
+} from './SocialCard.style';
+import { BadgeCheck } from 'lucide-react';
 import { PrimaryMutted } from '@/lib/ui/design-system';
 import { signIn } from 'next-auth/react';
 
@@ -27,7 +33,14 @@ const Cards: React.FC<CardsProps> = ({
         {icon}
         {serviceName}
       </TitleContainer>
-      <PrimaryMutted>{connected ? 'Connected' : 'Not linked'}</PrimaryMutted>
+      {connected ? (
+        <ConnectContainer>
+          <BadgeCheck size={16} color="#6D28D9" />
+          <Connected>Connected </Connected>
+        </ConnectContainer>
+      ) : (
+        <PrimaryMutted>Not linked</PrimaryMutted>
+      )}
     </SocialCardContainer>
   );
 };
