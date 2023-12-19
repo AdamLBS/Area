@@ -1,5 +1,5 @@
 'use client';
-import React, { memo, useMemo } from 'react';
+import React, { memo, useEffect, useMemo } from 'react';
 import {
   PageContainer,
   Title,
@@ -16,6 +16,9 @@ import { H4, PrimaryMutted } from '@/lib/ui/design-system';
 import { UpdateForm } from './UpdateForm';
 import { SocialAccounts } from './Accounts';
 import { AdvancedSettings } from './Advanced';
+import { useSearchParams } from 'next/navigation';
+import { useMutation } from '@tanstack/react-query';
+import { saveOAuth } from '@/api/oauth';
 
 enum Options {
   PROFILE = 'profile',
@@ -48,7 +51,30 @@ const DESCRIPTIONS = {
 };
 
 const Settings = () => {
-  const [option, setCurrentOption] = React.useState(Options.PROFILE);
+  const searchParams = useSearchParams();
+  const [option, setCurrentOption] = React.useState(
+    (searchParams.get('option') as Options) || Options.PROFILE,
+  );
+  const mutation = useMutation({
+    mutationFn: saveOAuth,
+  });
+
+  const token = searchParams.get('token');
+  useEffect(() => {
+    if (token) {
+      const authToken = localStorage.getItem('authToken');
+      const provider = searchParams.get('provider');
+      const refreshToken = searchParams.get('refreshToken');
+      if (authToken && provider && refreshToken) {
+        mutation.mutate({
+          authToken,
+          provider,
+          token,
+          refreshToken,
+        });
+      }
+    }
+  }, [token]);
 
   const handleActive = (value: Options) => {
     setCurrentOption(value);
