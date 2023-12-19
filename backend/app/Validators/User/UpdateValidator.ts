@@ -24,15 +24,15 @@ export default class UpdateValidator {
    *    ```
    */
   public schema = schema.create({
-    username: schema.string.optional({ trim: true }),
-    email: schema.string.optional({ trim: true }, [rules.email()]),
-    newPassword: schema.string.optional({ trim: true }, [
-      rules.confirmed('newPasswordConfirmation'),
+    username: schema.string.optional({ trim: true }, [
+      rules.unique({ table: 'users', column: 'username' }),
     ]),
-    newPasswordConfirmation: schema.string.optional({ trim: true }, [
-      rules.confirmed('newPassword'),
+    email: schema.string.optional({ trim: true }, [
+      rules.email(),
+      rules.unique({ table: 'users', column: 'email' }),
     ]),
-    currentPassword: schema.string.optional({ trim: true }),
+    newPassword: schema.string.optional({ trim: true }, [rules.minLength(8)]),
+    currentPassword: schema.string.optional({ trim: true }, [rules.minLength(8)]),
   })
 
   /**
@@ -46,5 +46,10 @@ export default class UpdateValidator {
    * }
    *
    */
-  public messages: CustomMessages = {}
+  public messages: CustomMessages = {
+    'email.unique': 'Email is already taken.',
+    'username.unique': 'Username is already taken.',
+    'newPassword.minLength': 'New password must be at least 8 characters long.',
+    'currentPassword.minLength': 'Current password must be at least 8 characters long.',
+  }
 }

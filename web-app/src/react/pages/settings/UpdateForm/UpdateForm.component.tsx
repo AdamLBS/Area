@@ -15,16 +15,16 @@ import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { useMutation } from '@tanstack/react-query';
-import { logIn } from '@/api/user';
+import { updateCredentials } from '@/api/user';
 import { useToast } from '@/components/ui/use-toast';
 import { Toaster } from '@/components/ui/toaster';
 
 const formSchema = z.object({
-  username: z.string(),
-  email: z.string(),
-  password: z.string(),
-  newPassword: z.string(),
-  confirmPassword: z.string(),
+  username: z.string().min(3).optional(),
+  email: z.string().email().optional(),
+  currentPassword: z.string().min(8).optional(),
+  newPassword: z.string().min(8).optional(),
+  confirmNewPassword: z.string().min(8).optional(),
 });
 
 const UpdateFormComponent = () => {
@@ -32,44 +32,56 @@ const UpdateFormComponent = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: '',
-      email: '',
-      password: '',
-      newPassword: '',
-      confirmPassword: '',
+      username: undefined,
+      email: undefined,
+      currentPassword: undefined,
+      newPassword: undefined,
+      confirmNewPassword: undefined,
     },
   });
+
   const updateMutation = useMutation({
-    mutationFn: logIn, //change this function
+    mutationFn: updateCredentials,
     onSuccess: () => {
-      // router.push('/dashboard');
+      toast({
+        variant: 'default',
+        title: 'Success!',
+        description: 'Your credentials have been updated.',
+      });
     },
-    onError: () => {
+    onError: (error) => {
       toast({
         variant: 'destructive',
         title: 'Uh oh! Something went wrong.',
-        description: 'Please retry.',
+        description: error.message,
       });
     },
   });
 
   type FormValues = z.infer<typeof formSchema>;
 
-  const checkPassword = useCallback((values: FormValues) => {
-    if (
-      values.newPassword.length > 0 &&
-      values.newPassword !== values.confirmPassword
-    ) {
-      toast({
-        variant: 'destructive',
-        title: 'Uh oh! Something went wrong.',
-        description: 'Password mismatch.',
-      });
-    } else {
-      updateMutation.mutate(values);
-    }
-    return {};
-  }, []);
+  const checkPassword = useCallback(
+    (values: FormValues) => {
+      const { currentPassword, newPassword, confirmNewPassword } = values;
+
+      if (
+        (currentPassword && !newPassword && !confirmNewPassword) ||
+        ((newPassword || confirmNewPassword) &&
+          (!currentPassword || newPassword !== confirmNewPassword))
+      ) {
+        toast({
+          variant: 'destructive',
+          title: 'Uh oh! Something went wrong.',
+          description: 'Password mismatch or missing current password.',
+        });
+      } else {
+        updateMutation.mutate(values);
+      }
+
+      return {};
+    },
+    [updateMutation],
+  );
 
   const onSubmit = useCallback((values: FormValues) => {
     checkPassword(values);
@@ -106,7 +118,7 @@ const UpdateFormComponent = () => {
         />
         <FormField
           control={form.control}
-          name="password"
+          name="currentPassword"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Current password</FormLabel>
@@ -136,12 +148,16 @@ const UpdateFormComponent = () => {
         />
         <FormField
           control={form.control}
-          name="confirmPassword"
+          name="confirmNewPassword"
           render={({ field }) => (
             <FormItem>
               <FormLabel>New password confirmation</FormLabel>
               <FormControl>
-                <Input placeholder="confirm your new password" {...field} />
+                <Input
+                  type="password"
+                  placeholder="confirm your new password"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

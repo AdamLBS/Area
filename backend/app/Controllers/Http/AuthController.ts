@@ -31,26 +31,28 @@ export default class AuthController {
 
   public async update({ auth, request, response }: HttpContextContract) {
     const user = await auth.authenticate()
-    const payload = await request.validate(UpdateValidator)
 
-    if (payload.currentPassword) {
-      const isCurrentPasswordValid = await auth.attempt(user.email, payload.currentPassword)
+    const { currentPassword, newPassword, ...payload } = await request.validate(UpdateValidator)
 
-      if (!isCurrentPasswordValid) {
-        return response.badRequest({
-          message: 'Current password is invalid',
-        })
-      } else {
-        delete payload.currentPassword
-        if (payload.newPassword) {
-          user.password = payload.newPassword
-          delete payload.newPassword
-          delete payload.newPasswordConfirmation
+    try {
+      if (currentPassword) {
+        if (!newPassword) {
+          return response.badRequest({
+            message: 'New password is required',
+          })
         }
+        await auth.attempt(user.email, currentPassword)
       }
+    } catch (error) {
+      return response.badRequest({
+        message: 'Current password is incorrect',
+      })
     }
 
-    user.merge(payload)
+    user.merge({
+      password: newPassword,
+      ...payload,
+    })
     await user.save()
 
     return response.ok({
