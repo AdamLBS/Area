@@ -36,7 +36,7 @@ export default class TwitchSeed extends BaseTask {
     return false
   }
 
-  private async fetchTwitchData(oauth: any): Promise<TwitchData[]> {
+  private async fetchTwitchData(oauth: any, user_id: string): Promise<TwitchData[]> {
     const response = await axios.get<TwitchResponse>(
       `https://api.twitch.tv/helix/streams/followed`,
       {
@@ -45,7 +45,7 @@ export default class TwitchSeed extends BaseTask {
           'Authorization': `Bearer ${oauth.token}`,
         },
         params: {
-          user_id: oauth.oauth_user_id,
+          user_id: user_id,
         },
       }
     )
@@ -75,7 +75,7 @@ export default class TwitchSeed extends BaseTask {
     console.log(`[Twitch] ${userName} is already in live`)
   }
   //TODO: Check if it works
-  private async refreshTwitchToken(oauth: any) {
+  private async refreshTwitchToken(oauth: any, user_id: string) {
     try {
       const params = {
         grant_type: 'refresh_token',
