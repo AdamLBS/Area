@@ -37,7 +37,7 @@ const Cards: React.FC<CardsProps> = ({
       {connected ? (
         <ConnectContainer>
           <BadgeCheck size={16} color="#6D28D9" />
-          <Connected>Connected</Connected>
+          <Connected>Connected </Connected>
         </ConnectContainer>
       ) : (
         <PrimaryMutted>Not linked</PrimaryMutted>
