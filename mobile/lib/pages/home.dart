@@ -2,7 +2,6 @@ import 'package:area/constants.dart';
 import 'package:area/oauth/discord.dart';
 import 'package:area/oauth/google.dart';
 import 'package:area/oauth/spotify.dart';
-import 'package:area/oauth/twitch.dart';
 import 'package:area/utils/handle_oauth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -88,12 +87,12 @@ class _HomePageState extends State<HomePage> {
                       child: Text("Se connecter à Github")),
                   ElevatedButton(
                       onPressed: () async {
-                        MyTwitchOAuth2Client client = MyTwitchOAuth2Client();
-                        List<String> scopes = [
-                          'user:read:email',
-                          'user:read:follows',
-                          'channel:read:subscriptions'
-                        ];
+                        // MyTwitchOAuth2Client client = MyTwitchOAuth2Client();
+                        // List<String> scopes = [
+                        //   'user:read:email',
+                        //   'user:read:follows',
+                        //   'channel:read:subscriptions'
+                        // ];
                         // await handleOAuthFlow(client, "github", scopes,
                         //     githubClientId, githubClientSecret);
                       },

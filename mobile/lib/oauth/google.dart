@@ -1,4 +1,3 @@
-import 'package:oauth2_client/github_oauth2_client.dart';
 import 'package:oauth2_client/oauth2_client.dart';
 
 class MyGoogleOAuth2Client extends OAuth2Client {
