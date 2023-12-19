@@ -9,6 +9,7 @@ export const CardContainer = styled(Card)`
   padding: 24px;
   &:hover {
     background-color: #27272a;
+    cursor: pointer;
   }
 `;
 
@@ -56,13 +57,4 @@ export const Content = styled(CardContent)`
   flex-direction: column;
   padding: 0px;
   padding-top: 6px;
-  align-self: stretch;
-`;
-
-export const Description = styled.text`
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 20px;
-  color: #a1a1aa;
 `;

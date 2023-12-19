@@ -1,1 +1,1 @@
-export { ManagementService } from './ManagementService.component';
+export { ServiceCard } from './ManagementService.component';
