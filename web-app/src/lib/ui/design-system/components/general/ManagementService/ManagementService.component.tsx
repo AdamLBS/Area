@@ -1,4 +1,4 @@
-import React, { memo, useCallback } from 'react';
+import React, { ReactNode, memo, useCallback } from 'react';
 import {
   CardContainer,
   Content,
@@ -13,13 +13,13 @@ import { PrimaryMutted, H3 } from '@/lib/ui/design-system';
 
 export type ManagementServiceProps = {
   title: string;
-  Icon: LucideIcon;
+  icon: ReactNode;
   description: string;
 };
 
 const ManagementServiceComponent: React.FC<ManagementServiceProps> = ({
   title,
-  Icon,
+  icon,
   description,
 }) => {
   const router = useRouter();
@@ -32,7 +32,10 @@ const ManagementServiceComponent: React.FC<ManagementServiceProps> = ({
       <Header>
         <TitleContainer>
           <IconContainer>
-            <Icon size={40} color="#FFFFFF" />
+            {React.cloneElement(icon as React.ReactElement, {
+              size: 40,
+              color: '#fff',
+            })}
           </IconContainer>
           <H3>{title}</H3>
         </TitleContainer>
