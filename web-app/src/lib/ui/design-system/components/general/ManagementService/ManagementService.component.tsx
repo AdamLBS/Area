@@ -7,7 +7,7 @@ import {
   Redirection,
   TitleContainer,
 } from './ManagementService.style';
-import { ChevronRight, LucideIcon } from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { PrimaryMutted, H3 } from '@/lib/ui/design-system';
 
