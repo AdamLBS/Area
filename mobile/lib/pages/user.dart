@@ -2,7 +2,6 @@ import 'package:area/constants.dart';
 import 'package:area/oauth/discord.dart';
 import 'package:area/oauth/google.dart';
 import 'package:area/oauth/spotify.dart';
-import 'package:area/oauth/twitch.dart';
 import 'package:area/utils/get_loggedin_services.dart';
 import 'package:area/utils/handle_oauth.dart';
 import 'package:area/widgets/bottom_bar.dart';

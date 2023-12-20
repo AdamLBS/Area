@@ -1,12 +1,6 @@
-import 'package:area/constants.dart';
-import 'package:area/oauth/discord.dart';
-import 'package:area/oauth/google.dart';
-import 'package:area/oauth/spotify.dart';
-import 'package:area/utils/handle_oauth.dart';
 import 'package:area/widgets/card_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:oauth2_client/github_oauth2_client.dart';
 
 import '../widgets/bottom_bar.dart';
 
