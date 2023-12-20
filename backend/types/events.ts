@@ -1,5 +1,6 @@
 export type APIEvent = {
   provider: string
+  id: string
   name: string
-  fields: [string, string][]
+  fields: Object
 }
