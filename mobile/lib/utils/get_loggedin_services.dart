@@ -6,9 +6,8 @@ import 'package:http/http.dart' as http;
 
 Future<List<String>> getLoggedInServices() async {
   var url = Uri.parse("$backendUrl/api/user/me/services");
-  var request = await http.get(url, headers: {
-    "Authorization": "Bearer ${globals.token}"
-  });
+  var request = await http
+      .get(url, headers: {"Authorization": "Bearer ${globals.token}"});
   if (request.statusCode == 200) {
     var json = jsonDecode(request.body);
     List<String> services = [];
