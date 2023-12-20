@@ -3,7 +3,7 @@ import { BaseModel, beforeCreate, column } from '@ioc:Adonis/Lucid/Orm'
 import { v4 as uuidv4 } from 'uuid'
 
 type Interaction = {
-  id: string,
+  id: string
   fields: any
 }
 export default class Event extends BaseModel {
