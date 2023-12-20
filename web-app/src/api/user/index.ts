@@ -1,3 +1,4 @@
+import { User } from '@/types/user';
 import axios from 'axios';
 import { API_URL, Token } from '../constants';
 
@@ -68,5 +69,18 @@ export const updateCredentials = async (payload: {
         throw new Error(error.response?.data.message);
       throw new Error(error.response?.data.errors[0].message);
     }
+  }
+};
+
+export const getMe = async (): Promise<User> => {
+  try {
+    const user = await axios.get(API_URL + '/user/me', {
+      headers: {
+        Authorization: 'Bearer ' + localStorage.getItem('authToken'),
+      },
+    });
+    return user.data.user;
+  } catch (error) {
+    throw new Error('Error getting user.');
   }
 };
