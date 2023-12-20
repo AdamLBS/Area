@@ -2,6 +2,10 @@ import { DateTime } from 'luxon'
 import { BaseModel, beforeCreate, column } from '@ioc:Adonis/Lucid/Orm'
 import { v4 as uuidv4 } from 'uuid'
 
+type Interaction = {
+  id: string
+  fields: any
+}
 export default class Event extends BaseModel {
   @column({ isPrimary: true })
   public uuid: string
@@ -16,10 +20,10 @@ export default class Event extends BaseModel {
   public responseApi: string
 
   @column()
-  public triggerInteraction: string
+  public triggerInteraction: Interaction
 
   @column()
-  public responseInteraction: string
+  public responseInteraction: Interaction
 
   @column()
   public timestamp: string
