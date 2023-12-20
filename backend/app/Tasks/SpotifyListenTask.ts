@@ -54,6 +54,7 @@ export default class SpotifyListenTask extends BaseTask {
       },
     })
     if (response.status !== 200) {
+      console.log(response.data)
       throw new Error('Spotify API Error')
     }
     return response.data
@@ -101,6 +102,7 @@ export default class SpotifyListenTask extends BaseTask {
           }
         } catch (error) {
           console.log('User is not listening to music')
+          console.log(error)
         }
       }
     } catch (error) {
