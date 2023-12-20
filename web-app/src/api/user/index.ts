@@ -41,14 +41,14 @@ export const signUp = async (payload: {
   }
 };
 
-export const me = async (payload: { token: string }): Promise<boolean> => {
+export const getMe = async (payload: { token: string }): Promise<boolean> => {
   try {
-    await axios.get(API_URL + '/user/me', {
+    const response = await axios.get(API_URL + '/user/me', {
       headers: {
         Authorization: `Bearer ${payload.token}`,
       },
     });
-    return true;
+    return response.data;
   } catch (error) {
     throw new Error('Error getting user');
   }

@@ -3,13 +3,13 @@ import { Button } from '@/components/ui';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react';
-import { me } from '@/api/user';
+import { getMe } from '@/api/user';
 
 export default function Home() {
   const router = useRouter();
 
   const checkMe = useMutation({
-    mutationFn: me,
+    mutationFn: getMe,
     onSuccess: () => {
       router.push('/dashboard');
     },
