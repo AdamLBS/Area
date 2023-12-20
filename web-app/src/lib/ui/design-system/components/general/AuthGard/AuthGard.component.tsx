@@ -22,7 +22,7 @@ const AuthGuardComponent: React.FC<AuthGardProps> = ({ children }) => {
     if (token === null) {
       router.push('/login');
     } else {
-      checkMe.mutate({ token });
+      checkMe.mutate();
     }
   }, []);
 
