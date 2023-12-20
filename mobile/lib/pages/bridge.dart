@@ -275,7 +275,8 @@ class _BridgePageState extends State<BridgePage> {
                                                 EventModel(
                                                     provider:
                                                         _selectedTriggerApi!
-                                                            .provider.toLowerCase(),
+                                                            .provider
+                                                            .toLowerCase(),
                                                     id: _selectedTriggerApi!.id,
                                                     name: _selectedTriggerApi!
                                                         .name,
@@ -284,7 +285,8 @@ class _BridgePageState extends State<BridgePage> {
                                                 EventModel(
                                                     provider:
                                                         _selectedResponseApi!
-                                                            .provider.toLowerCase(),
+                                                            .provider
+                                                            .toLowerCase(),
                                                     id: _selectedResponseApi!
                                                         .id,
                                                     name: _selectedResponseApi!
