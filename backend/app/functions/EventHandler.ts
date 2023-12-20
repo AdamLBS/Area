@@ -4,7 +4,6 @@ import { SendMailEvent } from './SendMailEvent'
 export enum ResponseInteraction {
   SEND_EMAIL = 'sendEmail',
   SEND_DISCORD_MESSAGE = 'send_discord_message',
-
 }
 
 export type Content = {
