@@ -2,13 +2,13 @@ import { APIEvent } from 'types/events'
 
 export const TRIGGER_EVENTS: APIEvent[] = [
   {
-    provider: 'spotify',
+    provider: 'Spotify',
     id: 'listenMusic',
     name: 'Changes music',
     fields: {},
   },
   {
-    provider: 'twitch',
+    provider: 'Twitch',
     id: 'startsLive',
     name: 'Streamer starts to live',
     fields: {

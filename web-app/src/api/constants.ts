@@ -24,3 +24,28 @@ export type UserData = {
   created_at: string;
   updated_at: string;
 };
+
+export type ApiEvent = {
+  provider: string;
+  id: string;
+  name: string;
+  fields: Fields;
+};
+
+export type Fields = {
+  streamer?: string;
+  username?: string;
+  email?: string;
+};
+
+export type Interaction = {
+  id: string;
+  fields: Fields;
+};
+
+export type EventCreate = {
+  trigger_provider: string;
+  response_provider: string;
+  triggerInteraction: Interaction;
+  responseInteraction: Interaction;
+};

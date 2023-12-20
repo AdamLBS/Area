@@ -11,7 +11,7 @@ import { SelectTrigger } from './CustomSelect.style';
 
 export type CustomSelectProps = {
   value: string;
-  values: string[];
+  values?: string[];
   onChange: (value: string) => void;
 };
 
@@ -27,7 +27,7 @@ const CustomSelectComponent: React.FC<CustomSelectProps> = ({
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
-          {values.map((val, index) => (
+          {values?.map((val, index) => (
             <SelectItem key={index} value={val}>
               {val}
             </SelectItem>
