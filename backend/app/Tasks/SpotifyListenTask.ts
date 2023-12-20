@@ -114,7 +114,7 @@ export default class SpotifyListenTask extends BaseTask {
       for (const event of events) {
         const triggerApi = await Database.query().from('oauths').where('uuid', event.trigger_api).first();
         let spotifyListener = await this.fetchSpotifyData(triggerApi);
-        if (globalSpotifyListeners.find(spotifyListener => spotifyListener.device.id === spotifyListener.device.id) == undefined) {
+        if (globalSpotifyListeners.find(spotifyListenerSec => spotifyListenerSec.device.id === spotifyListener.device.id) == undefined) {
           globalSpotifyListeners.push(spotifyListener);
         } else {
           let tmpSpotifyListener = globalSpotifyListeners.find(spotifyListener => spotifyListener.device.id === spotifyListener.device.id);
