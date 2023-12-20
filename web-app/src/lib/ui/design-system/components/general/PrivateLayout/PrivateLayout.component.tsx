@@ -1,6 +1,6 @@
 'use client';
 import React, { memo } from 'react';
-import { NavBar } from '@/lib/ui/design-system';
+import { AuthGard, NavBar } from '@/lib/ui/design-system';
 import { Layout } from './PrivateLayout.style';
 
 export type PrivateLayoutProps = {
@@ -15,7 +15,7 @@ const PrivateLayoutComponent: React.FC<PrivateLayoutProps> = ({
   return (
     <Layout>
       <NavBar pageName={pageName} />
-      {children}
+      <AuthGard>{children}</AuthGard>
     </Layout>
   );
 };

@@ -4,3 +4,4 @@ export * from './components/general/NavigationBar';
 export * from './components/general/PrivateLayout';
 export * from './components/icons';
 export * from './components/general/ServiceCard';
+export * from './components/general/AuthGard';
