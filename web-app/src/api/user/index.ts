@@ -1,6 +1,5 @@
-import { User } from '@/types/user';
 import axios from 'axios';
-import { API_URL, Token } from '../constants';
+import { API_URL, Token, User } from '../constants';
 
 export const verifyEmail = async (payload: {
   email: string;
@@ -72,15 +71,15 @@ export const updateCredentials = async (payload: {
   }
 };
 
-export const getMe = async (): Promise<User> => {
+export const getMe = async (payload: { token: string }): Promise<User> => {
   try {
-    const user = await axios.get(API_URL + '/user/me', {
+    const response = await axios.get(API_URL + '/user/me', {
       headers: {
-        Authorization: 'Bearer ' + localStorage.getItem('authToken'),
+        Authorization: `Bearer ${payload.token}`,
       },
     });
-    return user.data.user;
+    return response.data;
   } catch (error) {
-    throw new Error('Error getting user.');
+    throw new Error('Error getting user');
   }
 };
