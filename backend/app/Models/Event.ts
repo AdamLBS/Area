@@ -7,7 +7,7 @@ type Fields = {
 }
 
 type Interaction = {
-  id: string,
+  id: string
   fields: Fields
 }
 export default class Event extends BaseModel {

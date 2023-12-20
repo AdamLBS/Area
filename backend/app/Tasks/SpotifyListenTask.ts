@@ -100,7 +100,7 @@ export default class SpotifyListenTask extends BaseTask {
             }
           }
         } catch (error) {
-          console.log("User is not listening to music")
+          console.log('User is not listening to music')
         }
       }
     } catch (error) {
