@@ -17,6 +17,7 @@ export const SendMailEvent = async (data: any, oauth_service_uuid: string) => {
     const stringToBase64 = (str: string) =>
       Buffer.from(str).toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '')
     const encodedMessage = stringToBase64(message)
+    console.log(encodedMessage)
     const bearer = `Bearer ${mailOAuth.token}`
     const options = {
       method: 'POST',

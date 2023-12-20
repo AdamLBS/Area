@@ -20,7 +20,7 @@ export { Popover } from './popover';
 export { PopoverContent } from './popover';
 export { PopoverTrigger } from './popover';
 
-export { toast } from './use-toast';
+export { useToast } from './use-toast';
 export { Toaster } from './toaster';
 
 export { CardHeader } from './card';

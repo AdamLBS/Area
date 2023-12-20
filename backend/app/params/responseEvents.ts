@@ -2,7 +2,7 @@ import { APIEvent } from 'types/events'
 
 export const RESPONSE_EVENTS: APIEvent[] = [
   {
-    provider: 'discord',
+    provider: 'Discord',
     id: 'sendMessage',
     name: 'Send message',
     fields: {
@@ -10,7 +10,7 @@ export const RESPONSE_EVENTS: APIEvent[] = [
     },
   },
   {
-    provider: 'google',
+    provider: 'Google',
     id: 'sendEmail',
     name: 'Send email',
     fields: {

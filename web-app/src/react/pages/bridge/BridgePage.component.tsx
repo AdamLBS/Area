@@ -5,6 +5,8 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
+  Toaster,
+  useToast,
 } from '@/components/ui';
 import {
   CustomSelect,
@@ -13,7 +15,7 @@ import {
   PrivateLayout,
 } from '@/lib/ui/design-system';
 
-import React, { memo } from 'react';
+import React, { memo, useCallback, useMemo, useState } from 'react';
 import {
   ConfigContent,
   ConfigPanel,
@@ -29,16 +31,111 @@ import {
   TopBarConfig,
 } from './BridgePage.style';
 import { PlusIcon } from 'lucide-react';
-
-const frameworks = ['React', 'Vue', 'Angular', 'Svelte'];
+import { useResponses, useTriggers } from '@/react/hooks/events';
+import { useMutation } from '@tanstack/react-query';
+import { createEvent } from '@/api/events';
+import { EventCreate } from '@/api/constants';
 
 const events = ['test1', 'test2'];
 
 const Bridge: React.FC = () => {
-  const [triggerApi, setTriggerApi] = React.useState('');
-  const [triggerAction, setTriggerAction] = React.useState('');
-  const [responseApi, setResponseApi] = React.useState('');
-  const [responseAction, setResponseAction] = React.useState('');
+  const { data: triggers } = useTriggers();
+  const { data: responses } = useResponses();
+  const { toast } = useToast();
+  const [selectedTriggerApi, setSelectedTriggerApi] = useState<string>('');
+  const [selectedTriggerInteraction, setSelectedTriggerInteraction] =
+    useState<string>('');
+  const [selectedResponseApi, setSelectedResponseApi] = useState<string>('');
+  const [selectedResponseInteraction, setSelectedResponseInteraction] =
+    useState<string>('');
+
+  const triggersApi = useMemo(() => {
+    return triggers?.map((trigger) => trigger.provider);
+  }, [triggers]);
+
+  const responsesApi = useMemo(() => {
+    return responses?.map((response) => response.provider);
+  }, [responses]);
+
+  const [triggersInteractions, settriggersInteractions] = useState<string[]>(
+    [],
+  );
+  const [responsesInteractions, setresponsesInteractions] = useState<string[]>(
+    [],
+  );
+
+  const createEventMutation = useMutation({
+    mutationFn: createEvent,
+    onSuccess: () => {
+      toast({
+        title: 'Event successfully created',
+        description: 'Your event has been created',
+      });
+    },
+    onError: (error) => {
+      toast({
+        variant: 'destructive',
+        title: 'Uh oh! Something went wrong.',
+        description: error.message,
+      });
+    },
+  });
+
+  const onChangeTriggerApi = useCallback(
+    (value: string) => {
+      setSelectedTriggerApi(value);
+      settriggersInteractions(
+        triggers
+          ?.filter((trigger) => trigger.provider === value)
+          .map((trigger) => trigger.name) || [],
+      );
+    },
+    [triggers, settriggersInteractions, setSelectedTriggerApi],
+  );
+
+  const onChangeResponseApi = useCallback(
+    (value: string) => {
+      setSelectedResponseApi(value);
+      setresponsesInteractions(
+        responses
+          ?.filter((response) => response.provider === value)
+          .map((response) => response.name) || [],
+      );
+    },
+    [responses, setresponsesInteractions, setSelectedResponseApi],
+  );
+
+  const handleSave = useCallback(() => {
+    const event: EventCreate = {
+      trigger_provider: selectedTriggerApi.toLowerCase(),
+      response_provider: selectedResponseApi.toLowerCase(),
+      triggerInteraction: {
+        id:
+          triggers?.find(
+            (trigger) => trigger.name === selectedTriggerInteraction,
+          )?.id || '',
+        fields: {},
+      },
+      responseInteraction: {
+        id:
+          responses?.find(
+            (response) => response.name === selectedResponseInteraction,
+          )?.id || '',
+        fields: {
+          email: 'adam.elaoumari@gmail.com',
+        },
+      },
+    };
+    createEventMutation.mutate(event);
+  }, [
+    selectedTriggerApi,
+    selectedTriggerInteraction,
+    selectedResponseApi,
+    selectedResponseInteraction,
+    createEventMutation,
+    triggers,
+    responses,
+  ]);
 
   return (
     <PrivateLayout pageName="Bridge">
@@ -76,7 +173,7 @@ const Bridge: React.FC = () => {
             </CardHeader>
             <RightPanelContent>
               <TopBarConfig>
-                <Button>Save</Button>
+                <Button onClick={handleSave}>Save</Button>
               </TopBarConfig>
               <ConfigContent>
                 <ConfigPanel>
@@ -89,8 +186,8 @@ const Bridge: React.FC = () => {
                     </ConfigPanelHeader>
                     <CustomSelect
                       value="Choose your api"
-                      values={frameworks}
-                      onChange={setTriggerApi}
+                      values={triggersApi}
+                      onChange={onChangeTriggerApi}
                     />
                   </ConfigPart>
                   <ConfigPart>
@@ -103,8 +200,8 @@ const Bridge: React.FC = () => {
                     </ConfigPanelHeader>
                     <CustomSelect
                       value="Choose your interaction"
-                      values={frameworks}
-                      onChange={setTriggerAction}
+                      values={triggersInteractions}
+                      onChange={setSelectedTriggerInteraction}
                     />
                   </ConfigPart>
                 </ConfigPanel>
@@ -118,8 +215,8 @@ const Bridge: React.FC = () => {
                     </ConfigPanelHeader>
                     <CustomSelect
                       value="Choose your api"
-                      values={frameworks}
-                      onChange={setResponseApi}
+                      values={responsesApi}
+                      onChange={onChangeResponseApi}
                     />
                   </ConfigPart>
                   <ConfigPart>
@@ -132,8 +229,8 @@ const Bridge: React.FC = () => {
                     </ConfigPanelHeader>
                     <CustomSelect
                       value="Choose your interaction"
-                      values={frameworks}
-                      onChange={setResponseAction}
+                      values={responsesInteractions}
+                      onChange={setSelectedResponseInteraction}
                     />
                   </ConfigPart>
                 </ConfigPanel>
@@ -142,6 +239,7 @@ const Bridge: React.FC = () => {
           </RightPanel>
         </PageContent>
       </PageContainer>
+      <Toaster />
     </PrivateLayout>
   );
 };
