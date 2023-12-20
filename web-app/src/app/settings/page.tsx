@@ -1,3 +1,11 @@
+import React from 'react';
 import { SettingsPage } from '@/react/pages';
+import { SettingsPageContextProvider } from '@/react/pages/settings/SettingsPage.context';
 
-export default SettingsPage;
+const Settings: React.FC = () => (
+  <SettingsPageContextProvider>
+    <SettingsPage />
+  </SettingsPageContextProvider>
+);
+
+export default Settings;

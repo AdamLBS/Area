@@ -37,7 +37,7 @@ const ColumnLayoutComponent = () => {
   }, [theme]);
 
   return (
-    <Container backgroundColor={backgroundColor}>
+    <Container colorOfBackground={backgroundColor}>
       <MainContainer>
         <ColumnContainer>
           <LogoContainer>

@@ -16,8 +16,8 @@ import { H4, PrimaryMutted, PrivateLayout } from '@/lib/ui/design-system';
 import { UpdateForm } from './UpdateForm';
 import { SocialAccounts } from './Accounts';
 import { AdvancedSettings } from './Advanced';
-import { useSearchParams } from 'next/navigation';
-import { useMutation } from '@tanstack/react-query';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { saveOAuth } from '@/api/oauth';
 
 enum Options {
@@ -51,12 +51,18 @@ const DESCRIPTIONS = {
 };
 
 const Settings = () => {
+  const queryClient = useQueryClient();
   const searchParams = useSearchParams();
+  const router = useRouter();
   const [option, setCurrentOption] = React.useState(
     (searchParams.get('option') as Options) || Options.PROFILE,
   );
   const mutation = useMutation({
     mutationFn: saveOAuth,
+    onSuccess: () => {
+      router.replace('/settings?option=accounts');
+      queryClient.invalidateQueries({ queryKey: ['services'] });
+    },
   });
 
   const token = searchParams.get('token');

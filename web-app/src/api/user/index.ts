@@ -71,15 +71,15 @@ export const updateCredentials = async (payload: {
   }
 };
 
-export const getMe = async (payload: { token: string }): Promise<User> => {
+export const getMe = async (): Promise<User> => {
   try {
     const response = await axios.get(API_URL + '/user/me', {
       headers: {
-        Authorization: `Bearer ${payload.token}`,
+        Authorization: 'Bearer ' + localStorage.getItem('authToken'),
       },
     });
     return response.data;
   } catch (error) {
-    throw new Error('Error getting user');
+    throw new Error('Error getting user.');
   }
 };
