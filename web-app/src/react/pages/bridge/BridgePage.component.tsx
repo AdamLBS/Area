@@ -1,25 +1,22 @@
 'use client';
 import { getMe } from '@/api/user';
-import { Button } from '@/components/ui';
 import {
+  Button,
   CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
-import {
   Command,
   CommandEmpty,
   CommandGroup,
   CommandInput,
   CommandItem,
-} from '@/components/ui/command';
-import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '@/components/ui/popover';
-import { toast } from '@/components/ui/use-toast';
+  Toaster,
+  toast,
+} from '@/components/ui';
 import { PrivateLayout } from '@/lib/ui/design-system';
 import { cn } from '@/lib/utils';
 import { User } from '@/types/user';
@@ -117,7 +114,7 @@ export function ComboboxDemo() {
 
 const Bridge: React.FC = () => {
   const [userData, setUserData] = useState<User | null>(null);
-  const { mutate: fetchUser } = useMutation<User, Error>({
+  const { mutate: fetchUser } = useMutation({
     mutationFn: getMe,
     onSuccess: (data: User) => {
       setUserData(data);
@@ -213,6 +210,7 @@ const Bridge: React.FC = () => {
           </RightPanel>
         </PageContent>
       </PageContainer>
+      <Toaster />
     </PrivateLayout>
   );
 };
