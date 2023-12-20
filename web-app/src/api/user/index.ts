@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { API_URL, Token } from '../constants';
+import { API_URL, Token, User } from '../constants';
 
 export const verifyEmail = async (payload: {
   email: string;
@@ -41,7 +41,7 @@ export const signUp = async (payload: {
   }
 };
 
-export const getMe = async (payload: { token: string }): Promise<boolean> => {
+export const getMe = async (payload: { token: string }): Promise<User> => {
   try {
     const response = await axios.get(API_URL + '/user/me', {
       headers: {
