@@ -1,28 +1,19 @@
 'use client';
-import { getMe } from '@/api/user';
 import {
   Button,
   CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-  Toaster,
-  toast,
 } from '@/components/ui';
-import { PrivateLayout } from '@/lib/ui/design-system';
-import { cn } from '@/lib/utils';
-import { User } from '@/types/user';
-import { CaretSortIcon, CheckIcon } from '@radix-ui/react-icons';
-import { useMutation } from '@tanstack/react-query';
-import React, { memo, useEffect, useState } from 'react';
+import {
+  CustomSelect,
+  H3,
+  PrimaryMutted,
+  PrivateLayout,
+} from '@/lib/ui/design-system';
+
+import React, { memo } from 'react';
 import {
   ConfigContent,
   ConfigPanel,
@@ -37,84 +28,17 @@ import {
   RightPanelContent,
   TopBarConfig,
 } from './BridgePage.style';
-import { useProfile } from '@/react/hooks/user';
+import { PlusIcon } from 'lucide-react';
 
-const frameworks = [
-  {
-    value: 'next.js',
-    label: 'Next.js',
-  },
-  {
-    value: 'sveltekit',
-    label: 'SvelteKit',
-  },
-  {
-    value: 'nuxt.js',
-    label: 'Nuxt.js',
-  },
-  {
-    value: 'remix',
-    label: 'Remix',
-  },
-  {
-    value: 'astro',
-    label: 'Astro',
-  },
-];
+const frameworks = ['React', 'Vue', 'Angular', 'Svelte'];
 
-// CREATE A COMPONENT TAKING IN PARAMS A LIST OF OBJECT LIKE "frameworks" AND USE IT
-// GET TRIGGER AND RESPONSE API FROM THE DATABASE
-export function ComboboxDemo() {
-  const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState('');
-
-  return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        <Button
-          variant="outline"
-          role="combobox"
-          aria-expanded={open}
-          className="w-[500px] justify-between"
-        >
-          {value
-            ? frameworks.find((framework) => framework.value === value)?.label
-            : 'Select framework...'}
-          <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-[500px] p-0">
-        <Command>
-          <CommandInput placeholder="Search framework..." className="h-9" />
-          <CommandEmpty>No framework found.</CommandEmpty>
-          <CommandGroup>
-            {frameworks.map((framework) => (
-              <CommandItem
-                key={framework.value}
-                value={framework.value}
-                onSelect={(currentValue) => {
-                  setValue(currentValue === value ? '' : currentValue);
-                  setOpen(false);
-                }}
-              >
-                {framework.label}
-                <CheckIcon
-                  className={cn(
-                    'ml-auto h-4 w-4',
-                    value === framework.value ? 'opacity-100' : 'opacity-0',
-                  )}
-                />
-              </CommandItem>
-            ))}
-          </CommandGroup>
-        </Command>
-      </PopoverContent>
-    </Popover>
-  );
-}
+const events = ['test1', 'test2'];
 
 const Bridge: React.FC = () => {
-  const userData = useProfile();
+  const [triggerApi, setTriggerApi] = React.useState('');
+  const [triggerAction, setTriggerAction] = React.useState('');
+  const [responseApi, setResponseApi] = React.useState('');
+  const [responseAction, setResponseAction] = React.useState('');
 
   return (
     <PrivateLayout pageName="Bridge">
@@ -128,13 +52,21 @@ const Bridge: React.FC = () => {
               </CardDescription>
             </CardHeader>
             <LeftPanelContent>
-              {/* map of all user events */}
-              <Button variant="ghost" style={{ justifyContent: 'flex-start' }}>
-                test
-              </Button>
+              {events.map((event, index) => (
+                <Button
+                  key={index}
+                  variant="ghost"
+                  style={{ justifyContent: 'flex-start' }}
+                >
+                  {event}
+                </Button>
+              ))}
             </LeftPanelContent>
             <CardFooter>
-              <LeftPanelButton>Add a new event</LeftPanelButton>
+              <LeftPanelButton>
+                <PlusIcon size={16} />
+                Add a new event
+              </LeftPanelButton>
             </CardFooter>
           </LeftPanel>
           <RightPanel>
@@ -150,43 +82,59 @@ const Bridge: React.FC = () => {
                 <ConfigPanel>
                   <ConfigPart>
                     <ConfigPanelHeader>
-                      <CardTitle>Trigger API</CardTitle>
-                      <CardDescription>
+                      <H3>Trigger API</H3>
+                      <PrimaryMutted>
                         Trigger API starting the event
-                      </CardDescription>
+                      </PrimaryMutted>
                     </ConfigPanelHeader>
-                    <ComboboxDemo />
+                    <CustomSelect
+                      value="Choose your api"
+                      values={frameworks}
+                      onChange={setTriggerApi}
+                    />
                   </ConfigPart>
                   <ConfigPart>
                     <ConfigPanelHeader>
-                      <CardTitle>Trigger Action</CardTitle>
-                      <CardDescription>
+                      <H3>Trigger Action</H3>
+                      <PrimaryMutted>
                         Trigger Interaction of the trigger API that is checked
                         to start the event
-                      </CardDescription>
+                      </PrimaryMutted>
                     </ConfigPanelHeader>
-                    <ComboboxDemo />
+                    <CustomSelect
+                      value="Choose your interaction"
+                      values={frameworks}
+                      onChange={setTriggerAction}
+                    />
                   </ConfigPart>
                 </ConfigPanel>
                 <ConfigPanel>
                   <ConfigPart>
                     <ConfigPanelHeader>
-                      <CardTitle>Response API</CardTitle>
-                      <CardDescription>
+                      <H3>Response API</H3>
+                      <PrimaryMutted>
                         Response API that is the result of your event
-                      </CardDescription>
+                      </PrimaryMutted>
                     </ConfigPanelHeader>
-                    <ComboboxDemo />
+                    <CustomSelect
+                      value="Choose your api"
+                      values={frameworks}
+                      onChange={setResponseApi}
+                    />
                   </ConfigPart>
                   <ConfigPart>
                     <ConfigPanelHeader>
-                      <CardTitle>Response Interaction</CardTitle>
-                      <CardDescription>
+                      <H3>Response Interaction</H3>
+                      <PrimaryMutted>
                         Response Interaction of the response API that is done
                         when the first interaction is triggered
-                      </CardDescription>
+                      </PrimaryMutted>
                     </ConfigPanelHeader>
-                    <ComboboxDemo />
+                    <CustomSelect
+                      value="Choose your interaction"
+                      values={frameworks}
+                      onChange={setResponseAction}
+                    />
                   </ConfigPart>
                 </ConfigPanel>
               </ConfigContent>
@@ -194,7 +142,6 @@ const Bridge: React.FC = () => {
           </RightPanel>
         </PageContent>
       </PageContainer>
-      <Toaster />
     </PrivateLayout>
   );
 };

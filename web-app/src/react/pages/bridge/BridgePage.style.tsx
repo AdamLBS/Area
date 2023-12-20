@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui';
+import { Button, SelectTrigger as _SelectTrigger } from '@/components/ui';
 import { Card } from '@/components/ui/card';
 import styled from 'styled-components';
 
@@ -35,6 +35,7 @@ export const LeftPanelContent = styled.div`
 
 export const LeftPanelButton = styled(Button)`
   width: 100%;
+  gap: 8px;
 `;
 
 export const RightPanel = styled(Card)`
@@ -49,7 +50,7 @@ export const RightPanelContent = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
-  padding: 1.5em;
+  padding: 20px;
   height: 100%;
 `;
 
@@ -67,6 +68,7 @@ export const ConfigPanel = styled.div`
   gap: 20px;
   height: 100%;
   width: 100%;
+  padding: 10px;
 `;
 
 export const ConfigPart = styled.div`
@@ -92,5 +94,5 @@ export const ConfigPanelHeader = styled.div`
 export const ConfigContent = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 100px;
+  gap: 25px;
 `;
