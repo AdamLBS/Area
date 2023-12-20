@@ -5,6 +5,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
+  Label,
   Toaster,
   useToast,
 } from '@/components/ui';
@@ -21,6 +22,7 @@ import {
   ConfigPanel,
   ConfigPanelHeader,
   ConfigPart,
+  FieldContainer,
   LeftPanel,
   LeftPanelButton,
   LeftPanelContent,
@@ -29,6 +31,7 @@ import {
   RightPanel,
   RightPanelContent,
   TopBarConfig,
+  InputField,
 } from './BridgePage.style';
 import { PlusIcon } from 'lucide-react';
 import { useResponses, useTriggers } from '@/react/hooks/events';
@@ -63,6 +66,12 @@ const Bridge: React.FC = () => {
   const [responsesInteractions, setresponsesInteractions] = useState<string[]>(
     [],
   );
+  const [triggersFields, settriggersFields] = useState<Record<string, string>>(
+    {},
+  );
+  const [responsesFields, setresponsesFields] = useState<
+    Record<string, string>
+  >({});
 
   const createEventMutation = useMutation({
     mutationFn: createEvent,
@@ -114,16 +123,14 @@ const Bridge: React.FC = () => {
           triggers?.find(
             (trigger) => trigger.name === selectedTriggerInteraction,
           )?.id || '',
-        fields: {},
+        fields: triggersFields,
       },
       responseInteraction: {
         id:
           responses?.find(
             (response) => response.name === selectedResponseInteraction,
           )?.id || '',
-        fields: {
-          email: 'adam.elaoumari@gmail.com',
-        },
+        fields: responsesFields,
       },
     };
     createEventMutation.mutate(event);
@@ -136,6 +143,26 @@ const Bridge: React.FC = () => {
     triggers,
     responses,
   ]);
+
+  const onChangeResponseField = useCallback(
+    (value: string, key: string) => {
+      setresponsesFields({
+        ...responsesFields,
+        [key]: value,
+      });
+    },
+    [responsesFields, setresponsesFields],
+  );
+
+  const onChangeTriggerField = useCallback(
+    (value: string, key: string) => {
+      settriggersFields({
+        ...triggersFields,
+        [key]: value,
+      });
+    },
+    [triggersFields, settriggersFields],
+  );
 
   return (
     <PrivateLayout pageName="Bridge">
@@ -204,6 +231,22 @@ const Bridge: React.FC = () => {
                       onChange={setSelectedTriggerInteraction}
                     />
                   </ConfigPart>
+                  {Object.entries(
+                    triggers?.find(
+                      (trigger) => trigger.name === selectedTriggerInteraction,
+                    )?.fields || {},
+                  ).map(([key, value]) => (
+                    <FieldContainer key={key}>
+                      <Label>Email</Label>
+                      <InputField
+                        id={value}
+                        placeholder={value}
+                        onChange={(e) =>
+                          onChangeTriggerField(e.target.value, key)
+                        }
+                      />
+                    </FieldContainer>
+                  ))}
                 </ConfigPanel>
                 <ConfigPanel>
                   <ConfigPart>
@@ -232,6 +275,27 @@ const Bridge: React.FC = () => {
                       values={responsesInteractions}
                       onChange={setSelectedResponseInteraction}
                     />
+                  </ConfigPart>
+                  <ConfigPart>
+                    {Object.entries(
+                      responses?.find(
+                        (trigger) =>
+                          trigger.name === selectedResponseInteraction,
+                      )?.fields || {},
+                    ).map(([key, value]) => (
+                      <FieldContainer key={key}>
+                        <Label>
+                          {key.charAt(0).toUpperCase() + key.slice(1)}
+                        </Label>
+                        <InputField
+                          id={value}
+                          placeholder={value}
+                          onChange={(e) =>
+                            onChangeResponseField(e.target.value, key)
+                          }
+                        />
+                      </FieldContainer>
+                    ))}
                   </ConfigPart>
                 </ConfigPanel>
               </ConfigContent>
