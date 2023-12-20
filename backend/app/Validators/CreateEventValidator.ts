@@ -24,11 +24,27 @@ export default class CreateEventValidator {
    *    ```
    */
   public schema = schema.create({
-    trigger_interaction: schema.string(),
-    response_interaction: schema.string(),
     trigger_provider: schema.string(),
     response_provider: schema.string(),
+    triggerInteraction: schema.object().members({
+      id: schema.string(),
+      fields: schema.object().anyMembers(),
+    }),
+    responseInteraction: schema.object().members({
+      id: schema.string(),
+      fields: schema.object().anyMembers(),
+    }),
   })
+  public messages: CustomMessages = {
+    'trigger_provider.required': 'Trigger provider is required',
+    'response_provider.required': 'Response provider is required',
+    'triggerInteraction.required': 'Trigger interaction is required',
+    'triggerInteraction.name.required': 'Trigger interaction name is required',
+    'responseInteraction.required': 'Response interaction is required',
+    'responseInteraction.name.required': 'Response interaction name is required',
+    'responseInteraction.fields.email.required': 'Email is required',
+    'responseInteraction.fields.email.email': 'Email is not valid',
+  }
 
   /**
    * Custom messages for validation failures. You can make use of dot notation `(.)`
@@ -41,5 +57,4 @@ export default class CreateEventValidator {
    * }
    *
    */
-  public messages: CustomMessages = {}
 }

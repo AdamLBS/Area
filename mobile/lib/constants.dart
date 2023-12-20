@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 Color purpleBackground = Color(0xFF6D28D9);
-String backendUrl = "http://api.stratos-app.fr:3333";
+String backendUrl = "http://10.0.2.2:3333";
 const String googleClientId =
     "283999512435-vi87r3oupppsr3cmb4kd8rgepdeq3bve.apps.googleusercontent.com";
 const String googleClientSecret = "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";

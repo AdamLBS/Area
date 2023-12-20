@@ -8,7 +8,6 @@ import { RESPONSE_EVENTS } from 'App/params/responseEvents'
 export default class EventsController {
   public async createEvent({ request, response, auth }: HttpContextContract) {
     const payload = await request.validate(CreateEventValidator)
-
     const user = await auth.authenticate()
 
     const triggerApi = await Oauth.query()
@@ -24,8 +23,8 @@ export default class EventsController {
     if (triggerApi && responseApi) {
       const eventPayload = {
         userUuid: user.uuid,
-        triggerInteraction: payload.trigger_interaction,
-        responseInteraction: payload.response_interaction,
+        triggerInteraction: payload.triggerInteraction,
+        responseInteraction: payload.responseInteraction,
         triggerApi: triggerApi.uuid,
         responseApi: responseApi.uuid,
         active: true,
@@ -38,7 +37,7 @@ export default class EventsController {
     }
 
     return response.internalServerError({
-      message: 'Event could not be created',
+      message: 'Event could not be created error is : ' + triggerApi + ' ' + responseApi,
     })
   }
 

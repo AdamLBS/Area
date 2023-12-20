@@ -36,7 +36,17 @@ export default class TwitchSeed extends BaseTask {
     return false
   }
 
-  private async fetchTwitchData(oauth: any): Promise<TwitchData[]> {
+  private async fetchTwitchUserId(oauth: any): Promise<string> {
+    const repose = await axios.get('https://api.twitch.tv/helix/users', {
+      headers: {
+        'Client-ID': process.env.TWITCH_CLIENT_ID,
+        'Authorization': `Bearer ${oauth.token}`,
+      },
+    })
+    return repose.data.data[0].id
+  }
+
+  private async fetchTwitchData(oauth: any, user_id: string): Promise<TwitchData[]> {
     const response = await axios.get<TwitchResponse>(
       `https://api.twitch.tv/helix/streams/followed`,
       {
@@ -45,7 +55,7 @@ export default class TwitchSeed extends BaseTask {
           'Authorization': `Bearer ${oauth.token}`,
         },
         params: {
-          user_id: oauth.oauth_user_id,
+          user_id: user_id,
         },
       }
     )
@@ -104,7 +114,8 @@ export default class TwitchSeed extends BaseTask {
       for (const oauth of oauths) {
         try {
           await this.refreshTwitchToken(oauth)
-          const twitchData = await this.fetchTwitchData(oauth)
+          const userId = await this.fetchTwitchUserId(oauth)
+          const twitchData = await this.fetchTwitchData(oauth, userId)
 
           if (oauth.twitch_in_live === null && twitchData.length > 0) {
             const channels = twitchData.map((data: TwitchData) => ({ user_name: data.user_name }))
