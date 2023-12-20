@@ -112,7 +112,11 @@ export default class TwitchLiveTask extends BaseTask {
     }
   }
 
-  public async inLive(triggerApiOauth: any, responseApiUuid: string, reponseInteraction: ResponseInteraction) {
+  public async inLive(
+    triggerApiOauth: any,
+    responseApiUuid: string,
+    reponseInteraction: ResponseInteraction
+  ) {
     try {
       const oauth = await Database.query()
         .from('oauths')
