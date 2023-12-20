@@ -10,12 +10,6 @@ export { FormMessage } from './form';
 
 export { Label } from './label';
 
-export { Command } from './command';
-export { CommandEmpty } from './command';
-export { CommandGroup } from './command';
-export { CommandInput } from './command';
-export { CommandItem } from './command';
-
 export { Popover } from './popover';
 export { PopoverContent } from './popover';
 export { PopoverTrigger } from './popover';
