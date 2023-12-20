@@ -1,4 +1,4 @@
-import { Button, SelectTrigger as _SelectTrigger } from '@/components/ui';
+import { Button, Input } from '@/components/ui';
 import { Card } from '@/components/ui/card';
 import styled from 'styled-components';
 
@@ -95,4 +95,14 @@ export const ConfigContent = styled.div`
   display: flex;
   flex-direction: column;
   gap: 25px;
+`;
+
+export const FieldContainer = styled.div.attrs({
+  className: 'grid w-full max-w-sm items-center gap-1.5',
+})`
+  align-self: flex-start;
+`;
+
+export const InputField = styled(Input)`
+  min-width: 460px;
 `;
