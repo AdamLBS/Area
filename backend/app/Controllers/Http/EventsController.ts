@@ -1,7 +1,7 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Oauth from 'App/Models/Oauth'
 import Event from 'App/Models/Event'
-import CreateEventValidator from 'App/Validators/CreateEventValidator'
+import CreateEventValidator from 'App/Validators/Event/CreateEventValidator'
 import { TRIGGER_EVENTS } from 'App/params/triggerEvents'
 import { RESPONSE_EVENTS } from 'App/params/responseEvents'
 
@@ -48,5 +48,32 @@ export default class EventsController {
 
   public async getAvailableResponseEvents({ response }: HttpContextContract) {
     return response.ok(RESPONSE_EVENTS)
+  }
+
+  public async getEvent({ response, params }: HttpContextContract) {
+    const { uuid } = params
+    if (!uuid) {
+      return response.badRequest({
+        message: 'Event uuid is required',
+      })
+    }
+    const event = await Event.findBy('uuid', uuid)
+
+    if (!event) {
+      return response.notFound({
+        message: 'Event not found',
+      })
+    }
+
+    return response.ok({
+      message: 'Event found',
+      event,
+    })
+  }
+
+  public async getMyEvents({ response, auth }: HttpContextContract) {
+    const user = await auth.authenticate()
+    const events = await Event.query().where('user_uuid', user.uuid)
+    return response.ok(events)
   }
 }
