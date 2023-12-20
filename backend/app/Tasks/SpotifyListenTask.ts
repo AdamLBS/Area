@@ -114,11 +114,11 @@ export default class SpotifyListenTask extends BaseTask {
       for (const event of events) {
         const triggerApi = await Database.query().from('oauths').where('uuid', event.trigger_api).first();
         let spotifyListener = await this.fetchSpotifyData(triggerApi);
-        if (globalSpotifyListeners.find(spotifyListenerSec => spotifyListenerSec.device.id === spotifyListener.device.id) == undefined) {
+        if (globalSpotifyListeners.find(spotifyListenerSec => spotifyListenerSec.device.id === spotifyListener.device.id) === undefined) {
           globalSpotifyListeners.push(spotifyListener);
         } else {
-          let tmpSpotifyListener = globalSpotifyListeners.find(spotifyListener => spotifyListener.device.id === spotifyListener.device.id);
-          if (tmpSpotifyListener != null && tmpSpotifyListener.item.uri != null && tmpSpotifyListener.item.uri != spotifyListener.item.uri) {
+          let tmpSpotifyListener = globalSpotifyListeners.find(existingListener  => existingListener.device.id === spotifyListener.device.id);
+          if (tmpSpotifyListener !== undefined && tmpSpotifyListener.item.uri !== null && tmpSpotifyListener.item.uri !== spotifyListener.item.uri) {
             console.log('Event triggered you have changed the music')
             const jsonVals = JSON.parse(event.response_interaction);
             const responseInteraction = jsonVals.id.toString() as ResponseInteraction;
