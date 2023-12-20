@@ -6,7 +6,7 @@ import {
   ManagementContainer,
 } from './DashboardPage.style';
 import { H3, PrivateLayout } from '@/lib/ui/design-system';
-import { ServiceCard } from '@/lib/ui/design-system/components/general/ManagementService';
+import { ServiceCard } from '@/lib/ui/design-system';
 import { Boxes, BrainCircuit, Eye } from 'lucide-react';
 
 const Dashboard = () => {
