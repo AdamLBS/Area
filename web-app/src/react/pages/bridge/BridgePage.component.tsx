@@ -37,6 +37,7 @@ import {
   RightPanelContent,
   TopBarConfig,
 } from './BridgePage.style';
+import { useProfile } from '@/react/hooks/user';
 
 const frameworks = [
   {
@@ -113,24 +114,7 @@ export function ComboboxDemo() {
 }
 
 const Bridge: React.FC = () => {
-  const [userData, setUserData] = useState<User | null>(null);
-  const { mutate: fetchUser } = useMutation({
-    mutationFn: getMe,
-    onSuccess: (data: User) => {
-      setUserData(data);
-    },
-    onError: (error) => {
-      toast({
-        variant: 'destructive',
-        title: 'Error',
-        description: error.message,
-      });
-    },
-  });
-
-  useEffect(() => {
-    fetchUser();
-  }, [fetchUser]);
+  const userData = useProfile();
 
   return (
     <PrivateLayout pageName="Bridge">
