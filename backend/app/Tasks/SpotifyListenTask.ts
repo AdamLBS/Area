@@ -53,7 +53,7 @@ export default class SpotifyListenTask extends BaseTask {
         Authorization: `Bearer ${oauth}`,
       },
     })
-    if (response.status != 200) {
+    if (response.status !== 200) {
       throw new Error('Spotify API Error')
     }
     return response.data
