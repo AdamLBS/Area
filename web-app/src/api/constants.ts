@@ -4,11 +4,11 @@ export type Token = {
   token: string;
 };
 
-export type Root = {
-  user: User;
+export type User = {
+  user: UserData;
 };
 
-export type User = {
+export type UserData = {
   uuid: string;
   email: string;
   username: string;
