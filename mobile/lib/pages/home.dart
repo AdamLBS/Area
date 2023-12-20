@@ -1,3 +1,4 @@
+import 'package:area/pages/bridge.dart';
 import 'package:area/widgets/card_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -53,7 +54,10 @@ class _HomePageState extends State<HomePage> {
                       description:
                           "Bridge service allows to you to link different API",
                       image: "assets/icons/bridge.svg",
-                      onTap: () {}),
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => BridgePage()));
+                      }),
                   SizedBox(height: 10),
                   CardWidget(
                       title: "Gateway",
