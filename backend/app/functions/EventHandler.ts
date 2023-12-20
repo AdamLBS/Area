@@ -3,7 +3,7 @@ import { SendMailEvent } from './SendMailEvent'
 
 export enum ResponseInteraction {
   SEND_EMAIL = 'sendEmail',
-  SEND_DISCORD_MESSAGE = 'send_discord_message',
+  SEND_DISCORD_MESSAGE = 'sendDiscordMessage',
 }
 
 export type Content = {
@@ -16,15 +16,15 @@ export type Content = {
 export const eventHandler = async (
   eventTrigger: ResponseInteraction,
   content: Content,
-  oauth_service_uuid: string
+  responseApiUuid: string
 ) => {
   console.log(`[EventHandler] ${eventTrigger} triggered`)
   if (eventTrigger === ResponseInteraction.SEND_DISCORD_MESSAGE) {
     console.log(`[EventHandler] Sending message to Discord`)
-    await discordEvent(content, oauth_service_uuid)
+    await discordEvent(content, responseApiUuid)
   }
   if (eventTrigger === ResponseInteraction.SEND_EMAIL) {
     console.log(`[EventHandler] Sending email`)
-    await SendMailEvent(content, oauth_service_uuid)
+    await SendMailEvent(content, responseApiUuid)
   }
 }
