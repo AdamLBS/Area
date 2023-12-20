@@ -16,10 +16,10 @@ export default class Event extends BaseModel {
   public responseApi: string
 
   @column()
-  public triggerInteraction: string
+  public triggerInteraction: any
 
   @column()
-  public responseInteraction: string
+  public responseInteraction: any
 
   @column()
   public timestamp: string
