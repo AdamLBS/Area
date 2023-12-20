@@ -1,5 +1,4 @@
 import axios from 'axios'
-import { Content } from './EventHandler'
 import Database from '@ioc:Adonis/Lucid/Database'
 
 export const SendMailEvent = async (data: any, oauth_service_uuid: string) => {
@@ -25,7 +24,7 @@ export const SendMailEvent = async (data: any, oauth_service_uuid: string) => {
               raw: encodedMessage.toString()
             }
           };
-        const response = await axios.request(options);
+        await axios.request(options);
     } catch (error) {
         console.log(error)
     }
