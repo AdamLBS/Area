@@ -24,11 +24,8 @@ const Cards: React.FC<CardsProps> = ({
   icon,
   provider,
 }) => {
-  const queryClient = useQueryClient();
-
-  const onCardClick = useCallback(async () => {
-    await signIn(provider);
-    queryClient.invalidateQueries({ queryKey: ['services'] });
+  const onCardClick = useCallback(() => {
+    signIn(provider);
   }, [provider]);
 
   return (

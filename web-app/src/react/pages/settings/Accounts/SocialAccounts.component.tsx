@@ -1,5 +1,5 @@
 'use client';
-import React, { memo, useEffect, useMemo } from 'react';
+import React, { memo, useContext, useEffect, useMemo } from 'react';
 import { MainContainer } from './SocialAccounts.style';
 import { SocialCard } from './SocialCard';
 import {
@@ -11,12 +11,13 @@ import {
   IconTwitch,
 } from '@/lib/ui/design-system';
 import { useTheme } from 'next-themes';
-import { useServices } from '@/react/hooks/oauth';
+import { SettingsPageContext } from '../SettingsPage.context';
 
 const Accounts = () => {
+  const { services } = useContext(SettingsPageContext);
+
   const { theme } = useTheme();
   const [color, setColor] = React.useState('');
-  const { data: services } = useServices();
 
   useEffect(() => {
     if (theme === 'dark') {
