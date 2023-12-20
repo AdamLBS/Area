@@ -23,7 +23,7 @@ export default function Home() {
     if (token === null) {
       router.push('/login');
     } else {
-      checkMe.mutate({ token });
+      checkMe.mutate();
     }
   }, []);
 
