@@ -19,56 +19,6 @@ type SpotifyListener = {
   is_playing: boolean
   currently_playing_type: string
   item: {
-    album: {
-      album_type: string
-      artists: {
-        external_urls: {
-          spotify: string
-        }
-        href: string
-        id: string
-        name: string
-        type: string
-        uri: string
-      }[]
-      available_markets: string[]
-      external_urls: {
-        spotify: string
-      }
-      href: string
-      id: string
-      images: {
-        height: number
-        url: string
-        width: number
-      }[]
-      name: string
-      release_date: string
-      release_date_precision: string
-      total_tracks: number
-      type: string
-      uri: string
-    }
-    artists: {
-      external_urls: {
-        spotify: string
-      }
-      href: string
-      id: string
-      name: string
-      type: string
-      uri: string
-    }[]
-    available_markets: string[]
-    disc_number: number
-    duration_ms: number
-    explicit: boolean
-    external_ids: {
-      isrc: string
-    }
-    external_urls: {
-      spotify: string
-    }
     href: string
     id: string
     is_local: boolean
@@ -97,12 +47,15 @@ export default class SpotifyListenTask extends BaseTask {
     return false
   }
 
-  private async fetchSpotifyData(oauth: any): Promise<SpotifyListener> {
+  private async fetchSpotifyData(oauth: string): Promise<SpotifyListener> {
     const response = await axios.get<SpotifyListener>(`https://api.spotify.com/v1/me/player`, {
       headers: {
-        Authorization: `Bearer ${oauth.token}`,
+        Authorization: `Bearer ${oauth}`,
       },
     })
+    if (response.status != 200) {
+      throw new Error('Spotify API Error')
+    }
     return response.data
   }
   public async checkEventsInDB() {
@@ -115,35 +68,39 @@ export default class SpotifyListenTask extends BaseTask {
           .from('oauths')
           .where('uuid', event.trigger_api)
           .first()
-        let spotifyListener = await this.fetchSpotifyData(triggerApi)
-        if (
-          globalSpotifyListeners.find(
-            (spotifyListenerSec) => spotifyListenerSec.device.id === spotifyListener.device.id
-          ) === undefined
-        ) {
-          globalSpotifyListeners.push(spotifyListener)
-        } else {
-          let tmpSpotifyListener = globalSpotifyListeners.find(
-            (existingListener) => existingListener.device.id === spotifyListener.device.id
-          )
+        try {
+          let spotifyListener = await this.fetchSpotifyData(triggerApi.token)
           if (
-            tmpSpotifyListener !== undefined &&
-            tmpSpotifyListener.item.uri !== null &&
-            tmpSpotifyListener.item.uri !== spotifyListener.item.uri
+            globalSpotifyListeners.find(
+              (spotifyListenerSec) => spotifyListenerSec.device.id === spotifyListener.device.id
+            ) === undefined
           ) {
-            console.log('Event triggered you have changed the music')
-            const jsonVals = JSON.parse(event.response_interaction)
-            const responseInteraction = jsonVals.id.toString() as ResponseInteraction
-            const fields = jsonVals.fields
-            const content: Content = {
-              title: '',
-              message: '',
-              fields: fields,
-            }
-            globalSpotifyListeners.splice(globalSpotifyListeners.indexOf(tmpSpotifyListener), 1)
             globalSpotifyListeners.push(spotifyListener)
-            await eventHandler(responseInteraction, content, event.response_api)
+          } else {
+            let tmpSpotifyListener = globalSpotifyListeners.find(
+              (existingListener) => existingListener.device.id === spotifyListener.device.id
+            )
+            if (
+              tmpSpotifyListener !== undefined &&
+              tmpSpotifyListener.item.uri !== null &&
+              tmpSpotifyListener.item.uri !== spotifyListener.item.uri
+            ) {
+              console.log('Event triggered you have changed the music')
+              const jsonVals = JSON.parse(event.response_interaction)
+              const responseInteraction = jsonVals.id.toString() as ResponseInteraction
+              const fields = jsonVals.fields
+              const content: Content = {
+                title: '',
+                message: '',
+                fields: fields,
+              }
+              globalSpotifyListeners.splice(globalSpotifyListeners.indexOf(tmpSpotifyListener), 1)
+              globalSpotifyListeners.push(spotifyListener)
+              await eventHandler(responseInteraction, content, event.response_api)
+            }
           }
+        } catch (error) {
+          console.log("User is not listening to music")
         }
       }
     } catch (error) {
