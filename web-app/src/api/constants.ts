@@ -6,6 +6,12 @@ export type Token = {
   token: string;
 };
 
+export type Service = {
+  provider: string;
+};
+
+export type Services = Service[];
+
 export type User = {
   user: UserData;
 };
