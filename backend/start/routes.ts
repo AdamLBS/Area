@@ -40,6 +40,7 @@ Route.group(() => {
   Route.group(() => {
     Route.get('/trigger', 'EventsController.getAvailableTriggerEvents')
     Route.get('/response', 'EventsController.getAvailableResponseEvents')
+    Route.get('/:uuid', 'EventsController.getEvent')
   }).prefix('/events')
 
   /* Auth routes */
@@ -54,6 +55,7 @@ Route.group(() => {
     Route.get('/me', 'AuthController.me')
     Route.post('/me/update', 'AuthController.update')
     Route.get('/me/services', 'AuthController.getServices')
+    Route.get('/events', 'EventsController.getMyEvents')
   })
     .prefix('/user')
     .middleware(['auth:api'])
