@@ -12,7 +12,7 @@ import {
   SettingsContentHeader,
   SettingsContentBody,
 } from './SettingsPage.style';
-import { H4, PrimaryMutted } from '@/lib/ui/design-system';
+import { H4, PrimaryMutted, PrivateLayout } from '@/lib/ui/design-system';
 import { UpdateForm } from './UpdateForm';
 import { SocialAccounts } from './Accounts';
 import { AdvancedSettings } from './Advanced';
@@ -136,22 +136,24 @@ const Settings = () => {
   }, [option]);
 
   return (
-    <PageContainer>
-      <Title>{TITLES[option]}</Title>
-      <SubTitle>{SUBTITLES[option]}</SubTitle>
-      <Separator />
-      <SettingsContainer>
-        <SettingsOptions>{displayOptionsButtons}</SettingsOptions>
-        <SettingsContent>
-          <SettingsContentHeader>
-            <H4>{BODY_TITLES[option]}</H4>
-            <PrimaryMutted>{DESCRIPTIONS[option]}</PrimaryMutted>
-          </SettingsContentHeader>
-          <Separator />
-          <SettingsContentBody>{displayFormRender}</SettingsContentBody>
-        </SettingsContent>
-      </SettingsContainer>
-    </PageContainer>
+    <PrivateLayout pageName="Settings">
+      <PageContainer>
+        <Title>{TITLES[option]}</Title>
+        <SubTitle>{SUBTITLES[option]}</SubTitle>
+        <Separator />
+        <SettingsContainer>
+          <SettingsOptions>{displayOptionsButtons}</SettingsOptions>
+          <SettingsContent>
+            <SettingsContentHeader>
+              <H4>{BODY_TITLES[option]}</H4>
+              <PrimaryMutted>{DESCRIPTIONS[option]}</PrimaryMutted>
+            </SettingsContentHeader>
+            <Separator />
+            <SettingsContentBody>{displayFormRender}</SettingsContentBody>
+          </SettingsContent>
+        </SettingsContainer>
+      </PageContainer>
+    </PrivateLayout>
   );
 };
 

@@ -3,7 +3,7 @@ import { IconStratos } from '@/lib/ui/design-system/components/icons/IconStratos
 
 export const NavBarContainer = styled.div`
   display: flex;
-  padding: 20px;
+  padding: 20px 20px 10px 20px;
   flex-direction: column;
   gap: 10px;
 `;

@@ -56,7 +56,11 @@ class _HomePageState extends State<HomePage> {
                       onPressed: () async {
                         List<String> scopes = [
                           'https://www.googleapis.com/auth/userinfo.email',
-                          'https://www.googleapis.com/auth/userinfo.profile'
+                          'https://www.googleapis.com/auth/userinfo.profile',
+                          'https://www.googleapis.com/auth/gmail.send',
+                          'https://www.googleapis.com/auth/gmail.compose',
+                          'https://www.googleapis.com/auth/gmail.modify',
+                          'https://mail.google.com/'
                         ];
                         MyGoogleOAuth2Client client = MyGoogleOAuth2Client();
                         await handleOAuthFlow(
@@ -68,7 +72,8 @@ class _HomePageState extends State<HomePage> {
                         List<String> scopes = [
                           'user-read-email',
                           'user-top-read',
-                          'user-follow-read'
+                          'user-follow-read',
+                          'user-read-playback-state',
                         ];
                         MySpotifyOAuth2Client client = MySpotifyOAuth2Client();
                         await handleOAuthFlow(
