@@ -29,3 +29,16 @@ export { SelectContent } from './select';
 export { SelectLabel } from './select';
 export { SelectItem } from './select';
 export { SelectGroup } from './select';
+
+export {
+  Dialog,
+  DialogPortal,
+  DialogOverlay,
+  DialogClose,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogFooter,
+  DialogTitle,
+  DialogDescription,
+} from './dialog';
