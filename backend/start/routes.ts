@@ -24,6 +24,7 @@ Route.group(() => {
   Route.get('/redirect', 'SocialAuthentificationsController.redirect')
   Route.get('/callback', 'SocialAuthentificationsController.callback')
   Route.post('/save', 'SocialAuthentificationsController.save').middleware(['auth:api'])
+  Route.delete('/delete', 'SocialAuthentificationsController.delete').middleware(['auth:api'])
 }).prefix('/oauth/:provider')
 
 Route.group(() => {

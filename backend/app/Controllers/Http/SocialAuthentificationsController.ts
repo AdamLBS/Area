@@ -63,4 +63,30 @@ export default class SocialAuthentificationsController {
         })
       })
   }
+
+  public async delete({ auth, response, request }: HttpContextContract) {
+    const loggedUser = await auth.authenticate()
+
+    if (!loggedUser) {
+      return response.unauthorized({ message: 'You must be logged in to access this resource' })
+    }
+
+    const provider = request.param('provider')
+
+    await Oauth.query()
+      .where('user_uuid', loggedUser.uuid)
+      .where('provider', provider)
+      .delete()
+      .then(() => {
+        return response.ok({
+          message: 'Oauth deleted successfully',
+        })
+      })
+      .catch((error) => {
+        return response.badRequest({
+          message: 'An error occured while deleting the oauth',
+          error,
+        })
+      })
+  }
 }
