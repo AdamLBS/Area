@@ -38,3 +38,15 @@ export const getServices = async (): Promise<Services> => {
     throw new Error('Error getting services');
   }
 };
+
+export const deleteOAuth = async (provider: string): Promise<void> => {
+  try {
+    return await axios.delete(`${API_URL_OAUTH}/${provider}/delete`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+      },
+    });
+  } catch (error) {
+    throw new Error('Error deleting OAuth token');
+  }
+};
