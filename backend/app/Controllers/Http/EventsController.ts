@@ -22,13 +22,13 @@ export default class EventsController {
 
     const triggerInteraction = {
       id: payload.triggerInteraction.id,
-      name: TRIGGER_EVENTS.find((e) => e.id === payload.triggerInteraction.id)?.name,
+      name: TRIGGER_EVENTS.find((event) => event.id === payload.triggerInteraction.id)?.name,
       fields: payload.triggerInteraction.fields,
     }
 
     const responseInteraction = {
       id: payload.responseInteraction.id,
-      name: RESPONSE_EVENTS.find((e) => e.id === payload.responseInteraction.id)?.name,
+      name: RESPONSE_EVENTS.find((event) => event.id === payload.responseInteraction.id)?.name,
       fields: payload.responseInteraction.fields,
     }
 
@@ -92,12 +92,12 @@ export default class EventsController {
     const user = await auth.authenticate()
     const events = await Event.query().where('user_uuid', user.uuid)
     return response.ok(
-      events.map((e) => {
+      events.map((event) => {
         return {
-          uuid: e.uuid,
-          active: e.active,
-          // name: e.name,
-          // description: e.description,
+          uuid: event.uuid,
+          active: event.active,
+          // name: event.name,
+          // description: event.description,
         }
       })
     )
