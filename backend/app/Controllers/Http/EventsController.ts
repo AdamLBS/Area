@@ -20,11 +20,23 @@ export default class EventsController {
       .where('provider', payload.response_provider)
       .first()
 
+    const triggerInteraction = {
+      id: payload.triggerInteraction.id,
+      name: TRIGGER_EVENTS.find((event) => event.id === payload.triggerInteraction.id)?.name,
+      fields: payload.triggerInteraction.fields,
+    }
+
+    const responseInteraction = {
+      id: payload.responseInteraction.id,
+      name: RESPONSE_EVENTS.find((event) => event.id === payload.responseInteraction.id)?.name,
+      fields: payload.responseInteraction.fields,
+    }
+
     if (triggerApi && responseApi) {
       const eventPayload = {
         userUuid: user.uuid,
-        triggerInteraction: payload.triggerInteraction,
-        responseInteraction: payload.responseInteraction,
+        triggerInteraction: triggerInteraction,
+        responseInteraction: responseInteraction,
         triggerApi: triggerApi.uuid,
         responseApi: responseApi.uuid,
         active: true,
@@ -66,14 +78,28 @@ export default class EventsController {
     }
 
     return response.ok({
-      message: 'Event found',
-      event,
+      uuid: event.uuid,
+      active: event.active,
+      triggerInteraction: event.triggerInteraction,
+      responseInteraction: event.responseInteraction,
+      timestamp: event.timestamp,
+      created_at: event.createdAt,
+      updated_at: event.updatedAt,
     })
   }
 
   public async getMyEvents({ response, auth }: HttpContextContract) {
     const user = await auth.authenticate()
     const events = await Event.query().where('user_uuid', user.uuid)
-    return response.ok(events)
+    return response.ok(
+      events.map((event) => {
+        return {
+          uuid: event.uuid,
+          active: event.active,
+          // name: event.name,
+          // description: event.description,
+        }
+      })
+    )
   }
 }
