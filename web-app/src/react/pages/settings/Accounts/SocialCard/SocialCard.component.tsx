@@ -80,7 +80,7 @@ const Cards: React.FC<CardsProps> = ({
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
-            <Button onClick={onDeleteAccount}>Save changes</Button>
+            <Button onClick={onDeleteAccount}>Unlink</Button>
             <DialogClose asChild>
               <Button type="button" variant="outline">
                 Cancel
