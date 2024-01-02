@@ -1,53 +1,33 @@
-import React, { ReactNode, memo, useCallback } from 'react';
-import {
-  CardContainer,
-  Content,
-  Header,
-  IconContainer,
-  Redirection,
-  TitleContainer,
-} from './ServiceCard.style';
-import { ChevronRight } from 'lucide-react';
-import { useRouter } from 'next/navigation';
-import { PrimaryMutted, H3 } from '@/lib/ui/design-system';
+import React, { memo } from 'react';
+import { Card, Header, IconContainer } from './ServiceCard.style';
+import { CardDescription } from '@/components/ui';
+import { H3 } from '../Text';
 
-export type ManagementServiceProps = {
+export type ServiceCardProps = {
   title: string;
-  icon: ReactNode;
   description: string;
+  icon: React.ReactNode;
 };
 
-const ManagementServiceComponent: React.FC<ManagementServiceProps> = ({
+const ServiceCardComponent: React.FC<ServiceCardProps> = ({
   title,
-  icon,
   description,
+  icon,
 }) => {
-  const router = useRouter();
-
-  const handleRedirection = useCallback(() => {
-    router.push(`/${title.toLowerCase()}`);
-  }, [title]);
   return (
-    <CardContainer onClick={handleRedirection}>
+    <Card>
       <Header>
-        <TitleContainer>
-          <IconContainer>
-            {React.cloneElement(icon as React.ReactElement, {
-              size: 40,
-              color: '#fff',
-            })}
-          </IconContainer>
-          <H3>{title}</H3>
-        </TitleContainer>
-        <Redirection>
-          <ChevronRight size={32} />
-        </Redirection>
+        <IconContainer>
+          {React.cloneElement(icon as React.ReactElement, {
+            size: 36,
+            color: '#fff',
+          })}
+        </IconContainer>
+        <H3>{title}</H3>
       </Header>
-      <Content>
-        <PrimaryMutted>{description}</PrimaryMutted>
-      </Content>
-    </CardContainer>
+      <CardDescription>{description}</CardDescription>
+    </Card>
   );
 };
 
-export const ServiceCard = memo(ManagementServiceComponent);
+export const ServiceCard = memo(ServiceCardComponent);

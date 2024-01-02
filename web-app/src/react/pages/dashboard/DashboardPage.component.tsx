@@ -5,7 +5,7 @@ import {
   ServiceContainer,
   ManagementContainer,
 } from './DashboardPage.style';
-import { H3, PrivateLayout, ServiceCard } from '@/lib/ui/design-system';
+import { H3, PrivateLayout, AuthCard } from '@/lib/ui/design-system';
 import { Boxes, BrainCircuit, Eye } from 'lucide-react';
 
 const Dashboard = () => {
@@ -15,12 +15,12 @@ const Dashboard = () => {
         <ServiceContainer>
           <H3>Management service</H3>
           <ManagementContainer>
-            <ServiceCard
+            <AuthCard
               title="Bridge"
               icon={<Boxes />}
               description="Bridge service allows to you to link different API"
             />
-            <ServiceCard
+            <AuthCard
               title="Gateway"
               icon={<BrainCircuit />}
               description="Gateway service allows to you to add and configure your API"
@@ -30,7 +30,7 @@ const Dashboard = () => {
         <ServiceContainer>
           <H3>Tracking service</H3>
           <ManagementContainer>
-            <ServiceCard
+            <AuthCard
               title="Watch"
               icon={<Eye />}
               description="You can see all results about your different events"
