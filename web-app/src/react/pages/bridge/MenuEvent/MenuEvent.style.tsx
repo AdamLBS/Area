@@ -7,6 +7,7 @@ export const EventPanel = styled(Card)`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  min-width: 354px;
   height: 100%;
   flex: 2;
 `;
@@ -15,12 +16,13 @@ export const EventPanelContent = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
-  padding: 1.5em;
+  padding: 10px;
   height: 100%;
 `;
 
 export const EventPanelButton = styled(Button)`
   padding: 10px;
+  width: 100%;
   gap: 10px;
 `;
 

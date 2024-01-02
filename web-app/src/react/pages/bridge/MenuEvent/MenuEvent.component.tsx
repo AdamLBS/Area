@@ -16,7 +16,11 @@ import { H3, PrimaryMutted } from '@/lib/ui/design-system';
 import { useRouter } from 'next/navigation';
 import { useEvents } from '@/react/hooks/events';
 
-const MenuEventComponent: React.FC = () => {
+export type EventsProps = {
+  current_uuid?: string;
+};
+
+const MenuEventComponent: React.FC<EventsProps> = ({ current_uuid }) => {
   const router = useRouter();
   const { data: events } = useEvents();
 
@@ -37,12 +41,17 @@ const MenuEventComponent: React.FC = () => {
       <EventPanelContent>
         {events &&
           Object.keys(events).map((eventId) => {
-            const { name, active } = events[eventId];
+            const { name, active, uuid } = events[eventId];
+            let isCurrentEvent;
+            if (uuid === current_uuid) {
+              isCurrentEvent = true;
+            } else isCurrentEvent = false;
             return (
               <EventButton
                 key={eventId}
                 variant="ghost"
                 style={{ justifyContent: 'flex-start' }}
+                active={isCurrentEvent}
                 onClick={() => handleRedirection(name)}
               >
                 {(active && <LogoRight />) || <LogoLeft />}
