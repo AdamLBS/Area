@@ -13,8 +13,9 @@ import {
 } from './EventContent.style';
 import { Plus, Settings } from 'lucide-react';
 import { H3 } from '../Text';
-import { ServiceCard } from '../ServiceCard';
+import { EventCard } from '../EventCard';
 import { IconDiscord, IconSpotify } from '../../icons';
+import { EventActivation } from '../EventActivation';
 
 export type EventContentProps = {
   eventUuid: string;
@@ -34,7 +35,7 @@ const EventContentComponent: React.FC<EventContentProps> = ({ eventUuid }) => {
               <Settings className="mr-2 h-4 w-4" />
               Settings
             </Button>
-            {/* TODO: Add Active switch */}
+            <EventActivation activated={true} eventUuid={eventUuid} />
           </HeaderPart>
           <HeaderPart>
             <Button>Save</Button>
@@ -46,7 +47,7 @@ const EventContentComponent: React.FC<EventContentProps> = ({ eventUuid }) => {
         <EventPart>
           <H3>Trigger</H3>
           <EventPartContent>
-            <ServiceCard
+            <EventCard
               title="Spotify"
               description="Listening a music"
               icon={<IconSpotify />}
@@ -57,7 +58,7 @@ const EventContentComponent: React.FC<EventContentProps> = ({ eventUuid }) => {
         <EventPart>
           <H3>Action</H3>
           <EventPartContent>
-            <ServiceCard
+            <EventCard
               title="Discord"
               description="Send a message"
               icon={<IconDiscord />}

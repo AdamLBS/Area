@@ -11,6 +11,7 @@ import {
 } from '@/components/ui';
 import {
   CustomSelect,
+  EventActivation,
   H3,
   PrimaryMutted,
   PrivateLayout,
@@ -37,7 +38,6 @@ import { PlusIcon } from 'lucide-react';
 import { useResponses, useTriggers } from '@/react/hooks/events';
 import { useMutation } from '@tanstack/react-query';
 import { createEvent } from '@/api/events';
-import { EventActivation } from './EventActivation';
 import { EventCreate } from '@/api/constants';
 
 const events = ['test1', 'test2'];
