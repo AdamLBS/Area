@@ -1,4 +1,4 @@
-import { Button, CardDescription, CardTitle } from '@/components/ui';
+import { Button, CardDescription, CardTitle, Dialog } from '@/components/ui';
 import React, { memo } from 'react';
 import {
   AddButton,
@@ -16,12 +16,15 @@ import { H3 } from '../Text';
 import { EventCard } from '../EventCard';
 import { IconDiscord, IconSpotify } from '../../icons';
 import { EventActivation } from '../EventActivation';
+import { EventSettingsModal } from '../EventSettingsModal';
 
 export type EventContentProps = {
   eventUuid: string;
 };
 
 const EventContentComponent: React.FC<EventContentProps> = ({ eventUuid }) => {
+  const [open, setOpen] = React.useState(false);
+
   return (
     <Card>
       <CardHeader>
@@ -31,7 +34,7 @@ const EventContentComponent: React.FC<EventContentProps> = ({ eventUuid }) => {
       <Container>
         <Header>
           <HeaderPart>
-            <Button variant="outline">
+            <Button variant="outline" onClick={() => setOpen(true)}>
               <Settings className="mr-2 h-4 w-4" />
               Settings
             </Button>
@@ -71,6 +74,9 @@ const EventContentComponent: React.FC<EventContentProps> = ({ eventUuid }) => {
           Add a new action event
         </AddButton>
       </Container>
+      <Dialog open={open} onOpenChange={setOpen}>
+        <EventSettingsModal />
+      </Dialog>
     </Card>
   );
 };
