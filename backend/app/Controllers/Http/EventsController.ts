@@ -143,6 +143,5 @@ export default class EventsController {
     return response.ok({
       message: 'Event updated',
     })
-    
   }
 }
