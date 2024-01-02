@@ -7,14 +7,13 @@ import { activateEvent } from '@/api/events';
 import { toast } from '@/components/ui/use-toast';
 import { useMutation } from '@tanstack/react-query';
 
-type Props = {
+type ActivationProps = {
   activated: boolean;
-  uuid: string;
+  eventUuid: string;
 };
 
-const Activation = ({ activated, uuid }: Props) => {
+const Activation = ({ activated, eventUuid }: ActivationProps) => {
   const [eventActive, setEventActive] = useState<boolean>(activated);
-  const [eventUuid] = useState<string>(uuid);
 
   const handleSwitcher = useCallback(
     (value: boolean) => {

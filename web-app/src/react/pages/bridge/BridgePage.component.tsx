@@ -203,7 +203,7 @@ const Bridge: React.FC = () => {
               <TopBarConfig>
                 <EventActivation
                   activated={true}
-                  uuid="32f05b42-3ebb-498d-a4dc-60b87d06e5f2"
+                  eventUuid="32f05b42-3ebb-498d-a4dc-60b87d06e5f2"
                 />
                 <Button onClick={handleSave}>Save</Button>
               </TopBarConfig>
