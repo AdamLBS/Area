@@ -49,3 +49,9 @@ export type EventCreate = {
   triggerInteraction: Interaction;
   responseInteraction: Interaction;
 };
+
+export type Event = {
+  uuid: string;
+  active: boolean;
+  name: string;
+};
