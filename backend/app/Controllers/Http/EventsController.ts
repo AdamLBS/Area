@@ -77,19 +77,6 @@ export default class EventsController {
     return response.ok(events)
   }
 
-  public async deleteEvents({ response, auth }: HttpContextContract) {
-    const user = await auth.authenticate()
-    const events = await Event.query().where('user_uuid', user.uuid).delete()
-    if (events[0] > 0) {
-      return response.ok({
-        message: 'Events deleted',
-      })
-    }
-    return response.notFound({
-      message: 'No events found',
-    })
-  }
-
   public async deleteEvent({ response, auth, params }: HttpContextContract) {
     const user = await auth.authenticate()
     const { uuid } = params
