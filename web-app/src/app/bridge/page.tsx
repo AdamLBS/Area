@@ -1,3 +1,3 @@
-import { BridgePage } from '@/react/pages/bridge';
+import { BridgePage } from '@/react/pages/';
 
 export default BridgePage;
