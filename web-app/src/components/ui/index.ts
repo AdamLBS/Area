@@ -30,6 +30,8 @@ export { SelectLabel } from './select';
 export { SelectItem } from './select';
 export { SelectGroup } from './select';
 
+export { Switch } from './switch';
+
 export {
   Dialog,
   DialogPortal,

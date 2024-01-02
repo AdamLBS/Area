@@ -121,4 +121,28 @@ export default class EventsController {
       message: 'Event not found',
     })
   }
+
+  public async activateEvent({ response, auth, request, params }: HttpContextContract) {
+    const user = await auth.authenticate()
+    const { uuid } = params
+    if (!uuid) {
+      return response.badRequest({
+        message: 'Event uuid is required',
+      })
+    }
+    const event = await Event.query().where('user_uuid', user.uuid).where('uuid', uuid).first()
+    if (!event) {
+      return response.notFound({
+        message: 'Event not found',
+      })
+    }
+
+    const { activated } = request.only(['activated'])
+    event.active = activated
+    await event.save()
+    return response.ok({
+      message: 'Event updated',
+    })
+    
+  }
 }
