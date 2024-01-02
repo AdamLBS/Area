@@ -37,6 +37,7 @@ import { PlusIcon } from 'lucide-react';
 import { useResponses, useTriggers } from '@/react/hooks/events';
 import { useMutation } from '@tanstack/react-query';
 import { createEvent } from '@/api/events';
+import { EventActivation } from './EventActivation';
 import { EventCreate } from '@/api/constants';
 
 const events = ['test1', 'test2'];
@@ -200,6 +201,10 @@ const Bridge: React.FC = () => {
             </CardHeader>
             <RightPanelContent>
               <TopBarConfig>
+                <EventActivation
+                  activated={true}
+                  eventUuid="32f05b42-3ebb-498d-a4dc-60b87d06e5f2"
+                />
                 <Button onClick={handleSave}>Save</Button>
               </TopBarConfig>
               <ConfigContent>
