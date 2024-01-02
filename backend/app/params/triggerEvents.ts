@@ -5,15 +5,23 @@ export const TRIGGER_EVENTS: APIEvent[] = [
     provider: 'Spotify',
     id: 'listenMusic',
     name: 'Changes music',
-    fields: {},
+    fields: [],
   },
   {
     provider: 'Twitch',
     id: 'startsLive',
     name: 'Streamer starts to live',
-    fields: {
-      streamer: 'zerator',
-      username: 'gab',
-    },
+    fields: [
+      {
+        value: 'Zerator',
+        name: 'streamer',
+        required: true,
+      },
+      {
+        value: 'gab',
+        name: 'username',
+        required: true,
+      },
+    ],
   },
 ]
