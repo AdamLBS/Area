@@ -4,6 +4,7 @@ import Event from 'App/Models/Event'
 import CreateEventValidator from 'App/Validators/Event/CreateEventValidator'
 import { TRIGGER_EVENTS } from 'App/params/triggerEvents'
 import { RESPONSE_EVENTS } from 'App/params/responseEvents'
+import { AdditionalInteraction } from 'types/events'
 
 export default class EventsController {
   public async createEvent({ request, response, auth }: HttpContextContract) {
@@ -82,6 +83,7 @@ export default class EventsController {
       active: event.active,
       triggerInteraction: event.triggerInteraction,
       responseInteraction: event.responseInteraction,
+      additionalActions: event.additionalActions,
       timestamp: event.timestamp,
       created_at: event.createdAt,
       updated_at: event.updatedAt,

@@ -4,7 +4,14 @@ import { v4 as uuidv4 } from 'uuid'
 
 type Interaction = {
   id: string
-  fields: any
+  fields: any[]
+}
+
+type AdditionalInteraction = {
+  action_provider: string
+  id: string
+  name?: string
+  fields: any[]
 }
 export default class Event extends BaseModel {
   @column({ isPrimary: true })
@@ -24,6 +31,9 @@ export default class Event extends BaseModel {
 
   @column()
   public responseInteraction: Interaction
+
+  @column()
+  public additionalActions: AdditionalInteraction[]
 
   @column()
   public timestamp: string
