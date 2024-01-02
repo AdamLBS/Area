@@ -1,9 +1,9 @@
 import axios from 'axios'
 import Database from '@ioc:Adonis/Lucid/Database'
 
-export const SendMailEvent = async (data: any, oauth_service_uuid: string) => {
+export const SendMailEvent = async (data: any, responseApiUuid: string) => {
   try {
-    const mailOAuth = await Database.from('oauths').where('uuid', oauth_service_uuid).first()
+    const mailOAuth = await Database.from('oauths').where('uuid', responseApiUuid).first()
     let message =
       'From: <me>\n' +
       'To: <' +
