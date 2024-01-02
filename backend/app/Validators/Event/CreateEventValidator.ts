@@ -24,17 +24,17 @@ export default class CreateEventValidator {
    *    ```
    */
   public schema = schema.create({
-    trigger_provider: schema.string(),
-    response_provider: schema.string(),
+    trigger_provider: schema.string({ trim: true }, [rules.required()]),
+    response_provider: schema.string({ trim: true }, [rules.required()]),
     triggerInteraction: schema.object().members({
-      id: schema.string(),
+      id: schema.string({ trim: true }, [rules.required()]),
       fields: schema.array().members(schema.object().anyMembers()),
     }),
     responseInteraction: schema.object().members({
-      id: schema.string(),
+      id: schema.string({ trim: true }, [rules.required()]),
       fields: schema.array().members(schema.object().anyMembers()),
     }),
-    additionalAction: schema.array.optional().members(
+    additionalActions: schema.array.optional().members(
       schema.object().members({
         action_provider: schema.string(),
         id: schema.string(),

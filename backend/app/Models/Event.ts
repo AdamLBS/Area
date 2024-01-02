@@ -10,7 +10,6 @@ type Interaction = {
 type AdditionalInteraction = {
   action_provider: string
   id: string
-  name?: string
   fields: any[]
 }
 export default class Event extends BaseModel {
@@ -33,7 +32,7 @@ export default class Event extends BaseModel {
   public responseInteraction: Interaction
 
   @column()
-  public additionalActions: AdditionalInteraction[]
+  public additionalActions: AdditionalInteraction[] | null
 
   @column()
   public timestamp: string

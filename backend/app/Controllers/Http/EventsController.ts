@@ -21,6 +21,14 @@ export default class EventsController {
       .where('provider', payload.response_provider)
       .first()
 
+    if (!triggerApi || !responseApi) {
+      return response.badRequest({
+        message: 'Trigger or response api not found',
+        triggerApi,
+        responseApi,
+      })
+    }
+
     const triggerInteraction = {
       id: payload.triggerInteraction.id,
       name: TRIGGER_EVENTS.find((event) => event.id === payload.triggerInteraction.id)?.name,
@@ -33,6 +41,31 @@ export default class EventsController {
       fields: payload.responseInteraction.fields,
     }
 
+    let additionalActions: AdditionalInteraction[] = []
+
+    if (payload.additionalActions && payload.additionalActions.length > 0) {
+      await Promise.all(
+        payload.additionalActions.map(async (action) => {
+          const actionApi = await Oauth.query()
+            .where('user_uuid', user.uuid)
+            .where('provider', action.action_provider)
+            .first()
+
+          if (!actionApi) {
+            throw new Error('Action api not found')
+          }
+
+          const newAction = {
+            action_provider: action.action_provider,
+            id: action.id,
+            name: TRIGGER_EVENTS.find((event) => event.id === action.id)?.name,
+            fields: action.fields,
+          }
+          additionalActions.push(newAction)
+        })
+      )
+    }
+
     if (triggerApi && responseApi) {
       const eventPayload = {
         userUuid: user.uuid,
@@ -40,6 +73,7 @@ export default class EventsController {
         responseInteraction: responseInteraction,
         triggerApi: triggerApi.uuid,
         responseApi: responseApi.uuid,
+        additionalActions,
         active: true,
       }
       const event = await Event.firstOrCreate(eventPayload)
