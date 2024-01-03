@@ -62,10 +62,10 @@ const SettingsModal = ({
       toast({
         variant: 'default',
         title: 'Success!',
-        description: 'Your credentials have been updated.',
+        description: 'Your event has been updated.',
       });
-      queryClient.invalidateQueries(['event']);
-      queryClient.invalidateQueries(['events']);
+      queryClient.invalidateQueries({ queryKey: ['event'] });
+      queryClient.invalidateQueries({ queryKey: ['events'] });
     },
     onError: (error) => {
       toast({

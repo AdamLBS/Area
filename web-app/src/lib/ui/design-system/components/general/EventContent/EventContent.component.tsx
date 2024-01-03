@@ -1,4 +1,4 @@
-import { Button, CardDescription, CardTitle } from '@/components/ui';
+import { Button, CardDescription, CardTitle, Toaster } from '@/components/ui';
 import React, { memo } from 'react';
 import {
   AddButton,
@@ -120,6 +120,7 @@ const EventContentComponent: React.FC<EventContentProps> = ({ eventUuid }) => {
         description={event?.description}
         eventUuid={eventUuid}
       />
+      <Toaster />
     </Card>
   );
 };
