@@ -43,6 +43,7 @@ const providerIcon = {
   twitch: <IconTwitch />,
   null: <Loader />,
 };
+import { EventSettingsModal } from '../EventSettingsModal';
 
 export type EventContentProps = {
   eventUuid: string;
@@ -50,6 +51,8 @@ export type EventContentProps = {
 
 const EventContentComponent: React.FC<EventContentProps> = ({ eventUuid }) => {
   const { data: event } = useEvent(eventUuid);
+  const [open, setOpen] = React.useState(false);
+
   return (
     <Card>
       <CardHeader>
@@ -59,7 +62,7 @@ const EventContentComponent: React.FC<EventContentProps> = ({ eventUuid }) => {
       <Container>
         <Header>
           <HeaderPart>
-            <Button variant="outline">
+            <Button variant="outline" onClick={() => setOpen(true)}>
               <Settings className="mr-2 h-4 w-4" />
               Settings
             </Button>
@@ -107,6 +110,7 @@ const EventContentComponent: React.FC<EventContentProps> = ({ eventUuid }) => {
           Add a new action event
         </AddButton>
       </Container>
+      <EventSettingsModal isOpen={open} setOpen={setOpen} />
     </Card>
   );
 };
