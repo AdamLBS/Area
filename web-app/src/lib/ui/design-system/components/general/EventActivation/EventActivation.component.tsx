@@ -1,5 +1,5 @@
 'use client';
-import React, { memo, useCallback, useState } from 'react';
+import React, { memo, useCallback } from 'react';
 import { SwitchContainer } from './EventActivation.style';
 import { Switch } from '@/components/ui';
 import { PrimarySmall } from '@/lib/ui/design-system';
