@@ -50,7 +50,7 @@ export type EventCreate = {
   responseInteraction: Interaction;
 };
 
-export type Event = {
+export type EventType = {
   uuid: string;
   active: boolean;
   name: string;

@@ -1,15 +1,14 @@
 'use client';
-import { CardFooter } from '@/components/ui';
-import React, { memo, useEffect } from 'react';
+import React, { memo } from 'react';
 import {
   EventButton,
   Header,
   EventPanel,
   EventPanelButton,
   EventPanelContent,
-  ButtonText,
   LogoRight,
   LogoLeft,
+  Footer,
 } from './MenuEvent.style';
 import { PlusIcon } from 'lucide-react';
 import { H3, PrimaryMutted } from '@/lib/ui/design-system';
@@ -17,18 +16,16 @@ import { useRouter } from 'next/navigation';
 import { useEvents } from '@/react/hooks/events';
 
 export type EventsProps = {
-  current_uuid?: string;
+  currentUuid?: string;
 };
 
-const MenuEventComponent: React.FC<EventsProps> = ({ current_uuid }) => {
+const MenuEventComponent: React.FC<EventsProps> = ({ currentUuid }) => {
   const router = useRouter();
   const { data: events } = useEvents();
 
-  const handleRedirection = (name: string) => {
-    router.push('/bridge/' + name);
+  const handleRedirection = (uuid: string) => {
+    router.push('/bridge/' + uuid);
   };
-
-  useEffect(() => {}, [events]);
 
   return (
     <EventPanel>
@@ -40,32 +37,27 @@ const MenuEventComponent: React.FC<EventsProps> = ({ current_uuid }) => {
       </Header>
       <EventPanelContent>
         {events &&
-          Object.keys(events).map((eventId) => {
-            const { name, active, uuid } = events[eventId];
-            let isCurrentEvent;
-            if (uuid === current_uuid) {
-              isCurrentEvent = true;
-            } else isCurrentEvent = false;
+          events.map((event, index) => {
             return (
               <EventButton
-                key={eventId}
+                key={index}
                 variant="ghost"
                 style={{ justifyContent: 'flex-start' }}
-                active={isCurrentEvent}
-                onClick={() => handleRedirection(name)}
+                active={event.uuid === currentUuid}
+                onClick={() => handleRedirection(event.uuid)}
               >
-                {(active && <LogoRight />) || <LogoLeft />}
-                <ButtonText>{name}</ButtonText>
+                {event.active ? <LogoRight /> : <LogoLeft />}
+                {event.name}
               </EventButton>
             );
           })}
       </EventPanelContent>
-      <CardFooter>
+      <Footer>
         <EventPanelButton>
           <PlusIcon size={16} />
           Add a new event
         </EventPanelButton>
-      </CardFooter>
+      </Footer>
     </EventPanel>
   );
 };

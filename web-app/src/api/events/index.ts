@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { API_URL, ApiEvent, EventCreate } from '../constants';
+import { API_URL, ApiEvent, EventCreate, EventType } from '../constants';
 
 export const getTriggers = async (): Promise<ApiEvent[]> => {
   try {
@@ -29,7 +29,7 @@ export const createEvent = async (payload: EventCreate): Promise<void> => {
   }
 };
 
-export const getEvents = async (): Promise<Event[]> => {
+export const getEvents = async (): Promise<EventType[]> => {
   try {
     const res = await axios.get(API_URL + '/user/events', {
       headers: {

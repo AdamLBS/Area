@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui';
-import { Card } from '@/components/ui/card';
+import { Card, CardFooter } from '@/components/ui/card';
 import styled from 'styled-components';
 import { ToggleLeft, ToggleRight } from 'lucide-react';
 
@@ -9,7 +9,6 @@ export const EventPanel = styled(Card)`
   justify-content: space-between;
   min-width: 354px;
   height: 100%;
-  flex: 2;
 `;
 
 export const EventPanelContent = styled.div`
@@ -57,10 +56,6 @@ export const EventButton = styled(Button)`
   gap: 8px;
 `;
 
-export const ButtonText = styled.text`
-  color: #fafafa;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 20px;
+export const Footer = styled(CardFooter)`
+  padding: 10px;
 `;

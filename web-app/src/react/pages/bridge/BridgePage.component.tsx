@@ -33,7 +33,7 @@ import { useResponses, useTriggers } from '@/react/hooks/events';
 import { useMutation } from '@tanstack/react-query';
 import { createEvent } from '@/api/events';
 import { EventCreate } from '@/api/constants';
-import { MenuEvent } from './MenuEvent';
+import { MenuEvent } from '@/lib/ui/design-system';
 
 const Bridge: React.FC = () => {
   const { data: triggers } = useTriggers();
