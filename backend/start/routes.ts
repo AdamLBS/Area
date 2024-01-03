@@ -38,7 +38,12 @@ Route.group(() => {
     return { hello: 'world!' }
   })
 
-  Route.post('/event/create', 'EventsController.createEvent').middleware(['auth:api'])
+  Route.group(() => {
+    Route.post('/create', 'EventsController.createEvent')
+    Route.patch('/:uuid/update', 'EventsController.updateEventSettings')
+  })
+    .prefix('/event')
+    .middleware(['auth:api'])
 
   Route.group(() => {
     Route.get('/trigger', 'EventsController.getAvailableTriggerEvents')

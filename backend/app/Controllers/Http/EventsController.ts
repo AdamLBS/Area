@@ -5,6 +5,7 @@ import CreateEventValidator from 'App/Validators/Event/CreateEventValidator'
 import { TRIGGER_EVENTS } from 'App/params/triggerEvents'
 import { RESPONSE_EVENTS } from 'App/params/responseEvents'
 import { AdditionalInteraction } from 'types/events'
+import UpdateEventSettingValidator from 'App/Validators/Event/UpdateEventSettingValidator'
 
 export default class EventsController {
   public async createEvent({ request, response, auth }: HttpContextContract) {
@@ -87,6 +88,25 @@ export default class EventsController {
 
     return response.internalServerError({
       message: 'Event could not be created error is : ' + triggerApi + ' ' + responseApi,
+    })
+  }
+
+  public async updateEventSettings({ request, response, auth, params }: HttpContextContract) {
+    const payload = await request.validate(UpdateEventSettingValidator)
+    const user = await auth.authenticate()
+
+    const { uuid } = params
+    const event = await Event.query().where('user_uuid', user.uuid).where('uuid', uuid).first()
+    if (!event) {
+      return response.notFound({
+        message: 'Event not found',
+      })
+    }
+    event.merge(payload)
+    await event.save()
+    return response.ok({
+      message: 'Event updated successfully',
+      event,
     })
   }
 
