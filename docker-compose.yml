@@ -53,6 +53,7 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8081:3000"
+      - "3000:3000"
     networks:
       - stratos_net
     links:
