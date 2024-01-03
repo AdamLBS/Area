@@ -52,6 +52,8 @@ export type EventCreate = {
 
 export type Event = {
   uuid: string;
+  name: string;
+  description: string;
   active: boolean;
   triggerInteraction: ApiEvent;
   responseInteraction: ApiEvent;

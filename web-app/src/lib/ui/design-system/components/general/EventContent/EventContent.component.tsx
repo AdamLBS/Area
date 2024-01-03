@@ -56,8 +56,8 @@ const EventContentComponent: React.FC<EventContentProps> = ({ eventUuid }) => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Your event title</CardTitle>
-        <CardDescription>Your event description</CardDescription>
+        <CardTitle>{event?.name}</CardTitle>
+        <CardDescription>{event?.description}</CardDescription>
       </CardHeader>
       <Container>
         <Header>
