@@ -132,7 +132,7 @@ export default class EventsController {
         return {
           uuid: event.uuid,
           active: event.active,
-          // name: event.name,
+          name: 'default',
           // description: event.description,
         }
       })
