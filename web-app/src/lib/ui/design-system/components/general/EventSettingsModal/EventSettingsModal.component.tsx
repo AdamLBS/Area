@@ -68,7 +68,6 @@ const SettingsModal = ({ isOpen, setOpen }: SettingsProps) => {
   type FormValues = z.infer<typeof formSchema>;
 
   const onSubmit = useCallback((values: FormValues) => {
-    console.log(values);
     updateMutation.mutate(values);
   }, []);
 
