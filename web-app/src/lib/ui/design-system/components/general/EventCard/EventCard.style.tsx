@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { Card as _Card } from '@/components/ui';
+import { H3 } from '../Text';
 
 export const Card = styled(_Card)`
   display: flex;
@@ -25,4 +26,8 @@ export const IconContainer = styled.div`
   height: 64px;
   background-color: #94a3b8;
   border-radius: 6.667px;
+`;
+
+export const Title = styled(H3)`
+  text-transform: capitalize;
 `;

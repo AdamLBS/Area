@@ -21,12 +21,14 @@ export default class EventsController {
       .first()
 
     const triggerInteraction = {
+      provider: payload.trigger_provider,
       id: payload.triggerInteraction.id,
       name: TRIGGER_EVENTS.find((event) => event.id === payload.triggerInteraction.id)?.name,
       fields: payload.triggerInteraction.fields,
     }
 
     const responseInteraction = {
+      provider: payload.response_provider,
       id: payload.responseInteraction.id,
       name: RESPONSE_EVENTS.find((event) => event.id === payload.responseInteraction.id)?.name,
       fields: payload.responseInteraction.fields,

@@ -1,11 +1,10 @@
 import React, { memo } from 'react';
-import { Card, Header, IconContainer } from './EventCard.style';
+import { Card, Header, IconContainer, Title } from './EventCard.style';
 import { CardDescription } from '@/components/ui';
-import { H3 } from '../Text';
 
 export type ServiceCardProps = {
-  title: string;
-  description: string;
+  title?: string;
+  description?: string;
   icon: React.ReactNode;
 };
 
@@ -23,7 +22,7 @@ const EventCardComponent: React.FC<ServiceCardProps> = ({
             color: '#fff',
           })}
         </IconContainer>
-        <H3>{title}</H3>
+        <Title>{title}</Title>
       </Header>
       <CardDescription>{description}</CardDescription>
     </Card>

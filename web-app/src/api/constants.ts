@@ -49,3 +49,13 @@ export type EventCreate = {
   triggerInteraction: Interaction;
   responseInteraction: Interaction;
 };
+
+export type Event = {
+  uuid: string;
+  active: boolean;
+  triggerInteraction: ApiEvent;
+  responseInteraction: ApiEvent;
+  timestamp: string;
+  created_at: string;
+  updated_at: string;
+};

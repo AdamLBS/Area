@@ -11,17 +11,45 @@ import {
   Header,
   HeaderPart,
 } from './EventContent.style';
-import { Plus, Settings } from 'lucide-react';
+import { Loader, Plus, Settings } from 'lucide-react';
 import { H3 } from '../Text';
 import { EventCard } from '../EventCard';
-import { IconDiscord, IconSpotify } from '../../icons';
+import {
+  IconDiscord,
+  IconGithub,
+  IconGoogle,
+  IconLinkedin,
+  IconSpotify,
+  IconTwitch,
+} from '../../icons';
 import { EventActivation } from '../EventActivation';
+import { useEvent } from '@/react/hooks/events';
+
+type Provider =
+  | 'spotify'
+  | 'discord'
+  | 'google'
+  | 'github'
+  | 'linkedin'
+  | 'twitch'
+  | 'null';
+
+const providerIcon = {
+  spotify: <IconSpotify />,
+  discord: <IconDiscord />,
+  google: <IconGoogle />,
+  github: <IconGithub />,
+  linkedin: <IconLinkedin />,
+  twitch: <IconTwitch />,
+  null: <Loader />,
+};
 
 export type EventContentProps = {
   eventUuid: string;
 };
 
 const EventContentComponent: React.FC<EventContentProps> = ({ eventUuid }) => {
+  const { data: event } = useEvent(eventUuid);
   return (
     <Card>
       <CardHeader>
@@ -48,9 +76,13 @@ const EventContentComponent: React.FC<EventContentProps> = ({ eventUuid }) => {
           <H3>Trigger</H3>
           <EventPartContent>
             <EventCard
-              title="Spotify"
-              description="Listening a music"
-              icon={<IconSpotify />}
+              title={event?.triggerInteraction.provider}
+              description={event?.triggerInteraction.name}
+              icon={
+                providerIcon[
+                  (event?.triggerInteraction.provider || 'null') as Provider
+                ]
+              }
             />
             <BreakLine />
           </EventPartContent>
@@ -59,9 +91,13 @@ const EventContentComponent: React.FC<EventContentProps> = ({ eventUuid }) => {
           <H3>Action</H3>
           <EventPartContent>
             <EventCard
-              title="Discord"
-              description="Send a message"
-              icon={<IconDiscord />}
+              title={event?.responseInteraction.provider}
+              description={event?.responseInteraction.name}
+              icon={
+                providerIcon[
+                  (event?.responseInteraction.provider || 'null') as Provider
+                ]
+              }
             />
             <BreakLine />
           </EventPartContent>

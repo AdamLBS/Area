@@ -7,7 +7,7 @@ const Event: React.FC = () => {
   return (
     <PrivateLayout pageName="Bridge">
       <PageContainer>
-        <EventContent eventUuid="44fbd0f3-cc02-40bd-9fc2-fd9d8f3372b5" />
+        <EventContent eventUuid="00c2c15e-1c1e-4d90-a352-6041797dd990" />
       </PageContainer>
     </PrivateLayout>
   );
