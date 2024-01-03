@@ -13,13 +13,11 @@ type ActivationProps = {
 };
 
 const Activation = ({ activated, eventUuid }: ActivationProps) => {
-  const [eventActive, setEventActive] = useState<boolean>(activated);
   const queryClient = useQueryClient();
-
   const activateEventMutation = useMutation({
     mutationFn: activateEvent,
     onSuccess: () => {
-      const message = eventActive ? 'activated' : 'desactivated';
+      const message = activated ? 'activated' : 'desactivated';
       toast({
         title: 'Success!',
         description: 'Your event has been ' + message + '.',
@@ -35,18 +33,14 @@ const Activation = ({ activated, eventUuid }: ActivationProps) => {
     },
   });
 
-  const handleSwitcher = useCallback(
-    (value: boolean) => {
-      setEventActive(value);
-      activateEventMutation.mutate({ uuid: eventUuid, activated: value });
-    },
-    [eventActive],
-  );
+  const handleSwitcher = useCallback((value: boolean) => {
+    activateEventMutation.mutate({ uuid: eventUuid, activated: value });
+  }, []);
 
   return (
     <SwitchContainer>
       <PrimarySmall>Active</PrimarySmall>
-      <Switch checked={eventActive} onCheckedChange={handleSwitcher} />
+      <Switch checked={activated} onCheckedChange={handleSwitcher} />
     </SwitchContainer>
   );
 };
