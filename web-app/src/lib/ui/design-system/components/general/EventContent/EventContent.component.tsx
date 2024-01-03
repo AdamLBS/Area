@@ -74,9 +74,7 @@ const EventContentComponent: React.FC<EventContentProps> = ({ eventUuid }) => {
           Add a new action event
         </AddButton>
       </Container>
-      <Dialog open={open} onOpenChange={setOpen}>
-        <EventSettingsModal />
-      </Dialog>
+      <EventSettingsModal isOpen={open} setOpen={setOpen} />
     </Card>
   );
 };

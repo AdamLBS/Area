@@ -16,6 +16,7 @@ import {
   DialogDescription,
   DialogFooter,
   DialogTrigger,
+  Dialog,
 } from '@/components/ui';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -26,11 +27,16 @@ import { Toaster } from '@/components/ui/toaster';
 
 const formSchema = z.object({
   name: z.string().min(3).optional(),
-  title: z.string().email().optional(),
-  description: z.string().min(8).optional(),
+  title: z.string().optional(),
+  description: z.string().optional(),
 });
 
-const SettingsModal = () => {
+type SettingsProps = {
+  isOpen: boolean;
+  setOpen: (open: boolean) => void;
+};
+
+const SettingsModal = ({ isOpen, setOpen }: SettingsProps) => {
   const { toast } = useToast();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -61,88 +67,78 @@ const SettingsModal = () => {
 
   type FormValues = z.infer<typeof formSchema>;
 
-  const checkPassword = useCallback(
-    (values: FormValues) => {
-      console.log(values);
-      updateMutation.mutate(values);
-    },
-    [updateMutation],
-  );
-
   const onSubmit = useCallback((values: FormValues) => {
-    checkPassword(values);
+    console.log(values);
+    updateMutation.mutate(values);
   }, []);
 
   return (
-    <DialogContent>
-      <DialogHeader>
-        <DialogTitle>Event settings</DialogTitle>
-        <DialogDescription>Settings of your Bridge event</DialogDescription>
-      </DialogHeader>
-      <Form {...form}>
-        <FormContainer>
-          <FormField
-            control={form.control}
-            name="name"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Event name</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="Send Discord message when I’m listenning a music on Spotify "
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="title"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Event title</FormLabel>
-                <FormControl>
-                  <Input placeholder="Your event title" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="description"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Event description</FormLabel>
-                <FormControl>
-                  <Input placeholder="Your event description" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </FormContainer>
-        <Toaster />
-      </Form>
-      <DialogFooter>
-        <ButtonContainer>
-          <Button
-            type="button"
-            variant="default"
-            onClick={form.handleSubmit(onSubmit)}
-          >
-            Update
-          </Button>
-          <DialogTrigger>
-            <Button type="button" variant="outline">
-              Cancel
+    <Dialog open={isOpen} onOpenChange={setOpen}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Event settings</DialogTitle>
+          <DialogDescription>Settings of your Bridge event</DialogDescription>
+        </DialogHeader>
+        defaultValues
+        <Form {...form}>
+          <FormContainer onSubmit={form.handleSubmit(onSubmit)}>
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Event name</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Send Discord message when I’m listenning a music on Spotify "
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="title"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Event title</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Your event title" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Event description</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Your event description" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </FormContainer>
+          <Toaster />
+        </Form>
+        <DialogFooter>
+          <ButtonContainer>
+            <Button variant="default" onClick={form.handleSubmit(onSubmit)}>
+              Update
             </Button>
-          </DialogTrigger>
-        </ButtonContainer>
-      </DialogFooter>
-    </DialogContent>
+            <DialogTrigger>
+              <Button variant="outline">Cancel</Button>
+            </DialogTrigger>
+          </ButtonContainer>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 };
 
