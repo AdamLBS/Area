@@ -164,7 +164,11 @@ const UpdateFormComponent = () => {
           )}
         />
         <ButtonContainer>
-          <Button type="submit" variant="default">
+          <Button
+            type="submit"
+            variant="default"
+            loading={updateMutation.isPending}
+          >
             Apply
           </Button>
         </ButtonContainer>
