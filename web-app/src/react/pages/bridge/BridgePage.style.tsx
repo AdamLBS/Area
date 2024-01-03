@@ -57,7 +57,7 @@ export const RightPanelContent = styled.div`
 export const TopBarConfig = styled.div`
   display: flex;
   width: 100%;
-  justify-content: space-between;
+  justify-content: flex-end;
 `;
 
 export const ConfigPanel = styled.div`
