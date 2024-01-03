@@ -1,4 +1,4 @@
-import { Button, CardDescription, CardTitle } from '@/components/ui';
+import { Button, CardDescription, CardTitle, Toaster } from '@/components/ui';
 import React, { memo } from 'react';
 import {
   AddButton,
@@ -113,7 +113,14 @@ const EventContentComponent: React.FC<EventContentProps> = ({ eventUuid }) => {
           Add a new action event
         </AddButton>
       </Container>
-      <EventSettingsModal isOpen={open} setOpen={setOpen} />
+      <EventSettingsModal
+        isOpen={open}
+        setOpen={setOpen}
+        name={event?.name}
+        description={event?.description}
+        eventUuid={eventUuid}
+      />
+      <Toaster />
     </Card>
   );
 };
