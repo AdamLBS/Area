@@ -4,24 +4,22 @@ import 'package:area/oauth/google.dart';
 import 'package:area/oauth/spotify.dart';
 import 'package:area/utils/get_loggedin_services.dart';
 import 'package:area/utils/handle_oauth.dart';
-import 'package:area/widgets/bottom_bar.dart';
 import 'package:area/widgets/service_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:oauth2_client/github_oauth2_client.dart';
 
-class UserPage extends StatefulWidget {
-  const UserPage({super.key});
+class AccountPage extends StatefulWidget {
+  const AccountPage({super.key});
 
   @override
-  State<UserPage> createState() => _UserPageState();
+  State<AccountPage> createState() => _AccountPageState();
 }
 
-class _UserPageState extends State<UserPage> {
+class _AccountPageState extends State<AccountPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        bottomNavigationBar: BottomNavBar(index: 1),
         resizeToAvoidBottomInset: false,
         backgroundColor: Color(0xFF09090B),
         body: SingleChildScrollView(
