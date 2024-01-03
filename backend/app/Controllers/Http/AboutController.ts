@@ -9,21 +9,21 @@ export default class AboutController {
       server: {
         current_time: Math.floor(new Date().getTime() / 1000),
         services: [
-            {
-                name: "Spotify",
-                actions: [],
-                reactions: []
-            },
-            {
-                name: "Discord",
-                actions: [],
-                reactions: []
-            },
-            {
-                name: "Google",
-                actions: [],
-                reactions: []
-            }
+          {
+            name: 'Spotify',
+            actions: [],
+            reactions: [],
+          },
+          {
+            name: 'Discord',
+            actions: [],
+            reactions: [],
+          },
+          {
+            name: 'Google',
+            actions: [],
+            reactions: [],
+          },
         ],
       },
     })
