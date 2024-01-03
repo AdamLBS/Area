@@ -116,6 +116,8 @@ export default class EventsController {
 
     return response.ok({
       uuid: event.uuid,
+      name: event.name,
+      description: event.description,
       active: event.active,
       triggerInteraction: event.triggerInteraction,
       responseInteraction: event.responseInteraction,
@@ -134,8 +136,7 @@ export default class EventsController {
         return {
           uuid: event.uuid,
           active: event.active,
-          name: 'default',
-          // description: event.description,
+          name: event.name,
         }
       })
     )
