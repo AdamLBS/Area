@@ -66,8 +66,10 @@ const SettingsModal = ({ isOpen, setOpen }: SettingsProps) => {
 
   type FormValues = z.infer<typeof formSchema>;
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const onSubmit = useCallback((values: FormValues) => {
-    updateMutation.mutate(values);
+    // TODO: update event
+    updateMutation.mutate();
   }, []);
 
   return (
