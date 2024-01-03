@@ -39,6 +39,8 @@ export const getEvents = async (): Promise<EventType[]> => {
     return res.data;
   } catch (error) {
     throw new Error('Error getting events.');
+  }
+};
 
 export const activateEvent = async (payload: {
   uuid: string;
