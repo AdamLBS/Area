@@ -21,6 +21,7 @@ export default class extends BaseSchema {
         .onDelete('CASCADE')
       table.string('trigger_interaction').notNullable()
       table.string('response_interaction').notNullable()
+      table.specificType('additional_actions', 'jsonb[]').nullable()
       table.string('timestamp').notNullable()
       table.boolean('active').notNullable().defaultTo(true)
       /**
