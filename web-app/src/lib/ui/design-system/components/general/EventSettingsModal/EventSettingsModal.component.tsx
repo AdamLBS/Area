@@ -17,12 +17,13 @@ import {
   DialogFooter,
   DialogTrigger,
   Dialog,
+  useToast,
 } from '@/components/ui';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { useMutation } from '@tanstack/react-query';
-import { Toaster } from '@/components/ui/toaster';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { updateEventSettings } from '@/api/events';
 
 const formSchema = z.object({
   name: z.string().min(3).optional(),
@@ -33,9 +34,18 @@ const formSchema = z.object({
 type SettingsProps = {
   isOpen: boolean;
   setOpen: (open: boolean) => void;
+  name?: string;
+  description?: string;
+  eventUuid: string;
 };
 
-const SettingsModal = ({ isOpen, setOpen }: SettingsProps) => {
+const SettingsModal = ({
+  isOpen,
+  setOpen,
+  name,
+  description,
+  eventUuid,
+}: SettingsProps) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -43,31 +53,37 @@ const SettingsModal = ({ isOpen, setOpen }: SettingsProps) => {
       description: undefined,
     },
   });
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
 
   const updateMutation = useMutation({
-    // mutationFn: updateCredentials,
-    // onSuccess: () => {
-    //   toast({
-    //     variant: 'default',
-    //     title: 'Success!',
-    //     description: 'Your credentials have been updated.',
-    //   });
-    // },
-    // onError: (error) => {
-    //   toast({
-    //     variant: 'destructive',
-    //     title: 'Uh oh! Something went wrong.',
-    //     description: error.message,
-    //   });
-    // },
+    mutationFn: updateEventSettings,
+    onSuccess: () => {
+      toast({
+        variant: 'default',
+        title: 'Success!',
+        description: 'Your credentials have been updated.',
+      });
+      queryClient.invalidateQueries(['event']);
+      queryClient.invalidateQueries(['events']);
+    },
+    onError: (error) => {
+      toast({
+        variant: 'destructive',
+        title: 'Uh oh! Something went wrong.',
+        description: error.message,
+      });
+    },
   });
 
   type FormValues = z.infer<typeof formSchema>;
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const onSubmit = useCallback((values: FormValues) => {
-    // TODO: update event
-    updateMutation.mutate();
+    updateMutation.mutate({
+      uuid: eventUuid,
+      name: values.name,
+      description: values.description,
+    });
   }, []);
 
   return (
@@ -82,6 +98,7 @@ const SettingsModal = ({ isOpen, setOpen }: SettingsProps) => {
             <FormField
               control={form.control}
               name="name"
+              defaultValue={name}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Event name</FormLabel>
@@ -98,6 +115,7 @@ const SettingsModal = ({ isOpen, setOpen }: SettingsProps) => {
             <FormField
               control={form.control}
               name="description"
+              defaultValue={description}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Event description</FormLabel>
@@ -109,7 +127,6 @@ const SettingsModal = ({ isOpen, setOpen }: SettingsProps) => {
               )}
             />
           </FormContainer>
-          <Toaster />
         </Form>
         <DialogFooter>
           <ButtonContainer>

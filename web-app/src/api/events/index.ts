@@ -73,3 +73,26 @@ export const getEvent = async (uuid: string): Promise<Event> => {
     throw new Error('Error getting event.');
   }
 };
+
+export const updateEventSettings = async (payload: {
+  uuid: string;
+  name?: string;
+  description?: string;
+}): Promise<void> => {
+  try {
+    await axios.patch(
+      API_URL + `/event/update/${payload.uuid}`,
+      {
+        name: payload.name,
+        description: payload.description,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+        },
+      },
+    );
+  } catch (error) {
+    throw new Error('Error updating event settings.');
+  }
+};
