@@ -2,7 +2,6 @@
 import {
   Button,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
   Label,
@@ -24,9 +23,6 @@ import {
   ConfigPanelHeader,
   ConfigPart,
   FieldContainer,
-  LeftPanel,
-  LeftPanelButton,
-  LeftPanelContent,
   PageContainer,
   PageContent,
   RightPanel,
@@ -34,13 +30,11 @@ import {
   TopBarConfig,
   InputField,
 } from './BridgePage.style';
-import { PlusIcon } from 'lucide-react';
 import { useResponses, useTriggers } from '@/react/hooks/events';
 import { useMutation } from '@tanstack/react-query';
 import { createEvent } from '@/api/events';
 import { EventCreate } from '@/api/constants';
-
-const events = ['test1', 'test2'];
+import { MenuEvent } from '@/lib/ui/design-system';
 
 const Bridge: React.FC = () => {
   const { data: triggers } = useTriggers();
@@ -169,31 +163,7 @@ const Bridge: React.FC = () => {
     <PrivateLayout pageName="Bridge">
       <PageContainer>
         <PageContent>
-          <LeftPanel>
-            <CardHeader>
-              <CardTitle>Your events</CardTitle>
-              <CardDescription>
-                All of your events you have already created
-              </CardDescription>
-            </CardHeader>
-            <LeftPanelContent>
-              {events.map((event, index) => (
-                <Button
-                  key={index}
-                  variant="ghost"
-                  style={{ justifyContent: 'flex-start' }}
-                >
-                  {event}
-                </Button>
-              ))}
-            </LeftPanelContent>
-            <CardFooter>
-              <LeftPanelButton>
-                <PlusIcon size={16} />
-                Add a new event
-              </LeftPanelButton>
-            </CardFooter>
-          </LeftPanel>
+          <MenuEvent />
           <RightPanel>
             <CardHeader>
               <CardTitle>Your event title</CardTitle>

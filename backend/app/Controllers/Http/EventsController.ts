@@ -4,6 +4,7 @@ import Event from 'App/Models/Event'
 import CreateEventValidator from 'App/Validators/Event/CreateEventValidator'
 import { TRIGGER_EVENTS } from 'App/params/triggerEvents'
 import { RESPONSE_EVENTS } from 'App/params/responseEvents'
+import { AdditionalInteraction } from 'types/events'
 
 export default class EventsController {
   public async createEvent({ request, response, auth }: HttpContextContract) {
@@ -20,6 +21,14 @@ export default class EventsController {
       .where('provider', payload.response_provider)
       .first()
 
+    if (!triggerApi || !responseApi) {
+      return response.badRequest({
+        message: 'Trigger or response api not found',
+        triggerApi,
+        responseApi,
+      })
+    }
+
     const triggerInteraction = {
       provider: payload.trigger_provider,
       id: payload.triggerInteraction.id,
@@ -34,6 +43,31 @@ export default class EventsController {
       fields: payload.responseInteraction.fields,
     }
 
+    let additionalActions: AdditionalInteraction[] = []
+
+    if (payload.additionalActions && payload.additionalActions.length > 0) {
+      await Promise.all(
+        payload.additionalActions.map(async (action) => {
+          const actionApi = await Oauth.query()
+            .where('user_uuid', user.uuid)
+            .where('provider', action.action_provider)
+            .first()
+
+          if (!actionApi) {
+            throw new Error('Action api not found')
+          }
+
+          const newAction = {
+            action_provider: action.action_provider,
+            id: action.id,
+            name: TRIGGER_EVENTS.find((event) => event.id === action.id)?.name,
+            fields: action.fields,
+          }
+          additionalActions.push(newAction)
+        })
+      )
+    }
+
     if (triggerApi && responseApi) {
       const eventPayload = {
         userUuid: user.uuid,
@@ -41,6 +75,7 @@ export default class EventsController {
         responseInteraction: responseInteraction,
         triggerApi: triggerApi.uuid,
         responseApi: responseApi.uuid,
+        additionalActions,
         active: true,
       }
       const event = await Event.firstOrCreate(eventPayload)
@@ -84,6 +119,7 @@ export default class EventsController {
       active: event.active,
       triggerInteraction: event.triggerInteraction,
       responseInteraction: event.responseInteraction,
+      additionalActions: event.additionalActions,
       timestamp: event.timestamp,
       created_at: event.createdAt,
       updated_at: event.updatedAt,
@@ -98,7 +134,7 @@ export default class EventsController {
         return {
           uuid: event.uuid,
           active: event.active,
-          // name: event.name,
+          name: 'default',
           // description: event.description,
         }
       })

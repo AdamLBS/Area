@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { API_URL, ApiEvent, Event, EventCreate } from '../constants';
+import { API_URL, ApiEvent, EventCreate, Event, EventType } from '../constants';
 
 export const getTriggers = async (): Promise<ApiEvent[]> => {
   try {
@@ -26,6 +26,19 @@ export const createEvent = async (payload: EventCreate): Promise<void> => {
     });
   } catch (error) {
     throw new Error('Error creating event.');
+  }
+};
+
+export const getEvents = async (): Promise<EventType[]> => {
+  try {
+    const res = await axios.get(API_URL + '/user/events', {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+      },
+    });
+    return res.data;
+  } catch (error) {
+    throw new Error('Error getting events.');
   }
 };
 

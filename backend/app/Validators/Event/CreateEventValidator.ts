@@ -1,4 +1,4 @@
-import { schema, CustomMessages } from '@ioc:Adonis/Core/Validator'
+import { schema, rules } from '@ioc:Adonis/Core/Validator'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
 export default class CreateEventValidator {
@@ -24,27 +24,24 @@ export default class CreateEventValidator {
    *    ```
    */
   public schema = schema.create({
-    trigger_provider: schema.string(),
-    response_provider: schema.string(),
+    trigger_provider: schema.string({ trim: true }, [rules.required()]),
+    response_provider: schema.string({ trim: true }, [rules.required()]),
     triggerInteraction: schema.object().members({
-      id: schema.string(),
-      fields: schema.object().anyMembers(),
+      id: schema.string({ trim: true }, [rules.required()]),
+      fields: schema.array().members(schema.object().anyMembers()),
     }),
     responseInteraction: schema.object().members({
-      id: schema.string(),
-      fields: schema.object().anyMembers(),
+      id: schema.string({ trim: true }, [rules.required()]),
+      fields: schema.array().members(schema.object().anyMembers()),
     }),
+    additionalActions: schema.array.optional().members(
+      schema.object().members({
+        action_provider: schema.string(),
+        id: schema.string(),
+        fields: schema.array().members(schema.object().anyMembers()),
+      })
+    ),
   })
-  public messages: CustomMessages = {
-    'trigger_provider.required': 'Trigger provider is required',
-    'response_provider.required': 'Response provider is required',
-    'triggerInteraction.required': 'Trigger interaction is required',
-    'triggerInteraction.name.required': 'Trigger interaction name is required',
-    'responseInteraction.required': 'Response interaction is required',
-    'responseInteraction.name.required': 'Response interaction name is required',
-    'responseInteraction.fields.email.required': 'Email is required',
-    'responseInteraction.fields.email.email': 'Email is not valid',
-  }
 
   /**
    * Custom messages for validation failures. You can make use of dot notation `(.)`

@@ -1,4 +1,4 @@
-import { getEvent, getResponses, getTriggers } from '@/api/events';
+import { getResponses, getTriggers, getEvents, getEvent } from '@/api/events';
 import { useQuery } from '@tanstack/react-query';
 
 export const useTriggers = () =>
@@ -17,4 +17,10 @@ export const useEvent = (uuid: string) =>
   useQuery({
     queryKey: ['event', uuid],
     queryFn: () => getEvent(uuid),
+  });
+
+export const useEvents = () =>
+  useQuery({
+    queryKey: ['events'],
+    queryFn: getEvents,
   });

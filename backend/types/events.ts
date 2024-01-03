@@ -10,3 +10,10 @@ export type APIEvent = {
   name: string
   fields: APIEventField<any>[]
 }
+
+export type AdditionalInteraction = {
+  action_provider: string
+  id: string
+  name?: string
+  fields: any[]
+}

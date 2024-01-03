@@ -59,3 +59,9 @@ export type Event = {
   created_at: string;
   updated_at: string;
 };
+
+export type EventType = {
+  uuid: string;
+  active: boolean;
+  name: string;
+};
