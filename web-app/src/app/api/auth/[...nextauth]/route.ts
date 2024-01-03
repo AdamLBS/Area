@@ -22,7 +22,7 @@ const handler = NextAuth({
       },
       httpOptions: {
         timeout: 10000,
-      }
+      },
     }),
     SpotifyProvider({
       clientId: process.env.SPOTIFY_CLIENT_ID || '',
@@ -31,35 +31,35 @@ const handler = NextAuth({
         'https://accounts.spotify.com/authorize?scope=user-read-email,user-top-read,user-follow-read,user-read-playback-state',
       httpOptions: {
         timeout: 10000,
-      }
+      },
     }),
     GithubProvider({
       clientId: process.env.GITHUB_CLIENT_ID || '',
       clientSecret: process.env.GITHUB_CLIENT_SECRET || '',
       httpOptions: {
         timeout: 10000,
-      }
+      },
     }),
     DisordProvider({
       clientId: process.env.DISCORD_CLIENT_ID || '',
       clientSecret: process.env.DISCORD_CLIENT_SECRET || '',
       httpOptions: {
         timeout: 10000,
-      }
+      },
     }),
     TwitchProvider({
       clientId: process.env.TWITCH_CLIENT_ID || '',
       clientSecret: process.env.TWITCH_CLIENT_SECRET || '',
       httpOptions: {
         timeout: 10000,
-      }
+      },
     }),
     LinkedinProvider({
       clientId: process.env.LINKEDIN_CLIENT_ID || '',
       clientSecret: process.env.LINKEDIN_CLIENT_SECRET || '',
       httpOptions: {
         timeout: 10000,
-      }
+      },
     }),
   ],
   callbacks: {
