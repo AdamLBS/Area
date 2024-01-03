@@ -1,0 +1,67 @@
+version: '3'
+
+services:
+  swagger-ui:
+    image: swaggerapi/swagger-ui
+    ports:
+      - "4444:8080"
+    networks:
+      - stratos_net
+    volumes:
+      - ./swagger/api.json:/foo/api.json
+    environment:
+      - SWAGGER_JSON=/foo/api.json
+  server:
+    build:
+      context: backend/.
+      dockerfile: Dockerfile
+    networks:
+      - stratos_net
+    ports:
+      - "8080:3333"
+      - "3333:3333"
+    depends_on:
+      - postgres
+    links:
+      - "postgres:db"
+    environment:
+      DATABASE_CONNECTION: pg
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: password
+      DB_NAME: lucid
+  postgres:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    networks:
+      - stratos_net
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: lucid
+  client_mobile:
+    build:
+      context: mobile/.
+      dockerfile: Dockerfile
+    volumes:
+      - app-volumes:/usr/mobile
+  client_web:
+    build:
+      context: web-app/.
+      dockerfile: Dockerfile
+    ports:
+      - "8081:3000"
+    networks:
+      - stratos_net
+    links:
+      - "postgres:db"
+
+
+volumes:
+  app-volumes:
+
+networks:
+  stratos_net:
+    name: stratos_network
