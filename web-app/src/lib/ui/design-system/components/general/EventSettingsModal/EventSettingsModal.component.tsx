@@ -42,7 +42,6 @@ const SettingsModal = ({ isOpen, setOpen }: SettingsProps) => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: undefined,
-      title: undefined,
       description: undefined,
     },
   });
@@ -78,7 +77,6 @@ const SettingsModal = ({ isOpen, setOpen }: SettingsProps) => {
           <DialogTitle>Event settings</DialogTitle>
           <DialogDescription>Settings of your Bridge event</DialogDescription>
         </DialogHeader>
-        defaultValues
         <Form {...form}>
           <FormContainer onSubmit={form.handleSubmit(onSubmit)}>
             <FormField
@@ -92,19 +90,6 @@ const SettingsModal = ({ isOpen, setOpen }: SettingsProps) => {
                       placeholder="Send Discord message when I’m listenning a music on Spotify "
                       {...field}
                     />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="title"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Event title</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Your event title" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
