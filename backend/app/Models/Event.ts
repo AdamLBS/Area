@@ -20,6 +20,12 @@ export default class Event extends BaseModel {
   public userUuid: string
 
   @column()
+  public name: string
+
+  @column()
+  public description: string | null
+
+  @column()
   public triggerApi: string
 
   @column()

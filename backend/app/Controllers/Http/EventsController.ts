@@ -69,6 +69,8 @@ export default class EventsController {
     if (triggerApi && responseApi) {
       const eventPayload = {
         userUuid: user.uuid,
+        name: payload.name,
+        description: payload.description ? payload.description : null,
         triggerInteraction: triggerInteraction,
         responseInteraction: responseInteraction,
         triggerApi: triggerApi.uuid,
