@@ -20,7 +20,7 @@ const Advanced = () => {
         <PrimaryMutted>Select your dashboard theme.</PrimaryMutted>
         <ThemeBody>
           <div
-            className="items-center rounded-md border-2 border-muted p-1 hover:bg-accent hover:text-accent-foreground"
+            className="items-center rounded-md border-2 border-muted p-1 hover:bg-accent hover:text-accent-foreground cursor-pointer"
             onClick={() => setTheme('light')}
           >
             <div className="space-y-2 rounded-sm bg-[#ecedef] p-2">
@@ -39,7 +39,7 @@ const Advanced = () => {
             </div>
           </div>
           <div
-            className="items-center rounded-md border-2 border-muted bg-popover p-1 hover:bg-accent hover:text-accent-foreground"
+            className="items-center rounded-md border-2 border-muted bg-popover p-1 hover:bg-accent hover:text-accent-foreground cursor-pointer"
             onClick={() => setTheme('dark')}
           >
             <div className="space-y-2 rounded-sm bg-slate-950 p-2">

@@ -97,7 +97,7 @@ const UpdateFormComponent = () => {
             <FormItem>
               <FormLabel>Username</FormLabel>
               <FormControl>
-                <Input placeholder="current username" {...field} />
+                <Input placeholder="new username" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -110,7 +110,7 @@ const UpdateFormComponent = () => {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input placeholder="current email" {...field} />
+                <Input placeholder="new email" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -164,7 +164,11 @@ const UpdateFormComponent = () => {
           )}
         />
         <ButtonContainer>
-          <Button type="submit" variant="default">
+          <Button
+            type="submit"
+            variant="default"
+            loading={updateMutation.isPending}
+          >
             Apply
           </Button>
         </ButtonContainer>

@@ -39,5 +39,24 @@ export const getEvents = async (): Promise<EventType[]> => {
     return res.data;
   } catch (error) {
     throw new Error('Error getting events.');
+
+export const activateEvent = async (payload: {
+  uuid: string;
+  activated: boolean;
+}): Promise<void> => {
+  try {
+    await axios.patch(
+      API_URL + `/events/activate/${payload.uuid}`,
+      {
+        activated: payload.activated,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+        },
+      },
+    );
+  } catch (error) {
+    throw new Error('Error activating event.');
   }
 };

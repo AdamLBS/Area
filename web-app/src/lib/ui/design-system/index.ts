@@ -7,3 +7,4 @@ export * from './components/general/ServiceCard';
 export * from './components/general/AuthGard';
 export * from './components/general/CustomSelect';
 export * from './components/general/MenuEvent';
+export * from './components/general/EventCard';

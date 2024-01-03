@@ -57,7 +57,7 @@ export const updateCredentials = async (payload: {
       }
       filteredPayload[key] = value;
     }
-    return await axios.post(API_URL + '/user/me/update', payload, {
+    return await axios.patch(API_URL + '/user/me/update', filteredPayload, {
       headers: {
         Authorization: 'Bearer ' + localStorage.getItem('authToken'),
       },

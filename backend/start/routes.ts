@@ -43,6 +43,7 @@ Route.group(() => {
     Route.get('/response', 'EventsController.getAvailableResponseEvents')
     Route.get('/:uuid', 'EventsController.getEvent')
     Route.delete('/delete/:uuid', 'EventsController.deleteEvent').middleware(['auth:api'])
+    Route.patch('/activate/:uuid', 'EventsController.activateEvent').middleware(['auth:api'])
   }).prefix('/events')
 
   /* Auth routes */
@@ -55,7 +56,7 @@ Route.group(() => {
 
   Route.group(() => {
     Route.get('/me', 'AuthController.me')
-    Route.post('/me/update', 'AuthController.update')
+    Route.patch('/me/update', 'AuthController.update')
     Route.get('/me/services', 'AuthController.getServices')
     Route.get('/events', 'EventsController.getMyEvents')
   })

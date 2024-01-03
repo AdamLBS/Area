@@ -17,11 +17,6 @@ export { PopoverTrigger } from './popover';
 export { useToast } from './use-toast';
 export { Toaster } from './toaster';
 
-export { CardHeader } from './card';
-export { CardTitle } from './card';
-export { CardDescription } from './card';
-export { CardFooter } from './card';
-
 export { Select } from './select';
 export { SelectValue } from './select';
 export { SelectTrigger } from './select';
@@ -29,6 +24,8 @@ export { SelectContent } from './select';
 export { SelectLabel } from './select';
 export { SelectItem } from './select';
 export { SelectGroup } from './select';
+
+export { Switch } from './switch';
 
 export {
   Dialog,
@@ -42,3 +39,12 @@ export {
   DialogTitle,
   DialogDescription,
 } from './dialog';
+
+export {
+  Card,
+  CardHeader,
+  CardFooter,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from './card';
