@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { API_URL, ApiEvent, EventCreate, EventType } from '../constants';
+import { API_URL, ApiEvent, EventCreate, Event, EventType } from '../constants';
 
 export const getTriggers = async (): Promise<ApiEvent[]> => {
   try {
@@ -60,5 +60,16 @@ export const activateEvent = async (payload: {
     );
   } catch (error) {
     throw new Error('Error activating event.');
+  }
+};
+
+export const getEvent = async (uuid: string): Promise<Event> => {
+  try {
+    const res = (await axios.get(API_URL + `/events/${uuid}`)).data;
+    res.triggerInteraction = JSON.parse(res.triggerInteraction);
+    res.responseInteraction = JSON.parse(res.responseInteraction);
+    return res as Event;
+  } catch (error) {
+    throw new Error('Error getting event.');
   }
 };

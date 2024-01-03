@@ -10,6 +10,7 @@ import {
 } from '@/components/ui';
 import {
   CustomSelect,
+  EventActivation,
   H3,
   PrimaryMutted,
   PrivateLayout,
