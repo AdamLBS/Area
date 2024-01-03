@@ -3,7 +3,9 @@ import { BaseModel, beforeCreate, column } from '@ioc:Adonis/Lucid/Orm'
 import { v4 as uuidv4 } from 'uuid'
 
 type Interaction = {
+  provider: string
   id: string
+  name: string
   fields: any[]
 }
 
