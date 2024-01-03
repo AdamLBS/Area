@@ -22,7 +22,6 @@ import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { useMutation } from '@tanstack/react-query';
-import { useToast } from '@/components/ui/use-toast';
 import { Toaster } from '@/components/ui/toaster';
 
 const formSchema = z.object({
@@ -37,7 +36,6 @@ type SettingsProps = {
 };
 
 const SettingsModal = ({ isOpen, setOpen }: SettingsProps) => {
-  const { toast } = useToast();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
