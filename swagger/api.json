@@ -111,6 +111,30 @@
             }
           }
         }
+      },
+      "/api/event/update/:uuid": {
+        "patch": {
+          "summary": "Update event information",
+          "description": "Endpoint to update title and description of an event",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
     "components": {
