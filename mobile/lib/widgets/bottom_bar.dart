@@ -42,13 +42,13 @@ class _BottomNavBarState extends State<BottomNavBar> {
           InkWell(
             onTap: () {
               if (widget.index != 1) {
-                changePage('/profile');
+                changePage('/bridge');
               }
             },
             child: Container(
               padding: EdgeInsets.all(10),
               child: SvgPicture.asset(
-                "assets/icons/user.svg",
+                "assets/icons/bridge_bottom.svg",
                 color: widget.index == 1 ? purpleBackground : Color(0xFFFAFAFA),
               ),
             ),

@@ -1,5 +1,7 @@
+import 'package:area/pages/bridge.dart';
 import 'package:area/pages/home.dart';
 import 'package:area/pages/login.dart';
+import 'package:area/pages/profile.dart';
 import 'package:area/pages/settings.dart';
 import 'package:area/pages/user.dart';
 import 'package:flutter/material.dart';
@@ -38,10 +40,14 @@ class MyApp extends StatelessWidget {
               return MaterialPageRoute(builder: (context) => RegisterPage());
             case '/home':
               return MaterialPageRoute(builder: (context) => HomePage());
-            case '/profile':
-              return MaterialPageRoute(builder: (context) => UserPage());
+            case '/accounts':
+              return MaterialPageRoute(builder: (context) => AccountPage());
             case '/settings':
               return MaterialPageRoute(builder: (context) => SettingsPage());
+            case '/bridge':
+              return MaterialPageRoute(builder: (context) => BridgePage());
+            case '/profile':
+              return MaterialPageRoute(builder: (context) => ProfilePage());
             default:
               return MaterialPageRoute(builder: (context) => LoginPage());
           }
