@@ -80,6 +80,37 @@
             }
           ]
         }
+      },
+      "/api/user/me/update": {
+        "patch": {
+          "summary": "Update user information",
+          "description": "Endpoint to update user information",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "email": {
+                      "type": "string",
+                      "format": "email"
+                    },
+                    "username": {
+                      "type": "string"
+                    },
+                    "currentPassword": {
+                      "type": "string"
+                    },
+                    "newPassword": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
     "components": {
