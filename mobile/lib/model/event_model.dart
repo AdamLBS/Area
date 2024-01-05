@@ -2,7 +2,7 @@ class EventModel {
   final String provider;
   final String id;
   final String name;
-  final Map<String, dynamic> fields;
+  late List<Field> fields;
   EventModel({
     required this.provider,
     required this.id,
@@ -15,7 +15,29 @@ class EventModel {
       provider: json['provider'],
       id: json['id'],
       name: json['name'],
-      fields: json['fields'],
+            fields: (json['fields'] as List)
+          .map((field) => Field.fromJson(field))
+          .toList(),
+    );
+  }
+}
+
+class Field {
+  late String value;
+  late String name;
+  late bool required;
+
+  Field({
+    required this.value,
+    required this.name,
+    required this.required,
+  });
+
+  factory Field.fromJson(Map<String, dynamic> json) {
+    return Field(
+      value: json['value'],
+      name: json['name'],
+      required: json['required'],
     );
   }
 }

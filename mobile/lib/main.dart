@@ -23,13 +23,12 @@ class MyApp extends StatelessWidget {
         title: 'Stratos',
         theme: ThemeData(
           useMaterial3: true,
-          colorScheme: ColorScheme.fromSeed(seedColor: Color(0xFF09090B)),
           pageTransitionsTheme: PageTransitionsTheme(
             builders: {
               TargetPlatform.android: CustomTransitionBuilder(),
               TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
             },
-          ),
+          ), colorScheme: ColorScheme.fromSeed(seedColor: Color(0xFF09090B)).copyWith(background: Color(0xFF09090B)),
         ),
         home: LoginPage(),
         onGenerateRoute: (settings) {
