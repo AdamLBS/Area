@@ -38,7 +38,9 @@ class _BottomNavBarState extends State<BottomNavBar> {
                   padding: EdgeInsets.all(10),
                   child: SvgPicture.asset(
                     "assets/icons/home.svg",
-                    color: widget.index == 0 ? purpleBackground : Color(0xFFFAFAFA),
+                    color: widget.index == 0
+                        ? purpleBackground
+                        : Color(0xFFFAFAFA),
                   ),
                 ),
               ),
@@ -52,7 +54,9 @@ class _BottomNavBarState extends State<BottomNavBar> {
                   padding: EdgeInsets.all(10),
                   child: SvgPicture.asset(
                     "assets/icons/bridge_bottom.svg",
-                    color: widget.index == 1 ? purpleBackground : Color(0xFFFAFAFA),
+                    color: widget.index == 1
+                        ? purpleBackground
+                        : Color(0xFFFAFAFA),
                   ),
                 ),
               ),
@@ -66,17 +70,18 @@ class _BottomNavBarState extends State<BottomNavBar> {
                   padding: EdgeInsets.all(10),
                   child: SvgPicture.asset(
                     "assets/icons/settings.svg",
-                    color: widget.index == 2 ? purpleBackground : Color(0xFFFAFAFA),
+                    color: widget.index == 2
+                        ? purpleBackground
+                        : Color(0xFFFAFAFA),
                   ),
                 ),
               ),
             ],
           ),
         ),
-                Divider(
+        Divider(
           thickness: 0.2,
-                ),
-
+        ),
       ],
     );
   }

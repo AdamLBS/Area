@@ -51,8 +51,7 @@ class MyApp extends StatelessWidget {
             case '/profile':
               return MaterialPageRoute(builder: (context) => ProfilePage());
             case '/eventcreate':
-              return MaterialPageRoute(builder: (context) => EventCreatePage
-              ());
+              return MaterialPageRoute(builder: (context) => EventCreatePage());
             default:
               return MaterialPageRoute(builder: (context) => LoginPage());
           }

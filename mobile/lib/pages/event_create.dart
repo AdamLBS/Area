@@ -67,18 +67,24 @@ class _EventCreatePageState extends State<EventCreatePage> {
                     ],
                   ),
                   SizedBox(height: 20),
-                  Text("Create a new event", style: GoogleFonts.inter(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white,
-                  ),),
-                  Text("Let's start by giving a name to your event", style: GoogleFonts.inter(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                    color: Color(0xFFA1A1AA),
-                  ),),
+                  Text(
+                    "Create a new event",
+                    style: GoogleFonts.inter(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
+                    ),
+                  ),
+                  Text(
+                    "Let's start by giving a name to your event",
+                    style: GoogleFonts.inter(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                      color: Color(0xFFA1A1AA),
+                    ),
+                  ),
                   SizedBox(height: 20),
-                if (page == 0) StepOneEventCreate(),
+                  if (page == 0) StepOneEventCreate(),
                 ],
               ),
             );
@@ -97,73 +103,80 @@ class StepOneEventCreate extends StatefulWidget {
 class _StepOneEventCreateState extends State<StepOneEventCreate> {
   @override
   Widget build(BuildContext context) {
-    return Column(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Text("Event name", style: GoogleFonts.inter(
-        fontSize: 14,
-        color: Colors.white,
-      ),),
-      SizedBox(height: 10),
-      SizedBox(
-        height: 40,
-        child: TextFormField(
-          style: TextStyle(color: Colors.white),
-          validator: (value) {
-            if (value!.isEmpty) {
-              return "Please enter a name";
-            }
-            return null;
-          },
-          decoration: InputDecoration(
-            filled: true,
-            fillColor: Color(0xFF21212B),
-            hintText: "Send an email when i'm listening to music",
-            hintStyle: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w400,
-              color: Color(0xFFA1A1AA),
-            ),
-            border: OutlineInputBorder(
-              borderRadius:
-                  BorderRadius.circular(10),
-              borderSide: BorderSide.none,
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "Event name",
+          style: GoogleFonts.inter(
+            fontSize: 14,
+            color: Colors.white,
+          ),
+        ),
+        SizedBox(height: 10),
+        SizedBox(
+          height: 40,
+          child: TextFormField(
+            style: TextStyle(color: Colors.white),
+            validator: (value) {
+              if (value!.isEmpty) {
+                return "Please enter a name";
+              }
+              return null;
+            },
+            decoration: InputDecoration(
+              filled: true,
+              fillColor: Color(0xFF21212B),
+              hintText: "Send an email when i'm listening to music",
+              hintStyle: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+                color: Color(0xFFA1A1AA),
+              ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: BorderSide.none,
+              ),
             ),
           ),
         ),
-      ),
-      SizedBox(height: 20),
-      Text("Event description", style: GoogleFonts.inter(
-        fontSize: 14,
-        color: Colors.white,
-      ),),
-      SizedBox(height: 10),
-      SizedBox(
-        height: 40,
-        child: TextFormField(
-          style: TextStyle(color: Colors.white),
-          validator: (value) {
-            if (value!.isEmpty) {
-              return "Please enter a description";
-            }
-            return null;
-          },
-          decoration: InputDecoration(
-            filled: true,
-            fillColor: Color(0xFF21212B),
-            hintText: "Send an email when i'm listening to music",
-            hintStyle: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w400,
-              color: Color(0xFFA1A1AA),
-            ),
-            border: OutlineInputBorder(
-              borderRadius:
-                  BorderRadius.circular(10),
-              borderSide: BorderSide.none,
+        SizedBox(height: 20),
+        Text(
+          "Event description",
+          style: GoogleFonts.inter(
+            fontSize: 14,
+            color: Colors.white,
+          ),
+        ),
+        SizedBox(height: 10),
+        SizedBox(
+          height: 40,
+          child: TextFormField(
+            style: TextStyle(color: Colors.white),
+            validator: (value) {
+              if (value!.isEmpty) {
+                return "Please enter a description";
+              }
+              return null;
+            },
+            decoration: InputDecoration(
+              filled: true,
+              fillColor: Color(0xFF21212B),
+              hintText: "Send an email when i'm listening to music",
+              hintStyle: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+                color: Color(0xFFA1A1AA),
+              ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: BorderSide.none,
+              ),
             ),
           ),
         ),
-      ),
-    ],);
+      ],
+    );
   }
 }

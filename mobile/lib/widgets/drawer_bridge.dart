@@ -63,7 +63,7 @@ class _DrawerBridgePageState extends State<DrawerBridgePage> {
                       itemCount: snapshot.data!.length,
                       itemBuilder: (context, index) {
                         return ElevatedButton(
-                          onPressed: (){},
+                          onPressed: () {},
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.transparent, //TODO: A modif
                             minimumSize: Size.zero,
@@ -74,7 +74,8 @@ class _DrawerBridgePageState extends State<DrawerBridgePage> {
                             ),
                           ),
                           child: Container(
-                            padding: EdgeInsets.only(left: 16, right: 16, top: 12, bottom: 12),
+                            padding: EdgeInsets.only(
+                                left: 16, right: 16, top: 12, bottom: 12),
                             child: Row(children: [
                               if (snapshot.data![index].active == true)
                                 SvgPicture.asset(
