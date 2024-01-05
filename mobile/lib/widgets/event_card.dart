@@ -27,37 +27,41 @@ class EventCard extends StatelessWidget {
       ),
       padding: EdgeInsets.all(24),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              SvgPicture.asset(
-                svgs[name]!,
-                height: 32,
-                width: 32,
-              ),
-              SizedBox(width: 10,),
-              Text(
-                name,
-                style: GoogleFonts.inter(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.white,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                SvgPicture.asset(
+                  svgs[name]!,
+                  height: 32,
+                  width: 32,
                 ),
-              ),
-            ],
-          ),
-          SizedBox(height: 10,),
-          Text(
-            desc,
-            style: GoogleFonts.inter(
-              fontSize: 12,
-              fontWeight: FontWeight.w400,
-              color: Color(0xFFA1A1AA),
+                SizedBox(
+                  width: 10,
+                ),
+                Text(
+                  name,
+                  style: GoogleFonts.inter(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.white,
+                  ),
+                ),
+              ],
             ),
-          ),
-        ]),
+            SizedBox(
+              height: 10,
+            ),
+            Text(
+              desc,
+              style: GoogleFonts.inter(
+                fontSize: 12,
+                fontWeight: FontWeight.w400,
+                color: Color(0xFFA1A1AA),
+              ),
+            ),
+          ]),
     );
   }
 }

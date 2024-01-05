@@ -28,7 +28,9 @@ class MyApp extends StatelessWidget {
               TargetPlatform.android: CustomTransitionBuilder(),
               TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
             },
-          ), colorScheme: ColorScheme.fromSeed(seedColor: Color(0xFF09090B)).copyWith(background: Color(0xFF09090B)),
+          ),
+          colorScheme: ColorScheme.fromSeed(seedColor: Color(0xFF09090B))
+              .copyWith(background: Color(0xFF09090B)),
         ),
         home: LoginPage(),
         onGenerateRoute: (settings) {

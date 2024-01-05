@@ -15,7 +15,7 @@ class EventModel {
       provider: json['provider'],
       id: json['id'],
       name: json['name'],
-            fields: (json['fields'] as List)
+      fields: (json['fields'] as List)
           .map((field) => Field.fromJson(field))
           .toList(),
     );
