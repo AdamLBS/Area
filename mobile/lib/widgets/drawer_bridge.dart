@@ -65,7 +65,7 @@ class _DrawerBridgePageState extends State<DrawerBridgePage> {
                         return ElevatedButton(
                           onPressed: (){},
                           style: ElevatedButton.styleFrom(
-                            primary: Colors.transparent, //TODO: A modif
+                            backgroundColor: Colors.transparent, //TODO: A modif
                             minimumSize: Size.zero,
                             padding: EdgeInsets.zero,
 
