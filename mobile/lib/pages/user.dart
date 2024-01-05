@@ -30,7 +30,7 @@ class _AccountPageState extends State<AccountPage> {
                   return Center(
                     child: Container(
                         padding: EdgeInsets.only(
-                            right: 20, left: 20, bottom: 20, top: 50),
+                            right: 20, left: 20, bottom: 20, top: 20),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.center,

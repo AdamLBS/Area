@@ -1,4 +1,5 @@
 import 'package:area/pages/bridge.dart';
+import 'package:area/pages/event_create.dart';
 import 'package:area/pages/home.dart';
 import 'package:area/pages/login.dart';
 import 'package:area/pages/profile.dart';
@@ -49,6 +50,9 @@ class MyApp extends StatelessWidget {
               return MaterialPageRoute(builder: (context) => BridgePage());
             case '/profile':
               return MaterialPageRoute(builder: (context) => ProfilePage());
+            case '/eventcreate':
+              return MaterialPageRoute(builder: (context) => EventCreatePage
+              ());
             default:
               return MaterialPageRoute(builder: (context) => LoginPage());
           }

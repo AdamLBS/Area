@@ -1,6 +1,7 @@
 import 'package:area/model/user_event_model.dart';
 import 'package:area/utils/get_user_events.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class DrawerBridgePage extends StatefulWidget {
@@ -45,7 +46,65 @@ class _DrawerBridgePageState extends State<DrawerBridgePage> {
               future: getUserEvents(),
               builder: ((context, AsyncSnapshot<List<UserEvent>> snapshot) {
                 if (snapshot.hasData) {
-                  return Text("Loaded");
+                  if (snapshot.data!.isEmpty) {
+                    return Center(
+                      child: Text(
+                        "You don't have any event yet",
+                        style: GoogleFonts.inter(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xFFA1A1AA),
+                        ),
+                      ),
+                    );
+                  } else {
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: snapshot.data!.length,
+                      itemBuilder: (context, index) {
+                        return ElevatedButton(
+                          onPressed: (){},
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.transparent, //TODO: A modif
+                            minimumSize: Size.zero,
+                            padding: EdgeInsets.zero,
+
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          child: Container(
+                            padding: EdgeInsets.only(left: 16, right: 16, top: 12, bottom: 12),
+                            child: Row(children: [
+                              if (snapshot.data![index].active == true)
+                                SvgPicture.asset(
+                                  "assets/icons/enabled_button.svg",
+                                  height: 16,
+                                  width: 16,
+                                ),
+                              if (snapshot.data![index].active == false)
+                                SvgPicture.asset(
+                                  "assets/icons/disabled_button.svg",
+                                  height: 16,
+                                  width: 16,
+                                ),
+                              SizedBox(
+                                width: 8,
+                              ),
+                              Text(
+                                snapshot.data![index].name,
+                                style: GoogleFonts.inter(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ]),
+                          ),
+                        );
+                      },
+                    );
+                  }
                 } else {
                   return Center(
                     child: CircularProgressIndicator(),
@@ -59,7 +118,7 @@ class _DrawerBridgePageState extends State<DrawerBridgePage> {
               height: 40,
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, '/bridge');
+                  Navigator.pushNamed(context, '/eventcreate');
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color(0xFF6D28D9),
