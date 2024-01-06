@@ -44,6 +44,7 @@ const providerIcon = {
   null: <Loader />,
 };
 import { EventSettingsModal } from '../EventSettingsModal';
+import { DeleteEventModal } from '../DeleteEventModal';
 
 export type EventContentProps = {
   eventUuid: string;
@@ -52,6 +53,7 @@ export type EventContentProps = {
 const EventContentComponent: React.FC<EventContentProps> = ({ eventUuid }) => {
   const { data: event } = useEvent(eventUuid);
   const [open, setOpen] = React.useState(false);
+  const [deleteModalOpen, setDeleteModalOpen] = React.useState(false);
 
   return (
     <Card>
@@ -75,6 +77,12 @@ const EventContentComponent: React.FC<EventContentProps> = ({ eventUuid }) => {
             <Button>Save</Button>
             <Button variant="outline" disabled>
               Reset
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={() => setDeleteModalOpen(true)}
+            >
+              Delete
             </Button>
           </HeaderPart>
         </Header>
@@ -119,6 +127,11 @@ const EventContentComponent: React.FC<EventContentProps> = ({ eventUuid }) => {
         name={event?.name}
         description={event?.description}
         eventUuid={eventUuid}
+      />
+      <DeleteEventModal
+        eventUuid={eventUuid}
+        isOpen={deleteModalOpen}
+        onOpenChange={setDeleteModalOpen}
       />
       <Toaster />
     </Card>
