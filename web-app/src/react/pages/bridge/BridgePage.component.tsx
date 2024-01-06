@@ -204,7 +204,7 @@ const Bridge: React.FC = () => {
                   {Object.entries(
                     triggers?.find(
                       (trigger) => trigger.name === selectedTriggerInteraction,
-                    )?.fields || {},
+                    )?.fields.entries || {},
                   ).map(([key, value]) => (
                     <FieldContainer key={key}>
                       <Label>Email</Label>
@@ -251,7 +251,7 @@ const Bridge: React.FC = () => {
                       responses?.find(
                         (trigger) =>
                           trigger.name === selectedResponseInteraction,
-                      )?.fields || {},
+                      )?.fields.entries || {},
                     ).map(([key, value]) => (
                       <FieldContainer key={key}>
                         <Label>

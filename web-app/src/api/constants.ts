@@ -29,7 +29,14 @@ export type ApiEvent = {
   provider: string;
   id: string;
   name: string;
-  fields: Fields;
+  fields: Fields[];
+};
+
+export type AdditionalInteraction = {
+  action_provider: string;
+  id: string;
+  name: string;
+  fields: Fields[];
 };
 
 export type Fields = {
@@ -57,6 +64,7 @@ export type Event = {
   active: boolean;
   triggerInteraction: ApiEvent;
   responseInteraction: ApiEvent;
+  additionalActions: AdditionalInteraction[];
   timestamp: string;
   created_at: string;
   updated_at: string;
