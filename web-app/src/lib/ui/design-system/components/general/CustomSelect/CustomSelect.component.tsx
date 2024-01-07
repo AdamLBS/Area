@@ -21,7 +21,7 @@ const CustomSelectComponent: React.FC<CustomSelectProps> = ({
   onChange,
 }) => {
   return (
-    <Select onValueChange={onChange}>
+    <Select onValueChange={onChange} disabled={!values || values.length === 0}>
       <SelectTrigger className="w-[180px]">
         <SelectValue placeholder={value} />
       </SelectTrigger>

@@ -96,3 +96,15 @@ export const updateEventSettings = async (payload: {
     throw new Error('Error updating event settings.');
   }
 };
+
+export const deleteEvent = async (uuid: string): Promise<void> => {
+  try {
+    await axios.delete(API_URL + `/events/delete/${uuid}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+      },
+    });
+  } catch (error) {
+    throw new Error('Error deleting event.');
+  }
+};
