@@ -6,6 +6,7 @@ import { TRIGGER_EVENTS } from 'App/params/triggerEvents'
 import { RESPONSE_EVENTS } from 'App/params/responseEvents'
 import { AdditionalInteraction } from 'types/events'
 import UpdateEventSettingValidator from 'App/Validators/Event/UpdateEventSettingValidator'
+import AddActionValidator from 'App/Validators/Event/AddActionValidator'
 
 export default class EventsController {
   public async createEvent({ request, response, auth }: HttpContextContract) {
@@ -203,6 +204,51 @@ export default class EventsController {
     await event.save()
     return response.ok({
       message: 'Event updated',
+    })
+  }
+
+  public async addAction({ response, auth, request, params }: HttpContextContract) {
+    const payload = await request.validate(AddActionValidator)
+    const user = await auth.authenticate()
+    const { uuid } = params
+
+    if (!uuid) {
+      return response.badRequest({
+        message: 'Event uuid is required',
+      })
+    }
+
+    const event = await Event.query().where('user_uuid', user.uuid).where('uuid', uuid).first()
+
+    if (!event) {
+      return response.notFound({
+        message: 'Event not found',
+      })
+    }
+
+    const actionApi = await Oauth.query()
+      .where('user_uuid', user.uuid)
+      .where('provider', payload.action_provider)
+      .first()
+
+    if (!actionApi) {
+      return response.badRequest({
+        message: 'Action api not found',
+      })
+    }
+
+    const newAction = {
+      action_provider: payload.action_provider,
+      id: payload.id,
+      name: TRIGGER_EVENTS.find((event) => event.id === payload.id)?.name,
+      fields: payload.fields,
+    }
+
+    event.additionalActions?.push(newAction)
+    await event.save()
+
+    return response.ok({
+      message: 'Action added',
     })
   }
 }

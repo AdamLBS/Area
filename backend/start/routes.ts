@@ -41,6 +41,7 @@ Route.group(() => {
   Route.group(() => {
     Route.post('/create', 'EventsController.createEvent')
     Route.patch('/update/:uuid', 'EventsController.updateEventSettings')
+    Route.post('/:uuid/action/add', 'EventsController.addAction')
   })
     .prefix('/event')
     .middleware(['auth:api'])
