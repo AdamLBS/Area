@@ -73,7 +73,7 @@ const EventContentComponent: React.FC<EventContentProps> = ({ eventUuid }) => {
               Settings
             </Button>
             <EventActivation
-              activated={event?.active || true}
+              activated={event && event.active ? event.active : false}
               eventUuid={eventUuid}
             />
           </HeaderPart>
