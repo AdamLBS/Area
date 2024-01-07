@@ -44,6 +44,7 @@ const providerIcon = {
   null: <Loader />,
 };
 import { EventSettingsModal } from '../EventSettingsModal';
+import { AddEventActionModal } from '../AddEventActionModal';
 
 export type EventContentProps = {
   eventUuid: string;
@@ -52,6 +53,8 @@ export type EventContentProps = {
 const EventContentComponent: React.FC<EventContentProps> = ({ eventUuid }) => {
   const { data: event } = useEvent(eventUuid);
   const [open, setOpen] = React.useState(false);
+  const [AddEventActionModalOpen, setAddEventActionModalOpen] =
+    React.useState(false);
 
   return (
     <Card>
@@ -108,7 +111,10 @@ const EventContentComponent: React.FC<EventContentProps> = ({ eventUuid }) => {
             <BreakLine />
           </EventPartContent>
         </EventPart>
-        <AddButton variant="secondary">
+        <AddButton
+          variant="secondary"
+          onClick={() => setAddEventActionModalOpen(true)}
+        >
           <Plus className="mr-2 h-4 w-4" />
           Add a new action event
         </AddButton>
@@ -118,6 +124,11 @@ const EventContentComponent: React.FC<EventContentProps> = ({ eventUuid }) => {
         setOpen={setOpen}
         name={event?.name}
         description={event?.description}
+        eventUuid={eventUuid}
+      />
+      <AddEventActionModal
+        isOpen={AddEventActionModalOpen}
+        onOpenChange={setAddEventActionModalOpen}
         eventUuid={eventUuid}
       />
       <Toaster />
