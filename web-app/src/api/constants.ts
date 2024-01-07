@@ -33,9 +33,9 @@ export type ApiEvent = {
 };
 
 export type Fields = {
-  streamer?: string;
-  username?: string;
-  email?: string;
+  value: string;
+  name: string;
+  required: boolean;
 };
 
 export type Interaction = {
