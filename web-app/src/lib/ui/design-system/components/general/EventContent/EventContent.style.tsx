@@ -8,6 +8,7 @@ import {
 export const Card = styled(_Card)`
   width: 100%;
   height: 100%;
+  overflow: auto;
 `;
 
 export const CardHeader = styled(_CardHeader)`
@@ -55,4 +56,10 @@ export const BreakLine = styled.div`
 export const AddButton = styled(Button)`
   width: fit-content;
   align-self: center;
+`;
+
+export const AdditionnalActionsHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `;

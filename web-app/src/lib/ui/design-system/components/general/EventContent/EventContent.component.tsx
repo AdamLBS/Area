@@ -2,6 +2,7 @@ import { Button, CardDescription, CardTitle, Toaster } from '@/components/ui';
 import React, { memo } from 'react';
 import {
   AddButton,
+  AdditionnalActionsHeader,
   BreakLine,
   Card,
   CardHeader,
@@ -119,6 +120,25 @@ const EventContentComponent: React.FC<EventContentProps> = ({ eventUuid }) => {
             <BreakLine />
           </EventPartContent>
         </EventPart>
+        {event?.additionalActions.map((action, index) => (
+          <EventPart key={index}>
+            <AdditionnalActionsHeader>
+              <H3>Additional action</H3>
+              <Button variant="outline">Delete</Button>
+            </AdditionnalActionsHeader>
+            <EventPartContent>
+              <EventCard
+                key={index}
+                title={action.action_provider}
+                description={action.name}
+                icon={
+                  providerIcon[(action.action_provider || 'null') as Provider]
+                }
+              />
+              <BreakLine />
+            </EventPartContent>
+          </EventPart>
+        ))}
         <AddButton
           variant="secondary"
           onClick={() => setAddEventActionModalOpen(true)}
