@@ -13,4 +13,3 @@ export * from './components/general/EventActivation';
 export * from './components/general/DeleteEventModal';
 export * from './components/general/UpdateEventParamsModal';
 export * from './components/general/AddEventActionModal';
-

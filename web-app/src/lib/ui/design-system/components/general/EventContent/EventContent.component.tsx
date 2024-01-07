@@ -158,6 +158,7 @@ const EventContentComponent: React.FC<EventContentProps> = ({ eventUuid }) => {
         eventUuid={eventUuid}
         isOpen={deleteModalOpen}
         onOpenChange={setDeleteModalOpen}
+      />
       <AddEventActionModal
         isOpen={AddEventActionModalOpen}
         onOpenChange={setAddEventActionModalOpen}
