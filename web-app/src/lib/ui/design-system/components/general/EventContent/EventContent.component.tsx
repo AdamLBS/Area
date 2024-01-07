@@ -44,6 +44,7 @@ const providerIcon = {
   null: <Loader />,
 };
 import { EventSettingsModal } from '../EventSettingsModal';
+import { DeleteEventModal } from '../DeleteEventModal';
 import { AddEventActionModal } from '../AddEventActionModal';
 
 export type EventContentProps = {
@@ -53,6 +54,7 @@ export type EventContentProps = {
 const EventContentComponent: React.FC<EventContentProps> = ({ eventUuid }) => {
   const { data: event } = useEvent(eventUuid);
   const [open, setOpen] = React.useState(false);
+  const [deleteModalOpen, setDeleteModalOpen] = React.useState(false);
   const [AddEventActionModalOpen, setAddEventActionModalOpen] =
     React.useState(false);
 
@@ -78,6 +80,12 @@ const EventContentComponent: React.FC<EventContentProps> = ({ eventUuid }) => {
             <Button>Save</Button>
             <Button variant="outline" disabled>
               Reset
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={() => setDeleteModalOpen(true)}
+            >
+              Delete
             </Button>
           </HeaderPart>
         </Header>
@@ -126,6 +134,10 @@ const EventContentComponent: React.FC<EventContentProps> = ({ eventUuid }) => {
         description={event?.description}
         eventUuid={eventUuid}
       />
+      <DeleteEventModal
+        eventUuid={eventUuid}
+        isOpen={deleteModalOpen}
+        onOpenChange={setDeleteModalOpen}
       <AddEventActionModal
         isOpen={AddEventActionModalOpen}
         onOpenChange={setAddEventActionModalOpen}
