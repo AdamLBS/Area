@@ -1,7 +1,7 @@
 import { schema } from '@ioc:Adonis/Core/Validator'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
-export default class AddActionValidator {
+export default class DeleteActionValidator {
   constructor(protected ctx: HttpContextContract) {}
 
   /*
@@ -24,9 +24,8 @@ export default class AddActionValidator {
    *    ```
    */
   public schema = schema.create({
-    action_provider: schema.string(),
-    id: schema.string(),
-    fields: schema.array().members(schema.object().anyMembers()),
+    // index of the action to delete in the array of additional actions
+    id: schema.number(),
   })
 
   /**

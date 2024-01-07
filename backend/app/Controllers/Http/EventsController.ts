@@ -7,6 +7,7 @@ import { RESPONSE_EVENTS } from 'App/params/responseEvents'
 import { AdditionalInteraction } from 'types/events'
 import UpdateEventSettingValidator from 'App/Validators/Event/UpdateEventSettingValidator'
 import AddActionValidator from 'App/Validators/Event/AddActionValidator'
+import DeleteActionValidator from 'App/Validators/Event/DeleteActionValidator'
 
 export default class EventsController {
   public async createEvent({ request, response, auth }: HttpContextContract) {
@@ -34,14 +35,15 @@ export default class EventsController {
     const triggerInteraction = {
       provider: payload.trigger_provider,
       id: payload.triggerInteraction.id,
-      name: TRIGGER_EVENTS.find((event) => event.id === payload.triggerInteraction.id)?.name,
+      name: TRIGGER_EVENTS.find((event) => event.id === payload.triggerInteraction.id)?.name || '',
       fields: payload.triggerInteraction.fields,
     }
 
     const responseInteraction = {
       provider: payload.response_provider,
       id: payload.responseInteraction.id,
-      name: RESPONSE_EVENTS.find((event) => event.id === payload.responseInteraction.id)?.name,
+      name:
+        RESPONSE_EVENTS.find((event) => event.id === payload.responseInteraction.id)?.name || '',
       fields: payload.responseInteraction.fields,
     }
 
@@ -238,10 +240,16 @@ export default class EventsController {
     }
 
     const newAction = {
-      action_provider: payload.action_provider,
       id: payload.id,
       name: TRIGGER_EVENTS.find((event) => event.id === payload.id)?.name,
       fields: payload.fields,
+      action_provider: payload.action_provider,
+    }
+
+    if (event.additionalActions?.map((action) => action.id).includes(newAction.id)) {
+      return response.badRequest({
+        message: 'Action already exists',
+      })
     }
 
     event.additionalActions?.push(newAction)
@@ -249,6 +257,39 @@ export default class EventsController {
 
     return response.ok({
       message: 'Action added',
+    })
+  }
+
+  public async deleteAction({ response, auth, request, params }: HttpContextContract) {
+    const payload = await request.validate(DeleteActionValidator)
+    const user = await auth.authenticate()
+    const { uuid } = params
+
+    if (!uuid) {
+      return response.badRequest({
+        message: 'Event uuid is required',
+      })
+    }
+
+    const event = await Event.query().where('user_uuid', user.uuid).where('uuid', uuid).first()
+
+    if (!event) {
+      return response.notFound({
+        message: 'Event not found',
+      })
+    }
+
+    if (event.additionalActions && event.additionalActions?.length <= payload.id) {
+      return response.badRequest({
+        message: 'Action not found',
+      })
+    }
+
+    event.additionalActions?.splice(payload.id, 1)
+    await event.save()
+
+    return response.ok({
+      message: 'Action deleted',
     })
   }
 }
