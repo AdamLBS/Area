@@ -29,13 +29,13 @@ export type ApiEvent = {
   provider: string;
   id: string;
   name: string;
-  fields: Fields;
+  fields: Fields[];
 };
 
 export type Fields = {
-  streamer?: string;
-  username?: string;
-  email?: string;
+  value: string;
+  name: string;
+  required: boolean;
 };
 
 export type Interaction = {

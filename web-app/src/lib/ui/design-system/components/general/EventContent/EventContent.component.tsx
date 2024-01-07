@@ -45,6 +45,7 @@ const providerIcon = {
 };
 import { EventSettingsModal } from '../EventSettingsModal';
 import { DeleteEventModal } from '../DeleteEventModal';
+import { AddEventActionModal } from '../AddEventActionModal';
 
 export type EventContentProps = {
   eventUuid: string;
@@ -54,6 +55,8 @@ const EventContentComponent: React.FC<EventContentProps> = ({ eventUuid }) => {
   const { data: event } = useEvent(eventUuid);
   const [open, setOpen] = React.useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = React.useState(false);
+  const [AddEventActionModalOpen, setAddEventActionModalOpen] =
+    React.useState(false);
 
   return (
     <Card>
@@ -116,7 +119,10 @@ const EventContentComponent: React.FC<EventContentProps> = ({ eventUuid }) => {
             <BreakLine />
           </EventPartContent>
         </EventPart>
-        <AddButton variant="secondary">
+        <AddButton
+          variant="secondary"
+          onClick={() => setAddEventActionModalOpen(true)}
+        >
           <Plus className="mr-2 h-4 w-4" />
           Add a new action event
         </AddButton>
@@ -132,6 +138,10 @@ const EventContentComponent: React.FC<EventContentProps> = ({ eventUuid }) => {
         eventUuid={eventUuid}
         isOpen={deleteModalOpen}
         onOpenChange={setDeleteModalOpen}
+      <AddEventActionModal
+        isOpen={AddEventActionModalOpen}
+        onOpenChange={setAddEventActionModalOpen}
+        eventUuid={eventUuid}
       />
       <Toaster />
     </Card>
