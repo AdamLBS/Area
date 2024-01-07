@@ -10,4 +10,5 @@ export * from './components/general/EventContent';
 export * from './components/general/MenuEvent';
 export * from './components/general/EventCard';
 export * from './components/general/EventActivation';
+export * from './components/general/UpdateEventParamsModal';
 export * from './components/general/AddEventActionModal';
