@@ -17,7 +17,7 @@ const Activation = ({ activated, eventUuid }: ActivationProps) => {
   const activateEventMutation = useMutation({
     mutationFn: activateEvent,
     onSuccess: () => {
-      const message = activated ? 'activated' : 'desactivated';
+      const message = activated ? 'desactivated' : 'activated';
       toast({
         title: 'Success!',
         description: 'Your event has been ' + message + '.',
