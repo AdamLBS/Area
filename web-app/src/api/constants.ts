@@ -29,7 +29,7 @@ export type ApiEvent = {
   provider: string;
   id: string;
   name: string;
-  fields: Fields;
+  fields: Fields[];
 };
 
 export type Fields = {
