@@ -10,6 +10,7 @@ import AddActionValidator from 'App/Validators/Event/AddActionValidator'
 import DeleteActionValidator from 'App/Validators/Event/DeleteActionValidator'
 import UpdateActionValidator from 'App/Validators/Event/UpdateActionValidator'
 import UpdateTriggerValidator from 'App/Validators/Event/UpdateTriggerValidator'
+import UpdateAdditionalActionValidator from 'App/Validators/Event/UpdateAdditionalActionValidator'
 
 export default class EventsController {
   public async createEvent({ request, response, auth }: HttpContextContract) {
@@ -385,6 +386,65 @@ export default class EventsController {
 
     return response.ok({
       message: 'Trigger updated',
+    })
+  }
+
+  public async updateAdditionalAction({ response, auth, request, params }: HttpContextContract) {
+    const payload = await request.validate(UpdateAdditionalActionValidator)
+    const user = await auth.authenticate()
+    const { uuid } = params
+
+    if (!uuid) {
+      return response.badRequest({
+        message: 'Event uuid is required',
+      })
+    }
+
+    const event = await Event.query().where('user_uuid', user.uuid).where('uuid', uuid).first()
+
+    if (!event) {
+      return response.notFound({
+        message: 'Event not found',
+      })
+    }
+
+    if (event.additionalActions && payload.index >= event.additionalActions?.length) {
+      return response.badRequest({
+        message: 'Action not found',
+      })
+    }
+
+    const actionApi = await Oauth.query()
+      .where('user_uuid', user.uuid)
+      .where('provider', payload.action_provider)
+      .first()
+
+    if (!actionApi) {
+      return response.badRequest({
+        message: 'Action api not found',
+      })
+    }
+
+    const newAction = {
+      id: payload.id,
+      name: RESPONSE_EVENTS.find((event) => event.id === payload.id)?.name,
+      fields: payload.fields,
+      action_provider: payload.action_provider,
+    }
+
+    if (event.additionalActions?.map((action) => action.id).includes(newAction.id)) {
+      return response.badRequest({
+        message: 'Action already exists',
+      })
+    }
+
+    if (event.additionalActions) {
+      event.additionalActions[payload.index] = newAction
+      await event.save()
+    }
+
+    return response.ok({
+      message: 'Action updated',
     })
   }
 }
