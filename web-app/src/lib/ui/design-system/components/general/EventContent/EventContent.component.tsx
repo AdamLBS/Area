@@ -90,10 +90,6 @@ const EventContentComponent: React.FC<EventContentProps> = ({ eventUuid }) => {
             />
           </HeaderPart>
           <HeaderPart>
-            <Button>Save</Button>
-            <Button variant="outline" disabled>
-              Reset
-            </Button>
             <Button
               variant="destructive"
               onClick={() => setDeleteModalOpen(true)}
