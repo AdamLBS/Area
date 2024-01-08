@@ -92,68 +92,43 @@ export default class TwitchLiveTask extends BaseTask {
     console.log(`[Twitch] ${userName} is already in live`)
   }
 
-  private async refreshTwitchToken(oauth: any) {
-    try {
-      const params = {
-        grant_type: 'refresh_token',
-        refresh_token: oauth.refresh_token,
-        client_id: process.env.TWITCH_CLIENT_ID,
-        client_secret: process.env.TWITCH_CLIENT_SECRET,
-      }
-      const response = await axios.post<TwitchRefreshToken>(
-        `https://id.twitch.tv/oauth2/token?grant_type=${params.grant_type}&refresh_token=${params.refresh_token}&client_id=${params.client_id}&client_secret=${params.client_secret}`
-      )
-      await Database.from('oauths')
-        .where('provider', 'twitch')
-        .where('user_uuid', oauth.user_uuid)
-        .update({ token: response.data.access_token, refresh_token: response.data.refresh_token })
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
   public async inLive(
     triggerApiOauth: any,
     responseApiUuid: string,
     reponseInteraction: ResponseInteraction
   ) {
     try {
-      const oauth = await Database.query()
-        .from('oauths')
-        .where('trigger_api', triggerApiOauth.uuid)
-        .first()
-      await this.refreshTwitchToken(oauth)
-      const userId = await this.fetchTwitchUserId(oauth)
-      const twitchData = await this.fetchTwitchData(oauth, userId)
+      const userId = await this.fetchTwitchUserId(triggerApiOauth)
+      const twitchData = await this.fetchTwitchData(triggerApiOauth, userId)
 
-      if (oauth.twitch_in_live === null && twitchData.length > 0) {
+      if (triggerApiOauth.twitch_in_live === null && twitchData.length > 0) {
         const channels = twitchData.map((data: TwitchData) => ({ user_name: data.user_name }))
         if (channels === null) {
           return
         }
-        await this.updateChannelsInLive(oauth, channels)
+        await this.updateChannelsInLive(triggerApiOauth, channels)
         return
       }
 
-      const channelsJSON = JSON.parse(oauth.twitch_in_live)
+      const channelsJSON = JSON.parse(triggerApiOauth.twitch_in_live)
 
       for (const channel of channelsJSON) {
         const data = twitchData.find((data: TwitchData) => data.user_name === channel.user_name)
         if (data === undefined) {
           channelsJSON.splice(channelsJSON.indexOf(channel), 1)
           console.log('removed', channel.user_name)
-          await this.updateChannelsInLive(oauth, channelsJSON)
+          await this.updateChannelsInLive(triggerApiOauth, channelsJSON)
         }
       }
 
       for (const data of twitchData) {
-        if (oauth.twitch_in_live === null) {
+        if (triggerApiOauth.twitch_in_live === null) {
           return
         }
 
         if (this.isUserNotPresent(channelsJSON, data.user_name)) {
           channelsJSON.push({ user_name: data.user_name })
-          await this.updateChannelsInLive(oauth, channelsJSON)
+          await this.updateChannelsInLive(triggerApiOauth, channelsJSON)
           await this.notifyUserInLive(data, responseApiUuid, reponseInteraction)
         } else {
           this.logAlreadyInLive(data.user_name)
@@ -169,7 +144,7 @@ export default class TwitchLiveTask extends BaseTask {
       console.log('[Twitch] handle')
       const events = await Database.query()
         .from('events')
-        .whereRaw(`CAST(trigger_interaction AS JSONB) #>> '{id}' = 'inLive'`)
+        .whereRaw(`CAST(trigger_interaction AS JSONB) #>> '{id}' = 'startsLive'`)
       for (const event of events) {
         const triggerApiOauth = await Database.query()
           .from('oauths')
