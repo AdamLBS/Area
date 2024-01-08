@@ -127,7 +127,8 @@ export default class EventsController {
     return response.ok(RESPONSE_EVENTS)
   }
 
-  public async getEvent({ response, params }: HttpContextContract) {
+  public async getEvent({ response, params, auth }: HttpContextContract) {
+    await auth.authenticate()
     const { uuid } = params
     if (!uuid) {
       return response.badRequest({
