@@ -1,6 +1,7 @@
 import {
   Button,
   DialogDescription,
+  DialogFooter,
   DialogTitle,
   DialogTrigger,
   Input,
@@ -11,7 +12,6 @@ import React, { memo, useState } from 'react';
 import {
   DialogContainer,
   EventPanelButton,
-  Footer,
   Header,
   LabelContent,
   Modal,
@@ -80,12 +80,12 @@ const CreateEventModal: React.FC = () => {
             </LabelContent>
           </Page>
         )}
-        <Footer>
+        <DialogFooter>
           <Button onClick={addState}>Continue</Button>
           <Button onClick={removeState} variant="secondary">
             Cancel
           </Button>
-        </Footer>
+        </DialogFooter>
       </Modal>
     </DialogContainer>
   );

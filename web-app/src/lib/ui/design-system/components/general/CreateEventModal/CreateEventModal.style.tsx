@@ -1,11 +1,5 @@
 import styled from 'styled-components';
-import {
-  Button,
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-} from '@/components/ui';
+import { Button, Dialog, DialogContent, DialogHeader } from '@/components/ui';
 
 export const DialogContainer = styled(Dialog)`
   width: 100%;
@@ -44,15 +38,6 @@ export const LabelContent = styled.div`
   display: flex;
   flex-direction: column;
   gap: 5px;
-`;
-
-export const Footer = styled(DialogFooter)`
-  display: flex;
-  width: 414px;
-  justify-content: flex-end;
-  align-items: center;
-  gap: 10px;
-  padding-right: 24px;
 `;
 
 export const Pagination = styled.div`
