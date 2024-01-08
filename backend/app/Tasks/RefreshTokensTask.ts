@@ -4,31 +4,37 @@ import axios from 'axios';
 import Oauth from 'App/Models/Oauth'
 
 type RefreshToken = {
-  access_token: string;
-  token_type: string;
-  scope: string[] | string;
-  expires_in: number;
-  refresh_token: string;
-};
+  access_token: string
+  token_type: string
+  scope: string[] | string
+  expires_in: number
+  refresh_token: string
+}
 
 export default class RefreshTokensTask extends BaseTask {
   public static get schedule() {
-    console.log('[Refresh Token] schedule');
-    return CronTimeV2.everyFifteenSeconds();
+    console.log('[Refresh Token] schedule')
+    return CronTimeV2.everyFifteenSeconds()
   }
 
   public static get useLock() {
-    return false;
+    return false
   }
 
-  private async refreshToken(oauth: any, provider: string, apiUrl: string, clientId?: string, clientSecret?: string) {
+  private async refreshToken(
+    oauth: any,
+    provider: string,
+    apiUrl: string,
+    clientId?: string,
+    clientSecret?: string
+  ) {
     try {
       const params = {
         grant_type: 'refresh_token',
         refresh_token: oauth.refresh_token,
         client_id: clientId,
         client_secret: clientSecret,
-      };
+      }
 
       const response = await axios.post<RefreshToken>(
         `${apiUrl}?grant_type=${params.grant_type}&refresh_token=${params.refresh_token}&client_id=${params.client_id}&client_secret=${params.client_secret}`
@@ -44,7 +50,7 @@ export default class RefreshTokensTask extends BaseTask {
         }
       );
     } catch (error) {
-      console.log(error);
+      console.log(error)
     }
   }
 
@@ -59,7 +65,7 @@ export default class RefreshTokensTask extends BaseTask {
         }
       }
     } catch (error) {
-      console.log(error);
+      console.log(error)
     }
   }
 }
