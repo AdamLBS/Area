@@ -55,7 +55,7 @@ export const activateEvent = async (payload: {
 }): Promise<void> => {
   try {
     await axios.patch(
-      API_URL + `/events/activate/${payload.uuid}`,
+      API_URL + `/events/${payload.uuid}/activate`,
       {
         activated: payload.activated,
       },
@@ -106,7 +106,7 @@ export const updateEventSettings = async (payload: {
 
 export const deleteEvent = async (uuid: string): Promise<void> => {
   try {
-    await axios.delete(API_URL + `/events/delete/${uuid}`, {
+    await axios.delete(API_URL + `/events/${uuid}/delete`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('authToken')}`,
       },
