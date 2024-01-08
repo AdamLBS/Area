@@ -50,6 +50,12 @@ const handler = NextAuth({
     TwitchProvider({
       clientId: process.env.TWITCH_CLIENT_ID || '',
       clientSecret: process.env.TWITCH_CLIENT_SECRET || '',
+      authorization: {
+        params: {
+          scope:
+            'openid user:read:email user:read:follows channel:read:subscriptions user:edit',
+        },
+      },
       httpOptions: {
         timeout: 10000,
       },
