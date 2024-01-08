@@ -1,5 +1,12 @@
 import axios from 'axios';
-import { API_URL, ApiEvent, EventCreate, Event, EventType } from '../constants';
+import {
+  API_URL,
+  ApiEvent,
+  EventCreate,
+  Event,
+  EventType,
+  Fields,
+} from '../constants';
 
 export const getTriggers = async (): Promise<ApiEvent[]> => {
   try {
@@ -106,5 +113,48 @@ export const deleteEvent = async (uuid: string): Promise<void> => {
     });
   } catch (error) {
     throw new Error('Error deleting event.');
+  }
+};
+
+export const deleteEventAction = async (payload: {
+  uuid: string;
+  id: number;
+}): Promise<void> => {
+  try {
+    await axios.delete(API_URL + `/event/${payload.uuid}/action/delete`, {
+      data: {
+        id: payload.id,
+      },
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+      },
+    });
+  } catch (error) {
+    throw new Error('Error deleting event action.');
+  }
+};
+
+export const addEventAction = async (payload: {
+  eventUuid: string;
+  action_provider: string;
+  id: string;
+  fiedls: Fields[];
+}): Promise<void> => {
+  try {
+    await axios.post(
+      API_URL + `/event/${payload.eventUuid}/action/add`,
+      {
+        action_provider: payload.action_provider,
+        id: payload.id,
+        fields: payload.fiedls,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+        },
+      },
+    );
+  } catch (error) {
+    throw new Error('Error adding action.');
   }
 };

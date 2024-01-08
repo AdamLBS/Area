@@ -8,6 +8,8 @@ import { AdditionalInteraction } from 'types/events'
 import UpdateEventSettingValidator from 'App/Validators/Event/UpdateEventSettingValidator'
 import AddActionValidator from 'App/Validators/Event/AddActionValidator'
 import DeleteActionValidator from 'App/Validators/Event/DeleteActionValidator'
+import UpdateActionValidator from 'App/Validators/Event/UpdateActionValidator'
+import UpdateTriggerValidator from 'App/Validators/Event/UpdateTriggerValidator'
 
 export default class EventsController {
   public async createEvent({ request, response, auth }: HttpContextContract) {
@@ -64,7 +66,7 @@ export default class EventsController {
           const newAction = {
             action_provider: action.action_provider,
             id: action.id,
-            name: TRIGGER_EVENTS.find((event) => event.id === action.id)?.name,
+            name: RESPONSE_EVENTS.find((event) => event.id === action.id)?.name,
             fields: action.fields,
           }
           additionalActions.push(newAction)
@@ -241,7 +243,7 @@ export default class EventsController {
 
     const newAction = {
       id: payload.id,
-      name: TRIGGER_EVENTS.find((event) => event.id === payload.id)?.name,
+      name: RESPONSE_EVENTS.find((event) => event.id === payload.id)?.name,
       fields: payload.fields,
       action_provider: payload.action_provider,
     }
@@ -290,6 +292,99 @@ export default class EventsController {
 
     return response.ok({
       message: 'Action deleted',
+    })
+  }
+
+  public async updateAction({ response, auth, request, params }: HttpContextContract) {
+    const payload = await request.validate(UpdateActionValidator)
+    const user = await auth.authenticate()
+    const { uuid } = params
+
+    if (!uuid) {
+      return response.badRequest({
+        message: 'Event uuid is required',
+      })
+    }
+
+    const event = await Event.query().where('user_uuid', user.uuid).where('uuid', uuid).first()
+
+    if (!event) {
+      return response.notFound({
+        message: 'Event not found',
+      })
+    }
+
+    const actionApi = await Oauth.query()
+      .where('user_uuid', user.uuid)
+      .where('provider', payload.response_provider)
+      .first()
+
+    if (!actionApi) {
+      return response.badRequest({
+        message: 'Action api not found',
+      })
+    }
+
+    const newResponse = {
+      provider: payload.response_provider,
+      id: payload.responseInteraction.id,
+      name:
+        RESPONSE_EVENTS.find((event) => event.id === payload.responseInteraction.id)?.name || '',
+      fields: payload.responseInteraction.fields,
+    }
+
+    event.responseInteraction = newResponse
+    event.responseApi = actionApi.uuid
+    await event.save()
+
+    return response.ok({
+      message: 'Action updated',
+    })
+  }
+
+  public async updateTrigger({ response, auth, request, params }: HttpContextContract) {
+    const payload = await request.validate(UpdateTriggerValidator)
+    const user = await auth.authenticate()
+    const { uuid } = params
+
+    if (!uuid) {
+      return response.badRequest({
+        message: 'Event uuid is required',
+      })
+    }
+
+    const event = await Event.query().where('user_uuid', user.uuid).where('uuid', uuid).first()
+
+    if (!event) {
+      return response.notFound({
+        message: 'Event not found',
+      })
+    }
+
+    const triggerApi = await Oauth.query()
+      .where('user_uuid', user.uuid)
+      .where('provider', payload.trigger_provider)
+      .first()
+
+    if (!triggerApi) {
+      return response.badRequest({
+        message: 'Trigger api not found',
+      })
+    }
+
+    const newTrigger = {
+      provider: payload.trigger_provider,
+      id: payload.triggerInteraction.id,
+      name: TRIGGER_EVENTS.find((event) => event.id === payload.triggerInteraction.id)?.name || '',
+      fields: payload.triggerInteraction.fields,
+    }
+
+    event.triggerInteraction = newTrigger
+    event.triggerApi = triggerApi.uuid
+    await event.save()
+
+    return response.ok({
+      message: 'Trigger updated',
     })
   }
 }
