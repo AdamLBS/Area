@@ -24,4 +24,16 @@ export const TRIGGER_EVENTS: APIEvent[] = [
       },
     ],
   },
+  {
+    provider: 'Github',
+    id: 'newCommit',
+    name: 'New commit',
+    fields: [
+      {
+        value: '',
+        name: 'commitsUrl',
+        required: true,
+      },
+    ],
+  },
 ]
