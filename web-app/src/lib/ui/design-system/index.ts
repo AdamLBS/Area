@@ -8,3 +8,4 @@ export * from './components/general/AuthGard';
 export * from './components/general/CustomSelect';
 export * from './components/general/MenuEvent';
 export * from './components/general/EventCard';
+export * from './components/general/CreateEventModal';
