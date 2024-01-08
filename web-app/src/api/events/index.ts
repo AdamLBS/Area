@@ -212,3 +212,30 @@ export const updateActionEvent = async (payload: {
     throw new Error('Error updating action event.');
   }
 };
+
+export const updateAdditionalAction = async (payload: {
+  index: number;
+  eventUuid: string;
+  action_provider: string;
+  id: string;
+  fields: Fields[];
+}): Promise<void> => {
+  try {
+    await axios.patch(
+      API_URL + `/event/${payload.eventUuid}/additionalAction/update`,
+      {
+        index: payload.index,
+        action_provider: payload.action_provider,
+        id: payload.id,
+        fields: payload.fields,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+        },
+      },
+    );
+  } catch (error) {
+    throw new Error('Error updating additional action.');
+  }
+};

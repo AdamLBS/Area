@@ -50,6 +50,7 @@ import { AddEventActionModal } from '../AddEventActionModal';
 import { DeleteActionModal } from '../DeleteActionModal';
 import { UpdateTriggerEventModal } from '../UpdateTriggerEventModal';
 import { UpdateActionEventModal } from '../UpdateActionEventModal';
+import { UpdateAdditionalActionModal } from '../UpdateAdditionalActionModal';
 
 export type EventContentProps = {
   eventUuid: string;
@@ -68,6 +69,10 @@ const EventContentComponent: React.FC<EventContentProps> = ({ eventUuid }) => {
     React.useState(false);
   const [updateActionEventModalOpen, setUpdateActionEventModalOpen] =
     React.useState(false);
+  const [UpdateAdditionalActionModalOpen, setUpdateAdditionalActionModalOpen] =
+    React.useState(false);
+  const [updateAdditionalActionIndex, setUpdateAdditionalActionIndex] =
+    React.useState(-1);
 
   const onDeleteAction = useCallback(
     (index: number) => {
@@ -75,6 +80,14 @@ const EventContentComponent: React.FC<EventContentProps> = ({ eventUuid }) => {
       setDeleteActionModalOpen(true);
     },
     [setDeleteActionModalOpen, setDeleteActionIndex],
+  );
+
+  const onUpdateAdditionalAction = useCallback(
+    (index: number) => {
+      setUpdateAdditionalActionIndex(index);
+      setUpdateAdditionalActionModalOpen(true);
+    },
+    [setUpdateAdditionalActionIndex, setUpdateAdditionalActionModalOpen],
   );
 
   return (
@@ -152,6 +165,7 @@ const EventContentComponent: React.FC<EventContentProps> = ({ eventUuid }) => {
                 icon={
                   providerIcon[(action.action_provider || 'null') as Provider]
                 }
+                onClick={() => onUpdateAdditionalAction(index)}
               />
               <BreakLine />
             </EventPartContent>
@@ -197,6 +211,12 @@ const EventContentComponent: React.FC<EventContentProps> = ({ eventUuid }) => {
         isOpen={updateActionEventModalOpen}
         onOpenChange={setUpdateActionEventModalOpen}
         eventUuid={eventUuid}
+      />
+      <UpdateAdditionalActionModal
+        isOpen={UpdateAdditionalActionModalOpen}
+        onOpenChange={setUpdateAdditionalActionModalOpen}
+        eventUuid={eventUuid}
+        index={updateAdditionalActionIndex}
       />
       <Toaster />
     </Card>
