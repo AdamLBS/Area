@@ -119,6 +119,7 @@ class _DrawerBridgePageState extends State<DrawerBridgePage> {
               height: 40,
               child: ElevatedButton(
                 onPressed: () {
+                  Scaffold.of(context).closeEndDrawer();
                   Navigator.pushNamed(context, '/eventcreate');
                 },
                 style: ElevatedButton.styleFrom(
