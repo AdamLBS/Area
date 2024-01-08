@@ -3,7 +3,6 @@ import Cache from 'App/Models/Cache'
 import Oauth from 'App/Models/Oauth'
 import { Content, ResponseInteraction, eventHandler } from 'App/functions/EventHandler'
 import { Commit } from 'App/types/github'
-import { OauthType } from 'App/types/oauth'
 import { BaseTask, CronTimeV2 } from 'adonis5-scheduler/build/src/Scheduler/Task'
 import axios from 'axios'
 import { APIEventField } from 'types/events'
@@ -25,7 +24,6 @@ export default class GithubCheckLastCommitTask extends BaseTask {
     responseApiUuid: string,
     reponseInteraction: ResponseInteraction
   ) {
-    console.log('user uuid', oauth.userUuid)
     const userCache = await Database.query().from('caches').where('uuid', oauth.userUuid).first()
     try {
       const url = commitsUrl + '?per_page=1'
@@ -72,7 +70,7 @@ export default class GithubCheckLastCommitTask extends BaseTask {
           try {
             const jsonVals = JSON.parse(event.trigger_interaction)
             const fields = jsonVals.fields as APIEventField<string>[]
-            const result = await this.fetchLastCommit(
+            await this.fetchLastCommit(
               fields[0].value,
               oauth,
               event.response_api,
