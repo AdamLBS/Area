@@ -97,7 +97,10 @@ export default class TwitchLiveTask extends BaseTask {
     try {
       const userId = await this.fetchTwitchUserId(triggerApiOauth)
       const twitchData = await this.fetchTwitchData(triggerApiOauth, userId)
-      const userCache = await Database.query().from('caches').where('uuid', triggerApiOauth.user_uuid).first()
+      const userCache = await Database.query()
+        .from('caches')
+        .where('uuid', triggerApiOauth.user_uuid)
+        .first()
 
       if (!userCache || !userCache?.twitch_in_live) {
         const channels = twitchData.map((data: TwitchData) => ({ user_name: data.user_name }))
@@ -146,18 +149,20 @@ export default class TwitchLiveTask extends BaseTask {
       const events = await Database.query()
         .from('events')
         .whereRaw(`CAST(trigger_interaction AS JSONB) #>> '{id}' = 'startsLive'`)
-      events.filter((event) => event.active).map(async (event) => {
-        const triggerApiOauth = await Database.query()
-          .from('oauths')
-          .where('uuid', event.trigger_api)
-          .first()
-        const responseApiUuid = event.response_api
-        await this.inLive(
-          triggerApiOauth,
-          responseApiUuid,
-          event.response_interaction as ResponseInteraction
-        )
-      })
+      events
+        .filter((event) => event.active)
+        .map(async (event) => {
+          const triggerApiOauth = await Database.query()
+            .from('oauths')
+            .where('uuid', event.trigger_api)
+            .first()
+          const responseApiUuid = event.response_api
+          await this.inLive(
+            triggerApiOauth,
+            responseApiUuid,
+            event.response_interaction as ResponseInteraction
+          )
+        })
     } catch (error) {
       console.log(error)
     }
