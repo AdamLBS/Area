@@ -106,7 +106,6 @@ export default class TwitchLiveTask extends BaseTask {
         }
         await this.updateChannelsInLive(triggerApiOauth, channels)
         twitchData.map(async (data: TwitchData) => {
-          console.log('notify', data.user_name, 'in live')
           await this.notifyUserInLive(data, responseApiUuid, reponseInteraction)
         })
         return
