@@ -91,7 +91,7 @@ const UpdateEventParamsModalComponent: React.FC<
           <DialogFooter>
             <Button type="submit">Confirm</Button>
             <Button variant="outline" onClick={onCancel}>
-              Cancel
+              Back
             </Button>
           </DialogFooter>
         </FormContainer>
