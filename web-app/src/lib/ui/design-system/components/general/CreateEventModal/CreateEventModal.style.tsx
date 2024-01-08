@@ -1,15 +1,7 @@
 import styled from 'styled-components';
-import { Button, Dialog, DialogContent, DialogHeader } from '@/components/ui';
-
-export const DialogContainer = styled(Dialog)`
-  width: 100%;
-  max-width: 445px;
-  min-width: 320px;
-  padding: 24px;
-`;
+import { Button, DialogContent, DialogHeader } from '@/components/ui';
 
 export const Modal = styled(DialogContent)`
-  max-width: 445px;
   min-width: 320px;
   width: 100%;
   padding: 24px;
@@ -37,11 +29,16 @@ export const Page = styled.div`
 export const LabelContent = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 10px;
 `;
 
-export const Pagination = styled.div`
-  justify-content: center;
+export const ServiceContainer = styled.div`
   display: flex;
-  gap: 5px;
+  flex-direction: column;
+  gap: 8px;
+`;
+
+export const Title = styled.div`
+  display: flex;
+  flex-direction: column;
 `;

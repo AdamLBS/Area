@@ -8,10 +8,12 @@ import {
   LogoRight,
   LogoLeft,
   Footer,
+  EventPanelButton,
 } from './MenuEvent.style';
-import { EventModal, H3, PrimaryMutted } from '@/lib/ui/design-system';
+import { CreateEventModal, H3, PrimaryMutted } from '@/lib/ui/design-system';
 import { useRouter } from 'next/navigation';
 import { useEvents } from '@/react/hooks/events';
+import { PlusIcon } from 'lucide-react';
 
 export type EventsProps = {
   currentUuid?: string;
@@ -20,6 +22,7 @@ export type EventsProps = {
 const MenuEventComponent: React.FC<EventsProps> = ({ currentUuid }) => {
   const router = useRouter();
   const { data: events } = useEvents();
+  const [createEventModalOpen, setCreateEventModalOpen] = React.useState(false);
 
   const handleRedirection = (uuid: string) => {
     router.push('/bridge/' + uuid);
@@ -51,8 +54,15 @@ const MenuEventComponent: React.FC<EventsProps> = ({ currentUuid }) => {
           })}
       </EventPanelContent>
       <Footer>
-        <EventModal />
+        <EventPanelButton onClick={() => setCreateEventModalOpen(true)}>
+          <PlusIcon size={16} />
+          Add a new event
+        </EventPanelButton>
       </Footer>
+      <CreateEventModal
+        isOpen={createEventModalOpen}
+        onOpenChange={setCreateEventModalOpen}
+      />
     </EventPanel>
   );
 };
