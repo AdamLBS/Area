@@ -28,7 +28,6 @@ export default class GithubCheckLastCommitTask extends BaseTask {
     const commitsUrl = repositoryUrl.replace('github.com', 'api.github.com/repos')
     try {
       const url = commitsUrl + '/commits?per_page=1'
-      console.log("url: ", url)
       const response = (
         await axios.get(url, {
           headers: {
