@@ -116,6 +116,24 @@ export const deleteEvent = async (uuid: string): Promise<void> => {
   }
 };
 
+export const deleteEventAction = async (payload: {
+  uuid: string;
+  id: number;
+}): Promise<void> => {
+  try {
+    await axios.delete(API_URL + `/event/${payload.uuid}/action/delete`, {
+      data: {
+        id: payload.id,
+      },
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+      },
+    });
+  } catch (error) {
+    throw new Error('Error deleting event action.');
+  }
+};
+
 export const addEventAction = async (payload: {
   eventUuid: string;
   action_provider: string;
