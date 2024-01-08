@@ -1,6 +1,7 @@
 import { BaseTask, CronTimeV2 } from 'adonis5-scheduler/build/src/Scheduler/Task';
 import Database from '@ioc:Adonis/Lucid/Database';
 import axios from 'axios';
+import Oauth from 'App/Models/Oauth'
 
 type RefreshToken = {
   access_token: string;
@@ -30,12 +31,18 @@ export default class RefreshTokensTask extends BaseTask {
       };
 
       const response = await axios.post<RefreshToken>(
-        `https://id.twitch.tv/oauth2/token?grant_type=${params.grant_type}&refresh_token=${params.refresh_token}&client_id=${params.client_id}&client_secret=${params.client_secret}`
-      )
-      await Database.from('oauths')
-        .where('provider', provider)
-        .where('user_uuid', oauth.user_uuid)
-        .update({ token: response.data.access_token, refresh_token: response.data.refresh_token });
+        `${apiUrl}?grant_type=${params.grant_type}&refresh_token=${params.refresh_token}&client_id=${params.client_id}&client_secret=${params.client_secret}`
+      );
+      await Oauth.updateOrCreate(
+        {
+          userUuid: oauth.user_uuid,
+          provider: provider,
+        },
+        {
+          token: response.data.access_token,
+          refreshToken: response.data.refresh_token,
+        }
+      );
     } catch (error) {
       console.log(error);
     }
@@ -44,9 +51,12 @@ export default class RefreshTokensTask extends BaseTask {
   public async handle() {
     try {
       const oauths = await Database.from('oauths');
-      var num = 0;
       for (const oauth of oauths) {
-        if (oauth.provider === 'twitch') await this.refreshTwitchToken(oauth)
+        if (oauth.provider === 'twitch') {
+          await this.refreshToken(oauth, 'twitch', 'https://id.twitch.tv/oauth2/token', process.env.TWITCH_CLIENT_ID, process.env.TWITCH_CLIENT_SECRET);
+        } else if (oauth.provider === 'spotify') {
+          await this.refreshToken(oauth, 'spotify', 'https://accounts.spotify.com/api/token', process.env.SPOTIFY_CLIENT_ID, process.env.SPOTIFY_CLIENT_SECRET);
+        }
       }
     } catch (error) {
       console.log(error);

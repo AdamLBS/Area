@@ -2,6 +2,7 @@ import { BaseTask, CronTimeV2 } from 'adonis5-scheduler/build/src/Scheduler/Task
 import { eventHandler, Content, ResponseInteraction } from '../functions/EventHandler'
 import Database from '@ioc:Adonis/Lucid/Database'
 import axios from 'axios'
+import Cache from 'App/Models/Cache'
 
 type TwitchData = {
   id: string
@@ -15,14 +16,6 @@ type TwitchData = {
   language: string
   thumbnail_url: string
   tag_ids: string[]
-}
-
-type TwitchRefreshToken = {
-  access_token: string
-  refresh_token: string
-  expires_in: number
-  scope: string[]
-  token_type: string
 }
 
 type TwitchResponse = {
@@ -66,10 +59,14 @@ export default class TwitchLiveTask extends BaseTask {
   }
 
   private async updateChannelsInLive(oauth: any, channelsJSON: { user_name: string }[]) {
-    await Database.from('oauths')
-      .where('provider', 'twitch')
-      .where('user_uuid', oauth.user_uuid)
-      .update({ twitch_in_live: JSON.stringify(channelsJSON) }) //  create a new element of a new table twitch_history
+    await Cache.updateOrCreate(
+      {
+        uuid: oauth.user_uuid,
+      },
+      {
+        twitchInLive: JSON.stringify(channelsJSON),
+      }
+    )
   }
 
   private async notifyUserInLive(
@@ -100,17 +97,22 @@ export default class TwitchLiveTask extends BaseTask {
     try {
       const userId = await this.fetchTwitchUserId(triggerApiOauth)
       const twitchData = await this.fetchTwitchData(triggerApiOauth, userId)
+      const userCache = await Database.query().from('caches').where('uuid', triggerApiOauth.user_uuid).first()
 
-      if (triggerApiOauth.twitch_in_live === null && twitchData.length > 0) {
+      if (!userCache || !userCache?.twitch_in_live) {
         const channels = twitchData.map((data: TwitchData) => ({ user_name: data.user_name }))
         if (channels === null) {
           return
         }
         await this.updateChannelsInLive(triggerApiOauth, channels)
+        twitchData.map(async (data: TwitchData) => {
+          console.log('notify', data.user_name, 'in live')
+          await this.notifyUserInLive(data, responseApiUuid, reponseInteraction)
+        })
         return
       }
 
-      const channelsJSON = JSON.parse(triggerApiOauth.twitch_in_live)
+      const channelsJSON = JSON.parse(userCache.twitch_in_live)
 
       for (const channel of channelsJSON) {
         const data = twitchData.find((data: TwitchData) => data.user_name === channel.user_name)
@@ -145,7 +147,7 @@ export default class TwitchLiveTask extends BaseTask {
       const events = await Database.query()
         .from('events')
         .whereRaw(`CAST(trigger_interaction AS JSONB) #>> '{id}' = 'startsLive'`)
-      for (const event of events) {
+      events.filter((event) => event.active).map(async (event) => {
         const triggerApiOauth = await Database.query()
           .from('oauths')
           .where('uuid', event.trigger_api)
@@ -156,7 +158,7 @@ export default class TwitchLiveTask extends BaseTask {
           responseApiUuid,
           event.response_interaction as ResponseInteraction
         )
-      }
+      })
     } catch (error) {
       console.log(error)
     }
