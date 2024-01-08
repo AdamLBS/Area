@@ -4,14 +4,12 @@ import {
   EventButton,
   Header,
   EventPanel,
-  EventPanelButton,
   EventPanelContent,
   LogoRight,
   LogoLeft,
   Footer,
 } from './MenuEvent.style';
-import { PlusIcon } from 'lucide-react';
-import { H3, PrimaryMutted } from '@/lib/ui/design-system';
+import { EventModal, H3, PrimaryMutted } from '@/lib/ui/design-system';
 import { useRouter } from 'next/navigation';
 import { useEvents } from '@/react/hooks/events';
 
@@ -53,10 +51,7 @@ const MenuEventComponent: React.FC<EventsProps> = ({ currentUuid }) => {
           })}
       </EventPanelContent>
       <Footer>
-        <EventPanelButton>
-          <PlusIcon size={16} />
-          Add a new event
-        </EventPanelButton>
+        <EventModal />
       </Footer>
     </EventPanel>
   );

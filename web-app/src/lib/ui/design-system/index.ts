@@ -9,6 +9,7 @@ export * from './components/general/CustomSelect';
 export * from './components/general/EventContent';
 export * from './components/general/MenuEvent';
 export * from './components/general/EventCard';
+export * from './components/general/CreateEventModal';
 export * from './components/general/EventActivation';
 export * from './components/general/DeleteEventModal';
 export * from './components/general/UpdateEventParamsModal';
