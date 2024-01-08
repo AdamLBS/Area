@@ -334,6 +334,7 @@ export default class EventsController {
     }
 
     event.responseInteraction = newResponse
+    event.responseApi = actionApi.uuid
     await event.save()
 
     return response.ok({
@@ -379,6 +380,7 @@ export default class EventsController {
     }
 
     event.triggerInteraction = newTrigger
+    event.triggerApi = triggerApi.uuid
     await event.save()
 
     return response.ok({
