@@ -1,5 +1,5 @@
 import { Button, CardDescription, CardTitle, Toaster } from '@/components/ui';
-import React, { memo } from 'react';
+import React, { memo, useCallback } from 'react';
 import {
   AddButton,
   AdditionnalActionsHeader,
@@ -47,6 +47,7 @@ const providerIcon = {
 import { EventSettingsModal } from '../EventSettingsModal';
 import { DeleteEventModal } from '../DeleteEventModal';
 import { AddEventActionModal } from '../AddEventActionModal';
+import { DeleteActionModal } from '../DeleteActionModal';
 
 export type EventContentProps = {
   eventUuid: string;
@@ -58,6 +59,17 @@ const EventContentComponent: React.FC<EventContentProps> = ({ eventUuid }) => {
   const [deleteModalOpen, setDeleteModalOpen] = React.useState(false);
   const [AddEventActionModalOpen, setAddEventActionModalOpen] =
     React.useState(false);
+  const [deleteActionModalOpen, setDeleteActionModalOpen] =
+    React.useState(false);
+  const [deleteActionIndex, setDeleteActionIndex] = React.useState(-1);
+
+  const onDeleteAction = useCallback(
+    (index: number) => {
+      setDeleteActionIndex(index);
+      setDeleteActionModalOpen(true);
+    },
+    [setDeleteActionModalOpen, setDeleteActionIndex],
+  );
 
   return (
     <Card>
@@ -124,7 +136,9 @@ const EventContentComponent: React.FC<EventContentProps> = ({ eventUuid }) => {
           <EventPart key={index}>
             <AdditionnalActionsHeader>
               <H3>Additional action</H3>
-              <Button variant="outline">Delete</Button>
+              <Button variant="outline" onClick={() => onDeleteAction(index)}>
+                Delete
+              </Button>
             </AdditionnalActionsHeader>
             <EventPartContent>
               <EventCard
@@ -163,6 +177,12 @@ const EventContentComponent: React.FC<EventContentProps> = ({ eventUuid }) => {
         isOpen={AddEventActionModalOpen}
         onOpenChange={setAddEventActionModalOpen}
         eventUuid={eventUuid}
+      />
+      <DeleteActionModal
+        isOpen={deleteActionModalOpen}
+        onOpenChange={setDeleteActionModalOpen}
+        eventUuid={eventUuid}
+        index={deleteActionIndex}
       />
       <Toaster />
     </Card>
