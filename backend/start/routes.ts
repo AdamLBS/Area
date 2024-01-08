@@ -70,6 +70,7 @@ Route.group(() => {
     Route.patch('/me/update', 'AuthController.update')
     Route.get('/me/services', 'AuthController.getServices')
     Route.get('/events', 'EventsController.getMyEvents')
+    Route.get('/github/repositories', 'GithubsController.getUserRepositories')
   })
     .prefix('/user')
     .middleware(['auth:api'])
