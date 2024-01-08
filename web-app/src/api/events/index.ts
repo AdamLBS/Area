@@ -72,7 +72,13 @@ export const activateEvent = async (payload: {
 
 export const getEvent = async (uuid: string): Promise<Event> => {
   try {
-    const res = (await axios.get(API_URL + `/events/${uuid}`)).data;
+    const res = (
+      await axios.get(API_URL + `/events/${uuid}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+        },
+      })
+    ).data;
     res.triggerInteraction = JSON.parse(res.triggerInteraction);
     res.responseInteraction = JSON.parse(res.responseInteraction);
     return res as Event;
