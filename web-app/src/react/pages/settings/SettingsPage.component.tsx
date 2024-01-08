@@ -12,7 +12,7 @@ import {
   SettingsContentHeader,
   SettingsContentBody,
 } from './SettingsPage.style';
-import { H4, PrimaryMutted, PrivateLayout } from '@/lib/ui/design-system';
+import { H4, IconStratos, PrimaryMutted, PrivateLayout } from '@/lib/ui/design-system';
 import { UpdateForm } from './UpdateForm';
 import { SocialAccounts } from './Accounts';
 import { AdvancedSettings } from './Advanced';
@@ -136,7 +136,7 @@ const Settings = () => {
   }, [option]);
 
   return (
-    <PrivateLayout pageName="Settings">
+    <PrivateLayout pageName="Settings" icon={<IconStratos />}>
       <PageContainer>
         <Title>{TITLES[option]}</Title>
         <SubTitle>{SUBTITLES[option]}</SubTitle>
