@@ -116,7 +116,7 @@ export const deleteEvent = async (uuid: string): Promise<void> => {
   }
 };
 
-export const AddEventAction = async (payload: {
+export const addEventAction = async (payload: {
   eventUuid: string;
   action_provider: string;
   id: string;

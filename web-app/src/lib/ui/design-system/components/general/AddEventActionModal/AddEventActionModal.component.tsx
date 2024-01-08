@@ -20,7 +20,7 @@ import { H4, PrimaryMutted } from '../Text';
 import { CustomSelect } from '../CustomSelect';
 import { ApiEvent, Fields } from '@/api/constants';
 import { UpdateEventParamsModal } from '../UpdateEventParamsModal';
-import { AddEventAction } from '@/api/events';
+import { addEventAction } from '@/api/events';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 export type DeleteEventModalProps = {
@@ -39,7 +39,6 @@ const AddEventActionModalComponent: React.FC<DeleteEventModalProps> = ({
   const [interaction, setInteraction] = React.useState<ApiEvent>();
   const [step, setStep] = React.useState(0);
   const { toast } = useToast();
-  const [fields, setFields] = React.useState<Fields[]>([]);
   const queryClient = useQueryClient();
 
   const services = useMemo(() => {
@@ -64,7 +63,7 @@ const AddEventActionModalComponent: React.FC<DeleteEventModalProps> = ({
   );
 
   const addEventActionMutation = useMutation({
-    mutationFn: AddEventAction,
+    mutationFn: addEventAction,
     onSuccess: () => {
       toast({
         title: 'Event action added',
@@ -99,7 +98,7 @@ const AddEventActionModalComponent: React.FC<DeleteEventModalProps> = ({
         fiedls: newFields,
       });
     },
-    [addEventActionMutation, eventUuid, interaction, fields],
+    [addEventActionMutation, eventUuid, interaction],
   );
 
   return (
