@@ -13,12 +13,12 @@ export const TRIGGER_EVENTS: APIEvent[] = [
     name: 'Streamer starts to live',
     fields: [
       {
-        value: 'Zerator',
+        value: 'Name of the streamer',
         name: 'streamer',
         required: true,
       },
       {
-        value: 'gab',
+        value: 'Name of the user',
         name: 'username',
         required: true,
       },
