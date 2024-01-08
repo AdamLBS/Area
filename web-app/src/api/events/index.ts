@@ -158,3 +158,30 @@ export const addEventAction = async (payload: {
     throw new Error('Error adding action.');
   }
 };
+
+export const updateTriggerEvent = async (payload: {
+  eventUuid: string;
+  trigger_provider: string;
+  id: string;
+  fields: Fields[];
+}): Promise<void> => {
+  try {
+    await axios.patch(
+      API_URL + `/event/${payload.eventUuid}/trigger/update`,
+      {
+        trigger_provider: payload.trigger_provider,
+        triggerInteraction: {
+          id: payload.id,
+          fields: payload.fields,
+        },
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+        },
+      },
+    );
+  } catch (error) {
+    throw new Error('Error updating trigger event.');
+  }
+};

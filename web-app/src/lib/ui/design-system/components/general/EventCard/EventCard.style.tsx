@@ -1,15 +1,17 @@
 import styled from 'styled-components';
-import { Card as _Card } from '@/components/ui';
+import { Button } from '@/components/ui';
 import { H3 } from '../Text';
 
-export const Card = styled(_Card)`
+export const Card = styled(Button)`
   display: flex;
   flex-direction: column;
   max-width: 445px;
   min-width: 320px;
+  height: 100%;
   width: 100%;
   padding: 24px;
   gap: 6px;
+  align-items: flex-start;
 `;
 
 export const Header = styled.div`

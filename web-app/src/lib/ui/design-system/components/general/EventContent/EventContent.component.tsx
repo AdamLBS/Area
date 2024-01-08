@@ -48,6 +48,7 @@ import { EventSettingsModal } from '../EventSettingsModal';
 import { DeleteEventModal } from '../DeleteEventModal';
 import { AddEventActionModal } from '../AddEventActionModal';
 import { DeleteActionModal } from '../DeleteActionModal';
+import { UpdateTriggerEventModal } from '../UpdateActionEventModal';
 
 export type EventContentProps = {
   eventUuid: string;
@@ -62,6 +63,8 @@ const EventContentComponent: React.FC<EventContentProps> = ({ eventUuid }) => {
   const [deleteActionModalOpen, setDeleteActionModalOpen] =
     React.useState(false);
   const [deleteActionIndex, setDeleteActionIndex] = React.useState(-1);
+  const [updateTriggerEventModalOpen, setUpdateTriggerEventModalOpen] =
+    React.useState(false);
 
   const onDeleteAction = useCallback(
     (index: number) => {
@@ -113,6 +116,7 @@ const EventContentComponent: React.FC<EventContentProps> = ({ eventUuid }) => {
                   (event?.triggerInteraction.provider || 'null') as Provider
                 ]
               }
+              onClick={() => setUpdateTriggerEventModalOpen(true)}
             />
             <BreakLine />
           </EventPartContent>
@@ -183,6 +187,11 @@ const EventContentComponent: React.FC<EventContentProps> = ({ eventUuid }) => {
         onOpenChange={setDeleteActionModalOpen}
         eventUuid={eventUuid}
         index={deleteActionIndex}
+      />
+      <UpdateTriggerEventModal
+        isOpen={updateTriggerEventModalOpen}
+        onOpenChange={setUpdateTriggerEventModalOpen}
+        eventUuid={eventUuid}
       />
       <Toaster />
     </Card>
