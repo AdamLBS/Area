@@ -64,7 +64,7 @@ export default class EventsController {
           const newAction = {
             action_provider: action.action_provider,
             id: action.id,
-            name: TRIGGER_EVENTS.find((event) => event.id === action.id)?.name,
+            name: RESPONSE_EVENTS.find((event) => event.id === action.id)?.name,
             fields: action.fields,
           }
           additionalActions.push(newAction)
@@ -241,7 +241,7 @@ export default class EventsController {
 
     const newAction = {
       id: payload.id,
-      name: TRIGGER_EVENTS.find((event) => event.id === payload.id)?.name,
+      name: RESPONSE_EVENTS.find((event) => event.id === payload.id)?.name,
       fields: payload.fields,
       action_provider: payload.action_provider,
     }

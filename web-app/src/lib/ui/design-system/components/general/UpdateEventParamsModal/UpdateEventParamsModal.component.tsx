@@ -1,14 +1,11 @@
 import { Fields } from '@/api/constants';
 import React, { memo, useCallback } from 'react';
 import {
-  Dialog,
-  DialogContent,
   DialogHeader,
   DialogTitle,
   DialogDescription,
   DialogFooter,
   Button,
-  DialogClose,
   Form,
   FormControl,
   FormField,
@@ -23,15 +20,14 @@ import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 export type UpdateEventParamsModalProps = {
-  isOpen: boolean;
-  onOpenChange: (open: boolean) => void;
-  onConfirm: () => void;
+  onConfirm: (fields: Fields[]) => void;
+  onCancel: () => void;
   fields: Fields[];
 };
 
 const UpdateEventParamsModalComponent: React.FC<
   UpdateEventParamsModalProps
-> = ({ isOpen, onOpenChange, onConfirm, fields }) => {
+> = ({ onConfirm, onCancel, fields }) => {
   const formParam = (field: Fields) => {
     if (field.required) {
       return z.string().min(1, { message: `${field.name} is required` });
@@ -61,47 +57,46 @@ const UpdateEventParamsModalComponent: React.FC<
   };
 
   const onSubmit = useCallback((values: FormValues) => {
-    // eslint-disable-next-line no-console
-    console.log(values);
-    onConfirm();
+    const newFields = fields.map((field) => ({
+      ...field,
+      value: values[field.name] || field.value,
+    }));
+    onConfirm(newFields);
   }, []);
+
   return (
-    <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Update event params</DialogTitle>
-          <DialogDescription>(*) required</DialogDescription>
-        </DialogHeader>
-        <Form {...form}>
-          <FormContainer onSubmit={form.handleSubmit(onSubmit)}>
-            {fields.map((fieldValue, index) => (
-              <FormField
-                key={index}
-                control={form.control}
-                name={fieldValue.name}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{formatLabel(fieldValue)}</FormLabel>
-                    <FormControl>
-                      <Input placeholder={fieldValue.value} {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            ))}
-            <DialogFooter>
-              <Button type="submit">Confirm</Button>
-              <DialogClose asChild>
-                <Button type="button" variant="outline">
-                  Cancel
-                </Button>
-              </DialogClose>
-            </DialogFooter>
-          </FormContainer>
-        </Form>
-      </DialogContent>
-    </Dialog>
+    <>
+      <DialogHeader>
+        <DialogTitle>Update event params</DialogTitle>
+        <DialogDescription>(*) required</DialogDescription>
+      </DialogHeader>
+      <Form {...form}>
+        <FormContainer onSubmit={form.handleSubmit(onSubmit)}>
+          {fields.map((fieldValue, index) => (
+            <FormField
+              key={index}
+              control={form.control}
+              name={fieldValue.name}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{formatLabel(fieldValue)}</FormLabel>
+                  <FormControl>
+                    <Input placeholder={fieldValue.value} {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          ))}
+          <DialogFooter>
+            <Button type="submit">Confirm</Button>
+            <Button variant="outline" onClick={onCancel}>
+              Cancel
+            </Button>
+          </DialogFooter>
+        </FormContainer>
+      </Form>
+    </>
   );
 };
 
