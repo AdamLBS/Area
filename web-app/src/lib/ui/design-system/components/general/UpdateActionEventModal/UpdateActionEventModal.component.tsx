@@ -15,12 +15,12 @@ import {
   EventContainer,
   SelectContainer,
   SelectHeader,
-} from './AddEventActionModal.style';
+} from './UpdateActionEventModal.style';
 import { H4, PrimaryMutted } from '../Text';
 import { CustomSelect } from '../CustomSelect';
 import { ApiEvent, Fields } from '@/api/constants';
 import { UpdateEventParamsModal } from '../UpdateEventParamsModal';
-import { addEventAction } from '@/api/events';
+import { updateActionEvent } from '@/api/events';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 export type DeleteEventModalProps = {
@@ -29,7 +29,7 @@ export type DeleteEventModalProps = {
   onOpenChange: (open: boolean) => void;
 };
 
-const AddEventActionModalComponent: React.FC<DeleteEventModalProps> = ({
+const UpdateActionEventModalComponent: React.FC<DeleteEventModalProps> = ({
   eventUuid,
   isOpen,
   onOpenChange,
@@ -62,8 +62,8 @@ const AddEventActionModalComponent: React.FC<DeleteEventModalProps> = ({
     [responses, service, setInteraction],
   );
 
-  const addEventActionMutation = useMutation({
-    mutationFn: addEventAction,
+  const updateActionEventMutation = useMutation({
+    mutationFn: updateActionEvent,
     onSuccess: () => {
       toast({
         title: 'Event action added',
@@ -94,14 +94,14 @@ const AddEventActionModalComponent: React.FC<DeleteEventModalProps> = ({
       if (!interaction) {
         return;
       }
-      addEventActionMutation.mutate({
+      updateActionEventMutation.mutate({
         eventUuid,
-        action_provider: interaction.provider.toLowerCase(),
+        response_provider: interaction.provider.toLowerCase(),
         id: interaction.id,
-        fiedls: newFields,
+        fields: newFields,
       });
     },
-    [addEventActionMutation, eventUuid, interaction],
+    [updateActionEventMutation, eventUuid, interaction],
   );
 
   return (
@@ -110,10 +110,8 @@ const AddEventActionModalComponent: React.FC<DeleteEventModalProps> = ({
         {step === 0 && (
           <>
             <DialogHeader>
-              <DialogTitle>Add an action event</DialogTitle>
-              <DialogDescription>
-                Add an action event in response to the trigger event
-              </DialogDescription>
+              <DialogTitle>Update your event</DialogTitle>
+              <DialogDescription>Update your action event</DialogDescription>
             </DialogHeader>
             <EventContainer>
               <SelectContainer>
@@ -177,4 +175,4 @@ const AddEventActionModalComponent: React.FC<DeleteEventModalProps> = ({
   );
 };
 
-export const AddEventActionModal = memo(AddEventActionModalComponent);
+export const UpdateActionEventModal = memo(UpdateActionEventModalComponent);

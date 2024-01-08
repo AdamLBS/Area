@@ -6,15 +6,17 @@ export type ServiceCardProps = {
   title?: string;
   description?: string;
   icon: React.ReactNode;
+  onClick?: () => void;
 };
 
 const EventCardComponent: React.FC<ServiceCardProps> = ({
   title,
   description,
   icon,
+  onClick,
 }) => {
   return (
-    <Card>
+    <Card onClick={onClick} variant="outline">
       <Header>
         <IconContainer>
           {React.cloneElement(icon as React.ReactElement, {
