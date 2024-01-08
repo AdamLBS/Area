@@ -21,9 +21,6 @@ export default class Oauth extends BaseModel {
   @column()
   public webhook: string | null
 
-  @column()
-  public twitchInLive: string | null
-
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 

@@ -127,7 +127,8 @@ export default class EventsController {
     return response.ok(RESPONSE_EVENTS)
   }
 
-  public async getEvent({ response, params }: HttpContextContract) {
+  public async getEvent({ response, params, auth }: HttpContextContract) {
+    await auth.authenticate()
     const { uuid } = params
     if (!uuid) {
       return response.badRequest({
@@ -249,7 +250,13 @@ export default class EventsController {
       action_provider: payload.action_provider,
     }
 
-    if (event.additionalActions?.map((action) => action.id).includes(newAction.id)) {
+    if (
+      event.additionalActions?.some((action) =>
+        action.fields.some((field) =>
+          newAction.fields.some((newField) => field.value === newField.value)
+        )
+      )
+    ) {
       return response.badRequest({
         message: 'Action already exists',
       })
@@ -432,7 +439,13 @@ export default class EventsController {
       action_provider: payload.action_provider,
     }
 
-    if (event.additionalActions?.map((action) => action.id).includes(newAction.id)) {
+    if (
+      event.additionalActions?.some((action) =>
+        action.fields.some((field) =>
+          newAction.fields.some((newField) => field.value === newField.value)
+        )
+      )
+    ) {
       return response.badRequest({
         message: 'Action already exists',
       })

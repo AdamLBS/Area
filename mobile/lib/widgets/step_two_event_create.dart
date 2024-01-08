@@ -1,11 +1,15 @@
+import 'package:area/model/event_create_model.dart';
 import 'package:area/model/event_model.dart';
+import 'package:area/utils/check_event_fields.dart';
 import 'package:area/utils/get_trigger_apis.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class StepTwoEventCreate extends StatefulWidget {
   final ValueChanged<int> onChanged;
-  const StepTwoEventCreate({super.key, required this.onChanged});
+  final EventCreationModel eventCreationModel;
+  const StepTwoEventCreate(
+      {super.key, required this.onChanged, required this.eventCreationModel});
 
   @override
   State<StepTwoEventCreate> createState() => _StepTwoEventCreateState();
@@ -14,6 +18,13 @@ class StepTwoEventCreate extends StatefulWidget {
 class _StepTwoEventCreateState extends State<StepTwoEventCreate> {
   String? selectedApi;
   EventModel? selectedTrigger;
+  String errorMessage = "";
+  @override
+  void initState() {
+    selectedTrigger = widget.eventCreationModel.triggerEvent;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraint) {
@@ -34,6 +45,11 @@ class _StepTwoEventCreateState extends State<StepTwoEventCreate> {
                       return Center(child: CircularProgressIndicator());
                     } else if (snapshot.hasData) {
                       List<String> providerList = [];
+                      selectedTrigger = widget.eventCreationModel.triggerEvent;
+                      if (selectedTrigger != null) {
+                        selectedApi = selectedTrigger!.provider;
+                        print("already selected $selectedTrigger");
+                      }
                       for (var element in snapshot.data!) {
                         if (!providerList.contains(element.provider)) {
                           providerList.add(element.provider);
@@ -44,6 +60,12 @@ class _StepTwoEventCreateState extends State<StepTwoEventCreate> {
                         for (var element in snapshot.data!) {
                           if (element.provider == selectedApi) {
                             availableTriggers.add(element);
+                          }
+                          if (selectedTrigger != null &&
+                              element.id == selectedTrigger!.id) {
+                            element.fields = selectedTrigger!.fields;
+                            print("ici !");
+                            selectedTrigger = element;
                           }
                         }
                         return Column(
@@ -90,7 +112,7 @@ class _StepTwoEventCreateState extends State<StepTwoEventCreate> {
                                   ),
                                   width: 300,
                                   hintText: "Select an API",
-                                  initialSelection: null,
+                                  initialSelection: selectedApi,
                                   textStyle: GoogleFonts.inter(
                                       fontSize: 15,
                                       fontWeight: FontWeight.w600,
@@ -164,7 +186,7 @@ class _StepTwoEventCreateState extends State<StepTwoEventCreate> {
                                     ),
                                   ),
                                   width: 300,
-                                  initialSelection: null,
+                                  initialSelection: selectedTrigger,
                                   hintText: "Select a trigger",
                                   textStyle: GoogleFonts.inter(
                                       fontSize: 15,
@@ -179,6 +201,8 @@ class _StepTwoEventCreateState extends State<StepTwoEventCreate> {
                                   onSelected: (EventModel? trigger) {
                                     updateApi(() {
                                       selectedTrigger = trigger;
+                                      widget.eventCreationModel.triggerEvent =
+                                          trigger;
                                       print(selectedTrigger);
                                       print(selectedTrigger!.fields.length);
                                     });
@@ -238,7 +262,11 @@ class _StepTwoEventCreateState extends State<StepTwoEventCreate> {
                                                 TextStyle(color: Colors.white),
                                             onChanged: (value) {
                                               field.value = value;
+                                              field.edited = true;
                                             },
+                                            initialValue: field.edited
+                                                ? field.value
+                                                : null,
                                             validator: (value) {
                                               if (value!.isEmpty) {
                                                 return "Please enter a description";
@@ -276,12 +304,33 @@ class _StepTwoEventCreateState extends State<StepTwoEventCreate> {
                     }
                   },
                 ),
+                SizedBox(height: 10),
+                if (errorMessage != "")
+                  Center(
+                      child: Text(
+                    errorMessage,
+                    style: TextStyle(color: Colors.red),
+                  )),
                 Spacer(),
                 SizedBox(
                   width: double.infinity,
                   height: 36,
                   child: ElevatedButton(
                     onPressed: () {
+                      if (checkEventFields(
+                              widget.eventCreationModel.triggerEvent!) ==
+                          false) {
+                        setState(() {
+                          errorMessage = "Please fill all the event fields";
+                        });
+                        return;
+                      }
+                      widget.eventCreationModel.triggerEvent = EventModel(
+                          provider: selectedTrigger!.provider,
+                          id: selectedTrigger!.id,
+                          name: selectedTrigger!.name,
+                          fields: selectedTrigger!.fields);
+                      print(widget.eventCreationModel.triggerEvent);
                       widget.onChanged(2);
                     },
                     style: ElevatedButton.styleFrom(

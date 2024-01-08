@@ -55,7 +55,7 @@ export const activateEvent = async (payload: {
 }): Promise<void> => {
   try {
     await axios.patch(
-      API_URL + `/events/activate/${payload.uuid}`,
+      API_URL + `/events/${payload.uuid}/activate`,
       {
         activated: payload.activated,
       },
@@ -106,7 +106,7 @@ export const updateEventSettings = async (payload: {
 
 export const deleteEvent = async (uuid: string): Promise<void> => {
   try {
-    await axios.delete(API_URL + `/events/delete/${uuid}`, {
+    await axios.delete(API_URL + `/events/${uuid}/delete`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('authToken')}`,
       },
@@ -210,5 +210,32 @@ export const updateActionEvent = async (payload: {
     );
   } catch (error) {
     throw new Error('Error updating action event.');
+  }
+};
+
+export const updateAdditionalAction = async (payload: {
+  index: number;
+  eventUuid: string;
+  action_provider: string;
+  id: string;
+  fields: Fields[];
+}): Promise<void> => {
+  try {
+    await axios.patch(
+      API_URL + `/event/${payload.eventUuid}/additionalAction/update`,
+      {
+        index: payload.index,
+        action_provider: payload.action_provider,
+        id: payload.id,
+        fields: payload.fields,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+        },
+      },
+    );
+  } catch (error) {
+    throw new Error('Error updating additional action.');
   }
 };

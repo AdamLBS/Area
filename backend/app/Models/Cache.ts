@@ -8,6 +8,9 @@ export default class Cache extends BaseModel {
   @column()
   public lastCommit: string
 
+  @column()
+  public twitchInLive: string | null
+
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 

@@ -20,12 +20,17 @@ class EventModel {
           .toList(),
     );
   }
+  @override
+  String toString() {
+    return 'EventModel{provider: $provider, id: $id, name: $name, fields: $fields}';
+  }
 }
 
 class Field {
   late String value;
   late String name;
   late bool required;
+  bool edited = false;
 
   Field({
     required this.value,
@@ -39,5 +44,10 @@ class Field {
       name: json['name'],
       required: json['required'],
     );
+  }
+
+  @override
+  String toString() {
+    return 'Field{value: $value, name: $name, required: $required}';
   }
 }
