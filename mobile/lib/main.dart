@@ -1,4 +1,5 @@
 import 'package:area/pages/bridge.dart';
+import 'package:area/pages/event_create.dart';
 import 'package:area/pages/home.dart';
 import 'package:area/pages/login.dart';
 import 'package:area/pages/profile.dart';
@@ -23,13 +24,14 @@ class MyApp extends StatelessWidget {
         title: 'Stratos',
         theme: ThemeData(
           useMaterial3: true,
-          colorScheme: ColorScheme.fromSeed(seedColor: Color(0xFF09090B)),
           pageTransitionsTheme: PageTransitionsTheme(
             builders: {
               TargetPlatform.android: CustomTransitionBuilder(),
               TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
             },
           ),
+          colorScheme: ColorScheme.fromSeed(seedColor: Color(0xFF09090B))
+              .copyWith(background: Color(0xFF09090B)),
         ),
         home: LoginPage(),
         onGenerateRoute: (settings) {
@@ -48,6 +50,8 @@ class MyApp extends StatelessWidget {
               return MaterialPageRoute(builder: (context) => BridgePage());
             case '/profile':
               return MaterialPageRoute(builder: (context) => ProfilePage());
+            case '/eventcreate':
+              return MaterialPageRoute(builder: (context) => EventCreatePage());
             default:
               return MaterialPageRoute(builder: (context) => LoginPage());
           }

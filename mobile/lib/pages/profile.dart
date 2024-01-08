@@ -27,7 +27,7 @@ class _ProfilePageState extends State<ProfilePage> {
         resizeToAvoidBottomInset: false,
         backgroundColor: Color(0xFF09090B),
         body: Container(
-            padding: EdgeInsets.only(right: 20, left: 20, bottom: 20, top: 50),
+            padding: EdgeInsets.only(right: 20, left: 20, bottom: 20, top: 20),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,

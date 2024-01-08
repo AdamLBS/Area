@@ -22,7 +22,7 @@ class _HomePageState extends State<HomePage> {
         body: Center(
           child: Container(
               padding:
-                  EdgeInsets.only(right: 20, left: 20, bottom: 20, top: 50),
+                  EdgeInsets.only(right: 20, left: 20, bottom: 20, top: 20),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,

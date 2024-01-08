@@ -4,6 +4,7 @@ import 'package:area/model/event_model.dart';
 import 'package:area/utils/create_event.dart';
 import 'package:area/utils/get_response_apis.dart';
 import 'package:area/widgets/bottom_bar.dart';
+import 'package:area/widgets/drawer_bridge.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -19,7 +20,7 @@ class BridgePage extends StatefulWidget {
 
 class _BridgePageState extends State<BridgePage> {
   EventModel? _selectedTriggerApi = EventModel(
-      provider: "", id: "", name: "Select a trigger API", fields: {});
+      provider: "", id: "", name: "Select a trigger API", fields: []);
   EventModel? _selectedResponseApi;
   List<TextEditingController> _triggerControllers = [];
   List<TextEditingController> _responseControllers = [];
@@ -30,22 +31,27 @@ class _BridgePageState extends State<BridgePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         resizeToAvoidBottomInset: false,
+        endDrawer: Theme(
+          data: Theme.of(context).copyWith(
+            canvasColor: Color(0xFF09090B),
+          ),
+          child: DrawerBridgePage(),
+        ),
         bottomNavigationBar: BottomNavBar(index: 1),
-        backgroundColor: Color(0xFF09090B),
-        body: Center(
-          child: Container(
+        body: Builder(builder: (context) {
+          return Container(
               padding:
-                  EdgeInsets.only(right: 20, left: 20, bottom: 20, top: 50),
+                  EdgeInsets.only(right: 20, left: 20, bottom: 20, top: 20),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       SvgPicture.asset(
-                        "assets/logos/icon.svg",
+                        "assets/icons/bridge.svg",
                         width: 30,
                         height: 50,
                       ),
@@ -59,6 +65,16 @@ class _BridgePageState extends State<BridgePage> {
                         ),
                         textAlign: TextAlign.center,
                       ),
+                      Spacer(),
+                      InkWell(
+                        onTap: () {
+                          Scaffold.of(context).openEndDrawer();
+                        },
+                        child: Icon(
+                          Icons.menu,
+                          color: Colors.white,
+                        ),
+                      )
                     ],
                   ),
                   SizedBox(height: 20),
@@ -88,7 +104,7 @@ class _BridgePageState extends State<BridgePage> {
                         _triggerControllers = [];
                         if (_selectedTriggerApi != null &&
                             _selectedTriggerApi!.fields.isNotEmpty) {
-                          for (var field in _selectedTriggerApi!.fields.keys) {
+                          for (var field in _selectedTriggerApi!.fields) {
                             _triggerControllers.add(TextEditingController());
                           }
                         }
@@ -126,15 +142,14 @@ class _BridgePageState extends State<BridgePage> {
                                 _selectedTriggerApi!.fields.isNotEmpty)
                               Form(
                                   child: Column(children: [
-                                for (var field
-                                    in _selectedTriggerApi!.fields.keys)
+                                for (var field in _selectedTriggerApi!.fields)
                                   TextFormField(
                                     controller: _triggerControllers[
-                                        _selectedTriggerApi!.fields.keys
+                                        _selectedTriggerApi!.fields
                                             .toList()
                                             .indexOf(field)],
                                     decoration: InputDecoration(
-                                      labelText: field,
+                                      labelText: field.name,
                                       labelStyle: GoogleFonts.inter(
                                           fontSize: 15,
                                           fontWeight: FontWeight.w600,
@@ -166,7 +181,7 @@ class _BridgePageState extends State<BridgePage> {
                                   if (_selectedResponseApi != null &&
                                       _selectedResponseApi!.fields.isNotEmpty) {
                                     for (var field
-                                        in _selectedResponseApi!.fields.keys) {
+                                        in _selectedResponseApi!.fields) {
                                       _responseControllers
                                           .add(TextEditingController());
                                     }
@@ -213,17 +228,16 @@ class _BridgePageState extends State<BridgePage> {
                                         Form(
                                             child: Column(children: [
                                           for (var field
-                                              in _selectedResponseApi!
-                                                  .fields.keys)
+                                              in _selectedResponseApi!.fields)
                                             TextFormField(
                                                 controller:
                                                     _responseControllers[
                                                         _selectedResponseApi!
-                                                            .fields.keys
+                                                            .fields
                                                             .toList()
                                                             .indexOf(field)],
                                                 decoration: InputDecoration(
-                                                  labelText: field,
+                                                  labelText: field.name,
                                                   labelStyle: GoogleFonts.inter(
                                                       fontSize: 15,
                                                       fontWeight:
@@ -247,32 +261,30 @@ class _BridgePageState extends State<BridgePage> {
                                         onPressed: () async {
                                           if (_selectedTriggerApi != null &&
                                               _selectedResponseApi != null) {
-                                            Map<String, String> triggerFields =
-                                                {};
-                                            Map<String, String> responseFields =
-                                                {};
-                                            for (var field
-                                                in _selectedTriggerApi!
-                                                    .fields.keys) {
-                                              triggerFields[field] =
-                                                  _triggerControllers[
-                                                          _selectedTriggerApi!
-                                                              .fields.keys
-                                                              .toList()
-                                                              .indexOf(field)]
-                                                      .text;
-                                            }
-                                            for (var field
-                                                in _selectedResponseApi!
-                                                    .fields.keys) {
-                                              responseFields[field] =
-                                                  _responseControllers[
-                                                          _selectedResponseApi!
-                                                              .fields.keys
-                                                              .toList()
-                                                              .indexOf(field)]
-                                                      .text;
-                                            }
+                                            List<Field> triggerFields = [];
+                                            List<Field> responseFields = [];
+                                            // for (var field
+                                            //     in _selectedTriggerApi!
+                                            //         .fields) {
+                                            //   triggerFields[triggerFields.indexOf(field)] =
+                                            //       _triggerControllers[
+                                            //               _selectedTriggerApi!
+                                            //                   .fields
+                                            //                   .toList()
+                                            //                   .indexOf(field)]
+                                            //           .text;
+                                            // }
+                                            // for (var field
+                                            //     in _selectedResponseApi!
+                                            //         .fields.keys) {
+                                            //   responseFields[field] =
+                                            //       _responseControllers[
+                                            //               _selectedResponseApi!
+                                            //                   .fields.keys
+                                            //                   .toList()
+                                            //                   .indexOf(field)]
+                                            //           .text;
+                                            // }
                                             EventModel triggerEvent =
                                                 EventModel(
                                                     provider:
@@ -322,7 +334,7 @@ class _BridgePageState extends State<BridgePage> {
                     },
                   )
                 ],
-              )),
-        ));
+              ));
+        }));
   }
 }
