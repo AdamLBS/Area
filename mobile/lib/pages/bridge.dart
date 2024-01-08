@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-
 class BridgePage extends StatefulWidget {
   const BridgePage({super.key});
 
@@ -15,7 +14,6 @@ class BridgePage extends StatefulWidget {
 }
 
 class _BridgePageState extends State<BridgePage> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

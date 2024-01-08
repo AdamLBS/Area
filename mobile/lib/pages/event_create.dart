@@ -1,4 +1,3 @@
-
 import 'package:area/model/event_create_model.dart';
 import 'package:area/widgets/bottom_bar.dart';
 import 'package:area/widgets/drawer_bridge.dart';
