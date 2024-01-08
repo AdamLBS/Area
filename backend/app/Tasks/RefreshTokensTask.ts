@@ -30,8 +30,8 @@ export default class RefreshTokensTask extends BaseTask {
       };
 
       const response = await axios.post<RefreshToken>(
-        `${apiUrl}?grant_type=${params.grant_type}&refresh_token=${params.refresh_token}&client_id=${params.client_id}&client_secret=${params.client_secret}`
-      );
+        `https://id.twitch.tv/oauth2/token?grant_type=${params.grant_type}&refresh_token=${params.refresh_token}&client_id=${params.client_id}&client_secret=${params.client_secret}`
+      )
       await Database.from('oauths')
         .where('provider', provider)
         .where('user_uuid', oauth.user_uuid)
@@ -46,13 +46,7 @@ export default class RefreshTokensTask extends BaseTask {
       const oauths = await Database.from('oauths');
       var num = 0;
       for (const oauth of oauths) {
-        num++;
-        console.log(`[Refresh Token] ${num}`);
-        if (oauth.provider === 'twitch') {
-          await this.refreshToken(oauth, 'twitch', 'https://id.twitch.tv/oauth2/token', process.env.TWITCH_CLIENT_ID, process.env.TWITCH_CLIENT_SECRET);
-        } else if (oauth.provider === 'spotify') {
-          await this.refreshToken(oauth, 'spotify', 'https://accounts.spotify.com/api/token', process.env.SPOTIFY_CLIENT_ID, process.env.SPOTIFY_CLIENT_SECRET);
-        }
+        if (oauth.provider === 'twitch') await this.refreshTwitchToken(oauth)
       }
     } catch (error) {
       console.log(error);
