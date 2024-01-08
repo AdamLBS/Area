@@ -30,7 +30,7 @@ export default class RefreshTokensTask extends BaseTask {
       }
       const response = await axios.post<RefreshToken>(
         `https://id.twitch.tv/oauth2/token?grant_type=${params.grant_type}&refresh_token=${params.refresh_token}&client_id=${params.client_id}&client_secret=${params.client_secret}`
-        )
+      )
       await Database.from('oauths')
         .where('provider', 'twitch')
         .where('user_uuid', oauth.user_uuid)
@@ -44,8 +44,7 @@ export default class RefreshTokensTask extends BaseTask {
     try {
       const oauths = await Database.from('oauths')
       for (const oauth of oauths) {
-        if (oauth.provider === 'twitch')
-          await this.refreshTwitchToken(oauth)
+        if (oauth.provider === 'twitch') await this.refreshTwitchToken(oauth)
       }
     } catch (error) {
       console.log(error)
