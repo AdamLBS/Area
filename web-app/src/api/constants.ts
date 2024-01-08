@@ -29,13 +29,20 @@ export type ApiEvent = {
   provider: string;
   id: string;
   name: string;
-  fields: Fields;
+  fields: Fields[];
+};
+
+export type AdditionalInteraction = {
+  action_provider: string;
+  id: string;
+  name: string;
+  fields: Fields[];
 };
 
 export type Fields = {
-  streamer?: string;
-  username?: string;
-  email?: string;
+  value: string;
+  name: string;
+  required: boolean;
 };
 
 export type Interaction = {
@@ -48,6 +55,19 @@ export type EventCreate = {
   response_provider: string;
   triggerInteraction: Interaction;
   responseInteraction: Interaction;
+};
+
+export type Event = {
+  uuid: string;
+  name: string;
+  description: string;
+  active: boolean;
+  triggerInteraction: ApiEvent;
+  responseInteraction: ApiEvent;
+  additionalActions: AdditionalInteraction[];
+  timestamp: string;
+  created_at: string;
+  updated_at: string;
 };
 
 export type EventType = {

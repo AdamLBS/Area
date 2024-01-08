@@ -7,6 +7,8 @@ export default class extends BaseSchema {
     this.schema.createTable(this.tableName, (table) => {
       table.string('uuid').primary()
       table.string('user_uuid').notNullable()
+      table.string('name').notNullable()
+      table.string('description').nullable()
       table
         .string('trigger_api')
         .notNullable()

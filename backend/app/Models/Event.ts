@@ -3,7 +3,9 @@ import { BaseModel, beforeCreate, column } from '@ioc:Adonis/Lucid/Orm'
 import { v4 as uuidv4 } from 'uuid'
 
 type Interaction = {
+  provider: string
   id: string
+  name: string
   fields: any[]
 }
 
@@ -18,6 +20,12 @@ export default class Event extends BaseModel {
 
   @column()
   public userUuid: string
+
+  @column()
+  public name: string
+
+  @column()
+  public description: string | null
 
   @column()
   public triggerApi: string

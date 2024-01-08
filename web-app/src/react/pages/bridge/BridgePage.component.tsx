@@ -117,14 +117,22 @@ const Bridge: React.FC = () => {
           triggers?.find(
             (trigger) => trigger.name === selectedTriggerInteraction,
           )?.id || '',
-        fields: triggersFields,
+        fields: {
+          value: 'value',
+          name: 'name',
+          required: true,
+        },
       },
       responseInteraction: {
         id:
           responses?.find(
             (response) => response.name === selectedResponseInteraction,
           )?.id || '',
-        fields: responsesFields,
+        fields: {
+          value: 'value',
+          name: 'name',
+          required: true,
+        },
       },
     };
     createEventMutation.mutate(event);
@@ -204,7 +212,7 @@ const Bridge: React.FC = () => {
                   {Object.entries(
                     triggers?.find(
                       (trigger) => trigger.name === selectedTriggerInteraction,
-                    )?.fields || {},
+                    )?.fields.entries || {},
                   ).map(([key, value]) => (
                     <FieldContainer key={key}>
                       <Label>Email</Label>
@@ -251,7 +259,7 @@ const Bridge: React.FC = () => {
                       responses?.find(
                         (trigger) =>
                           trigger.name === selectedResponseInteraction,
-                      )?.fields || {},
+                      )?.fields.entries || {},
                     ).map(([key, value]) => (
                       <FieldContainer key={key}>
                         <Label>

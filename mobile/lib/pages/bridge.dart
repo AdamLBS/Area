@@ -3,6 +3,7 @@
 import 'package:area/model/event_model.dart';
 import 'package:area/utils/create_event.dart';
 import 'package:area/utils/get_response_apis.dart';
+import 'package:area/widgets/bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -29,6 +30,7 @@ class _BridgePageState extends State<BridgePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         resizeToAvoidBottomInset: false,
+        bottomNavigationBar: BottomNavBar(index: 1),
         backgroundColor: Color(0xFF09090B),
         body: Center(
           child: Container(

@@ -20,6 +20,8 @@
 
 import Route from '@ioc:Adonis/Core/Route'
 
+Route.get('/about.json', 'AboutController.info')
+
 Route.group(() => {
   Route.get('/redirect', 'SocialAuthentificationsController.redirect')
   Route.get('/callback', 'SocialAuthentificationsController.callback')
@@ -36,7 +38,14 @@ Route.group(() => {
     return { hello: 'world!' }
   })
 
-  Route.post('/event/create', 'EventsController.createEvent').middleware(['auth:api'])
+  Route.group(() => {
+    Route.post('/create', 'EventsController.createEvent')
+    Route.patch('/update/:uuid', 'EventsController.updateEventSettings')
+    Route.post('/:uuid/action/add', 'EventsController.addAction')
+    Route.delete('/:uuid/action/delete', 'EventsController.deleteAction')
+  })
+    .prefix('/event')
+    .middleware(['auth:api'])
 
   Route.group(() => {
     Route.get('/trigger', 'EventsController.getAvailableTriggerEvents')

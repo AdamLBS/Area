@@ -1,7 +1,7 @@
-import { schema, rules } from '@ioc:Adonis/Core/Validator'
+import { schema } from '@ioc:Adonis/Core/Validator'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
-export default class CreateEventValidator {
+export default class AddActionValidator {
   constructor(protected ctx: HttpContextContract) {}
 
   /*
@@ -24,25 +24,9 @@ export default class CreateEventValidator {
    *    ```
    */
   public schema = schema.create({
-    name: schema.string({ trim: true }, [rules.required()]),
-    description: schema.string.optional({ trim: true }),
-    trigger_provider: schema.string({ trim: true }, [rules.required()]),
-    response_provider: schema.string({ trim: true }, [rules.required()]),
-    triggerInteraction: schema.object().members({
-      id: schema.string({ trim: true }, [rules.required()]),
-      fields: schema.array().members(schema.object().anyMembers()),
-    }),
-    responseInteraction: schema.object().members({
-      id: schema.string({ trim: true }, [rules.required()]),
-      fields: schema.array().members(schema.object().anyMembers()),
-    }),
-    additionalActions: schema.array.optional().members(
-      schema.object().members({
-        action_provider: schema.string(),
-        id: schema.string(),
-        fields: schema.array().members(schema.object().anyMembers()),
-      })
-    ),
+    action_provider: schema.string(),
+    id: schema.string(),
+    fields: schema.array().members(schema.object().anyMembers()),
   })
 
   /**

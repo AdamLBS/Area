@@ -1,11 +1,11 @@
 'use client';
-import React, { memo, useCallback, useState } from 'react';
+import React, { memo, useCallback } from 'react';
 import { SwitchContainer } from './EventActivation.style';
 import { Switch } from '@/components/ui';
 import { PrimarySmall } from '@/lib/ui/design-system';
 import { activateEvent } from '@/api/events';
 import { toast } from '@/components/ui/use-toast';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 type ActivationProps = {
   activated: boolean;
@@ -13,24 +13,16 @@ type ActivationProps = {
 };
 
 const Activation = ({ activated, eventUuid }: ActivationProps) => {
-  const [eventActive, setEventActive] = useState<boolean>(activated);
-
-  const handleSwitcher = useCallback(
-    (value: boolean) => {
-      setEventActive(value);
-      activateEventMutation.mutate({ uuid: eventUuid, activated: value });
-    },
-    [eventActive],
-  );
-
+  const queryClient = useQueryClient();
   const activateEventMutation = useMutation({
     mutationFn: activateEvent,
     onSuccess: () => {
-      const message = eventActive ? 'activated' : 'desactivated';
+      const message = activated ? 'desactivated' : 'activated';
       toast({
-        title: 'Event successfully activated',
-        description: 'Your event has been ' + message,
+        title: 'Success!',
+        description: 'Your event has been ' + message + '.',
       });
+      queryClient.invalidateQueries({ queryKey: ['event'] });
     },
     onError: (error) => {
       toast({
@@ -41,10 +33,14 @@ const Activation = ({ activated, eventUuid }: ActivationProps) => {
     },
   });
 
+  const handleSwitcher = useCallback((value: boolean) => {
+    activateEventMutation.mutate({ uuid: eventUuid, activated: value });
+  }, []);
+
   return (
     <SwitchContainer>
       <PrimarySmall>Active</PrimarySmall>
-      <Switch checked={eventActive} onCheckedChange={handleSwitcher} />
+      <Switch checked={activated} onCheckedChange={handleSwitcher} />
     </SwitchContainer>
   );
 };
