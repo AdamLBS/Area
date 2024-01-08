@@ -1,11 +1,18 @@
+import 'package:area/model/event_create_model.dart';
 import 'package:area/model/event_model.dart';
+import 'package:area/utils/check_event_fields.dart';
+import 'package:area/utils/create_event.dart';
 import 'package:area/utils/get_response_apis.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../utils/check_event_validity.dart';
+
 class StepThreeEventCreate extends StatefulWidget {
   final ValueChanged<int> onChanged;
-  const StepThreeEventCreate({super.key, required this.onChanged});
+  final EventCreationModel eventCreationModel;
+  const StepThreeEventCreate(
+      {super.key, required this.onChanged, required this.eventCreationModel});
 
   @override
   State<StepThreeEventCreate> createState() => _StepThreeEventCreateState();
@@ -13,7 +20,18 @@ class StepThreeEventCreate extends StatefulWidget {
 
 class _StepThreeEventCreateState extends State<StepThreeEventCreate> {
   String? selectedApi;
-  EventModel? selectedTrigger;
+  EventModel? selectedResponse;
+  String errorMessage = "";
+  @override
+  void initState() {
+    selectedResponse = widget.eventCreationModel.responseEvent;
+    print("selectedResponse : $selectedResponse");
+    if (widget.eventCreationModel.responseEvent != null) {
+      selectedApi = widget.eventCreationModel.responseEvent!.provider;
+    }
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraint) {
@@ -34,6 +52,12 @@ class _StepThreeEventCreateState extends State<StepThreeEventCreate> {
                       return Center(child: CircularProgressIndicator());
                     } else if (snapshot.hasData) {
                       List<String> providerList = [];
+                      selectedResponse =
+                          widget.eventCreationModel.responseEvent;
+                      if (selectedResponse != null) {
+                        selectedApi = selectedResponse!.provider;
+                        print("already selected");
+                      }
                       for (var element in snapshot.data!) {
                         if (!providerList.contains(element.provider)) {
                           providerList.add(element.provider);
@@ -44,6 +68,12 @@ class _StepThreeEventCreateState extends State<StepThreeEventCreate> {
                         for (var element in snapshot.data!) {
                           if (element.provider == selectedApi) {
                             availableTriggers.add(element);
+                          }
+                          if (selectedResponse != null &&
+                              element.id == selectedResponse!.id) {
+                            element.fields = selectedResponse!.fields;
+                            print("1: ${selectedResponse!.fields}");
+                            selectedResponse = element;
                           }
                         }
                         return Column(
@@ -90,7 +120,7 @@ class _StepThreeEventCreateState extends State<StepThreeEventCreate> {
                                     ),
                                   ),
                                   width: 300,
-                                  initialSelection: null,
+                                  initialSelection: selectedApi,
                                   hintText: "Select an API",
                                   textStyle: GoogleFonts.inter(
                                       fontSize: 15,
@@ -104,9 +134,9 @@ class _StepThreeEventCreateState extends State<StepThreeEventCreate> {
                                   onSelected: (String? api) {
                                     updateApi(() {
                                       selectedApi = api;
-                                      selectedTrigger = null;
+                                      selectedResponse = null;
                                       print(selectedApi);
-                                      print(selectedTrigger);
+                                      print(selectedResponse);
                                     });
                                   },
                                   dropdownMenuEntries: providerList
@@ -166,7 +196,7 @@ class _StepThreeEventCreateState extends State<StepThreeEventCreate> {
                                     ),
                                   ),
                                   width: 300,
-                                  initialSelection: null,
+                                  initialSelection: selectedResponse,
                                   hintText: "Select a response",
                                   textStyle: GoogleFonts.inter(
                                       fontSize: 15,
@@ -180,9 +210,11 @@ class _StepThreeEventCreateState extends State<StepThreeEventCreate> {
                                   ),
                                   onSelected: (EventModel? trigger) {
                                     updateApi(() {
-                                      selectedTrigger = trigger;
-                                      print(selectedTrigger);
-                                      print(selectedTrigger!.fields.length);
+                                      selectedResponse = trigger;
+                                      widget.eventCreationModel.responseEvent =
+                                          selectedResponse;
+                                      print(selectedResponse);
+                                      print(selectedResponse!.fields.length);
                                     });
                                   },
                                   dropdownMenuEntries: availableTriggers
@@ -198,8 +230,8 @@ class _StepThreeEventCreateState extends State<StepThreeEventCreate> {
                                 ),
                               ),
                             ),
-                            if (selectedTrigger != null &&
-                                selectedTrigger!.fields.isNotEmpty)
+                            if (selectedResponse != null &&
+                                selectedResponse!.fields.isNotEmpty)
                               Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -218,7 +250,7 @@ class _StepThreeEventCreateState extends State<StepThreeEventCreate> {
                                         color: Color(0xFFA1A1AA),
                                       )),
                                   SizedBox(height: 10),
-                                  for (var field in selectedTrigger!.fields)
+                                  for (var field in selectedResponse!.fields)
                                     Column(
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
@@ -240,7 +272,11 @@ class _StepThreeEventCreateState extends State<StepThreeEventCreate> {
                                                 TextStyle(color: Colors.white),
                                             onChanged: (value) {
                                               field.value = value;
+                                              field.edited = true;
                                             },
+                                            initialValue: field.edited
+                                                ? field.value
+                                                : null,
                                             validator: (value) {
                                               if (value!.isEmpty) {
                                                 return "Please enter a description";
@@ -278,13 +314,60 @@ class _StepThreeEventCreateState extends State<StepThreeEventCreate> {
                     }
                   },
                 ),
+                SizedBox(height: 20),
+                if (errorMessage != "") ...[
+                  Center(
+                    child: Text(
+                      errorMessage,
+                      style: GoogleFonts.inter(
+                        fontSize: 14,
+                        color: Colors.red,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                ],
                 Spacer(),
                 SizedBox(
                   width: double.infinity,
                   height: 36,
                   child: ElevatedButton(
-                    onPressed: () {
-                      widget.onChanged(2);
+                    onPressed: () async {
+                      if (checkEventFields(
+                              widget.eventCreationModel.responseEvent!) ==
+                          false) {
+                        setState(() {
+                          errorMessage = "Please fill all the event fields";
+                        });
+                        return;
+                      }
+                      if (checkEventValidity(widget.eventCreationModel) ==
+                          false) {
+                        setState(() {
+                          errorMessage = "Please fill all the fields";
+                        });
+                        return;
+                      }
+                      widget.eventCreationModel.responseEvent =
+                          selectedResponse;
+                      print(
+                          "Fields : ${widget.eventCreationModel.responseEvent!.fields}");
+                      try {
+                        await createEvent(widget.eventCreationModel);
+                        if (context.mounted) {
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(const SnackBar(
+                            content: Text(
+                                "The event has been successfully created !"),
+                          ));
+                          Navigator.of(context).pop();
+                        }
+                      } catch (e) {
+                        setState(() {
+                          errorMessage =
+                              "An error occured. Please check that your are logged into the right OAuths.";
+                        });
+                      }
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xFF6D28D9),

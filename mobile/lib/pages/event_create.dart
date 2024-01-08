@@ -1,3 +1,4 @@
+
 import 'package:area/model/event_create_model.dart';
 import 'package:area/widgets/bottom_bar.dart';
 import 'package:area/widgets/drawer_bridge.dart';
@@ -16,7 +17,7 @@ class EventCreatePage extends StatefulWidget {
 }
 
 class _EventCreatePageState extends State<EventCreatePage> {
-  late EventCreationModel eventCreationModel;
+  EventCreationModel eventCreationModel = EventCreationModel();
   int page = 0;
   List<String> _titles = [
     "Let's start by giving a name to your event",
@@ -102,16 +103,19 @@ class _EventCreatePageState extends State<EventCreatePage> {
                     Expanded(
                         child: StepOneEventCreate(
                       onChanged: onChanged,
+                      eventCreationModel: eventCreationModel,
                     )),
                   if (page == 1)
                     Expanded(
                         child: StepTwoEventCreate(
                       onChanged: onChanged,
+                      eventCreationModel: eventCreationModel,
                     )),
                   if (page == 2)
                     Expanded(
                         child: StepThreeEventCreate(
                       onChanged: onChanged,
+                      eventCreationModel: eventCreationModel,
                     )),
                 ],
               ),
