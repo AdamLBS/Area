@@ -7,9 +7,11 @@ import {
   DarkContainer,
   Stratos,
 } from './NavigationBar.style';
-import { H2, IconMoon } from '@/lib/ui/design-system';
+import { H2 } from '@/lib/ui/design-system';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui';
+import { useTheme } from 'next-themes';
+import { MoonIcon } from '@radix-ui/react-icons';
 
 export type NavBarProps = {
   pageName: string;
@@ -17,6 +19,16 @@ export type NavBarProps = {
 
 const NavigationBarComponent: React.FC<NavBarProps> = ({ pageName }) => {
   const router = useRouter();
+  const { setTheme } = useTheme();
+  const theme = useTheme();
+
+  const changeTheme = () => {
+    if (theme.theme === 'light') {
+      setTheme('dark');
+    } else {
+      setTheme('light');
+    }
+  };
 
   const handleRedirection = useCallback(
     (page: string) => {
@@ -50,8 +62,8 @@ const NavigationBarComponent: React.FC<NavBarProps> = ({ pageName }) => {
           </Button>
         </MenuContainer>
         <DarkContainer>
-          <Button variant="outline" size="icon">
-            <IconMoon />
+          <Button variant="outline" size="icon" onClick={changeTheme}>
+            <MoonIcon />
           </Button>
         </DarkContainer>
       </HeaderContainer>
