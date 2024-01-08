@@ -72,6 +72,8 @@ const UpdateTriggerEventModalComponent: React.FC<DeleteEventModalProps> = ({
       queryClient.invalidateQueries({ queryKey: ['event', eventUuid] });
       onOpenChange(false);
       setStep(0);
+      setService(undefined);
+      setInteraction(undefined);
     },
     onError: () => {
       toast({
@@ -107,17 +109,15 @@ const UpdateTriggerEventModalComponent: React.FC<DeleteEventModalProps> = ({
         {step === 0 && (
           <>
             <DialogHeader>
-              <DialogTitle>Add an action event</DialogTitle>
-              <DialogDescription>
-                Add an action event in trigger to the trigger event
-              </DialogDescription>
+              <DialogTitle>Update your event</DialogTitle>
+              <DialogDescription>Update your trigger event</DialogDescription>
             </DialogHeader>
             <EventContainer>
               <SelectContainer>
                 <SelectHeader>
                   <H4>Service</H4>
                   <PrimaryMutted>
-                    The action service in trigger to the trigger event
+                    The trigger service starting the event
                   </PrimaryMutted>
                 </SelectHeader>
                 <CustomSelect
@@ -130,8 +130,8 @@ const UpdateTriggerEventModalComponent: React.FC<DeleteEventModalProps> = ({
                 <SelectHeader>
                   <H4>Interaction</H4>
                   <PrimaryMutted>
-                    The action interaction of the action service in trigger to
-                    the trigger event
+                    The trigger interaction of the trigger service that is
+                    checked to start the event
                   </PrimaryMutted>
                 </SelectHeader>
                 <CustomSelect

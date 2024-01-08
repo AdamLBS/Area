@@ -72,6 +72,9 @@ const AddEventActionModalComponent: React.FC<DeleteEventModalProps> = ({
       });
       queryClient.invalidateQueries({ queryKey: ['event', eventUuid] });
       onOpenChange(false);
+      setStep(0);
+      setService(undefined);
+      setInteraction(undefined);
     },
     onError: () => {
       toast({
