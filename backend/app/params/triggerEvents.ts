@@ -36,26 +36,4 @@ export const TRIGGER_EVENTS: APIEvent[] = [
       },
     ],
   },
-  {
-    provider: 'Github',
-    id: 'checkCICD',
-    name: 'Check CI/CD of the last commit',
-    fields: [
-      {
-        value: '',
-        name: 'repositoryUrl',
-        required: true,
-      },
-      {
-        value: '',
-        name: 'reference',
-        required: true,
-      },
-      {
-        value: 'success' || 'failure' || 'pending',
-        name: 'state',
-        required: true,
-      },
-    ],
-  },
 ]
