@@ -19,6 +19,7 @@ import { AdvancedSettings } from './Advanced';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { saveOAuth } from '@/api/oauth';
+import { useProfile } from '@/react/hooks/user';
 
 enum Options {
   PROFILE = 'profile',
@@ -57,6 +58,7 @@ const Settings = () => {
   const [option, setCurrentOption] = React.useState(
     (searchParams.get('option') as Options) || Options.PROFILE,
   );
+
   const mutation = useMutation({
     mutationFn: saveOAuth,
     onSuccess: () => {
@@ -64,6 +66,8 @@ const Settings = () => {
       queryClient.invalidateQueries({ queryKey: ['services'] });
     },
   });
+
+  const { data: profile } = useProfile();
 
   const token = searchParams.get('token');
   useEffect(() => {
@@ -90,7 +94,14 @@ const Settings = () => {
     const formRender = () => {
       switch (option) {
         case Options.PROFILE:
-          return <UpdateForm />;
+          return (
+            <UpdateForm
+              username={
+                profile && profile.user.username ? profile.user.username : ''
+              }
+              email={profile && profile.user.email ? profile.user.email : ''}
+            />
+          );
         case Options.ACCOUNTS:
           return <SocialAccounts />;
         case Options.ADVANCED:

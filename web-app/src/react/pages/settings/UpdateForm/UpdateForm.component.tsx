@@ -27,7 +27,12 @@ const formSchema = z.object({
   confirmNewPassword: z.string().min(8).optional(),
 });
 
-const UpdateFormComponent = () => {
+type updateFormProps = {
+  username?: string;
+  email?: string;
+};
+
+const UpdateFormComponent = ({ username, email }: updateFormProps) => {
   const { toast } = useToast();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -93,6 +98,7 @@ const UpdateFormComponent = () => {
         <FormField
           control={form.control}
           name="username"
+          defaultValue={username}
           render={({ field }) => (
             <FormItem>
               <FormLabel>Username</FormLabel>
@@ -106,6 +112,7 @@ const UpdateFormComponent = () => {
         <FormField
           control={form.control}
           name="email"
+          defaultValue={email}
           render={({ field }) => (
             <FormItem>
               <FormLabel>Email</FormLabel>
