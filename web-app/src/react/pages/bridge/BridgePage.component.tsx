@@ -34,6 +34,7 @@ import { useMutation } from '@tanstack/react-query';
 import { createEvent } from '@/api/events';
 import { EventCreate } from '@/api/constants';
 import { MenuEvent } from '@/lib/ui/design-system';
+import { Boxes } from 'lucide-react';
 
 const Bridge: React.FC = () => {
   const { data: triggers } = useTriggers();
@@ -167,7 +168,7 @@ const Bridge: React.FC = () => {
   );
 
   return (
-    <PrivateLayout pageName="Bridge">
+    <PrivateLayout pageName="Bridge" icon={<Boxes />}>
       <PageContainer>
         <PageContent>
           <MenuEvent />
