@@ -11,7 +11,7 @@ import { H2 } from '@/lib/ui/design-system';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui';
 import { useTheme } from 'next-themes';
-import { MoonIcon } from '@radix-ui/react-icons';
+import { MoonIcon, SunIcon } from '@radix-ui/react-icons';
 
 export type NavBarProps = {
   pageName: string;
@@ -63,7 +63,7 @@ const NavigationBarComponent: React.FC<NavBarProps> = ({ pageName }) => {
         </MenuContainer>
         <DarkContainer>
           <Button variant="outline" size="icon" onClick={changeTheme}>
-            <MoonIcon />
+            {theme.theme === 'dark' ? <SunIcon /> : <MoonIcon />}
           </Button>
         </DarkContainer>
       </HeaderContainer>

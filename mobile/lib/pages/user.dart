@@ -66,6 +66,7 @@ class _AccountPageState extends State<AccountPage> {
                                     'user-top-read',
                                     'user-follow-read',
                                     'user-read-playback-state',
+                                    'user-library-read',
                                   ];
                                   MySpotifyOAuth2Client client =
                                       MySpotifyOAuth2Client();

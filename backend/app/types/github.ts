@@ -13,3 +13,10 @@ export type Repository = {
 export type Commit = {
   sha: string
 }
+
+export type CICDState = {
+  id: number
+  name: string
+  status: string
+  conclusion: string
+}
