@@ -22,6 +22,15 @@ export const TRIGGER_EVENTS: APIEvent[] = [
           song: 'Name of the song',
         },
       },
+      {
+        id: 'changeSong',
+        name: 'When I change song',
+        fields: [],
+        variables: {
+          artist: 'Name of the artist',
+          song: 'Name of the song',
+        },
+      }
     ],
   },
   {
