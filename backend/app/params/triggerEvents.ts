@@ -8,6 +8,12 @@ export const TRIGGER_EVENTS: APIEvent[] = [
     fields: [],
   },
   {
+    provider: 'Spotify',
+    id: 'likeSong',
+    name: 'Like a song',
+    fields: [],
+  },
+  {
     provider: 'Twitch',
     id: 'startsLive',
     name: 'Streamer starts to live',
