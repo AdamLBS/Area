@@ -24,13 +24,14 @@ export const getResponses = async (): Promise<ApiEvent[]> => {
   }
 };
 
-export const createEvent = async (payload: EventCreate): Promise<void> => {
+export const createEvent = async (payload: EventCreate): Promise<Event> => {
   try {
-    await axios.post(API_URL + '/event/create', payload, {
+    const res = await axios.post(API_URL + '/event/create', payload, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('authToken')}`,
       },
     });
+    return res.data.event;
   } catch (error) {
     throw new Error('Error creating event.');
   }
