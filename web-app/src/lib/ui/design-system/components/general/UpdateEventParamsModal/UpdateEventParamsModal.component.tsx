@@ -29,11 +29,12 @@ export type UpdateEventParamsModalProps = {
   onConfirm: (fields: Fields[]) => void;
   onCancel: () => void;
   fields: Fields[];
+  variables?: Record<string, string>;
 };
 
 const UpdateEventParamsModalComponent: React.FC<
   UpdateEventParamsModalProps
-> = ({ onConfirm, onCancel, fields }) => {
+> = ({ onConfirm, onCancel, fields, variables }) => {
   const formParam = (field: Fields) => {
     if (field.required) {
       return z.string().min(1, { message: `${field.name} is required` });
@@ -111,7 +112,17 @@ const UpdateEventParamsModalComponent: React.FC<
     <>
       <DialogHeader>
         <DialogTitle>Update event params</DialogTitle>
-        <DialogDescription>(*) required</DialogDescription>
+        <DialogDescription>
+          (*) required
+          <br />
+          {variables &&
+            Object.entries(variables).map(([key, value]) => (
+              <span key={key}>
+                ${key}: {value}
+                <br />
+              </span>
+            ))}
+        </DialogDescription>
       </DialogHeader>
       <Form {...form}>
         <FormContainer onSubmit={form.handleSubmit(onSubmit)}>

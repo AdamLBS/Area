@@ -176,6 +176,7 @@ const UpdateAdditionalActionModalComponent: React.FC<DeleteEventModalProps> = ({
             fields={interaction?.fields || []}
             onCancel={() => setStep(0)}
             onConfirm={onAddEventAction}
+            // variables={interaction?.variables || {}}
           />
         )}
       </DialogContent>
