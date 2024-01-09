@@ -16,6 +16,10 @@ export const TRIGGER_EVENTS: APIEvent[] = [
     id: 'likeSong',
     name: 'Like a song',
     fields: [],
+    variables: {
+      artist: 'Name of the artist',
+      song: 'Name of the song',
+    }
   },
   {
     provider: 'Twitch',
