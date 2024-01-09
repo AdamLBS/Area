@@ -7,15 +7,16 @@ import {
   DialogTitle,
   FormField,
   Input,
-  Label,
   useToast,
   Form,
   FormControl,
   FormItem,
   FormMessage,
+  FormLabel,
+  DialogHeader,
 } from '@/components/ui';
 import React, { memo, useCallback, useState } from 'react';
-import { FormContainer, Header, Modal, Page } from './CreateEventModal.style';
+import { FormContainer, Modal } from './CreateEventModal.style';
 import { ApiEvent, Trigger } from '@/api/constants';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { createEvent } from '@/api/events';
@@ -32,7 +33,7 @@ export type CreateEventModalProps = {
 
 const formSchema = z.object({
   name: z.string().min(1, { message: 'Name is required' }),
-  description: z.string(),
+  description: z.string().optional(),
 });
 
 const CreateEventModalComponent: React.FC<CreateEventModalProps> = ({
@@ -42,21 +43,17 @@ const CreateEventModalComponent: React.FC<CreateEventModalProps> = ({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: '',
-      description: '',
+      name: undefined,
+      description: undefined,
     },
   });
+  type FormValues = z.infer<typeof formSchema>;
   const [state, setState] = useState<number>(1);
   const [trigger, setTrigger] = useState<Trigger>();
+  const [name, setName] = useState<string>('');
+  const [description, setDescription] = useState<string>('');
   const queryClient = useQueryClient();
   const { toast } = useToast();
-
-  const addState = () => {
-    if (state === 1 && !form.getValues().name) {
-      return;
-    }
-    setState((prevState) => prevState + 1);
-  };
 
   const onCreateTrigger = useCallback(
     (newTrigger: Trigger) => {
@@ -87,21 +84,28 @@ const CreateEventModalComponent: React.FC<CreateEventModalProps> = ({
     },
   });
 
+  const onSubmit = useCallback((values: FormValues) => {
+    const { name, description } = values;
+    setName(name);
+    setDescription(description || '');
+    setState(2);
+  }, []);
+
   const handleEvent = useCallback(
     (action: ApiEvent) => {
       if (!trigger || !action) {
         return;
       }
       createEventMutation.mutate({
-        name: form.getValues().name,
-        description: form.getValues().description,
+        name: name,
+        description: description,
         trigger_provider: trigger.trigger_provider.toLowerCase(),
         triggerInteraction: trigger.triggerInteraction,
         response_provider: action.provider.toLowerCase(),
         responseInteraction: action,
       });
     },
-    [trigger, createEventMutation],
+    [trigger, createEventMutation, name, description],
   );
 
   const onCreateAction = useCallback(
@@ -116,50 +120,48 @@ const CreateEventModalComponent: React.FC<CreateEventModalProps> = ({
       <Modal>
         {state === 1 && (
           <>
+            <DialogHeader>
+              <DialogTitle>Create a new event</DialogTitle>
+              <DialogDescription>
+                Let’s start to create a new event (* required)
+              </DialogDescription>
+            </DialogHeader>
             <Form {...form}>
-              <FormContainer>
-                <Header>
-                  <DialogTitle>Create a new event</DialogTitle>
-                  <DialogDescription>
-                    Let’s start to create a new event (* required)
-                  </DialogDescription>
-                </Header>
-                <Page>
-                  <Label>Event name*</Label>
-                  <FormField
-                    control={form.control}
-                    name="name"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormControl>
-                          <Input placeholder="Event name" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <Label>Event description</Label>
-                  <FormField
-                    control={form.control}
-                    name="description"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormControl>
-                          <Input placeholder="Event description" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <DialogFooter>
-                    <Button onClick={addState}>Continue</Button>
-                    <DialogClose asChild>
-                      <Button type="button" variant="secondary">
-                        Cancel
-                      </Button>
-                    </DialogClose>
-                  </DialogFooter>
-                </Page>
+              <FormContainer onSubmit={form.handleSubmit(onSubmit)}>
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Event name*</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Event name" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="description"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Event description</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Event description" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <DialogFooter>
+                  <Button type="submit">Continue</Button>
+                  <DialogClose asChild>
+                    <Button type="button" variant="secondary">
+                      Cancel
+                    </Button>
+                  </DialogClose>
+                </DialogFooter>
               </FormContainer>
             </Form>
           </>
