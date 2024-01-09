@@ -65,6 +65,7 @@ export default class SpotifyLikeSong extends BaseTask {
     const events = await Database.query()
       .from('events')
       .whereRaw(`CAST(trigger_interaction AS JSONB) #>> '{id}' = 'likeSong'`)
+    for (const event of events) {
       const triggerApi = await Database.query()
         .from('oauths')
         .where('uuid', events.at(0).trigger_api)

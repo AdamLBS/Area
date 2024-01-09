@@ -1,5 +1,9 @@
 import { Button } from '@/components/ui';
-import { Card, CardFooter } from '@/components/ui/card';
+import {
+  Card,
+  CardFooter,
+  CardHeader as _CardHeader,
+} from '@/components/ui/card';
 import styled from 'styled-components';
 import { ToggleLeft, ToggleRight } from 'lucide-react';
 
@@ -25,14 +29,8 @@ export const EventPanelButton = styled(Button)`
   gap: 10px;
 `;
 
-export const Header = styled.div`
-  display: flex;
-  width: 100%;
-  padding: 24px;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 6px;
-  border-bottom: 1px solid #34344b;
+export const CardHeader = styled(_CardHeader)`
+  border-bottom: 1px solid #27272a;
 `;
 
 export const LogoRight = styled(ToggleRight)`

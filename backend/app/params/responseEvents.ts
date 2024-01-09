@@ -42,8 +42,8 @@ export const RESPONSE_EVENTS: APIEvent[] = [
             value: 'Body of the email',
             name: 'body',
             type: 'input',
-            required: true
-          }
+            required: true,
+          },
         ],
         variables: {},
       },

@@ -22,6 +22,7 @@ import { ApiInteraction, Fields } from '@/api/constants';
 import { UpdateEventParamsModal } from '../UpdateEventParamsModal';
 import { updateTriggerEvent } from '@/api/events';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useConnectedServices } from '@/functions/connectedServices';
 
 export type DeleteEventModalProps = {
   eventUuid: string;
@@ -59,6 +60,8 @@ const UpdateTriggerEventModalComponent: React.FC<DeleteEventModalProps> = ({
     },
     [triggers, service, setInteraction],
   );
+
+  const connectedServices = useConnectedServices(services);
 
   const updateTriggerEventMutation = useMutation({
     mutationFn: updateTriggerEvent,
@@ -123,6 +126,7 @@ const UpdateTriggerEventModalComponent: React.FC<DeleteEventModalProps> = ({
                   value="Service"
                   values={services}
                   onChange={setService}
+                  disabled={connectedServices}
                 />
               </SelectContainer>
               <SelectContainer>
