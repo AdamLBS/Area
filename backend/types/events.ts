@@ -4,11 +4,15 @@ export type APIEventField<T> = {
   required: boolean
 }
 
-export type APIEvent = {
-  provider: string
+export type APIEventInteraction = {
   id: string
   name: string
   fields: APIEventField<any>[]
+}
+
+export type APIEvent = {
+  provider: string
+  interactions: APIEventInteraction[]
 }
 
 export type AdditionalInteraction = {

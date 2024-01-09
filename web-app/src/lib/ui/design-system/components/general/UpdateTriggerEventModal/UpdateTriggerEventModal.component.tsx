@@ -18,7 +18,7 @@ import {
 } from './UpdateTriggerEventModal.style';
 import { H4, PrimaryMutted } from '../Text';
 import { CustomSelect } from '../CustomSelect';
-import { ApiEvent, Fields } from '@/api/constants';
+import { ApiInteraction, Fields } from '@/api/constants';
 import { UpdateEventParamsModal } from '../UpdateEventParamsModal';
 import { updateTriggerEvent } from '@/api/events';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -36,7 +36,7 @@ const UpdateTriggerEventModalComponent: React.FC<DeleteEventModalProps> = ({
 }) => {
   const { data: triggers } = useTriggers();
   const [service, setService] = React.useState<string>();
-  const [interaction, setInteraction] = React.useState<ApiEvent>();
+  const [interaction, setInteraction] = React.useState<ApiInteraction>();
   const [step, setStep] = React.useState(0);
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -46,16 +46,15 @@ const UpdateTriggerEventModalComponent: React.FC<DeleteEventModalProps> = ({
   }, [triggers]);
   const interactions = useMemo(() => {
     return triggers
-      ?.filter((trigger) => trigger.provider === service)
-      .map((trigger) => trigger.name);
+      ?.find((trigger) => trigger.provider === service)
+      ?.interactions.map((interaction) => interaction.name);
   }, [triggers, service]);
-
   const onChangeInteraction = useCallback(
     (value: string) => {
       setInteraction(
-        triggers?.find(
-          (trigger) => trigger.provider === service && trigger.name === value,
-        ),
+        triggers
+          ?.find((trigger) => trigger.provider === service)
+          ?.interactions.find((interaction) => interaction.name === value),
       );
     },
     [triggers, service, setInteraction],
@@ -90,12 +89,12 @@ const UpdateTriggerEventModalComponent: React.FC<DeleteEventModalProps> = ({
 
   const onAddEventAction = useCallback(
     (newFields: Fields[]) => {
-      if (!interaction) {
+      if (!interaction || !service) {
         return;
       }
       updateTriggerEventMutation.mutate({
         eventUuid,
-        trigger_provider: interaction.provider.toLowerCase(),
+        trigger_provider: service.toLowerCase(),
         id: interaction.id,
         fields: newFields,
       });
