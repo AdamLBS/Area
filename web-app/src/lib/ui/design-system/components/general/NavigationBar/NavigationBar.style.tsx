@@ -37,7 +37,11 @@ export const DarkContainer = styled.div`
   flex: 1;
 `;
 
-export const Stratos = styled(IconStratos)`
-  width: 25px;
-  height: 42px;
+export const IconContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  border-radius: 7px;
+  background: #7c3aed;
 `;

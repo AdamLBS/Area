@@ -12,13 +12,13 @@ import {
 } from './BridgePage.style';
 
 import { MenuEvent } from '@/lib/ui/design-system';
-import { PlusIcon } from 'lucide-react';
+import { PlusIcon, Boxes } from 'lucide-react';
 
 const Bridge: React.FC = () => {
   const [createEventModalOpen, setCreateEventModalOpen] = React.useState(false);
 
   return (
-    <PrivateLayout pageName="Bridge">
+    <PrivateLayout pageName="Bridge" icon={<Boxes />}>
       <PageContainer>
         <PageContent>
           <MenuEvent />

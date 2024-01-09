@@ -29,28 +29,51 @@ class EventModel {
   }
 }
 
+enum WidgetType { text, select, textarea }
+
 class Field {
   late String value;
   late String name;
   late bool required;
   bool edited = false;
+  final WidgetType type;
+  List<SelectField>? selectFields;
 
-  Field({
-    required this.value,
-    required this.name,
-    required this.required,
-  });
+  Field(
+      {required this.value,
+      required this.name,
+      required this.required,
+      required this.type,
+      this.selectFields});
 
   factory Field.fromJson(Map<String, dynamic> json) {
     return Field(
       value: json['value'],
       name: json['name'],
       required: json['required'],
+      type: json['type'] == 'input'
+          ? WidgetType.text
+          : json['type'] == 'select'
+              ? WidgetType.select
+              : WidgetType.textarea,
+      selectFields: json['type'] == 'select'
+          ? (json['values'] as List)
+              .map((field) => SelectField.fromJson(field))
+              .toList()
+          : null,
     );
   }
 
   @override
   String toString() {
-    return 'Field{value: $value, name: $name, required: $required}';
+    return 'Field{value: $value, name: $name, required: $required type: $type}';
+  }
+}
+
+class SelectField {
+  final String value, label;
+  SelectField({required this.value, required this.label});
+  factory SelectField.fromJson(Map<String, dynamic> json) {
+    return SelectField(value: json['value'], label: json['label']);
   }
 }

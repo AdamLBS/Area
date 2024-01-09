@@ -47,6 +47,13 @@ export type Fields = {
   value: string;
   name: string;
   required: boolean;
+  type?: 'input' | 'select' | 'textarea';
+  values?: SelectValues[];
+};
+
+export type SelectValues = {
+  value: string;
+  label: string;
 };
 
 export type Interaction = {
