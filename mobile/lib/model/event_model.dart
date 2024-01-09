@@ -3,11 +3,13 @@ class EventModel {
   final String id;
   final String name;
   late List<Field> fields;
+  final Map<String, String> variables;
   EventModel({
     required this.provider,
     required this.id,
     required this.name,
     required this.fields,
+    required this.variables,
   });
 
   factory EventModel.fromJson(Map<String, dynamic> json, String provider) {
@@ -18,11 +20,12 @@ class EventModel {
       fields: (json['fields'] as List)
           .map((field) => Field.fromJson(field))
           .toList(),
+      variables: Map<String, String>.from(json['variables']),
     );
   }
   @override
   String toString() {
-    return 'EventModel{provider: $provider, id: $id, name: $name, fields: $fields}';
+    return 'EventModel{provider: $provider, id: $id, name: $name, fields: $fields variables: $variables}';
   }
 }
 
