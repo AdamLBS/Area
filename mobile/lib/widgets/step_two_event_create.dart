@@ -256,7 +256,10 @@ class _StepTwoEventCreateState extends State<StepTwoEventCreate> {
                                         if (field.type == WidgetType.text ||
                                             field.type == WidgetType.textarea)
                                           SizedBox(
-                                            height: 40,
+                                            height: field.type ==
+                                                    WidgetType.textarea
+                                                ? 40 * 3
+                                                : 40,
                                             width: double.infinity,
                                             child: TextFormField(
                                               key: ValueKey<String>(field.name),
@@ -275,7 +278,7 @@ class _StepTwoEventCreateState extends State<StepTwoEventCreate> {
                                                 }
                                                 return null;
                                               },
-                                              minLines: field.type ==
+                                              maxLines: field.type ==
                                                       WidgetType.textarea
                                                   ? 3
                                                   : 1,
@@ -296,8 +299,68 @@ class _StepTwoEventCreateState extends State<StepTwoEventCreate> {
                                               ),
                                             ),
                                           ),
+                                        SizedBox(height: 10),
                                         if (field.type == WidgetType.select)
-                                          SizedBox(height: 20),
+                                          Container(
+                                            height: 40,
+                                            decoration: BoxDecoration(
+                                              color: Color(0xFF21212B),
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                            ),
+                                            child: DropdownMenu<SelectField>(
+                                              expandedInsets: EdgeInsets.all(0),
+                                              inputDecorationTheme:
+                                                  InputDecorationTheme(
+                                                hintStyle: GoogleFonts.inter(
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.w600,
+                                                  color: Colors.white,
+                                                ),
+                                                border: OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  borderSide: BorderSide.none,
+                                                ),
+                                                contentPadding:
+                                                    EdgeInsets.symmetric(
+                                                  horizontal: 20,
+                                                  vertical: 10,
+                                                ),
+                                              ),
+                                              hintText:
+                                                  "Please select an option",
+                                              textStyle: GoogleFonts.inter(
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.w600,
+                                                  color: Colors.white),
+                                              menuStyle: MenuStyle(
+                                                backgroundColor:
+                                                    MaterialStateColor
+                                                        .resolveWith(
+                                                  (states) => Color(0xFF09090B),
+                                                ),
+                                              ),
+                                              onSelected: (value) {
+                                                field.value = value!.value;
+                                              },
+                                              dropdownMenuEntries:
+                                                  field.selectFields!.map<
+                                                          DropdownMenuEntry<
+                                                              SelectField>>(
+                                                      (SelectField e) {
+                                                return DropdownMenuEntry<
+                                                        SelectField>(
+                                                    value: e,
+                                                    label: e.label,
+                                                    style: MenuItemButton
+                                                        .styleFrom(
+                                                      foregroundColor:
+                                                          Colors.white,
+                                                    ));
+                                              }).toList(),
+                                            ),
+                                          )
                                       ],
                                     ),
                                 ],

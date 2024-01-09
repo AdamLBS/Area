@@ -291,44 +291,114 @@ class _StepThreeEventCreateState extends State<StepThreeEventCreate> {
                                               color: Colors.white,
                                             )),
                                         SizedBox(height: 10),
-                                        SizedBox(
-                                          height: 40,
-                                          width: double.infinity,
-                                          child: TextFormField(
-                                            key: ValueKey<String>(field.name),
-                                            style:
-                                                TextStyle(color: Colors.white),
-                                            onChanged: (value) {
-                                              field.value = value;
-                                              field.edited = true;
-                                            },
-                                            initialValue: field.edited
-                                                ? field.value
-                                                : null,
-                                            validator: (value) {
-                                              if (value!.isEmpty) {
-                                                return "Please enter a description";
-                                              }
-                                              return null;
-                                            },
-                                            decoration: InputDecoration(
-                                              filled: true,
-                                              fillColor: Color(0xFF21212B),
-                                              hintText: field.name,
-                                              hintStyle: TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w400,
-                                                color: Color(0xFFA1A1AA),
-                                              ),
-                                              border: OutlineInputBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
-                                                borderSide: BorderSide.none,
+                                        if (field.type == WidgetType.text ||
+                                            field.type == WidgetType.textarea)
+                                          SizedBox(
+                                            height: field.type ==
+                                                    WidgetType.textarea
+                                                ? 40 * 3
+                                                : 40,
+                                            width: double.infinity,
+                                            child: TextFormField(
+                                              key: ValueKey<String>(field.name),
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                              onChanged: (value) {
+                                                field.value = value;
+                                                field.edited = true;
+                                              },
+                                              initialValue: field.edited
+                                                  ? field.value
+                                                  : null,
+                                              validator: (value) {
+                                                if (value!.isEmpty) {
+                                                  return "Please enter a description";
+                                                }
+                                                return null;
+                                              },
+                                              maxLines: field.type ==
+                                                      WidgetType.textarea
+                                                  ? 3
+                                                  : 1,
+                                              decoration: InputDecoration(
+                                                filled: true,
+                                                fillColor: Color(0xFF21212B),
+                                                hintText: field.name,
+                                                hintStyle: TextStyle(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w400,
+                                                  color: Color(0xFFA1A1AA),
+                                                ),
+                                                border: OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  borderSide: BorderSide.none,
+                                                ),
                                               ),
                                             ),
                                           ),
-                                        ),
-                                        SizedBox(height: 20),
+                                        SizedBox(height: 10),
+                                        if (field.type == WidgetType.select)
+                                          Container(
+                                            height: 40,
+                                            decoration: BoxDecoration(
+                                              color: Color(0xFF21212B),
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                            ),
+                                            child: DropdownMenu<SelectField>(
+                                              expandedInsets: EdgeInsets.all(0),
+                                              inputDecorationTheme:
+                                                  InputDecorationTheme(
+                                                hintStyle: GoogleFonts.inter(
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.w600,
+                                                  color: Colors.white,
+                                                ),
+                                                border: OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  borderSide: BorderSide.none,
+                                                ),
+                                                contentPadding:
+                                                    EdgeInsets.symmetric(
+                                                  horizontal: 20,
+                                                  vertical: 10,
+                                                ),
+                                              ),
+                                              hintText:
+                                                  "Please select an option",
+                                              textStyle: GoogleFonts.inter(
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.w600,
+                                                  color: Colors.white),
+                                              menuStyle: MenuStyle(
+                                                backgroundColor:
+                                                    MaterialStateColor
+                                                        .resolveWith(
+                                                  (states) => Color(0xFF09090B),
+                                                ),
+                                              ),
+                                              onSelected: (value) {
+                                                field.value = value!.value;
+                                              },
+                                              dropdownMenuEntries:
+                                                  field.selectFields!.map<
+                                                          DropdownMenuEntry<
+                                                              SelectField>>(
+                                                      (SelectField e) {
+                                                return DropdownMenuEntry<
+                                                        SelectField>(
+                                                    value: e,
+                                                    label: e.label,
+                                                    style: MenuItemButton
+                                                        .styleFrom(
+                                                      foregroundColor:
+                                                          Colors.white,
+                                                    ));
+                                              }).toList(),
+                                            ),
+                                          )
                                       ],
                                     ),
                                 ],
