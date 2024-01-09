@@ -22,6 +22,7 @@ import { ApiInteraction, Fields } from '@/api/constants';
 import { UpdateEventParamsModal } from '../UpdateEventParamsModal';
 import { updateAdditionalAction } from '@/api/events';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useConnectedServices } from '@/functions/connectedServices';
 
 export type DeleteEventModalProps = {
   eventUuid: string;
@@ -51,6 +52,8 @@ const UpdateAdditionalActionModalComponent: React.FC<DeleteEventModalProps> = ({
       ?.find((response) => response.provider === service)
       ?.interactions.map((interaction) => interaction.name);
   }, [responses, service]);
+
+  const connectedServices = useConnectedServices(services);
 
   const onChangeInteraction = useCallback(
     (value: string) => {
@@ -129,6 +132,7 @@ const UpdateAdditionalActionModalComponent: React.FC<DeleteEventModalProps> = ({
                   value="Service"
                   values={services}
                   onChange={setService}
+                  disabled={connectedServices}
                 />
               </SelectContainer>
               <SelectContainer>

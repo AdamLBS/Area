@@ -17,6 +17,7 @@ import { H4, PrimaryMutted } from '../Text';
 import { CustomSelect } from '../CustomSelect';
 import { ApiInteraction, Fields, Trigger } from '@/api/constants';
 import { UpdateEventParamsModal } from '../UpdateEventParamsModal';
+import { useConnectedServices } from '@/functions/connectedServices';
 
 export type DeleteEventModalProps = {
   onConfirm: (trigger: Trigger) => void;
@@ -38,6 +39,8 @@ const SetTriggerModalComponent: React.FC<DeleteEventModalProps> = ({
       ?.find((trigger) => trigger.provider === service)
       ?.interactions.map((interaction) => interaction.name);
   }, [triggers, service]);
+
+  const connectedServices = useConnectedServices(services);
 
   const onChangeInteraction = useCallback(
     (value: string) => {
@@ -90,6 +93,7 @@ const SetTriggerModalComponent: React.FC<DeleteEventModalProps> = ({
                 value="Service"
                 values={services}
                 onChange={setService}
+                disabled={connectedServices}
               />
             </SelectContainer>
             <SelectContainer>

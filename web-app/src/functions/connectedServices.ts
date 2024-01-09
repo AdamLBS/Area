@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useServices } from '@/react/hooks/oauth';
 
-export const getConnectedServices = (responses?: string[]) => {
+export const useConnectedServices = (responses?: string[]) => {
   const { data: services } = useServices();
 
   const connectedServices = useMemo(() => {
