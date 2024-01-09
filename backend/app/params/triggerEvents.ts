@@ -34,11 +34,13 @@ export const TRIGGER_EVENTS: APIEvent[] = [
           {
             value: 'Name of the streamer',
             name: 'streamer',
+            type: 'input',
             required: true,
           },
           {
             value: 'Name of the user',
             name: 'username',
+            type: 'input',
             required: true,
           },
         ],
@@ -56,8 +58,9 @@ export const TRIGGER_EVENTS: APIEvent[] = [
         name: 'New commit',
         fields: [
           {
-            value: '',
+            value: 'repository url',
             name: 'commitsUrl',
+            type: 'input',
             required: true,
           },
         ],
@@ -70,18 +73,35 @@ export const TRIGGER_EVENTS: APIEvent[] = [
         name: 'Check CI/CD of the last commit',
         fields: [
           {
-            value: '',
+            value: 'repository url',
             name: 'repositoryUrl',
+            type: 'input',
             required: true,
           },
           {
-            value: '',
+            value: 'branch main or reference',
             name: 'reference',
+            type: 'input',
             required: true,
           },
           {
-            value: 'success' || 'failure' || 'pending',
+            value: 'Select the state of the CI/CD',
             name: 'state',
+            type: 'select',
+            values: [
+              {
+                value: 'success',
+                label: 'Success',
+              },
+              {
+                value: 'failure',
+                label: 'Failure',
+              },
+              {
+                value: 'pending',
+                label: 'Pending',
+              },
+            ],
             required: true,
           },
         ],
