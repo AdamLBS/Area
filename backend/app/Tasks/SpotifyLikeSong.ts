@@ -104,7 +104,7 @@ export default class SpotifyLikeSong extends BaseTask {
           }
       }
     }
-    if (spotifyLikesSong != userCache?.spotify_liked_songs)
+    if (spotifyLikesSong !== userCache?.spotify_liked_songs)
       await this.updateNumberOfLikedSongs(triggerApi.user_uuid, spotifyLikesSong.total);
   }
 }
