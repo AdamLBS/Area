@@ -54,12 +54,14 @@ export default class SpotifyLikeSong extends BaseTask {
       .from('events')
       .whereRaw(`CAST(trigger_interaction AS JSONB) #>> '{id}' = 'likeSong'`)
     for (const event of events) {
+      console.log("events size :" + events.length)
       const triggerApi = await Database.query()
         .from('oauths')
         .where('uuid', event.trigger_api)
         .first()
       if (triggerApi && triggerApi.token) {
         const spotifyLikesSong = await this.fetchSpotifyData(triggerApi.token)
+        console.log("before : " + globalSpotifyListeners)
         if (globalSpotifyListeners.total === -1) {
           globalSpotifyListeners = spotifyLikesSong
         } else if (globalSpotifyListeners.total < spotifyLikesSong.total) {
@@ -87,7 +89,9 @@ export default class SpotifyLikeSong extends BaseTask {
             if ((field.value as string).includes('$song'))
               field.value = field.value.replace('$song', spotifyLikesSong.items[0].track.name)
           }
-          await eventHandler(responseInteraction, fields, event.responseApi)
+          await eventHandler(responseInteraction, fields, event.response_api)
+          globalSpotifyListeners = spotifyLikesSong;
+          console.log("then " + globalSpotifyListeners)
         } else {
           globalSpotifyListeners = spotifyLikesSong
         }

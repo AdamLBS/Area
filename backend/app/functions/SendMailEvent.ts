@@ -1,19 +1,20 @@
 import axios from 'axios'
 import Database from '@ioc:Adonis/Lucid/Database'
+import { APIEventField } from 'types/events'
 
-export const SendMailEvent = async (data: any, responseApiUuid: string) => {
+export const SendMailEvent = async (data: APIEventField<any>[], responseApiUuid: string) => {
   try {
-    const mailOAuth = await Database.from('oauths').where('uuid', responseApiUuid).first()
+    const mailOAuth = await Database.query().from('oauths').where('uuid', responseApiUuid).first()
     let message =
       'From: <me>\n' +
       'To: <' +
-      data.fields.email +
+      data.at(0)?.value +
       '>\n' +
       'Subject: ' +
-      'Stratos Notification' +
+      data.at(1)?.value +
       '\n\n' +
-      'The user has changed his music' +
-      '\n' //todo: ajouter la customisation du message
+      data.at(2)?.value +
+      '\n'
     const stringToBase64 = (str: string) =>
       Buffer.from(str).toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '')
     const encodedMessage = stringToBase64(message)
