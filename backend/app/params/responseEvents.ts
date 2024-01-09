@@ -12,6 +12,7 @@ export const RESPONSE_EVENTS: APIEvent[] = [
         required: true,
       },
     ],
+    variables: {},
   },
   {
     provider: 'Google',
@@ -24,5 +25,6 @@ export const RESPONSE_EVENTS: APIEvent[] = [
         required: true,
       },
     ],
+    variables: {},
   },
 ]
