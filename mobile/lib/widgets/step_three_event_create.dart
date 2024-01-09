@@ -250,6 +250,34 @@ class _StepThreeEventCreateState extends State<StepThreeEventCreate> {
                                         color: Color(0xFFA1A1AA),
                                       )),
                                   SizedBox(height: 10),
+                                  if (widget.eventCreationModel.triggerEvent !=
+                                          null &&
+                                      widget.eventCreationModel.triggerEvent!
+                                          .variables.isNotEmpty)
+                                    Text(
+                                        "You can use theses variables in the fields : ",
+                                        style: GoogleFonts.inter(
+                                          fontSize: 14,
+                                          color: Color(0xFFA1A1AA),
+                                        )),
+                                  if (widget.eventCreationModel.triggerEvent !=
+                                          null &&
+                                      widget.eventCreationModel.triggerEvent!
+                                          .variables.isNotEmpty)
+                                    SizedBox(height: 10),
+                                  for (var variable in widget.eventCreationModel
+                                      .triggerEvent!.variables.keys)
+                                    Text(
+                                        "- ${widget.eventCreationModel.triggerEvent!.variables[variable]} : \$$variable",
+                                        style: GoogleFonts.inter(
+                                          fontSize: 14,
+                                          color: Color(0xFFA1A1AA),
+                                        )),
+                                  if (widget.eventCreationModel.triggerEvent !=
+                                          null &&
+                                      widget.eventCreationModel.triggerEvent!
+                                          .variables.isNotEmpty)
+                                    SizedBox(height: 10),
                                   for (var field in selectedResponse!.fields)
                                     Column(
                                       mainAxisAlignment:

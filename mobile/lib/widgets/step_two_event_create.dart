@@ -299,6 +299,7 @@ class _StepTwoEventCreateState extends State<StepTwoEventCreate> {
                         );
                       });
                     } else {
+                      print(snapshot.error);
                       return Center(
                           child: Text("Error while getting trigger apis"));
                     }
@@ -329,7 +330,8 @@ class _StepTwoEventCreateState extends State<StepTwoEventCreate> {
                           provider: selectedTrigger!.provider,
                           id: selectedTrigger!.id,
                           name: selectedTrigger!.name,
-                          fields: selectedTrigger!.fields);
+                          fields: selectedTrigger!.fields,
+                          variables: selectedTrigger!.variables);
                       print(widget.eventCreationModel.triggerEvent);
                       widget.onChanged(2);
                     },
