@@ -47,10 +47,12 @@ export type Fields = {
 
 export type Interaction = {
   id: string;
-  fields: Fields;
+  fields: Fields[];
 };
 
 export type EventCreate = {
+  name: string;
+  description?: string;
   trigger_provider: string;
   response_provider: string;
   triggerInteraction: Interaction;
@@ -74,4 +76,9 @@ export type EventType = {
   uuid: string;
   active: boolean;
   name: string;
+};
+
+export type Trigger = {
+  trigger_provider: string;
+  triggerInteraction: Interaction;
 };

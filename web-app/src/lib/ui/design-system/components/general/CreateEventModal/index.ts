@@ -1,1 +1,1 @@
-export { EventModal } from './CreateEventModal.component';
+export { CreateEventModal } from './CreateEventModal.component';
