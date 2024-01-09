@@ -28,7 +28,7 @@ const ManagementServiceComponent: React.FC<ManagementServiceProps> = ({
     router.push(`/${title.toLowerCase()}`);
   }, [title]);
   return (
-    <CardContainer onClick={handleRedirection}>
+    <CardContainer variant={'outline'} onClick={handleRedirection}>
       <Header>
         <TitleContainer>
           <IconContainer>
