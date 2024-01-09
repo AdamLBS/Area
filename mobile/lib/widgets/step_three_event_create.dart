@@ -366,8 +366,7 @@ class _StepThreeEventCreateState extends State<StepThreeEventCreate> {
                                                   vertical: 10,
                                                 ),
                                               ),
-                                              hintText:
-                                                  "Please select an option",
+                                              hintText: field.value,
                                               textStyle: GoogleFonts.inter(
                                                   fontSize: 15,
                                                   fontWeight: FontWeight.w600,
