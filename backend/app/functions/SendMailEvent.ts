@@ -34,6 +34,6 @@ export const SendMailEvent = async (data: APIEventField<any>[], responseApiUuid:
     }
     await axios.request(options)
   } catch (error) {
-    console.log(error)
+    console.log("Error on sending msg : " + error)
   }
 }

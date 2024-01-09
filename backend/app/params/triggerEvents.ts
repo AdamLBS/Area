@@ -6,7 +6,7 @@ export const TRIGGER_EVENTS: APIEvent[] = [
     interactions: [
       {
         id: 'listenMusic',
-        name: 'Changes music',
+        name: 'When I start listening to music',
         fields: [],
         variables: {
           artist: 'Name of the artist',
