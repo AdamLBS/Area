@@ -12,8 +12,11 @@ Future<List<EventModel>> getResponsesApi() async {
   if (request.statusCode == 200) {
     var json = jsonDecode(request.body);
     List<EventModel> events = [];
-    for (var event in json) {
-      events.add(EventModel.fromJson(event));
+    for (var provider in json) {
+      var data = (provider["interactions"]);
+      for (var interaction in data) {
+        events.add(EventModel.fromJson(interaction , provider["provider"]));
+      }
     }
     print("Trigger events: $events");
     return events;

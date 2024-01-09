@@ -10,9 +10,9 @@ class EventModel {
     required this.fields,
   });
 
-  factory EventModel.fromJson(Map<String, dynamic> json) {
+  factory EventModel.fromJson(Map<String, dynamic> json, String provider) {
     return EventModel(
-      provider: json['provider'],
+      provider: provider,
       id: json['id'],
       name: json['name'],
       fields: (json['fields'] as List)
