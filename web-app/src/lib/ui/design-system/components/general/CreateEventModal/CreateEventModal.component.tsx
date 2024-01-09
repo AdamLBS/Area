@@ -25,6 +25,7 @@ import { SetActionModal } from '../SetActionModal';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'next/navigation';
 
 export type CreateEventModalProps = {
   isOpen: boolean;
@@ -40,6 +41,7 @@ const CreateEventModalComponent: React.FC<CreateEventModalProps> = ({
   isOpen,
   onOpenChange,
 }) => {
+  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -65,7 +67,7 @@ const CreateEventModalComponent: React.FC<CreateEventModalProps> = ({
 
   const createEventMutation = useMutation({
     mutationFn: createEvent,
-    onSuccess: () => {
+    onSuccess: (res) => {
       toast({
         title: 'Event created',
         description: 'The event has been created',
@@ -74,6 +76,7 @@ const CreateEventModalComponent: React.FC<CreateEventModalProps> = ({
       queryClient.invalidateQueries({ queryKey: ['events'] });
       onOpenChange(false);
       setState(1);
+      router.push(`/bridge/${res.uuid}`);
     },
     onError: () => {
       toast({
