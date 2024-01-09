@@ -3,6 +3,7 @@ import { BaseTask, CronTimeV2 } from 'adonis5-scheduler/build/src/Scheduler/Task
 import { eventHandler, ResponseInteraction } from 'App/functions/EventHandler'
 import axios from 'axios'
 import { APIEventField } from 'types/events'
+import Cache from 'App/Models/Cache'
 
 export interface Artist {
   name: string
@@ -20,12 +21,10 @@ type SpotifyLikesSong = {
   items: Item[]
 }
 
-let globalSpotifyListeners: SpotifyLikesSong = { total: -1, items: [] }
-
 export default class SpotifyLikeSong extends BaseTask {
   public static get schedule() {
     // Use CronTimeV2 generator:
-    return CronTimeV2.everySecond()
+    return CronTimeV2.everyFiveSeconds()
     // or just use return cron-style string (simple cron editor: crontab.guru)
   }
   /**
@@ -49,21 +48,32 @@ export default class SpotifyLikeSong extends BaseTask {
     }
   }
 
+  private async updateNumberOfLikedSongs(uuid: any, songs: number) {
+    await Cache.updateOrCreate(
+      {
+        uuid: uuid,
+      },
+      {
+        spotifyLikedSongs: songs,
+      }
+    )
+  }
+
   public async handle() {
     const events = await Database.query()
       .from('events')
       .whereRaw(`CAST(trigger_interaction AS JSONB) #>> '{id}' = 'likeSong'`)
+    const triggerApi = await Database.query()
+      .from('oauths')
+      .where('uuid', events.at(0).trigger_api)
+      .first()
+    const spotifyLikesSong = await this.fetchSpotifyData(triggerApi.token)
+    const userCache = await Cache.query().from('caches').where('uuid', triggerApi.user_uuid).first()
     for (const event of events) {
-      console.log('events size :' + events.length)
-      const triggerApi = await Database.query()
-        .from('oauths')
-        .where('uuid', event.trigger_api)
-        .first()
       if (triggerApi && triggerApi.token) {
-        const spotifyLikesSong = await this.fetchSpotifyData(triggerApi.token)
-        if (globalSpotifyListeners.total === -1) {
-          globalSpotifyListeners = spotifyLikesSong
-        } else if (globalSpotifyListeners.total < spotifyLikesSong.total) {
+        if (!userCache || !userCache.spotifyLikedSongs) {
+          await this.updateNumberOfLikedSongs(triggerApi.user_uuid, spotifyLikesSong.total)
+        } else if (userCache.spotifyLikedSongs < spotifyLikesSong.total) {
           const jsonVals = JSON.parse(event.response_interaction)
           const responseInteraction = jsonVals.id.toString() as ResponseInteraction
           const fields = jsonVals.fields as APIEventField<any>[]
@@ -89,11 +99,10 @@ export default class SpotifyLikeSong extends BaseTask {
               field.value = field.value.replace('$song', spotifyLikesSong.items[0].track.name)
           }
           await eventHandler(responseInteraction, fields, event.response_api)
-          globalSpotifyListeners = spotifyLikesSong
-        } else {
-          globalSpotifyListeners = spotifyLikesSong
         }
       }
     }
+    if (spotifyLikesSong.total !== userCache?.spotifyLikedSongs)
+      await this.updateNumberOfLikedSongs(triggerApi.user_uuid, spotifyLikesSong.total)
   }
 }

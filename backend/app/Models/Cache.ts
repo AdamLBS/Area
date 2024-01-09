@@ -11,6 +11,9 @@ export default class Cache extends BaseModel {
   @column()
   public twitchInLive: string | null
 
+  @column()
+  public spotifyLikedSongs: number | null
+
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 
