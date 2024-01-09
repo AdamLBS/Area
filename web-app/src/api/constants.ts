@@ -25,11 +25,15 @@ export type UserData = {
   updated_at: string;
 };
 
-export type ApiEvent = {
-  provider: string;
+export type ApiInteraction = {
   id: string;
   name: string;
   fields: Fields[];
+};
+
+export type ApiEvent = {
+  provider: string;
+  interactions: ApiInteraction[];
 };
 
 export type AdditionalInteraction = {
@@ -59,13 +63,20 @@ export type EventCreate = {
   responseInteraction: Interaction;
 };
 
+export type EventInteraction = {
+  provider: string;
+  id: string;
+  name: string;
+  fields: Fields[];
+};
+
 export type Event = {
   uuid: string;
   name: string;
   description: string;
   active: boolean;
-  triggerInteraction: ApiEvent;
-  responseInteraction: ApiEvent;
+  triggerInteraction: EventInteraction;
+  responseInteraction: EventInteraction;
   additionalActions: AdditionalInteraction[];
   timestamp: string;
   created_at: string;

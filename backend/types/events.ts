@@ -11,12 +11,16 @@ export type SelectValues = {
   label: string
 }
 
-export type APIEvent = {
-  provider: string
+export type APIEventInteraction = {
   id: string
   name: string
   fields: APIEventField<any>[]
   variables: {}
+}
+
+export type APIEvent = {
+  provider: string
+  interactions: APIEventInteraction[]
 }
 
 export type AdditionalInteraction = {

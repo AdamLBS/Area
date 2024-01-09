@@ -15,11 +15,11 @@ import {
 } from './SetActionModal.style';
 import { H4, PrimaryMutted } from '../Text';
 import { CustomSelect } from '../CustomSelect';
-import { ApiEvent, Fields } from '@/api/constants';
+import { EventInteraction, ApiInteraction, Fields } from '@/api/constants';
 import { UpdateEventParamsModal } from '../UpdateEventParamsModal';
 
 export type DeleteEventModalProps = {
-  onConfirm: (response: ApiEvent) => void;
+  onConfirm: (response: EventInteraction) => void;
 };
 
 const SetActionModalComponent: React.FC<DeleteEventModalProps> = ({
@@ -27,7 +27,7 @@ const SetActionModalComponent: React.FC<DeleteEventModalProps> = ({
 }) => {
   const { data: responses } = useResponses();
   const [service, setService] = React.useState<string>();
-  const [interaction, setInteraction] = React.useState<ApiEvent>();
+  const [interaction, setInteraction] = React.useState<ApiInteraction>();
   const [step, setStep] = React.useState(0);
 
   const services = useMemo(() => {
@@ -35,17 +35,16 @@ const SetActionModalComponent: React.FC<DeleteEventModalProps> = ({
   }, [responses]);
   const interactions = useMemo(() => {
     return responses
-      ?.filter((response) => response.provider === service)
-      .map((response) => response.name);
+      ?.find((response) => response.provider === service)
+      ?.interactions.map((interaction) => interaction.name);
   }, [responses, service]);
 
   const onChangeInteraction = useCallback(
     (value: string) => {
       setInteraction(
-        responses?.find(
-          (response) =>
-            response.provider === service && response.name === value,
-        ),
+        responses
+          ?.find((response) => response.provider === service)
+          ?.interactions.find((interaction) => interaction.name === value),
       );
     },
     [responses, service, setInteraction],
@@ -57,12 +56,12 @@ const SetActionModalComponent: React.FC<DeleteEventModalProps> = ({
 
   const onAddResponse = useCallback(
     (newFields: Fields[]) => {
-      if (!interaction) {
+      if (!interaction || !service) {
         return;
       }
       onConfirm({
         id: interaction.id,
-        provider: interaction.provider.toLowerCase(),
+        provider: service.toLowerCase(),
         name: interaction.name,
         fields: newFields,
       });
