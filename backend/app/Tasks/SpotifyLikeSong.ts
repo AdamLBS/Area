@@ -61,7 +61,6 @@ export default class SpotifyLikeSong extends BaseTask {
         .first()
       if (triggerApi && triggerApi.token) {
         const spotifyLikesSong = await this.fetchSpotifyData(triggerApi.token)
-        console.log("before : " + globalSpotifyListeners)
         if (globalSpotifyListeners.total === -1) {
           globalSpotifyListeners = spotifyLikesSong
         } else if (globalSpotifyListeners.total < spotifyLikesSong.total) {
@@ -91,7 +90,6 @@ export default class SpotifyLikeSong extends BaseTask {
           }
           await eventHandler(responseInteraction, fields, event.response_api)
           globalSpotifyListeners = spotifyLikesSong;
-          console.log("then " + globalSpotifyListeners)
         } else {
           globalSpotifyListeners = spotifyLikesSong
         }
