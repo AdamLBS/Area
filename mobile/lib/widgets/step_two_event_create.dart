@@ -296,9 +296,8 @@ class _StepTwoEventCreateState extends State<StepTwoEventCreate> {
                                               ),
                                             ),
                                           ),
-                                          if (field.type == WidgetType.select)
-                                            
-                                        SizedBox(height: 20),
+                                        if (field.type == WidgetType.select)
+                                          SizedBox(height: 20),
                                       ],
                                     ),
                                 ],
