@@ -1,3 +1,4 @@
+import { APIEventField } from 'types/events'
 import { discordEvent } from './DiscordEvent'
 import { SendMailEvent } from './SendMailEvent'
 
@@ -6,16 +7,9 @@ export enum ResponseInteraction {
   SEND_DISCORD_MESSAGE = 'sendDiscordMessage',
 }
 
-export type Content = {
-  title: string
-  message: string
-  url?: string
-  fields?: any
-}
-
 export const eventHandler = async (
   eventTrigger: ResponseInteraction,
-  content: Content,
+  content: APIEventField<any>[],
   responseApiUuid: string
 ) => {
   console.log(`[EventHandler] ${eventTrigger} triggered`)

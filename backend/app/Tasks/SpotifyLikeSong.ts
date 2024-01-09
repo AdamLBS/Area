@@ -2,6 +2,7 @@ import Database from '@ioc:Adonis/Lucid/Database'
 import { BaseTask, CronTimeV2 } from 'adonis5-scheduler/build/src/Scheduler/Task'
 import { Content, eventHandler, ResponseInteraction } from 'App/functions/EventHandler'
 import axios from 'axios'
+import { APIEventField } from 'types/events'
 
 type SpotifyLikesSong = {
   total: number
@@ -41,7 +42,6 @@ export default class SpotifyLikeSong extends BaseTask {
       .from('events')
       .whereRaw(`CAST(trigger_interaction AS JSONB) #>> '{id}' = 'likeSong'`)
     for (const event of events) {
-      console.log('event')
       const triggerApi = await Database.query()
         .from('oauths')
         .where('uuid', event.trigger_api)
@@ -52,13 +52,16 @@ export default class SpotifyLikeSong extends BaseTask {
           globalSpotifyListeners = spotifyLikesSong
         } else if (globalSpotifyListeners.total < spotifyLikesSong.total) {
           globalSpotifyListeners = spotifyLikesSong
-          const content: Content = {
-            title: 'New song liked',
-            message: 'You liked a new song on Spotify',
-          }
           const jsonVals = JSON.parse(event.response_interaction)
           const responseInteraction = jsonVals.id.toString() as ResponseInteraction
-          await eventHandler(responseInteraction, content, event.responseApi)
+          const fields = jsonVals.fields as APIEventField<any>[]
+          for (const field of fields) {
+            if ((field.value as string).includes('$artist'))
+              field.value = field.value.replace('$artist', 'ARTIST')
+            if ((field.value as string).includes('$song'))
+              field.value = field.value.replace('$song', 'SONG')
+          }
+          await eventHandler(responseInteraction, fields, event.responseApi)
         } else {
           globalSpotifyListeners = spotifyLikesSong
         }
