@@ -1,7 +1,19 @@
-import { BaseTask, CronTimeV2 } from 'adonis5-scheduler/build/src/Scheduler/Task'
 import Database from '@ioc:Adonis/Lucid/Database'
+import { BaseTask, CronTimeV2 } from 'adonis5-scheduler/build/src/Scheduler/Task'
+import { eventHandler, ResponseInteraction } from 'App/functions/EventHandler'
 import axios from 'axios'
-import { eventHandler, ResponseInteraction } from '../functions/EventHandler'
+import { APIEventField } from 'types/events'
+import Cache from 'App/Models/Cache'
+
+
+export interface Artist {
+  name: string
+}
+export interface Item {
+  artists: Artist[]
+  name: string
+
+}
 
 type SpotifyListener = {
   shuffle_state: boolean
@@ -18,20 +30,8 @@ type SpotifyListener = {
   progress_ms: number
   is_playing: boolean
   currently_playing_type: string
-  item: {
-    href: string
-    id: string
-    is_local: boolean
-    name: string
-    popularity: number
-    preview_url: string
-    track_number: number
-    type: string
-    uri: string
-  }
+  item: Item
 }
-
-let globalSpotifyListeners: SpotifyListener[] = [] //TODO: Optimiser après la defense
 
 export default class SpotifyListenTask extends BaseTask {
   public static get schedule() {
@@ -47,15 +47,25 @@ export default class SpotifyListenTask extends BaseTask {
     return false
   }
 
-  private async fetchSpotifyData(oauth: string): Promise<SpotifyListener> {
+  private async updateSpotifyListeningStatus(uuid: string, listening: boolean) {
+    await Cache.updateOrCreate(
+      {
+        uuid: uuid,
+      },
+      {
+        spotifyListening: listening
+      }
+    )
+  }
+
+  private async fetchSpotifyData(oauth: string): Promise<SpotifyListener | undefined> {
     const response = await axios.get<SpotifyListener>(`https://api.spotify.com/v1/me/player`, {
       headers: {
         Authorization: `Bearer ${oauth}`,
       },
     })
     if (response.status !== 200) {
-      console.log(response.data)
-      throw new Error('Spotify API Error')
+      return undefined
     }
     return response.data
   }
@@ -64,49 +74,48 @@ export default class SpotifyListenTask extends BaseTask {
       const events = await Database.query()
         .from('events')
         .whereRaw(`CAST(trigger_interaction AS JSONB) #>> '{id}' = 'listenMusic'`)
-      for (const event of events) {
-        const triggerApi = await Database.query()
-          .from('oauths')
-          .where('uuid', event.trigger_api)
-          .first()
-        try {
-          let spotifyListener = await this.fetchSpotifyData(triggerApi.token)
-          if (
-            globalSpotifyListeners.find(
-              (spotifyListenerSec) => spotifyListenerSec.device.id === spotifyListener.device.id
-            ) === undefined
-          ) {
-            globalSpotifyListeners.push(spotifyListener)
-          } else {
-            let tmpSpotifyListener = globalSpotifyListeners.find(
-              (existingListener) => existingListener.device.id === spotifyListener.device.id
-            )
-            if (
-              tmpSpotifyListener !== undefined &&
-              tmpSpotifyListener.item.uri !== null &&
-              tmpSpotifyListener.item.uri !== spotifyListener.item.uri
-            ) {
-              console.log('Event triggered you have changed the music')
-              const jsonVals = JSON.parse(event.response_interaction)
-              const responseInteraction = jsonVals.id.toString() as ResponseInteraction
-              const fields = jsonVals.fields
-              const content: Content = {
-                title: '',
-                message: '',
-                fields: fields,
+      for(const event of events) {
+        const triggerApi = await Database.query().from('oauths').where('uuid', event.trigger_api).first()
+        const spotifyAPIData = await this.fetchSpotifyData(triggerApi.token)
+        const userCache = await Cache.query().from('caches').where('uuid', event.uuid).first()
+        const isListening = (spotifyAPIData !== undefined && spotifyAPIData.is_playing)
+        if (triggerApi && triggerApi.token) {
+          if (!userCache || userCache.spotifyListening === undefined) {
+            (async() => await this.updateSpotifyListeningStatus(event.uuid, isListening))()
+          } else if (userCache.spotifyListening !== isListening && spotifyAPIData !== undefined) {
+            (async() => await this.updateSpotifyListeningStatus(event.uuid, isListening))()
+            if (isListening == true) {
+            const jsonVals = JSON.parse(event.response_interaction)
+            const responseInteraction = jsonVals.id.toString() as ResponseInteraction
+            const fields = jsonVals.fields as APIEventField<any>[]
+            for (const field of fields) {
+              if ((field.value as string).includes('$artist')) {
+                let replaceValue = ''
+                for (const artist of spotifyAPIData.item.artists) {
+                  replaceValue += artist.name
+                  if (
+                    spotifyAPIData.item.artists.length === 2 &&
+                    artist === spotifyAPIData.item.artists[0]
+                  )
+                    replaceValue += ' et '
+                  else if (
+                    spotifyAPIData.item.artists.indexOf(artist) !==
+                    spotifyAPIData.item.artists.length - 1
+                  )
+                    replaceValue += ', '
+                }
+                field.value = field.value.replace('$artist', replaceValue)
               }
-              globalSpotifyListeners.splice(globalSpotifyListeners.indexOf(tmpSpotifyListener), 1)
-              globalSpotifyListeners.push(spotifyListener)
-              await eventHandler(responseInteraction, content, event.response_api)
+              if ((field.value as string).includes('$song'))
+                field.value = field.value.replace('$song', spotifyAPIData.item.name)
             }
-          }
-        } catch (error) {
-          console.log('User is not listening to music')
-          console.log(error)
+            await eventHandler(responseInteraction, fields, event.response_api)
+            }
+        }
         }
       }
     } catch (error) {
-      console.log(error)
+      console.log("ERROR ON SPOTIFY LISTEN TASK : " + error)
     }
   }
 

@@ -60,49 +60,53 @@ export default class SpotifyLikeSong extends BaseTask {
   }
 
   public async handle() {
-    const events = await Database.query()
+    try {
+      const events = await Database.query()
       .from('events')
       .whereRaw(`CAST(trigger_interaction AS JSONB) #>> '{id}' = 'likeSong'`)
-    const triggerApi = await Database.query()
-      .from('oauths')
-      .where('uuid', events.at(0).trigger_api)
-      .first()
-    const spotifyLikesSong = await this.fetchSpotifyData(triggerApi.token)
-    const userCache = await Cache.query().from('caches').where('uuid', triggerApi.user_uuid).first()
-    for (const event of events) {
-      if (triggerApi && triggerApi.token) {
-        if (!userCache || !userCache.spotifyLikedSongs) {
-          await this.updateNumberOfLikedSongs(triggerApi.user_uuid, spotifyLikesSong.total)
-        } else if (userCache.spotifyLikedSongs < spotifyLikesSong.total) {
-          const jsonVals = JSON.parse(event.response_interaction)
-          const responseInteraction = jsonVals.id.toString() as ResponseInteraction
-          const fields = jsonVals.fields as APIEventField<any>[]
-          for (const field of fields) {
-            if ((field.value as string).includes('$artist')) {
-              let replaceValue = ''
-              for (const artist of spotifyLikesSong.items[0].track.artists) {
-                replaceValue += artist.name
-                if (
-                  spotifyLikesSong.items[0].track.artists.length === 2 &&
-                  artist === spotifyLikesSong.items[0].track.artists[0]
-                )
-                  replaceValue += ' et '
-                else if (
-                  spotifyLikesSong.items[0].track.artists.indexOf(artist) !==
-                  spotifyLikesSong.items[0].track.artists.length - 1
-                )
-                  replaceValue += ', '
+      for (const event of events) {
+        const triggerApi = await Database.query()
+          .from('oauths')
+          .where('uuid', event.trigger_api)
+          .first()
+        const spotifyLikesSong = await this.fetchSpotifyData(triggerApi.token)
+        const userCache = await Cache.query().from('caches').where('uuid', event.uuid).first()
+        if (triggerApi && triggerApi.token) {
+          if (!userCache || !userCache.spotifyLikedSongs) {
+            await this.updateNumberOfLikedSongs(event.uuid, spotifyLikesSong.total)
+          } else if (userCache.spotifyLikedSongs < spotifyLikesSong.total) {
+            (async() => await this.updateNumberOfLikedSongs(event.uuid, spotifyLikesSong.total))()
+            const jsonVals = JSON.parse(event.response_interaction)
+            const responseInteraction = jsonVals.id.toString() as ResponseInteraction
+            const fields = jsonVals.fields as APIEventField<any>[]
+            for (const field of fields) {
+              if ((field.value as string).includes('$artist')) {
+                let replaceValue = ''
+                for (const artist of spotifyLikesSong.items[0].track.artists) {
+                  replaceValue += artist.name
+                  if (
+                    spotifyLikesSong.items[0].track.artists.length === 2 &&
+                    artist === spotifyLikesSong.items[0].track.artists[0]
+                  )
+                    replaceValue += ' et '
+                  else if (
+                    spotifyLikesSong.items[0].track.artists.indexOf(artist) !==
+                    spotifyLikesSong.items[0].track.artists.length - 1
+                  )
+                    replaceValue += ', '
+                }
+                field.value = field.value.replace('$artist', replaceValue)
               }
-              field.value = field.value.replace('$artist', replaceValue)
+              if ((field.value as string).includes('$song'))
+                field.value = field.value.replace('$song', spotifyLikesSong.items[0].track.name)
             }
-            if ((field.value as string).includes('$song'))
-              field.value = field.value.replace('$song', spotifyLikesSong.items[0].track.name)
+            await eventHandler(responseInteraction, fields, event.response_api)
           }
-          await eventHandler(responseInteraction, fields, event.response_api)
         }
       }
+
+    } catch (error) {
+      console.log("ERROR ON SPOTIFY LIKE TASK : " + error)
     }
-    if (spotifyLikesSong.total !== userCache?.spotifyLikedSongs)
-      await this.updateNumberOfLikedSongs(triggerApi.user_uuid, spotifyLikesSong.total)
   }
 }

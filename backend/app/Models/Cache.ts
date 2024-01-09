@@ -14,6 +14,9 @@ export default class Cache extends BaseModel {
   @column()
   public spotifyLikedSongs: number | null
 
+  @column()
+  public spotifyListening: boolean | null
+
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 
