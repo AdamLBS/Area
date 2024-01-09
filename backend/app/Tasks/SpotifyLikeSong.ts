@@ -54,7 +54,7 @@ export default class SpotifyLikeSong extends BaseTask {
       .from('events')
       .whereRaw(`CAST(trigger_interaction AS JSONB) #>> '{id}' = 'likeSong'`)
     for (const event of events) {
-      console.log("events size :" + events.length)
+      console.log('events size :' + events.length)
       const triggerApi = await Database.query()
         .from('oauths')
         .where('uuid', event.trigger_api)
@@ -89,7 +89,7 @@ export default class SpotifyLikeSong extends BaseTask {
               field.value = field.value.replace('$song', spotifyLikesSong.items[0].track.name)
           }
           await eventHandler(responseInteraction, fields, event.response_api)
-          globalSpotifyListeners = spotifyLikesSong;
+          globalSpotifyListeners = spotifyLikesSong
         } else {
           globalSpotifyListeners = spotifyLikesSong
         }
