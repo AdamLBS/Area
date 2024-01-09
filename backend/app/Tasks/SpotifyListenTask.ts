@@ -1,7 +1,7 @@
 import { BaseTask, CronTimeV2 } from 'adonis5-scheduler/build/src/Scheduler/Task'
 import Database from '@ioc:Adonis/Lucid/Database'
 import axios from 'axios'
-import { eventHandler, Content, ResponseInteraction } from '../functions/EventHandler'
+import { eventHandler, ResponseInteraction } from '../functions/EventHandler'
 
 type SpotifyListener = {
   shuffle_state: boolean
