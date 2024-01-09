@@ -1,20 +1,22 @@
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Button, CardContent, CardHeader } from '@/components/ui';
 import styled from 'styled-components';
 import { Boxes } from 'lucide-react';
 
-export const CardContainer = styled(Card)`
+export const CardContainer = styled(Button)`
   display: flex;
   flex-direction: column;
-  width: 493px;
+  max-width: 491px;
+  min-width: 445px;
+  height: 100%;
+  width: 100%;
   padding: 24px;
-  &:hover {
-    background-color: #27272a;
-    cursor: pointer;
-  }
+  gap: 6px;
+  align-items: flex-start;
 `;
 
 export const Header = styled(CardHeader)`
   display: flex;
+  width: 100%;
   flex-direction: row;
   justify-content: space-between;
   padding: 0;
