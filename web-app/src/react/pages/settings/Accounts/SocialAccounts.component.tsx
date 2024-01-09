@@ -42,12 +42,6 @@ const Accounts = () => {
         icon: <IconGithub color={color} />,
       },
       {
-        serviceName: 'Linkedin',
-        provider: 'linkedin',
-        connected: services?.some((service) => service.provider === 'linkedin'),
-        icon: <IconLinkedin color={color} />,
-      },
-      {
         serviceName: 'Spotify',
         provider: 'spotify',
         connected: services?.some((service) => service.provider === 'spotify'),
@@ -64,6 +58,12 @@ const Accounts = () => {
         provider: 'discord',
         connected: services?.some((service) => service.provider === 'discord'),
         icon: <IconDiscord color={color} />,
+      },
+      {
+        serviceName: 'LinkedIn',
+        provider: 'linkedin',
+        connected: services?.some((service) => service.provider === 'linkedin'),
+        icon: <IconLinkedin color={color} />,
       },
     ],
     [color, services],

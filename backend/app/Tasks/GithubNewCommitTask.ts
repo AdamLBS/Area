@@ -46,8 +46,8 @@ export default class GithubCheckLastCommitTask extends BaseTask {
           }
         )
         const content: Content = {
-          title: '',
-          message: '',
+          title: 'Salut',
+          message: 'Salut ca va?',
         }
         await eventHandler(reponseInteraction, content, responseApiUuid)
       }
