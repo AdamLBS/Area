@@ -6,4 +6,5 @@ export const PageContainer = styled.div`
   height: 100%;
   gap: 10px;
   padding: 20px;
+  overflow: hidden;
 `;

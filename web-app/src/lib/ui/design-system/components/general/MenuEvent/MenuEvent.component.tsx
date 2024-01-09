@@ -2,7 +2,7 @@
 import React, { memo } from 'react';
 import {
   EventButton,
-  Header,
+  CardHeader,
   EventPanel,
   EventPanelContent,
   LogoRight,
@@ -10,10 +10,11 @@ import {
   Footer,
   EventPanelButton,
 } from './MenuEvent.style';
-import { CreateEventModal, H3, PrimaryMutted } from '@/lib/ui/design-system';
+import { CreateEventModal } from '@/lib/ui/design-system';
 import { useRouter } from 'next/navigation';
 import { useEvents } from '@/react/hooks/events';
 import { PlusIcon } from 'lucide-react';
+import { CardDescription, CardTitle } from '@/components/ui';
 
 export type EventsProps = {
   currentUuid?: string;
@@ -30,12 +31,12 @@ const MenuEventComponent: React.FC<EventsProps> = ({ currentUuid }) => {
 
   return (
     <EventPanel>
-      <Header>
-        <H3>Your events</H3>
-        <PrimaryMutted>
+      <CardHeader>
+        <CardTitle>Your events</CardTitle>
+        <CardDescription>
           All of your events you have already created
-        </PrimaryMutted>
-      </Header>
+        </CardDescription>
+      </CardHeader>
       <EventPanelContent>
         {events &&
           events.map((event, index) => {
