@@ -19,14 +19,15 @@ export default class GithubCheckLastCommitTask extends BaseTask {
   }
 
   private async fetchLastCommit(
-    commitsUrl: string,
+    repositoryUrl: string,
     oauth: Oauth,
     responseApiUuid: string,
     reponseInteraction: ResponseInteraction
   ) {
     const userCache = await Database.query().from('caches').where('uuid', oauth.userUuid).first()
+    const commitsUrl = repositoryUrl.replace('github.com', 'api.github.com/repos')
     try {
-      const url = commitsUrl + '?per_page=1'
+      const url = commitsUrl + '/commits?per_page=1'
       const response = (
         await axios.get(url, {
           headers: {

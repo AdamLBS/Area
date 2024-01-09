@@ -48,7 +48,7 @@ export const TRIGGER_EVENTS: APIEvent[] = [
     fields: [
       {
         value: '',
-        name: 'commitsUrl',
+        name: 'repositoryUrl',
         required: true,
       },
     ],
