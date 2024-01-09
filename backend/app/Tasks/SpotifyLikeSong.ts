@@ -68,10 +68,7 @@ export default class SpotifyLikeSong extends BaseTask {
       .where('uuid', events.at(0).trigger_api)
       .first()
     const spotifyLikesSong = await this.fetchSpotifyData(triggerApi.token)
-    const userCache = await Cache.query()
-      .from('caches')
-      .where('uuid', triggerApi.user_uuid)
-      .first()
+    const userCache = await Cache.query().from('caches').where('uuid', triggerApi.user_uuid).first()
     for (const event of events) {
       if (triggerApi && triggerApi.token) {
         if (!userCache || !userCache.spotifyLikedSongs) {
