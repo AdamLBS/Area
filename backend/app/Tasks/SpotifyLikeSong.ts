@@ -50,7 +50,6 @@ export default class SpotifyLikeSong extends BaseTask {
   }
 
   private async updateNumberOfLikedSongs(uuid: any, songs: number) {
-    console.log("updating to " + songs);
     await Cache.updateOrCreate(
       {
         uuid: uuid,
