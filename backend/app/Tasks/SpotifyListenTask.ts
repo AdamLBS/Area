@@ -48,7 +48,6 @@ export default class SpotifyListenTask extends BaseTask {
   }
 
   private async updateSpotifyListeningStatus(uuid: string, listening: boolean) {
-    console.log("starting to update")
     await Cache.updateOrCreate(
       {
         uuid: uuid,

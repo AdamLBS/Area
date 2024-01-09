@@ -101,7 +101,6 @@ export default class SpotifyLikeSong extends BaseTask {
                 field.value = field.value.replace('$song', spotifyLikesSong.items[0].track.name)
             }
             await eventHandler(responseInteraction, fields, event.response_api)
-            console.log("Usercache :" + userCache.spotifyLikedSongs + " inTotal : " + spotifyLikesSong.total + "uuid : " + event.uuid)
           }
         }
       }
