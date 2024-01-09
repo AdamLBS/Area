@@ -24,13 +24,14 @@ export const getResponses = async (): Promise<ApiEvent[]> => {
   }
 };
 
-export const createEvent = async (payload: EventCreate): Promise<void> => {
+export const createEvent = async (payload: EventCreate): Promise<Event> => {
   try {
-    await axios.post(API_URL + '/event/create', payload, {
+    const res = await axios.post(API_URL + '/event/create', payload, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('authToken')}`,
       },
     });
+    return res.data.event;
   } catch (error) {
     throw new Error('Error creating event.');
   }
@@ -55,7 +56,7 @@ export const activateEvent = async (payload: {
 }): Promise<void> => {
   try {
     await axios.patch(
-      API_URL + `/events/activate/${payload.uuid}`,
+      API_URL + `/events/${payload.uuid}/activate`,
       {
         activated: payload.activated,
       },
@@ -72,7 +73,13 @@ export const activateEvent = async (payload: {
 
 export const getEvent = async (uuid: string): Promise<Event> => {
   try {
-    const res = (await axios.get(API_URL + `/events/${uuid}`)).data;
+    const res = (
+      await axios.get(API_URL + `/events/${uuid}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+        },
+      })
+    ).data;
     res.triggerInteraction = JSON.parse(res.triggerInteraction);
     res.responseInteraction = JSON.parse(res.responseInteraction);
     return res as Event;
@@ -106,7 +113,7 @@ export const updateEventSettings = async (payload: {
 
 export const deleteEvent = async (uuid: string): Promise<void> => {
   try {
-    await axios.delete(API_URL + `/events/delete/${uuid}`, {
+    await axios.delete(API_URL + `/events/${uuid}/delete`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('authToken')}`,
       },
@@ -210,5 +217,32 @@ export const updateActionEvent = async (payload: {
     );
   } catch (error) {
     throw new Error('Error updating action event.');
+  }
+};
+
+export const updateAdditionalAction = async (payload: {
+  index: number;
+  eventUuid: string;
+  action_provider: string;
+  id: string;
+  fields: Fields[];
+}): Promise<void> => {
+  try {
+    await axios.patch(
+      API_URL + `/event/${payload.eventUuid}/additionalAction/update`,
+      {
+        index: payload.index,
+        action_provider: payload.action_provider,
+        id: payload.id,
+        fields: payload.fields,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+        },
+      },
+    );
+  } catch (error) {
+    throw new Error('Error updating additional action.');
   }
 };

@@ -28,7 +28,7 @@ const handler = NextAuth({
       clientId: process.env.SPOTIFY_CLIENT_ID || '',
       clientSecret: process.env.SPOTIFY_CLIENT_SECRET || '',
       authorization:
-        'https://accounts.spotify.com/authorize?scope=user-read-email,user-top-read,user-follow-read,user-read-playback-state',
+        'https://accounts.spotify.com/authorize?scope=user-read-email,user-top-read,user-follow-read,user-read-playback-state,user-library-read',
       httpOptions: {
         timeout: 10000,
       },
@@ -50,6 +50,12 @@ const handler = NextAuth({
     TwitchProvider({
       clientId: process.env.TWITCH_CLIENT_ID || '',
       clientSecret: process.env.TWITCH_CLIENT_SECRET || '',
+      authorization: {
+        params: {
+          scope:
+            'openid user:read:email user:read:follows channel:read:subscriptions user:edit',
+        },
+      },
       httpOptions: {
         timeout: 10000,
       },

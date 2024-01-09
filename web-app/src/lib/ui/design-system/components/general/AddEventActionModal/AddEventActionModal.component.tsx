@@ -18,7 +18,7 @@ import {
 } from './AddEventActionModal.style';
 import { H4, PrimaryMutted } from '../Text';
 import { CustomSelect } from '../CustomSelect';
-import { ApiEvent, Fields } from '@/api/constants';
+import { ApiInteraction, Fields } from '@/api/constants';
 import { UpdateEventParamsModal } from '../UpdateEventParamsModal';
 import { addEventAction } from '@/api/events';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -37,7 +37,7 @@ const AddEventActionModalComponent: React.FC<DeleteEventModalProps> = ({
 }) => {
   const { data: responses } = useResponses();
   const [service, setService] = React.useState<string>();
-  const [interaction, setInteraction] = React.useState<ApiEvent>();
+  const [interaction, setInteraction] = React.useState<ApiInteraction>();
   const [step, setStep] = React.useState(0);
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -47,17 +47,16 @@ const AddEventActionModalComponent: React.FC<DeleteEventModalProps> = ({
   }, [responses]);
   const interactions = useMemo(() => {
     return responses
-      ?.filter((response) => response.provider === service)
-      .map((response) => response.name);
+      ?.find((response) => response.provider === service)
+      ?.interactions.map((interaction) => interaction.name);
   }, [responses, service]);
 
   const onChangeInteraction = useCallback(
     (value: string) => {
       setInteraction(
-        responses?.find(
-          (response) =>
-            response.provider === service && response.name === value,
-        ),
+        responses
+          ?.find((response) => response.provider === service)
+          ?.interactions.find((interaction) => interaction.name === value),
       );
     },
     [responses, service, setInteraction],
@@ -92,12 +91,12 @@ const AddEventActionModalComponent: React.FC<DeleteEventModalProps> = ({
 
   const onAddEventAction = useCallback(
     (newFields: Fields[]) => {
-      if (!interaction) {
+      if (!interaction || !service) {
         return;
       }
       addEventActionMutation.mutate({
         eventUuid,
-        action_provider: interaction.provider.toLowerCase(),
+        action_provider: service.toLowerCase(),
         id: interaction.id,
         fiedls: newFields,
       });

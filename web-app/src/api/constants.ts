@@ -25,11 +25,15 @@ export type UserData = {
   updated_at: string;
 };
 
-export type ApiEvent = {
-  provider: string;
+export type ApiInteraction = {
   id: string;
   name: string;
   fields: Fields[];
+};
+
+export type ApiEvent = {
+  provider: string;
+  interactions: ApiInteraction[];
 };
 
 export type AdditionalInteraction = {
@@ -43,18 +47,34 @@ export type Fields = {
   value: string;
   name: string;
   required: boolean;
+  type?: 'input' | 'select' | 'textarea';
+  values?: SelectValues[];
+};
+
+export type SelectValues = {
+  value: string;
+  label: string;
 };
 
 export type Interaction = {
   id: string;
-  fields: Fields;
+  fields: Fields[];
 };
 
 export type EventCreate = {
+  name: string;
+  description?: string;
   trigger_provider: string;
   response_provider: string;
   triggerInteraction: Interaction;
   responseInteraction: Interaction;
+};
+
+export type EventInteraction = {
+  provider: string;
+  id: string;
+  name: string;
+  fields: Fields[];
 };
 
 export type Event = {
@@ -62,8 +82,8 @@ export type Event = {
   name: string;
   description: string;
   active: boolean;
-  triggerInteraction: ApiEvent;
-  responseInteraction: ApiEvent;
+  triggerInteraction: EventInteraction;
+  responseInteraction: EventInteraction;
   additionalActions: AdditionalInteraction[];
   timestamp: string;
   created_at: string;
@@ -74,4 +94,9 @@ export type EventType = {
   uuid: string;
   active: boolean;
   name: string;
+};
+
+export type Trigger = {
+  trigger_provider: string;
+  triggerInteraction: Interaction;
 };

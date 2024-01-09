@@ -5,12 +5,17 @@ import {
   ServiceContainer,
   ManagementContainer,
 } from './DashboardPage.style';
-import { H3, PrivateLayout, ServiceCard } from '@/lib/ui/design-system';
+import {
+  H3,
+  IconStratos,
+  PrivateLayout,
+  ServiceCard,
+} from '@/lib/ui/design-system';
 import { Boxes, BrainCircuit, Eye } from 'lucide-react';
 
 const Dashboard = () => {
   return (
-    <PrivateLayout pageName="Dashboard">
+    <PrivateLayout pageName="Dashboard" icon={<IconStratos />}>
       <PageContainer>
         <ServiceContainer>
           <H3>Management service</H3>

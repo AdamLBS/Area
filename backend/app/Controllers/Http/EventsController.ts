@@ -38,7 +38,11 @@ export default class EventsController {
     const triggerInteraction = {
       provider: payload.trigger_provider,
       id: payload.triggerInteraction.id,
-      name: TRIGGER_EVENTS.find((event) => event.id === payload.triggerInteraction.id)?.name || '',
+      name:
+        TRIGGER_EVENTS.find(
+          (event) => event.provider.toLowerCase() === payload.trigger_provider
+        )?.interactions.find((interaction) => interaction.id === payload.triggerInteraction.id)
+          ?.name || '',
       fields: payload.triggerInteraction.fields,
     }
 
@@ -46,7 +50,10 @@ export default class EventsController {
       provider: payload.response_provider,
       id: payload.responseInteraction.id,
       name:
-        RESPONSE_EVENTS.find((event) => event.id === payload.responseInteraction.id)?.name || '',
+        RESPONSE_EVENTS.find(
+          (event) => event.provider.toLowerCase() === payload.response_provider
+        )?.interactions.find((interaction) => interaction.id === payload.responseInteraction.id)
+          ?.name || '',
       fields: payload.responseInteraction.fields,
     }
 
@@ -67,7 +74,10 @@ export default class EventsController {
           const newAction = {
             action_provider: action.action_provider,
             id: action.id,
-            name: RESPONSE_EVENTS.find((event) => event.id === action.id)?.name,
+            name:
+              RESPONSE_EVENTS.find(
+                (event) => event.provider.toLowerCase() === action.action_provider
+              )?.interactions.find((interaction) => interaction.id === action.id)?.name || '',
             fields: action.fields,
           }
           additionalActions.push(newAction)
@@ -127,7 +137,8 @@ export default class EventsController {
     return response.ok(RESPONSE_EVENTS)
   }
 
-  public async getEvent({ response, params }: HttpContextContract) {
+  public async getEvent({ response, params, auth }: HttpContextContract) {
+    await auth.authenticate()
     const { uuid } = params
     if (!uuid) {
       return response.badRequest({
@@ -244,12 +255,21 @@ export default class EventsController {
 
     const newAction = {
       id: payload.id,
-      name: RESPONSE_EVENTS.find((event) => event.id === payload.id)?.name,
+      name:
+        RESPONSE_EVENTS.find(
+          (event) => event.provider.toLowerCase() === payload.action_provider
+        )?.interactions.find((interaction) => interaction.id === payload.id)?.name || '',
       fields: payload.fields,
       action_provider: payload.action_provider,
     }
 
-    if (event.additionalActions?.map((action) => action.id).includes(newAction.id)) {
+    if (
+      event.additionalActions?.some((action) =>
+        action.fields.some((field) =>
+          newAction.fields.some((newField) => field.value === newField.value)
+        )
+      )
+    ) {
       return response.badRequest({
         message: 'Action already exists',
       })
@@ -330,7 +350,10 @@ export default class EventsController {
       provider: payload.response_provider,
       id: payload.responseInteraction.id,
       name:
-        RESPONSE_EVENTS.find((event) => event.id === payload.responseInteraction.id)?.name || '',
+        RESPONSE_EVENTS.find(
+          (event) => event.provider.toLowerCase() === payload.response_provider
+        )?.interactions.find((interaction) => interaction.id === payload.responseInteraction.id)
+          ?.name || '',
       fields: payload.responseInteraction.fields,
     }
 
@@ -376,7 +399,11 @@ export default class EventsController {
     const newTrigger = {
       provider: payload.trigger_provider,
       id: payload.triggerInteraction.id,
-      name: TRIGGER_EVENTS.find((event) => event.id === payload.triggerInteraction.id)?.name || '',
+      name:
+        TRIGGER_EVENTS.find(
+          (event) => event.provider.toLowerCase() === payload.trigger_provider
+        )?.interactions.find((interaction) => interaction.id === payload.triggerInteraction.id)
+          ?.name || '',
       fields: payload.triggerInteraction.fields,
     }
 
@@ -427,12 +454,21 @@ export default class EventsController {
 
     const newAction = {
       id: payload.id,
-      name: RESPONSE_EVENTS.find((event) => event.id === payload.id)?.name,
+      name:
+        RESPONSE_EVENTS.find(
+          (event) => event.provider.toLowerCase() === payload.action_provider
+        )?.interactions.find((interaction) => interaction.id === payload.id)?.name || '',
       fields: payload.fields,
       action_provider: payload.action_provider,
     }
 
-    if (event.additionalActions?.map((action) => action.id).includes(newAction.id)) {
+    if (
+      event.additionalActions?.some((action) =>
+        action.fields.some((field) =>
+          newAction.fields.some((newField) => field.value === newField.value)
+        )
+      )
+    ) {
       return response.badRequest({
         message: 'Action already exists',
       })

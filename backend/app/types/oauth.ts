@@ -7,7 +7,6 @@ export type OauthType = {
   token: string | null
   refreshToken: string | null
   webhook: string | null
-  twitchInLive: string | null
   createdAt: DateTime
   updatedAt: DateTime
 }

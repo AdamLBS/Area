@@ -15,23 +15,24 @@ import {
   EventContainer,
   SelectContainer,
   SelectHeader,
-} from './UpdateActionEventModal.style';
+} from './UpdateAdditionalActionModal.style';
 import { H4, PrimaryMutted } from '../Text';
 import { CustomSelect } from '../CustomSelect';
 import { ApiInteraction, Fields } from '@/api/constants';
 import { UpdateEventParamsModal } from '../UpdateEventParamsModal';
-import { updateActionEvent } from '@/api/events';
+import { updateAdditionalAction } from '@/api/events';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { getConnectedServices } from '@/functions/connectedServices';
 
 export type DeleteEventModalProps = {
   eventUuid: string;
+  index: number;
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
 };
 
-const UpdateActionEventModalComponent: React.FC<DeleteEventModalProps> = ({
+const UpdateAdditionalActionModalComponent: React.FC<DeleteEventModalProps> = ({
   eventUuid,
+  index,
   isOpen,
   onOpenChange,
 }) => {
@@ -62,12 +63,12 @@ const UpdateActionEventModalComponent: React.FC<DeleteEventModalProps> = ({
     [responses, service, setInteraction],
   );
 
-  const updateActionEventMutation = useMutation({
-    mutationFn: updateActionEvent,
+  const updateAdditionalActionMutation = useMutation({
+    mutationFn: updateAdditionalAction,
     onSuccess: () => {
       toast({
-        title: 'Event action added',
-        description: 'The event action has been added',
+        title: 'Action updated',
+        description: 'The additional action has been upated.',
         variant: 'default',
       });
       queryClient.invalidateQueries({ queryKey: ['event', eventUuid] });
@@ -79,7 +80,7 @@ const UpdateActionEventModalComponent: React.FC<DeleteEventModalProps> = ({
     onError: () => {
       toast({
         title: 'Uh oh! Something went wrong.',
-        description: 'An error occurred while adding the event action.',
+        description: 'An error occurred while updating the additional action.',
         variant: 'destructive',
       });
     },
@@ -94,14 +95,15 @@ const UpdateActionEventModalComponent: React.FC<DeleteEventModalProps> = ({
       if (!interaction || !service) {
         return;
       }
-      updateActionEventMutation.mutate({
+      updateAdditionalActionMutation.mutate({
         eventUuid,
-        response_provider: service.toLowerCase(),
+        action_provider: service.toLowerCase(),
         id: interaction.id,
+        index: index,
         fields: newFields,
       });
     },
-    [updateActionEventMutation, eventUuid, interaction],
+    [updateAdditionalActionMutation, eventUuid, interaction],
   );
 
   return (
@@ -111,7 +113,9 @@ const UpdateActionEventModalComponent: React.FC<DeleteEventModalProps> = ({
           <>
             <DialogHeader>
               <DialogTitle>Update your event</DialogTitle>
-              <DialogDescription>Update your action event</DialogDescription>
+              <DialogDescription>
+                Update your additional action
+              </DialogDescription>
             </DialogHeader>
             <EventContainer>
               <SelectContainer>
@@ -125,7 +129,6 @@ const UpdateActionEventModalComponent: React.FC<DeleteEventModalProps> = ({
                   value="Service"
                   values={services}
                   onChange={setService}
-                  disabled={getConnectedServices(services)}
                 />
               </SelectContainer>
               <SelectContainer>
@@ -176,4 +179,6 @@ const UpdateActionEventModalComponent: React.FC<DeleteEventModalProps> = ({
   );
 };
 
-export const UpdateActionEventModal = memo(UpdateActionEventModalComponent);
+export const UpdateAdditionalActionModal = memo(
+  UpdateAdditionalActionModalComponent,
+);

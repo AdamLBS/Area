@@ -1,286 +1,38 @@
 'use client';
-import {
-  Button,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-  Label,
-  Toaster,
-  useToast,
-} from '@/components/ui';
-import {
-  CustomSelect,
-  H3,
-  PrimaryMutted,
-  PrivateLayout,
-} from '@/lib/ui/design-system';
+import { Toaster } from '@/components/ui';
+import { CreateEventModal, PrivateLayout } from '@/lib/ui/design-system';
 
-import React, { memo, useCallback, useMemo, useState } from 'react';
+import React, { memo } from 'react';
 import {
-  ConfigContent,
-  ConfigPanel,
-  ConfigPanelHeader,
-  ConfigPart,
-  FieldContainer,
+  EventPanelButton,
   PageContainer,
   PageContent,
   RightPanel,
-  RightPanelContent,
-  TopBarConfig,
-  InputField,
+  Text,
 } from './BridgePage.style';
-import { useResponses, useTriggers } from '@/react/hooks/events';
-import { useMutation } from '@tanstack/react-query';
-import { createEvent } from '@/api/events';
-import { EventCreate } from '@/api/constants';
+
 import { MenuEvent } from '@/lib/ui/design-system';
-import { getConnectedServices } from '@/functions/connectedServices';
+import { PlusIcon, Boxes } from 'lucide-react';
 
 const Bridge: React.FC = () => {
-  const { data: triggers } = useTriggers();
-  const { data: responses } = useResponses();
-  const { toast } = useToast();
-  const [selectedTriggerApi, setSelectedTriggerApi] = useState<string>('');
-  const [selectedTriggerInteraction, setSelectedTriggerInteraction] =
-    useState<string>('');
-  const [selectedResponseApi, setSelectedResponseApi] = useState<string>('');
-  const [selectedResponseInteraction, setSelectedResponseInteraction] =
-    useState<string>('');
-
-  const triggersApi = useMemo(() => {
-    return triggers?.map((trigger) => trigger.provider);
-  }, [triggers]);
-
-  const responsesApi = useMemo(() => {
-    return responses?.map((response) => response.provider);
-  }, [responses]);
-
-  const [triggersInteractions, settriggersInteractions] = useState<string[]>(
-    [],
-  );
-  const [responsesInteractions, setresponsesInteractions] = useState<string[]>(
-    [],
-  );
-  const [triggersFields, settriggersFields] = useState<Record<string, string>>(
-    {},
-  );
-  const [responsesFields, setresponsesFields] = useState<
-    Record<string, string>
-  >({});
-
-  const createEventMutation = useMutation({
-    mutationFn: createEvent,
-    onSuccess: () => {
-      toast({
-        title: 'Event successfully created',
-        description: 'Your event has been created',
-      });
-    },
-    onError: (error) => {
-      toast({
-        variant: 'destructive',
-        title: 'Uh oh! Something went wrong.',
-        description: error.message,
-      });
-    },
-  });
-
-  const onChangeTriggerApi = useCallback(
-    (value: string) => {
-      setSelectedTriggerApi(value);
-      settriggersInteractions(
-        triggers
-          ?.filter((trigger) => trigger.provider === value)
-          .map((trigger) => trigger.name) || [],
-      );
-    },
-    [triggers, settriggersInteractions, setSelectedTriggerApi],
-  );
-
-  const onChangeResponseApi = useCallback(
-    (value: string) => {
-      setSelectedResponseApi(value);
-      setresponsesInteractions(
-        responses
-          ?.filter((response) => response.provider === value)
-          .map((response) => response.name) || [],
-      );
-    },
-    [responses, setresponsesInteractions, setSelectedResponseApi],
-  );
-
-  const handleSave = useCallback(() => {
-    const event: EventCreate = {
-      trigger_provider: selectedTriggerApi.toLowerCase(),
-      response_provider: selectedResponseApi.toLowerCase(),
-      triggerInteraction: {
-        id:
-          triggers?.find(
-            (trigger) => trigger.name === selectedTriggerInteraction,
-          )?.id || '',
-        fields: {
-          value: 'value',
-          name: 'name',
-          required: true,
-        },
-      },
-      responseInteraction: {
-        id:
-          responses?.find(
-            (response) => response.name === selectedResponseInteraction,
-          )?.id || '',
-        fields: {
-          value: 'value',
-          name: 'name',
-          required: true,
-        },
-      },
-    };
-    createEventMutation.mutate(event);
-  }, [
-    selectedTriggerApi,
-    selectedTriggerInteraction,
-    selectedResponseApi,
-    selectedResponseInteraction,
-    createEventMutation,
-    triggers,
-    responses,
-  ]);
-
-  const onChangeResponseField = useCallback(
-    (value: string, key: string) => {
-      setresponsesFields({
-        ...responsesFields,
-        [key]: value,
-      });
-    },
-    [responsesFields, setresponsesFields],
-  );
-
-  const onChangeTriggerField = useCallback(
-    (value: string, key: string) => {
-      settriggersFields({
-        ...triggersFields,
-        [key]: value,
-      });
-    },
-    [triggersFields, settriggersFields],
-  );
+  const [createEventModalOpen, setCreateEventModalOpen] = React.useState(false);
 
   return (
-    <PrivateLayout pageName="Bridge">
+    <PrivateLayout pageName="Bridge" icon={<Boxes />}>
       <PageContainer>
         <PageContent>
           <MenuEvent />
           <RightPanel>
-            <CardHeader>
-              <CardTitle>Your event title</CardTitle>
-              <CardDescription>Your event description</CardDescription>
-            </CardHeader>
-            <RightPanelContent>
-              <TopBarConfig>
-                <Button onClick={handleSave}>Save</Button>
-              </TopBarConfig>
-              <ConfigContent>
-                <ConfigPanel>
-                  <ConfigPart>
-                    <ConfigPanelHeader>
-                      <H3>Trigger API</H3>
-                      <PrimaryMutted>
-                        Trigger API starting the event
-                      </PrimaryMutted>
-                    </ConfigPanelHeader>
-                    <CustomSelect
-                      value="Choose your api"
-                      values={triggersApi}
-                      onChange={onChangeTriggerApi}
-                      disabled={getConnectedServices(triggersApi)}
-                    />
-                  </ConfigPart>
-                  <ConfigPart>
-                    <ConfigPanelHeader>
-                      <H3>Trigger Action</H3>
-                      <PrimaryMutted>
-                        Trigger Interaction of the trigger API that is checked
-                        to start the event
-                      </PrimaryMutted>
-                    </ConfigPanelHeader>
-                    <CustomSelect
-                      value="Choose your interaction"
-                      values={triggersInteractions}
-                      onChange={setSelectedTriggerInteraction}
-                    />
-                  </ConfigPart>
-                  {Object.entries(
-                    triggers?.find(
-                      (trigger) => trigger.name === selectedTriggerInteraction,
-                    )?.fields.entries || {},
-                  ).map(([key, value]) => (
-                    <FieldContainer key={key}>
-                      <Label>Email</Label>
-                      <InputField
-                        id={value}
-                        placeholder={value}
-                        onChange={(e) =>
-                          onChangeTriggerField(e.target.value, key)
-                        }
-                      />
-                    </FieldContainer>
-                  ))}
-                </ConfigPanel>
-                <ConfigPanel>
-                  <ConfigPart>
-                    <ConfigPanelHeader>
-                      <H3>Response API</H3>
-                      <PrimaryMutted>
-                        Response API that is the result of your event
-                      </PrimaryMutted>
-                    </ConfigPanelHeader>
-                    <CustomSelect
-                      value="Choose your api"
-                      values={responsesApi}
-                      onChange={onChangeResponseApi}
-                      disabled={getConnectedServices(responsesApi)}
-                    />
-                  </ConfigPart>
-                  <ConfigPart>
-                    <ConfigPanelHeader>
-                      <H3>Response Interaction</H3>
-                      <PrimaryMutted>
-                        Response Interaction of the response API that is done
-                        when the first interaction is triggered
-                      </PrimaryMutted>
-                    </ConfigPanelHeader>
-                    <CustomSelect
-                      value="Choose your interaction"
-                      values={responsesInteractions}
-                      onChange={setSelectedResponseInteraction}
-                    />
-                  </ConfigPart>
-                  <ConfigPart>
-                    {Object.entries(
-                      responses?.find(
-                        (trigger) =>
-                          trigger.name === selectedResponseInteraction,
-                      )?.fields.entries || {},
-                    ).map(([key, value]) => (
-                      <FieldContainer key={key}>
-                        <Label>
-                          {key.charAt(0).toUpperCase() + key.slice(1)}
-                        </Label>
-                        <InputField
-                          id={value}
-                          placeholder={value}
-                          onChange={(e) =>
-                            onChangeResponseField(e.target.value, key)
-                          }
-                        />
-                      </FieldContainer>
-                    ))}
-                  </ConfigPart>
-                </ConfigPanel>
-              </ConfigContent>
-            </RightPanelContent>
+            <Text>Select an event to update or delete it</Text>
+            <Text>or you can create a new event</Text>
+            <EventPanelButton onClick={() => setCreateEventModalOpen(true)}>
+              <PlusIcon size={16} />
+              Add a new event
+            </EventPanelButton>
+            <CreateEventModal
+              isOpen={createEventModalOpen}
+              onOpenChange={setCreateEventModalOpen}
+            />
           </RightPanel>
         </PageContent>
       </PageContainer>
