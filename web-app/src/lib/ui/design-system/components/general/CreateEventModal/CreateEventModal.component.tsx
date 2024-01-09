@@ -17,7 +17,7 @@ import {
 } from '@/components/ui';
 import React, { memo, useCallback, useState } from 'react';
 import { FormContainer, Modal } from './CreateEventModal.style';
-import { ApiEvent, Trigger } from '@/api/constants';
+import { EventInteraction, Trigger } from '@/api/constants';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { createEvent } from '@/api/events';
 import { SetTriggerModal } from '../SetTriggerModal';
@@ -92,7 +92,7 @@ const CreateEventModalComponent: React.FC<CreateEventModalProps> = ({
   }, []);
 
   const handleEvent = useCallback(
-    (action: ApiEvent) => {
+    (action: EventInteraction) => {
       if (!trigger || !action) {
         return;
       }
@@ -109,7 +109,7 @@ const CreateEventModalComponent: React.FC<CreateEventModalProps> = ({
   );
 
   const onCreateAction = useCallback(
-    (newAction: ApiEvent) => {
+    (newAction: EventInteraction) => {
       handleEvent(newAction);
     },
     [handleEvent],

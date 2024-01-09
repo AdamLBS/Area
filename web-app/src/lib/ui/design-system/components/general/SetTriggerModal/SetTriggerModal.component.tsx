@@ -15,7 +15,7 @@ import {
 } from './SetTriggerModal.style';
 import { H4, PrimaryMutted } from '../Text';
 import { CustomSelect } from '../CustomSelect';
-import { ApiEvent, Fields, Trigger } from '@/api/constants';
+import { ApiInteraction, Fields, Trigger } from '@/api/constants';
 import { UpdateEventParamsModal } from '../UpdateEventParamsModal';
 
 export type DeleteEventModalProps = {
@@ -27,7 +27,7 @@ const SetTriggerModalComponent: React.FC<DeleteEventModalProps> = ({
 }) => {
   const { data: triggers } = useTriggers();
   const [service, setService] = React.useState<string>();
-  const [interaction, setInteraction] = React.useState<ApiEvent>();
+  const [interaction, setInteraction] = React.useState<ApiInteraction>();
   const [step, setStep] = React.useState(0);
 
   const services = useMemo(() => {
@@ -35,16 +35,16 @@ const SetTriggerModalComponent: React.FC<DeleteEventModalProps> = ({
   }, [triggers]);
   const interactions = useMemo(() => {
     return triggers
-      ?.filter((trigger) => trigger.provider === service)
-      .map((trigger) => trigger.name);
+      ?.find((trigger) => trigger.provider === service)
+      ?.interactions.map((interaction) => interaction.name);
   }, [triggers, service]);
 
   const onChangeInteraction = useCallback(
     (value: string) => {
       setInteraction(
-        triggers?.find(
-          (trigger) => trigger.provider === service && trigger.name === value,
-        ),
+        triggers
+          ?.find((trigger) => trigger.provider === service)
+          ?.interactions.find((interaction) => interaction.name === value),
       );
     },
     [triggers, service, setInteraction],
@@ -56,11 +56,11 @@ const SetTriggerModalComponent: React.FC<DeleteEventModalProps> = ({
 
   const onAddTrigger = useCallback(
     (newFields: Fields[]) => {
-      if (!interaction) {
+      if (!interaction || !service) {
         return;
       }
       onConfirm({
-        trigger_provider: interaction.provider.toLowerCase(),
+        trigger_provider: service?.toLowerCase(),
         triggerInteraction: {
           id: interaction.id,
           fields: newFields,
