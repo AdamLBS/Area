@@ -12,12 +12,14 @@ import { SelectTrigger } from './CustomSelect.style';
 export type CustomSelectProps = {
   value: string;
   values?: string[];
+  disabled?: boolean[];
   onChange: (value: string) => void;
 };
 
 const CustomSelectComponent: React.FC<CustomSelectProps> = ({
   value,
   values,
+  disabled,
   onChange,
 }) => {
   return (
@@ -28,7 +30,7 @@ const CustomSelectComponent: React.FC<CustomSelectProps> = ({
       <SelectContent>
         <SelectGroup>
           {values?.map((val, index) => (
-            <SelectItem key={index} value={val}>
+            <SelectItem key={index} value={val} disabled={disabled?.[index]}>
               {val}
             </SelectItem>
           ))}

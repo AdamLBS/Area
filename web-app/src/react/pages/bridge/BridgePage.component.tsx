@@ -34,6 +34,7 @@ import { useMutation } from '@tanstack/react-query';
 import { createEvent } from '@/api/events';
 import { EventCreate } from '@/api/constants';
 import { MenuEvent } from '@/lib/ui/design-system';
+import { getConnectedServices } from '@/functions/connectedServices';
 
 const Bridge: React.FC = () => {
   const { data: triggers } = useTriggers();
@@ -193,6 +194,7 @@ const Bridge: React.FC = () => {
                       value="Choose your api"
                       values={triggersApi}
                       onChange={onChangeTriggerApi}
+                      disabled={getConnectedServices(triggersApi)}
                     />
                   </ConfigPart>
                   <ConfigPart>
@@ -238,6 +240,7 @@ const Bridge: React.FC = () => {
                       value="Choose your api"
                       values={responsesApi}
                       onChange={onChangeResponseApi}
+                      disabled={getConnectedServices(responsesApi)}
                     />
                   </ConfigPart>
                   <ConfigPart>
