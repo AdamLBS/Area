@@ -29,16 +29,20 @@ class EventModel {
   }
 }
 
+enum WidgetType { text, select, textarea }
+
 class Field {
   late String value;
   late String name;
   late bool required;
   bool edited = false;
+  final WidgetType type;
 
   Field({
     required this.value,
     required this.name,
     required this.required,
+    required this.type,
   });
 
   factory Field.fromJson(Map<String, dynamic> json) {
@@ -46,11 +50,16 @@ class Field {
       value: json['value'],
       name: json['name'],
       required: json['required'],
+      type: json['type'] == 'text'
+          ? WidgetType.text
+          : json['type'] == 'select'
+              ? WidgetType.select
+              : WidgetType.textarea,
     );
   }
 
   @override
   String toString() {
-    return 'Field{value: $value, name: $name, required: $required}';
+    return 'Field{value: $value, name: $name, required: $required type: $type}';
   }
 }
