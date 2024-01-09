@@ -9,6 +9,7 @@ export type APIEvent = {
   id: string
   name: string
   fields: APIEventField<any>[]
+  variables: {}
 }
 
 export type AdditionalInteraction = {
