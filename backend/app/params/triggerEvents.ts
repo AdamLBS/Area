@@ -7,9 +7,9 @@ export const TRIGGER_EVENTS: APIEvent[] = [
     name: 'Changes music',
     fields: [],
     variables: {
-      "artist": "Name of the artist",
-      "song": "Name of the song",
-    }
+      artist: 'Name of the artist',
+      song: 'Name of the song',
+    },
   },
   {
     provider: 'Twitch',
@@ -28,8 +28,8 @@ export const TRIGGER_EVENTS: APIEvent[] = [
       },
     ],
     variables: {
-      "streamer": "Name of the streamer",
-    }
+      streamer: 'Name of the streamer',
+    },
   },
   {
     provider: 'Github',
@@ -43,8 +43,8 @@ export const TRIGGER_EVENTS: APIEvent[] = [
       },
     ],
     variables: {
-      "commitsUrl": "Url of the commit",
-    }
+      commitsUrl: 'Url of the commit',
+    },
   },
   {
     provider: 'Github',
@@ -68,9 +68,9 @@ export const TRIGGER_EVENTS: APIEvent[] = [
       },
     ],
     variables: {
-      "repositoryUrl": "Url of the repository",
-      "reference": "Reference of the commit",
-      "state": "State of the CI/CD",
-    }
+      repositoryUrl: 'Url of the repository',
+      reference: 'Reference of the commit',
+      state: 'State of the CI/CD',
+    },
   },
 ]
