@@ -1,14 +1,26 @@
 import Database from '@ioc:Adonis/Lucid/Database'
 import { BaseTask, CronTimeV2 } from 'adonis5-scheduler/build/src/Scheduler/Task'
-import { Content, eventHandler, ResponseInteraction } from 'App/functions/EventHandler'
+import { eventHandler, ResponseInteraction } from 'App/functions/EventHandler'
 import axios from 'axios'
 import { APIEventField } from 'types/events'
 
-type SpotifyLikesSong = {
-  total: number
+export interface Artist {
+  name: string
+}
+export interface Track {
+  artists: Artist[]
+  name: string
+}
+export interface Item {
+  track: Track
 }
 
-let globalSpotifyListeners: SpotifyLikesSong = { total: -1 }
+type SpotifyLikesSong = {
+  total: number
+  items: Item[]
+}
+
+let globalSpotifyListeners: SpotifyLikesSong = { total: -1, items: [] }
 
 export default class SpotifyLikeSong extends BaseTask {
   public static get schedule() {
@@ -31,7 +43,7 @@ export default class SpotifyLikeSong extends BaseTask {
           Authorization: `Bearer ${oauth}`,
         },
       })
-      return response.data
+      return response.data as SpotifyLikesSong
     } catch (error) {
       throw new Error('Spotify API Error')
     }
@@ -51,15 +63,29 @@ export default class SpotifyLikeSong extends BaseTask {
         if (globalSpotifyListeners.total === -1) {
           globalSpotifyListeners = spotifyLikesSong
         } else if (globalSpotifyListeners.total < spotifyLikesSong.total) {
-          globalSpotifyListeners = spotifyLikesSong
           const jsonVals = JSON.parse(event.response_interaction)
           const responseInteraction = jsonVals.id.toString() as ResponseInteraction
           const fields = jsonVals.fields as APIEventField<any>[]
           for (const field of fields) {
-            if ((field.value as string).includes('$artist'))
-              field.value = field.value.replace('$artist', 'ARTIST')
+            if ((field.value as string).includes('$artist')) {
+              let replaceValue = ''
+              for (const artist of spotifyLikesSong.items[0].track.artists) {
+                replaceValue += artist.name
+                if (
+                  spotifyLikesSong.items[0].track.artists.length === 2 &&
+                  artist === spotifyLikesSong.items[0].track.artists[0]
+                )
+                  replaceValue += ' et '
+                else if (
+                  spotifyLikesSong.items[0].track.artists.indexOf(artist) !==
+                  spotifyLikesSong.items[0].track.artists.length - 1
+                )
+                  replaceValue += ', '
+              }
+              field.value = field.value.replace('$artist', replaceValue)
+            }
             if ((field.value as string).includes('$song'))
-              field.value = field.value.replace('$song', 'SONG')
+              field.value = field.value.replace('$song', spotifyLikesSong.items[0].track.name)
           }
           await eventHandler(responseInteraction, fields, event.responseApi)
         } else {
