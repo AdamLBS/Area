@@ -13,11 +13,17 @@ import {
   FormMessage,
   FormLabel,
   Input,
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
 } from '@/components/ui';
-import { useForm } from 'react-hook-form';
+import { ControllerRenderProps, useForm } from 'react-hook-form';
 import { FormContainer } from './UpdateEventParamsModal.style';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Textarea } from '@/components/ui/textarea';
 
 export type UpdateEventParamsModalProps = {
   onConfirm: (fields: Fields[]) => void;
@@ -56,6 +62,43 @@ const UpdateEventParamsModalComponent: React.FC<
     return label;
   };
 
+  const getFieldType = (
+    fieldValue: Fields,
+    field: ControllerRenderProps<{ [x: string]: string | undefined }, string>,
+  ) => {
+    if (fieldValue.type === 'input') {
+      return <Input placeholder={fieldValue.value} {...field} />;
+    }
+    if (fieldValue.type === 'textarea') {
+      return (
+        <Textarea
+          placeholder={fieldValue.value}
+          className="resize-none"
+          {...field}
+        />
+      );
+    }
+    if (fieldValue.type === 'select') {
+      return (
+        <Select onValueChange={field.onChange} defaultValue={field.value}>
+          <FormControl>
+            <SelectTrigger>
+              <SelectValue placeholder={fieldValue.value} />
+            </SelectTrigger>
+          </FormControl>
+          <SelectContent>
+            {fieldValue.values &&
+              fieldValue.values.map((value, index) => (
+                <SelectItem key={index} value={value.value}>
+                  {value.label}
+                </SelectItem>
+              ))}
+          </SelectContent>
+        </Select>
+      );
+    }
+  };
+
   const onSubmit = useCallback((values: FormValues) => {
     const newFields = fields.map((field) => ({
       ...field,
@@ -80,9 +123,7 @@ const UpdateEventParamsModalComponent: React.FC<
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>{formatLabel(fieldValue)}</FormLabel>
-                  <FormControl>
-                    <Input placeholder={fieldValue.value} {...field} />
-                  </FormControl>
+                  <FormControl>{getFieldType(fieldValue, field)}</FormControl>
                   <FormMessage />
                 </FormItem>
               )}

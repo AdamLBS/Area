@@ -85,7 +85,7 @@ export const TRIGGER_EVENTS: APIEvent[] = [
             required: true,
           },
           {
-            value: 'success' || 'failure' || 'pending',
+            value: 'Select the state of the CI/CD',
             name: 'state',
             type: 'select',
             values: [
