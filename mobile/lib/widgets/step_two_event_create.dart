@@ -253,43 +253,51 @@ class _StepTwoEventCreateState extends State<StepTwoEventCreate> {
                                               color: Colors.white,
                                             )),
                                         SizedBox(height: 10),
-                                        SizedBox(
-                                          height: 40,
-                                          width: double.infinity,
-                                          child: TextFormField(
-                                            key: ValueKey<String>(field.name),
-                                            style:
-                                                TextStyle(color: Colors.white),
-                                            onChanged: (value) {
-                                              field.value = value;
-                                              field.edited = true;
-                                            },
-                                            initialValue: field.edited
-                                                ? field.value
-                                                : null,
-                                            validator: (value) {
-                                              if (value!.isEmpty) {
-                                                return "Please enter a description";
-                                              }
-                                              return null;
-                                            },
-                                            decoration: InputDecoration(
-                                              filled: true,
-                                              fillColor: Color(0xFF21212B),
-                                              hintText: field.name,
-                                              hintStyle: TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w400,
-                                                color: Color(0xFFA1A1AA),
-                                              ),
-                                              border: OutlineInputBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
-                                                borderSide: BorderSide.none,
+                                        if (field.type == WidgetType.text ||
+                                            field.type == WidgetType.textarea)
+                                          SizedBox(
+                                            height: 40,
+                                            width: double.infinity,
+                                            child: TextFormField(
+                                              key: ValueKey<String>(field.name),
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                              onChanged: (value) {
+                                                field.value = value;
+                                                field.edited = true;
+                                              },
+                                              initialValue: field.edited
+                                                  ? field.value
+                                                  : null,
+                                              validator: (value) {
+                                                if (value!.isEmpty) {
+                                                  return "Please enter a description";
+                                                }
+                                                return null;
+                                              },
+                                              minLines: field.type ==
+                                                      WidgetType.textarea
+                                                  ? 3
+                                                  : 1,
+                                              decoration: InputDecoration(
+                                                filled: true,
+                                                fillColor: Color(0xFF21212B),
+                                                hintText: field.name,
+                                                hintStyle: TextStyle(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w400,
+                                                  color: Color(0xFFA1A1AA),
+                                                ),
+                                                border: OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  borderSide: BorderSide.none,
+                                                ),
                                               ),
                                             ),
                                           ),
-                                        ),
+                                          if (field.type == WidgetType.select)
+                                            
                                         SizedBox(height: 20),
                                       ],
                                     ),
