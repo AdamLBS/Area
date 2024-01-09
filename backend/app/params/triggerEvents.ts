@@ -29,11 +29,13 @@ export const TRIGGER_EVENTS: APIEvent[] = [
       {
         value: 'Name of the streamer',
         name: 'streamer',
+        type: 'input',
         required: true,
       },
       {
         value: 'Name of the user',
         name: 'username',
+        type: 'input',
         required: true,
       },
     ],
@@ -49,6 +51,7 @@ export const TRIGGER_EVENTS: APIEvent[] = [
       {
         value: '',
         name: 'repositoryUrl',
+        type: 'input',
         required: true,
       },
     ],
@@ -64,16 +67,19 @@ export const TRIGGER_EVENTS: APIEvent[] = [
       {
         value: '',
         name: 'repositoryUrl',
+        type: 'input',
         required: true,
       },
       {
         value: '',
         name: 'reference',
+        type: 'input',
         required: true,
       },
       {
         value: 'success' || 'failure' || 'pending',
         name: 'state',
+        type: 'select',
         required: true,
       },
     ],

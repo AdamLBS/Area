@@ -9,6 +9,7 @@ export const RESPONSE_EVENTS: APIEvent[] = [
       {
         value: 'Content of the message',
         name: 'message',
+        type: 'textarea',
         required: true,
       },
     ],
@@ -22,6 +23,7 @@ export const RESPONSE_EVENTS: APIEvent[] = [
       {
         value: 'Email of the recipient',
         name: 'email',
+        type: 'input',
         required: true,
       },
     ],

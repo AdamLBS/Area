@@ -2,6 +2,7 @@ export type APIEventField<T> = {
   value: T
   name: string
   required: boolean
+  type?: 'input' | 'select' | 'textarea'
 }
 
 export type APIEvent = {
