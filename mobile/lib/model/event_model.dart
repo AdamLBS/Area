@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 class EventModel {
   final String provider;
   final String id;
