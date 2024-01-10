@@ -27,12 +27,14 @@ import { useConnectedServices } from '@/functions/connectedServices';
 export type DeleteEventModalProps = {
   eventUuid: string;
   isOpen: boolean;
+  variables?: Record<string, string>;
   onOpenChange: (open: boolean) => void;
 };
 
 const AddEventActionModalComponent: React.FC<DeleteEventModalProps> = ({
   eventUuid,
   isOpen,
+  variables,
   onOpenChange,
 }) => {
   const { data: responses } = useResponses();
@@ -173,7 +175,7 @@ const AddEventActionModalComponent: React.FC<DeleteEventModalProps> = ({
             fields={interaction?.fields || []}
             onCancel={() => setStep(0)}
             onConfirm={onAddEventAction}
-            // variables={interaction?.variables || {}}
+            variables={variables || {}}
           />
         )}
       </DialogContent>

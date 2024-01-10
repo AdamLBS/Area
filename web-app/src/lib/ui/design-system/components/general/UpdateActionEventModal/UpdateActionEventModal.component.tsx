@@ -28,12 +28,14 @@ export type DeleteEventModalProps = {
   eventUuid: string;
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
+  variables?: Record<string, string>;
 };
 
 const UpdateActionEventModalComponent: React.FC<DeleteEventModalProps> = ({
   eventUuid,
   isOpen,
   onOpenChange,
+  variables,
 }) => {
   const { data: responses } = useResponses();
   const [service, setService] = React.useState<string>();
@@ -171,7 +173,7 @@ const UpdateActionEventModalComponent: React.FC<DeleteEventModalProps> = ({
             fields={interaction?.fields || []}
             onCancel={() => setStep(0)}
             onConfirm={onAddEventAction}
-            // variables={interaction?.variables || {}}
+            variables={variables || {}}
           />
         )}
       </DialogContent>

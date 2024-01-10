@@ -1,5 +1,5 @@
 import { Button, CardDescription, CardTitle, Toaster } from '@/components/ui';
-import React, { memo, useCallback } from 'react';
+import React, { memo, useCallback, useEffect } from 'react';
 import {
   AddButton,
   AdditionnalActionsHeader,
@@ -51,6 +51,8 @@ import { DeleteActionModal } from '../DeleteActionModal';
 import { UpdateTriggerEventModal } from '../UpdateTriggerEventModal';
 import { UpdateActionEventModal } from '../UpdateActionEventModal';
 import { UpdateAdditionalActionModal } from '../UpdateAdditionalActionModal';
+import { useTriggerVariablesState } from '@/context/TriggerContext';
+import { useTriggers } from '@/react/hooks/events';
 
 export type EventContentProps = {
   eventUuid: string;
@@ -73,6 +75,9 @@ const EventContentComponent: React.FC<EventContentProps> = ({ eventUuid }) => {
     React.useState(false);
   const [updateAdditionalActionIndex, setUpdateAdditionalActionIndex] =
     React.useState(-1);
+  const { triggerVariablesState, updateTriggerVariablesState } =
+    useTriggerVariablesState();
+  const { data: triggers } = useTriggers();
 
   const onDeleteAction = useCallback(
     (index: number) => {
@@ -89,6 +94,21 @@ const EventContentComponent: React.FC<EventContentProps> = ({ eventUuid }) => {
     },
     [setUpdateAdditionalActionIndex, setUpdateAdditionalActionModalOpen],
   );
+
+  useEffect(() => {
+    updateTriggerVariablesState({
+      variables:
+        triggers
+          ?.find(
+            (trigger) =>
+              trigger.provider.toLowerCase() ===
+              event?.triggerInteraction.provider,
+          )
+          ?.interactions.find(
+            (interaction) => interaction.name === interaction.name,
+          )?.variables || {},
+    });
+  }, [eventUuid]);
 
   return (
     <Card>
@@ -195,6 +215,7 @@ const EventContentComponent: React.FC<EventContentProps> = ({ eventUuid }) => {
         isOpen={AddEventActionModalOpen}
         onOpenChange={setAddEventActionModalOpen}
         eventUuid={eventUuid}
+        variables={triggerVariablesState?.variables || {}}
       />
       <DeleteActionModal
         isOpen={deleteActionModalOpen}
@@ -211,6 +232,7 @@ const EventContentComponent: React.FC<EventContentProps> = ({ eventUuid }) => {
         isOpen={updateActionEventModalOpen}
         onOpenChange={setUpdateActionEventModalOpen}
         eventUuid={eventUuid}
+        variables={triggerVariablesState?.variables || {}}
       />
       <UpdateAdditionalActionModal
         isOpen={UpdateAdditionalActionModalOpen}
