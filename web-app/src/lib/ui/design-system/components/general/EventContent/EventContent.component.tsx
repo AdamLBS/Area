@@ -87,8 +87,7 @@ const EventContentComponent: React.FC<EventContentProps> = ({ eventUuid }) => {
     React.useState(false);
   const [updateAdditionalActionIndex, setUpdateAdditionalActionIndex] =
     React.useState(-1);
-  const { triggerVariablesState, updateTriggerVariablesState } =
-    useTriggerVariablesState();
+  const { updateTriggerVariablesState } = useTriggerVariablesState();
   const { data: triggers } = useTriggers();
   const { data: responses } = useResponses();
 
@@ -121,7 +120,7 @@ const EventContentComponent: React.FC<EventContentProps> = ({ eventUuid }) => {
             (interaction) => interaction.name === interaction.name,
           )?.variables || {},
     });
-  }, [eventUuid]);
+  }, [event]);
 
   const updateTriggerEventMutation = useMutation({
     mutationFn: updateTriggerEvent,

@@ -30,7 +30,6 @@ export type DeleteEventModalProps = {
   eventUuid: string;
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
-  variables?: Record<string, string>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   mutation: UseMutationResult<any, any, any, any>;
 };
@@ -44,7 +43,6 @@ const EventSelectModalComponent: React.FC<DeleteEventModalProps> = ({
   eventUuid,
   isOpen,
   onOpenChange,
-  variables,
   mutation,
 }) => {
   const [service, setService] = React.useState<string>();
@@ -180,7 +178,6 @@ const EventSelectModalComponent: React.FC<DeleteEventModalProps> = ({
             fields={interaction?.fields || []}
             onCancel={() => setStep(0)}
             onConfirm={onAddEventAction}
-            variables={variables || {}}
           />
         )}
       </DialogContent>
