@@ -1,8 +1,6 @@
 'use client';
-// import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import React, { useCallback /*, { useEffect } */ } from 'react';
-// import { getMe } from '@/api/user';
+import React, { useCallback } from 'react';
 import { NavBarLandingPage } from '@/lib/ui/design-system';
 import {
   Card,
@@ -23,6 +21,8 @@ import {
   TextH1,
   TeamContainer,
   TeamText,
+  Elp1,
+  Elp2,
 } from './page.style';
 import { Boxes, Eye } from 'lucide-react';
 
@@ -36,28 +36,15 @@ export default function Home() {
     [router],
   );
 
-  // const checkMe = useMutation({
-  //   mutationFn: getMe,
-  //   onSuccess: () => {
-  //     router.push('/dashboard');
-  //   },
-  //   onError: () => {
-  //     router.push('/login');
-  //   },
-  // });
-
-  // useEffect(() => {
-  //   const token = localStorage.getItem('authToken');
-  //   if (token === null) {
-  //     router.push('/login');
-  //   } else {
-  //     checkMe.mutate();
-  //   }
-  // }, []);
-
   return (
     <LandingPage>
       <NavBarLandingPage />
+      {/* <Elp1>
+        <img src="/elp1.png" style={{ width: '100%' }} />
+      </Elp1>
+      <Elp2>
+        <img src="/elp2.png" style={{ width: '100%' }} />
+      </Elp2> */}
       <Content>
         <WorkflowContainer>
           <RainbowTextH3>Automated workflows</RainbowTextH3>
