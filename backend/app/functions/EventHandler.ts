@@ -7,6 +7,13 @@ export enum ResponseInteraction {
   SEND_DISCORD_MESSAGE = 'sendDiscordMessage',
 }
 
+export const handleAdditionalActions = async (event: any) => {
+  for (const additionalAction of event.additional_actions) {
+    const responseInteraction = additionalAction.id as ResponseInteraction
+    await eventHandler(responseInteraction, additionalAction.fields, event.response_api)
+  }
+}
+
 export const eventHandler = async (
   eventTrigger: ResponseInteraction,
   content: APIEventField<any>[],
@@ -18,7 +25,7 @@ export const eventHandler = async (
     await discordEvent(content, responseApiUuid)
   }
   if (eventTrigger === ResponseInteraction.SEND_EMAIL) {
-    console.log(`[EventHandler] Sending email`)
+    console.log(`[EventHandler] Sending email`, content)
     await SendMailEvent(content, responseApiUuid)
   }
 }

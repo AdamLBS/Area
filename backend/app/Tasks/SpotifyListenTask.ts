@@ -1,6 +1,10 @@
 import Database from '@ioc:Adonis/Lucid/Database'
 import { BaseTask, CronTimeV2 } from 'adonis5-scheduler/build/src/Scheduler/Task'
-import { eventHandler, ResponseInteraction } from 'App/functions/EventHandler'
+import {
+  eventHandler,
+  handleAdditionalActions,
+  ResponseInteraction,
+} from 'App/functions/EventHandler'
 import axios from 'axios'
 import { APIEventField } from 'types/events'
 import Cache from 'App/Models/Cache'
@@ -110,6 +114,7 @@ export default class SpotifyListenTask extends BaseTask {
                 if ((field.value as string).includes('$song'))
                   field.value = field.value.replace('$song', spotifyAPIData.item.name)
               }
+              await handleAdditionalActions(event)
               await eventHandler(responseInteraction, fields, event.response_api)
             }
           }
