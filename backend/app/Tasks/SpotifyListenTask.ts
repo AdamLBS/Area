@@ -84,7 +84,7 @@ export default class SpotifyListenTask extends BaseTask {
             (async() => await this.updateSpotifyListeningStatus(event.uuid, isListening))()
           } else if (userCache.spotifyListening !== isListening && spotifyAPIData !== undefined) {
             (async() => await this.updateSpotifyListeningStatus(event.uuid, isListening))()
-            if (isListening == true) {
+            if (isListening === true) {
             const jsonVals = JSON.parse(event.response_interaction)
             const responseInteraction = jsonVals.id.toString() as ResponseInteraction
             const fields = jsonVals.fields as APIEventField<any>[]
