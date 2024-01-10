@@ -18,8 +18,8 @@ export const RESPONSE_EVENTS: APIEvent[] = [
             value: 'URL of the webhook',
             name: 'webhook',
             type: 'input',
-            required: true
-          }
+            required: true,
+          },
         ],
         variables: {},
       },
