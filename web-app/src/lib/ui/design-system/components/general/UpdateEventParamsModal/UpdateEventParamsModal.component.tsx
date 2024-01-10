@@ -30,11 +30,12 @@ export type UpdateEventParamsModalProps = {
   onConfirm: (fields: Fields[]) => void;
   onCancel: () => void;
   fields: Fields[];
+  type?: 'trigger' | 'response' | 'additional';
 };
 
 const UpdateEventParamsModalComponent: React.FC<
   UpdateEventParamsModalProps
-> = ({ onConfirm, onCancel, fields }) => {
+> = ({ onConfirm, onCancel, fields, type }) => {
   const { triggerVariablesState } = useTriggerVariablesState();
   const formParam = (field: Fields) => {
     if (field.required) {
@@ -115,13 +116,15 @@ const UpdateEventParamsModalComponent: React.FC<
         <DialogTitle>Update event params</DialogTitle>
         <DialogDescriptionStyled>
           (*) required
-          {Object.keys(triggerVariablesState.variables).length > 0 && (
-            <span>
-              You can use the following variables in the fields to personalize
-              the message:
-            </span>
-          )}
-          {Object.keys(triggerVariablesState.variables).length > 0 &&
+          {(type === 'additional' || type === 'response') &&
+            Object.keys(triggerVariablesState.variables).length > 0 && (
+              <span>
+                You can use the following variables in the fields to personalize
+                the message:
+              </span>
+            )}
+          {(type === 'additional' || type === 'response') &&
+            Object.keys(triggerVariablesState.variables).length > 0 &&
             Object.entries(triggerVariablesState.variables).map(
               ([key, value]) => (
                 <span key={key}>
