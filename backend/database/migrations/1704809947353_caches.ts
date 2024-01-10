@@ -8,7 +8,9 @@ export default class extends BaseSchema {
       table.uuid('uuid').primary()
       table.string('last_commit').nullable()
       table.text('twitch_in_live').nullable()
-
+      table.text('spotify_liked_songs').nullable()
+      table.boolean('spotify_listening').nullable()
+      table.text('spotify_song_uri').nullable()
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
        */
