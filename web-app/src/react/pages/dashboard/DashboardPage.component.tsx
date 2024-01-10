@@ -25,11 +25,6 @@ const Dashboard = () => {
               icon={<Boxes />}
               description="Bridge service allows to you to link different API"
             />
-            <ServiceCard
-              title="Gateway"
-              icon={<BrainCircuit />}
-              description="Gateway service allows to you to add and configure your API"
-            />
           </ManagementContainer>
         </ServiceContainer>
         <ServiceContainer>
