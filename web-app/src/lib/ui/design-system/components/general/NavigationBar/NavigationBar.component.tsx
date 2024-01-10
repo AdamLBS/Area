@@ -51,11 +51,11 @@ const NavigationBarComponent: React.FC<NavBarProps> = ({ pageName, icon }) => {
           <H2>{pageName}</H2>
         </TitleContainer>
         <MenuContainer>
-          <Button
-            variant="ghost"
-            onClick={() => handleRedirection(`dashboard`)}
-          >
-            Dashboard
+          <Button variant="ghost" onClick={() => handleRedirection(`bridge`)}>
+            Bridge
+          </Button>
+          <Button variant="ghost" onClick={() => handleRedirection(`watch`)}>
+            Watch
           </Button>
           <Button variant="ghost" onClick={() => handleRedirection(`settings`)}>
             Settings

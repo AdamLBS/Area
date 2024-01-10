@@ -74,7 +74,7 @@ const RegisterFormComponent: React.FC<RegisterFormProps> = ({
     mutationFn: signUp,
     onSuccess: (res) => {
       localStorage.setItem('authToken', res.token);
-      router.push('/dashboard');
+      router.push('/bridge');
     },
     onError: (error) => {
       toast({

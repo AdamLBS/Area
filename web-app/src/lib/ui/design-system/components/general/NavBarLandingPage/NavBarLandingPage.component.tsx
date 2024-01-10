@@ -28,11 +28,8 @@ const NavBarLandingPageComponent: React.FC = () => {
       </TitleContainer>
       <NavigationMenu>
         <NavigationMenuList>
-          <Button
-            variant="ghost"
-            onClick={() => handleRedirection(`dashboard`)}
-          >
-            Dashboard
+          <Button variant="ghost" onClick={() => handleRedirection(`bridge`)}>
+            Bridge
           </Button>
           <Button variant="ghost" onClick={() => handleRedirection(`settings`)}>
             Account
