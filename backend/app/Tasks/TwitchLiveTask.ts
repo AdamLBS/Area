@@ -1,5 +1,5 @@
 import { BaseTask, CronTimeV2 } from 'adonis5-scheduler/build/src/Scheduler/Task'
-import { eventHandler, Content, ResponseInteraction } from '../functions/EventHandler'
+import { eventHandler, ResponseInteraction } from '../functions/EventHandler'
 import Database from '@ioc:Adonis/Lucid/Database'
 import axios from 'axios'
 import Cache from 'App/Models/Cache'

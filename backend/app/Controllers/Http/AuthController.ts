@@ -15,6 +15,17 @@ export default class AuthController {
       expiresIn: '7 days',
     })
 
+    await Oauth.updateOrCreate(
+      {
+        userUuid: userToken.user.uuid,
+        provider: 'timer',
+      },
+      {
+        token: 'timer',
+        refreshToken: 'timer',
+      }
+    )
+
     return response.ok({
       message: 'User signed up successfully',
       token: userToken.token,
@@ -109,6 +120,12 @@ export default class AuthController {
         message: 'You must be logged in to access this resource',
       })
     }
-    return Oauth.query().where('userUuid', user.uuid).select('provider')
+    const services = await Oauth.query().where('userUuid', user.uuid).select('provider')
+    return [
+      {
+        provider: 'timer',
+      },
+      ...services,
+    ]
   }
 }
