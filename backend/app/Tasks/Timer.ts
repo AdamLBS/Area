@@ -1,9 +1,12 @@
 import Database from '@ioc:Adonis/Lucid/Database'
 import Cache from 'App/Models/Cache'
-import { ResponseInteraction, eventHandler } from 'App/functions/EventHandler'
+import {
+  ResponseInteraction,
+  eventHandler,
+  handleAdditionalActions,
+} from 'App/functions/EventHandler'
 import { BaseTask, CronTimeV2 } from 'adonis5-scheduler/build/src/Scheduler/Task'
 import { APIEventField } from 'types/events'
-
 export default class Timer extends BaseTask {
   public static get schedule() {
     // Use CronTimeV2 generator:
@@ -50,6 +53,7 @@ export default class Timer extends BaseTask {
           const responseInteraction = jsonVals.id.toString() as ResponseInteraction
           const fields = jsonVals.fields as APIEventField<any>[]
           await eventHandler(responseInteraction, fields, event.response_api)
+          await handleAdditionalActions(event)
           await this.updateLastTimerActive(event.uuid, true)
         }
       } else if (userCache && userCache.timerActive) {
