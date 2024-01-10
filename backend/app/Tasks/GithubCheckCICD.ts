@@ -1,6 +1,6 @@
 import Database from '@ioc:Adonis/Lucid/Database'
 import Oauth from 'App/Models/Oauth'
-import {ResponseInteraction, eventHandler } from 'App/functions/EventHandler'
+import { ResponseInteraction, eventHandler } from 'App/functions/EventHandler'
 import { CICDState } from 'App/types/github'
 import { BaseTask, CronTimeV2 } from 'adonis5-scheduler/build/src/Scheduler/Task'
 import axios from 'axios'
@@ -57,28 +57,32 @@ export default class GithubCheckCICD extends BaseTask {
       const userCache = await Cache.query().from('caches').where('uuid', eventUuid).first()
       if (!userCache || !userCache.githubLatestActionId) {
         await this.updateLatestActionId(eventUuid, String(lastTest.id))
-      } else if (userCache !== undefined && userCache.githubLatestActionId !== String(lastTest.id) && lastTest.conclusion === targetState) {
+      } else if (
+        userCache !== undefined &&
+        userCache.githubLatestActionId !== String(lastTest.id) &&
+        lastTest.conclusion === targetState
+      ) {
         await this.updateLatestActionId(eventUuid, String(lastTest.id))
         for (const field of responseFields) {
           if ((field.value as string).includes('$repositoryUrl')) {
             let repoUrl = fields.at(0)?.value
             if (repoUrl !== undefined) {
-            field.value = field.value.replace('$repositoryUrl', repoUrl);
+              field.value = field.value.replace('$repositoryUrl', repoUrl)
             }
           }
           if ((field.value as string).includes('$reference')) {
             let commit = lastTest.head_sha
             if (commit !== undefined) {
-            field.value = field.value.replace('$reference', commit);
+              field.value = field.value.replace('$reference', commit)
             }
           }
           if ((field.value as string).includes('$state')) {
-            field.value = field.value.replace('$state', lastTest.conclusion);
+            field.value = field.value.replace('$state', lastTest.conclusion)
           }
         }
         await eventHandler(reponseInteraction, responseFields, responseApiUuid)
       }
-      console.log("eee")
+      console.log('eee')
     } catch (error: any) {
       // console.error(error)
     }

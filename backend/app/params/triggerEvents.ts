@@ -1,4 +1,4 @@
-  import { APIEvent } from 'types/events'
+import { APIEvent } from 'types/events'
 
 export const TRIGGER_EVENTS: APIEvent[] = [
   {
