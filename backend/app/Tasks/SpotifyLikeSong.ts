@@ -18,7 +18,7 @@ type SpotifyLikesSong = {
 export default class SpotifyLikeSong extends BaseTask {
   public static get schedule() {
     // Use CronTimeV2 generator:
-    return CronTimeV2.everyFiveSeconds()
+    return CronTimeV2.everyTenSeconds()
     // or just use return cron-style string (simple cron editor: crontab.guru)
   }
   /**

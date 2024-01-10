@@ -178,6 +178,7 @@ const EventSelectModalComponent: React.FC<DeleteEventModalProps> = ({
             fields={interaction?.fields || []}
             onCancel={() => setStep(0)}
             onConfirm={onAddEventAction}
+            type={type}
           />
         )}
       </DialogContent>

@@ -144,6 +144,7 @@ const SetTriggerModalComponent: React.FC<DeleteEventModalProps> = ({
           fields={interaction?.fields || []}
           onCancel={() => setStep(0)}
           onConfirm={onAddTrigger}
+          type="trigger"
         />
       )}
     </>
