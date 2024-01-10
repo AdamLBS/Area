@@ -12,7 +12,6 @@ export interface Item {
   artists: Artist[]
   name: string
   uri: string
-
 }
 
 type SpotifySong = {
@@ -35,9 +34,9 @@ type SpotifySong = {
 
 export default class SpotifyChangeMusicTask extends BaseTask {
   public static get schedule() {
-		// Use CronTimeV2 generator:
+    // Use CronTimeV2 generator:
     return CronTimeV2.everySecond()
-		// or just use return cron-style string (simple cron editor: crontab.guru)
+    // or just use return cron-style string (simple cron editor: crontab.guru)
   }
   /**
    * Set enable use .lock file for block run retry task
@@ -53,7 +52,7 @@ export default class SpotifyChangeMusicTask extends BaseTask {
         uuid: uuid,
       },
       {
-        spotifySongUri: music
+        spotifySongUri: music,
       }
     )
   }
@@ -73,8 +72,8 @@ export default class SpotifyChangeMusicTask extends BaseTask {
   public async handle() {
     try {
       const events = await Database.query()
-      .from('events')
-      .whereRaw(`CAST(trigger_interaction AS JSONB) #>> '{id}' = 'changeSong'`)
+        .from('events')
+        .whereRaw(`CAST(trigger_interaction AS JSONB) #>> '{id}' = 'changeSong'`)
       for (const event of events) {
         const triggerApi = await Database.query()
           .from('oauths')
@@ -85,8 +84,12 @@ export default class SpotifyChangeMusicTask extends BaseTask {
         if (triggerApi && triggerApi.token) {
           if (!userCache || !userCache.spotifySongUri) {
             await this.updateSpotifyMusicUri(event.uuid, spotifyMusicData?.item.uri as string)
-          } else if ( spotifyMusicData !== undefined && userCache.spotifySongUri as string !== spotifyMusicData.item.uri as string) {
-            (async() => await this.updateSpotifyMusicUri(event.uuid, spotifyMusicData?.item.uri as string))()
+          } else if (
+            spotifyMusicData !== undefined &&
+            (userCache.spotifySongUri as string) !== (spotifyMusicData.item.uri as string)
+          ) {
+            ;(async () =>
+              await this.updateSpotifyMusicUri(event.uuid, spotifyMusicData?.item.uri as string))()
             const jsonVals = JSON.parse(event.response_interaction)
             const responseInteraction = jsonVals.id.toString() as ResponseInteraction
             const fields = jsonVals.fields as APIEventField<any>[]
@@ -115,9 +118,8 @@ export default class SpotifyChangeMusicTask extends BaseTask {
           }
         }
       }
-
     } catch (error) {
-      console.log("ERROR ON SPOTIFY CHANGE MUSIC TASK : " + error)
+      console.log('ERROR ON SPOTIFY CHANGE MUSIC TASK : ' + error)
     }
   }
 }

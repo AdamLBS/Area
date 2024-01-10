@@ -5,14 +5,12 @@ import axios from 'axios'
 import { APIEventField } from 'types/events'
 import Cache from 'App/Models/Cache'
 
-
 export interface Artist {
   name: string
 }
 export interface Item {
   artists: Artist[]
   name: string
-
 }
 
 type SpotifyListener = {
@@ -53,7 +51,7 @@ export default class SpotifyListenTask extends BaseTask {
         uuid: uuid,
       },
       {
-        spotifyListening: listening
+        spotifyListening: listening,
       }
     )
   }
@@ -74,48 +72,51 @@ export default class SpotifyListenTask extends BaseTask {
       const events = await Database.query()
         .from('events')
         .whereRaw(`CAST(trigger_interaction AS JSONB) #>> '{id}' = 'listenMusic'`)
-      for(const event of events) {
-        const triggerApi = await Database.query().from('oauths').where('uuid', event.trigger_api).first()
+      for (const event of events) {
+        const triggerApi = await Database.query()
+          .from('oauths')
+          .where('uuid', event.trigger_api)
+          .first()
         const spotifyAPIData = await this.fetchSpotifyData(triggerApi.token)
         const userCache = await Cache.query().from('caches').where('uuid', event.uuid).first()
-        const isListening = (spotifyAPIData !== undefined && spotifyAPIData.is_playing)
+        const isListening = spotifyAPIData !== undefined && spotifyAPIData.is_playing
         if (triggerApi && triggerApi.token) {
           if (!userCache || userCache.spotifyListening === undefined) {
-            (async() => await this.updateSpotifyListeningStatus(event.uuid, isListening))()
+            ;(async () => await this.updateSpotifyListeningStatus(event.uuid, isListening))()
           } else if (userCache.spotifyListening !== isListening && spotifyAPIData !== undefined) {
-            (async() => await this.updateSpotifyListeningStatus(event.uuid, isListening))()
+            ;(async () => await this.updateSpotifyListeningStatus(event.uuid, isListening))()
             if (isListening === true) {
-            const jsonVals = JSON.parse(event.response_interaction)
-            const responseInteraction = jsonVals.id.toString() as ResponseInteraction
-            const fields = jsonVals.fields as APIEventField<any>[]
-            for (const field of fields) {
-              if ((field.value as string).includes('$artist')) {
-                let replaceValue = ''
-                for (const artist of spotifyAPIData.item.artists) {
-                  replaceValue += artist.name
-                  if (
-                    spotifyAPIData.item.artists.length === 2 &&
-                    artist === spotifyAPIData.item.artists[0]
-                  )
-                    replaceValue += ' et '
-                  else if (
-                    spotifyAPIData.item.artists.indexOf(artist) !==
-                    spotifyAPIData.item.artists.length - 1
-                  )
-                    replaceValue += ', '
+              const jsonVals = JSON.parse(event.response_interaction)
+              const responseInteraction = jsonVals.id.toString() as ResponseInteraction
+              const fields = jsonVals.fields as APIEventField<any>[]
+              for (const field of fields) {
+                if ((field.value as string).includes('$artist')) {
+                  let replaceValue = ''
+                  for (const artist of spotifyAPIData.item.artists) {
+                    replaceValue += artist.name
+                    if (
+                      spotifyAPIData.item.artists.length === 2 &&
+                      artist === spotifyAPIData.item.artists[0]
+                    )
+                      replaceValue += ' et '
+                    else if (
+                      spotifyAPIData.item.artists.indexOf(artist) !==
+                      spotifyAPIData.item.artists.length - 1
+                    )
+                      replaceValue += ', '
+                  }
+                  field.value = field.value.replace('$artist', replaceValue)
                 }
-                field.value = field.value.replace('$artist', replaceValue)
+                if ((field.value as string).includes('$song'))
+                  field.value = field.value.replace('$song', spotifyAPIData.item.name)
               }
-              if ((field.value as string).includes('$song'))
-                field.value = field.value.replace('$song', spotifyAPIData.item.name)
+              await eventHandler(responseInteraction, fields, event.response_api)
             }
-            await eventHandler(responseInteraction, fields, event.response_api)
-            }
-        }
+          }
         }
       }
     } catch (error) {
-      console.log("ERROR ON SPOTIFY LISTEN TASK : " + error)
+      console.log('ERROR ON SPOTIFY LISTEN TASK : ' + error)
     }
   }
 

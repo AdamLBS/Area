@@ -30,7 +30,7 @@ export const TRIGGER_EVENTS: APIEvent[] = [
           artist: 'Name of the artist',
           song: 'Name of the song',
         },
-      }
+      },
     ],
   },
   {
