@@ -26,6 +26,9 @@ export default class Cache extends BaseModel {
   @column()
   public githubLatestActionId: string | null
 
+  @column()
+  public cryptoReachValue: boolean
+
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 

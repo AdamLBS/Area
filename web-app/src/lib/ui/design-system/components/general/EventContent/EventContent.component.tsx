@@ -18,7 +18,7 @@ import {
   Header,
   HeaderPart,
 } from './EventContent.style';
-import { AlarmClock, Loader, Plus, Settings } from 'lucide-react';
+import { AlarmClock, Bitcoin, Loader, Plus, Settings } from 'lucide-react';
 import { H3 } from '../Text';
 import { EventCard } from '../EventCard';
 import {
@@ -49,6 +49,7 @@ const providerIcon = {
   linkedin: <IconLinkedin />,
   twitch: <IconTwitch />,
   timer: <AlarmClock />,
+  crypto: <Bitcoin />,
   null: <Loader />,
 };
 import { EventSettingsModal } from '../EventSettingsModal';
