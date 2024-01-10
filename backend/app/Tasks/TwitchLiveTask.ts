@@ -70,11 +70,7 @@ export default class TwitchLiveTask extends BaseTask {
     )
   }
 
-  private async notifyUserInLive(
-    data: TwitchData,
-    responseApiUuid: string,
-    event: any
-  ) {
+  private async notifyUserInLive(data: TwitchData, responseApiUuid: string, event: any) {
     const responseData = JSON.parse(event.response_interaction)
     const responseInteraction = responseData.id.toString() as ResponseInteraction
     const fields = responseData.fields as APIEventField<any>[]
@@ -99,22 +95,14 @@ export default class TwitchLiveTask extends BaseTask {
     console.log(`[Twitch] ${userName} is already in live`)
   }
 
-  public async inLive(
-    triggerApiOauth: any,
-    responseApiUuid: string,
-    event: any
-  ) {
+  public async inLive(triggerApiOauth: any, responseApiUuid: string, event: any) {
     try {
       const userId = await this.fetchTwitchUserId(triggerApiOauth)
       const twitchData = await this.fetchTwitchData(triggerApiOauth, userId)
-      console.log("trying to get cache with uuid : " + event.uuid)
-      const userCache = await Database.query()
-        .from('caches')
-        .where('uuid', event.uuid)
-        .first()
-      console.log("did request !")
+      console.log('trying to get cache with uuid : ' + event.uuid)
+      const userCache = await Database.query().from('caches').where('uuid', event.uuid).first()
+      console.log('did request !')
       if (!userCache || !userCache.twitch_in_live) {
-        
         const channels = twitchData.map((data: TwitchData) => ({ user_name: data.user_name }))
         if (channels === null) {
           return
@@ -125,9 +113,9 @@ export default class TwitchLiveTask extends BaseTask {
         })
         return
       } else {
-        console.log("hmm")
+        console.log('hmm')
         const channelsJSON = JSON.parse(userCache.twitch_in_live)
-  
+
         for (const channel of channelsJSON) {
           const data = twitchData.find((data: TwitchData) => data.user_name === channel.user_name)
           if (data === undefined) {
@@ -136,12 +124,12 @@ export default class TwitchLiveTask extends BaseTask {
             await this.updateChannelsInLive(event.uuid, channelsJSON)
           }
         }
-  
+
         for (const data of twitchData) {
           if (triggerApiOauth.twitch_in_live === null) {
             return
           }
-  
+
           if (this.isUserNotPresent(channelsJSON, data.user_name)) {
             channelsJSON.push({ user_name: data.user_name })
             await this.updateChannelsInLive(event.uuid, channelsJSON)
@@ -170,11 +158,7 @@ export default class TwitchLiveTask extends BaseTask {
             .where('uuid', event.trigger_api)
             .first()
           const responseApiUuid = event.response_api
-          await this.inLive(
-            triggerApiOauth,
-            responseApiUuid,
-            event
-          )
+          await this.inLive(triggerApiOauth, responseApiUuid, event)
         })
     } catch (error) {
       console.log(error)
