@@ -99,9 +99,7 @@ export default class TwitchLiveTask extends BaseTask {
     try {
       const userId = await this.fetchTwitchUserId(triggerApiOauth)
       const twitchData = await this.fetchTwitchData(triggerApiOauth, userId)
-      console.log('trying to get cache with uuid : ' + event.uuid)
       const userCache = await Database.query().from('caches').where('uuid', event.uuid).first()
-      console.log('did request !')
       if (!userCache || !userCache.twitch_in_live) {
         const channels = twitchData.map((data: TwitchData) => ({ user_name: data.user_name }))
         if (channels === null) {
@@ -113,14 +111,12 @@ export default class TwitchLiveTask extends BaseTask {
         })
         return
       } else {
-        console.log('hmm')
         const channelsJSON = JSON.parse(userCache.twitch_in_live)
 
         for (const channel of channelsJSON) {
           const data = twitchData.find((data: TwitchData) => data.user_name === channel.user_name)
           if (data === undefined) {
             channelsJSON.splice(channelsJSON.indexOf(channel), 1)
-            console.log('removed', channel.user_name)
             await this.updateChannelsInLive(event.uuid, channelsJSON)
           }
         }
@@ -146,7 +142,7 @@ export default class TwitchLiveTask extends BaseTask {
 
   public async handle() {
     try {
-      console.log('[Twitch] handle')
+      console.log('[TwitchLiveTask] handle')
       const events = await Database.query()
         .from('events')
         .whereRaw(`CAST(trigger_interaction AS JSONB) #>> '{id}' = 'startsLive'`)
