@@ -82,7 +82,6 @@ export default class GithubCheckCICD extends BaseTask {
         }
         await eventHandler(reponseInteraction, responseFields, responseApiUuid)
       }
-      console.log('eee')
     } catch (error: any) {
       // console.error(error)
     }

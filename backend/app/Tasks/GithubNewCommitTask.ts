@@ -1,11 +1,12 @@
 import Database from '@ioc:Adonis/Lucid/Database'
-import Cache from 'App/Models/Cache'
 import Oauth from 'App/Models/Oauth'
-import { Content, ResponseInteraction, eventHandler } from 'App/functions/EventHandler'
-import { Commit } from 'App/types/github'
+import { ResponseInteraction, eventHandler } from 'App/functions/EventHandler'
 import { BaseTask, CronTimeV2 } from 'adonis5-scheduler/build/src/Scheduler/Task'
 import axios from 'axios'
 import { APIEventField } from 'types/events'
+import Cache from 'App/Models/Cache'
+import { Commit } from 'App/types/github'
+
 
 export default class GithubCheckLastCommitTask extends BaseTask {
   public static get schedule() {
@@ -18,13 +19,29 @@ export default class GithubCheckLastCommitTask extends BaseTask {
     return false
   }
 
+  private async updateLatestCommitId(uuid: string, commitId: string) {
+    try {
+      await Cache.updateOrCreate(
+        {
+          uuid: uuid,
+        },
+        {
+          lastCommit: commitId,
+        }
+      )
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   private async fetchLastCommit(
     repositoryUrl: string,
     oauth: Oauth,
+    eventUuid: string,
     responseApiUuid: string,
-    reponseInteraction: ResponseInteraction
+    reponseInteraction: ResponseInteraction,
+    responseFields: APIEventField<string>[]
   ) {
-    const userCache = await Database.query().from('caches').where('uuid', oauth.userUuid).first()
     const commitsUrl = repositoryUrl.replace('github.com', 'api.github.com/repos')
     try {
       const url = commitsUrl + '/commits?per_page=1'
@@ -36,20 +53,26 @@ export default class GithubCheckLastCommitTask extends BaseTask {
           },
         })
       ).data[0] as Commit
-      if (!userCache || !userCache?.last_commit || userCache.last_commit !== response.sha) {
-        await Cache.updateOrCreate(
-          {
-            uuid: oauth.userUuid,
-          },
-          {
-            lastCommit: response.sha,
+      const userCache = await Cache.query().from('caches').where('uuid', eventUuid).first()
+      if (!userCache || !userCache.lastCommit) {
+        await this.updateLatestCommitId(eventUuid, response.sha)
+      } else if (userCache.lastCommit !== response.sha) {
+        await this.updateLatestCommitId(eventUuid, response.sha)
+        for (const field of responseFields) {
+          if ((field.value as string).includes('$commitAuthor')) {
+            let commitAuthor = response.commit.author.name
+            field.value = field.value.replace('$commitAuthor', commitAuthor)
           }
-        )
-        const content: Content = {
-          title: '',
-          message: '',
+          if ((field.value as string).includes('$commitMsg')) {
+            let commitMessage = response.commit.message
+            field.value = field.value.replace('$commitMsg', commitMessage)
+          }
+          if ((field.value as string).includes('$commitUrl')) {
+            let commitUrl = response.html_url
+            field.value = field.value.replace('$commitUrl', commitUrl)
+          }
         }
-        await eventHandler(reponseInteraction, content, responseApiUuid)
+        await eventHandler(reponseInteraction, responseFields, responseApiUuid)
       }
     } catch (error: any) {
       console.error(error)
@@ -71,11 +94,16 @@ export default class GithubCheckLastCommitTask extends BaseTask {
           try {
             const jsonVals = JSON.parse(event.trigger_interaction)
             const fields = jsonVals.fields as APIEventField<string>[]
+            const jsonResponse = JSON.parse(event.response_interaction)
+            const responseFields = jsonResponse.fields as APIEventField<string>[]
+            const responseInteraction = jsonResponse.id.toString() as ResponseInteraction
             await this.fetchLastCommit(
               fields[0].value,
               oauth,
+              event.uuid,
               event.response_api,
-              event.response_interaction as ResponseInteraction
+              responseInteraction,
+              responseFields
             )
           } catch (error: any) {
             console.error(error)

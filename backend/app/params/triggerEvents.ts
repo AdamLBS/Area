@@ -67,14 +67,16 @@ export const TRIGGER_EVENTS: APIEvent[] = [
         name: 'New commit',
         fields: [
           {
-            value: 'repository url',
+            value: 'Repository url',
             name: 'commitsUrl',
             type: 'input',
             required: true,
           },
         ],
         variables: {
-          commitsUrl: 'Url of the commit',
+          commitUrl: 'Url of the commit',
+          commitMsg: 'Message of the commit',
+          commitAuthor: 'Author of the commit',
         },
       },
       {

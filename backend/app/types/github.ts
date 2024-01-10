@@ -12,6 +12,13 @@ export type Repository = {
 
 export type Commit = {
   sha: string
+  commit: {
+    message: string
+    author: {
+      name: string
+    }
+  }
+  html_url: string
 }
 
 export type CICDState = {
