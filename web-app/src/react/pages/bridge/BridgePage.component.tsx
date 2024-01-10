@@ -21,7 +21,7 @@ const Bridge: React.FC = () => {
     <PrivateLayout pageName="Bridge" icon={<Boxes />}>
       <PageContainer>
         <PageContent>
-          <MenuEvent />
+          <MenuEvent page="bridge" />
           <RightPanel>
             <Text>Select an event to update or delete it</Text>
             <Text>or you can create a new event</Text>

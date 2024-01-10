@@ -38,7 +38,7 @@ const Dashboard = () => {
             <ServiceCard
               title="Watch"
               icon={<Eye />}
-              description="You can see all results about your different events"
+              description="You can see all logs of your different events"
             />
           </ManagementContainer>
         </ServiceContainer>
