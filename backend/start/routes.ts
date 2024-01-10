@@ -47,6 +47,7 @@ Route.group(() => {
     Route.patch('/:uuid/trigger/update', 'EventsController.updateTrigger')
     Route.patch('/:uuid/additionalAction/update', 'EventsController.updateAdditionalAction')
     Route.get('/:uuid/logs', 'LogsController.getLogs')
+    Route.get('/:uuid/stats', 'LogsController.getStats')
   })
     .prefix('/event')
     .middleware(['auth:api'])
