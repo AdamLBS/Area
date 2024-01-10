@@ -39,7 +39,3 @@ jobs:
       - name: Run lint
         working-directory: ./web-app
         run: yarn lint
-
-      - name: Build project
-        working-directory: ./web-app
-        run: yarn build

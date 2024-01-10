@@ -30,10 +30,6 @@ Route.group(() => {
 }).prefix('/oauth/:provider')
 
 Route.group(() => {
-  Route.post('/', 'DiscordsController.add').middleware(['auth:api'])
-}).prefix('/oauth/discord/add-webhook')
-
-Route.group(() => {
   Route.get('/', async () => {
     return { hello: 'world!' }
   })
