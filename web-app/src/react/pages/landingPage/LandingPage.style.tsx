@@ -211,7 +211,7 @@ export const TeamText = styled.h2`
   font-size: 20.488px;
   font-style: normal;
   font-weight: 800;
-  line-height: 25.609px; /* 125% */
+  line-height: 25.609px;
   letter-spacing: -0.512px;
   background: linear-gradient(
     180deg,
