@@ -3,7 +3,6 @@ import React, { memo, useCallback } from 'react';
 import {
   DialogHeader,
   DialogTitle,
-  DialogDescription,
   DialogFooter,
   Button,
   Form,
