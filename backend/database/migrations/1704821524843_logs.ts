@@ -14,7 +14,7 @@ export default class extends BaseSchema {
         .inTable('events')
         .onDelete('CASCADE')
       table.string('status').notNullable()
-      table.integer('log_id').notNullable()
+      table.increments('log_id').notNullable()
       table.string('error_message').nullable()
       table.string('error_id').nullable()
 

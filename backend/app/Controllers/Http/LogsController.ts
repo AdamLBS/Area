@@ -1,5 +1,6 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Log from 'App/Models/Log'
+import Event from 'App/Models/Event'
 import { DateTime } from 'luxon'
 
 type UsesTimestamps = {
@@ -39,6 +40,7 @@ export default class LogsController {
       })
     }
     const logs = await Log.query().where('event_uuid', uuid).orderBy('created_at', 'desc')
+    const event = await Event.query().where('uuid', uuid).firstOrFail()
     const total = logs.length
     const success = logs.filter((log) => log.status === 'success').length
     const errors = logs.filter((log) => log.status === 'error').length
@@ -87,6 +89,8 @@ export default class LogsController {
     response.ok({
       message: 'Stats retrieved successfully',
       stats: {
+        triggerApi: event.triggerApi,
+        responseApi: event.responseApi,
         total,
         success,
         errors,
