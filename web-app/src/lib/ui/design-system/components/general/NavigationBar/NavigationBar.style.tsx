@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { IconStratos } from '@/lib/ui/design-system/components/icons/IconStratos.svg';
 
 export const NavBarContainer = styled.div`
   display: flex;

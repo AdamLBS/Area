@@ -6,7 +6,7 @@ export const TRIGGER_EVENTS: APIEvent[] = [
     interactions: [
       {
         id: 'listenMusic',
-        name: 'Changes music',
+        name: 'When I start listening to music',
         fields: [],
         variables: {
           artist: 'Name of the artist',
@@ -16,6 +16,15 @@ export const TRIGGER_EVENTS: APIEvent[] = [
       {
         id: 'likeSong',
         name: 'Like a song',
+        fields: [],
+        variables: {
+          artist: 'Name of the artist',
+          song: 'Name of the song',
+        },
+      },
+      {
+        id: 'changeSong',
+        name: 'When I change song',
         fields: [],
         variables: {
           artist: 'Name of the artist',
@@ -100,6 +109,24 @@ export const TRIGGER_EVENTS: APIEvent[] = [
           reference: 'Reference of the commit',
           state: 'State of the CI/CD',
         },
+      },
+    ],
+  },
+  {
+    provider: 'Timer',
+    interactions: [
+      {
+        id: 'everyDayTimer',
+        name: 'Every Day at one hour',
+        fields: [
+          {
+            value: 'Hour with format HH:MM',
+            name: 'Hour',
+            type: 'input',
+            required: true,
+          },
+        ],
+        variables: {},
       },
     ],
   },

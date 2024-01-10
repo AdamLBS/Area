@@ -8,23 +8,34 @@ import Cache from 'App/Models/Cache'
 export interface Artist {
   name: string
 }
-export interface Track {
+export interface Item {
   artists: Artist[]
   name: string
-}
-export interface Item {
-  track: Track
+  uri: string
 }
 
-type SpotifyLikesSong = {
-  total: number
-  items: Item[]
+type SpotifySong = {
+  shuffle_state: boolean
+  repeat_state: string
+  device: {
+    id: string
+    is_active: boolean
+    is_private_session: boolean
+    is_restricted: boolean
+    name: string
+    type: string
+    volume_percent: number
+  }
+  progress_ms: number
+  is_playing: boolean
+  currently_playing_type: string
+  item: Item
 }
 
-export default class SpotifyLikeSong extends BaseTask {
+export default class SpotifyChangeMusicTask extends BaseTask {
   public static get schedule() {
     // Use CronTimeV2 generator:
-    return CronTimeV2.everyFiveSeconds()
+    return CronTimeV2.everySecond()
     // or just use return cron-style string (simple cron editor: crontab.guru)
   }
   /**
@@ -35,77 +46,80 @@ export default class SpotifyLikeSong extends BaseTask {
     return false
   }
 
-  private async fetchSpotifyData(oauth: string): Promise<SpotifyLikesSong> {
-    try {
-      const response = await axios.get<SpotifyLikesSong>(`https://api.spotify.com/v1/me/tracks`, {
-        headers: {
-          Authorization: `Bearer ${oauth}`,
-        },
-      })
-      return response.data as SpotifyLikesSong
-    } catch (error) {
-      throw new Error('Spotify API Error')
-    }
-  }
-
-  private async updateNumberOfLikedSongs(uuid: any, songs: number) {
+  private async updateSpotifyMusicUri(uuid: string, music: string) {
     await Cache.updateOrCreate(
       {
         uuid: uuid,
       },
       {
-        spotifyLikedSongs: songs,
+        spotifySongUri: music,
       }
     )
+  }
+
+  private async fetchSpotifyData(oauth: string): Promise<SpotifySong | undefined> {
+    const response = await axios.get<SpotifySong>(`https://api.spotify.com/v1/me/player`, {
+      headers: {
+        Authorization: `Bearer ${oauth}`,
+      },
+    })
+    if (response.status !== 200) {
+      return undefined
+    }
+    return response.data
   }
 
   public async handle() {
     try {
       const events = await Database.query()
         .from('events')
-        .whereRaw(`CAST(trigger_interaction AS JSONB) #>> '{id}' = 'likeSong'`)
+        .whereRaw(`CAST(trigger_interaction AS JSONB) #>> '{id}' = 'changeSong'`)
       for (const event of events) {
         const triggerApi = await Database.query()
           .from('oauths')
           .where('uuid', event.trigger_api)
           .first()
-        const spotifyLikesSong = await this.fetchSpotifyData(triggerApi.token)
+        const spotifyMusicData = await this.fetchSpotifyData(triggerApi.token)
         const userCache = await Cache.query().from('caches').where('uuid', event.uuid).first()
         if (triggerApi && triggerApi.token) {
-          if (!userCache || !userCache.spotifyLikedSongs) {
-            await this.updateNumberOfLikedSongs(event.uuid, spotifyLikesSong.total)
-          } else if (userCache.spotifyLikedSongs < spotifyLikesSong.total) {
-            ;(async () => await this.updateNumberOfLikedSongs(event.uuid, spotifyLikesSong.total))()
+          if (!userCache || !userCache.spotifySongUri) {
+            await this.updateSpotifyMusicUri(event.uuid, spotifyMusicData?.item.uri as string)
+          } else if (
+            spotifyMusicData !== undefined &&
+            (userCache.spotifySongUri as string) !== (spotifyMusicData.item.uri as string)
+          ) {
+            ;(async () =>
+              await this.updateSpotifyMusicUri(event.uuid, spotifyMusicData?.item.uri as string))()
             const jsonVals = JSON.parse(event.response_interaction)
             const responseInteraction = jsonVals.id.toString() as ResponseInteraction
             const fields = jsonVals.fields as APIEventField<any>[]
             for (const field of fields) {
               if ((field.value as string).includes('$artist')) {
                 let replaceValue = ''
-                for (const artist of spotifyLikesSong.items[0].track.artists) {
+                for (const artist of spotifyMusicData?.item.artists) {
                   replaceValue += artist.name
                   if (
-                    spotifyLikesSong.items[0].track.artists.length === 2 &&
-                    artist === spotifyLikesSong.items[0].track.artists[0]
+                    spotifyMusicData.item.artists.length === 2 &&
+                    artist === spotifyMusicData.item.artists[0]
                   )
                     replaceValue += ' et '
                   else if (
-                    spotifyLikesSong.items[0].track.artists.indexOf(artist) !==
-                    spotifyLikesSong.items[0].track.artists.length - 1
+                    spotifyMusicData.item.artists.indexOf(artist) !==
+                    spotifyMusicData.item.artists.length - 1
                   )
                     replaceValue += ', '
                 }
                 field.value = field.value.replace('$artist', replaceValue)
               }
               if ((field.value as string).includes('$song'))
-                field.value = field.value.replace('$song', spotifyLikesSong.items[0].track.name)
+                field.value = field.value.replace('$song', spotifyMusicData.item.name)
             }
             await eventHandler(responseInteraction, fields, event.response_api)
           }
         }
       }
     } catch (error) {
-      console.log('ERROR ON SPOTIFY LIKE TASK : ' + error)
+      console.log('ERROR ON SPOTIFY CHANGE MUSIC TASK : ' + error)
     }
   }
 }
