@@ -13,6 +13,7 @@ export default class extends BaseSchema {
         .references('uuid')
         .inTable('events')
         .onDelete('CASCADE')
+      table.string('message').notNullable()
       table.string('status').notNullable()
       table.increments('log_id').notNullable()
       table.string('error_message').nullable()

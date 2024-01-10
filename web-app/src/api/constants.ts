@@ -1,3 +1,5 @@
+import { DateTime } from 'luxon';
+
 export const API_URL = (process.env.NEXT_PUBLIC_API_URL as string) + '/api';
 export const API_URL_OAUTH =
   (process.env.NEXT_PUBLIC_API_URL as string) + '/oauth';
@@ -120,6 +122,7 @@ export type Log = {
   uuid: string;
   user_uuid: string;
   event_uuid: string;
+  message: string;
   status: 'error' | 'success' | 'failed';
   log_id: number;
   error_message?: string;
