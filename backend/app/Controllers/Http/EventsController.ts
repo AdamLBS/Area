@@ -129,7 +129,6 @@ export default class EventsController {
   }
 
   public async getAvailableTriggerEvents({ response }: HttpContextContract) {
-    console.log(TRIGGER_EVENTS)
     return response.ok(TRIGGER_EVENTS)
   }
 
