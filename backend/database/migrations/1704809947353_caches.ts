@@ -11,6 +11,7 @@ export default class extends BaseSchema {
       table.text('spotify_liked_songs').nullable()
       table.boolean('spotify_listening').nullable()
       table.text('spotify_song_uri').nullable()
+      table.boolean('timer_active').defaultTo(false)
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
        */

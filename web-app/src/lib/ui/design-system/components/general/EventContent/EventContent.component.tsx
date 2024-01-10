@@ -12,7 +12,7 @@ import {
   Header,
   HeaderPart,
 } from './EventContent.style';
-import { Loader, Plus, Settings } from 'lucide-react';
+import { AlarmClock, Loader, Plus, Settings } from 'lucide-react';
 import { H3 } from '../Text';
 import { EventCard } from '../EventCard';
 import {
@@ -42,6 +42,7 @@ const providerIcon = {
   github: <IconGithub />,
   linkedin: <IconLinkedin />,
   twitch: <IconTwitch />,
+  timer: <AlarmClock />,
   null: <Loader />,
 };
 import { EventSettingsModal } from '../EventSettingsModal';

@@ -122,4 +122,22 @@ export const TRIGGER_EVENTS: APIEvent[] = [
       },
     ],
   },
+  {
+    provider: 'Timer',
+    interactions: [
+      {
+        id: 'everyDayTimer',
+        name: 'Every Day at one hour',
+        fields: [
+          {
+            value: 'Hour with format HH:MM',
+            name: 'Hour',
+            type: 'input',
+            required: true,
+          },
+        ],
+        variables: {},
+      },
+    ],
+  },
 ]
