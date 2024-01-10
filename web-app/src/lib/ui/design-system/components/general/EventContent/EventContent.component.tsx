@@ -5,7 +5,7 @@ import {
   Toaster,
   useToast,
 } from '@/components/ui';
-import React, { memo, useCallback } from 'react';
+import React, { memo, useCallback, useEffect } from 'react';
 import {
   AddButton,
   AdditionnalActionsHeader,
@@ -54,6 +54,7 @@ const providerIcon = {
 import { EventSettingsModal } from '../EventSettingsModal';
 import { DeleteEventModal } from '../DeleteEventModal';
 import { DeleteActionModal } from '../DeleteActionModal';
+import { useTriggerVariablesState } from '@/context/TriggerContext';
 import { EventSelectModal } from '../EventSelectModal';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import {
@@ -86,7 +87,7 @@ const EventContentComponent: React.FC<EventContentProps> = ({ eventUuid }) => {
     React.useState(false);
   const [updateAdditionalActionIndex, setUpdateAdditionalActionIndex] =
     React.useState(-1);
-
+  const { updateTriggerVariablesState } = useTriggerVariablesState();
   const { data: triggers } = useTriggers();
   const { data: responses } = useResponses();
 
@@ -105,6 +106,21 @@ const EventContentComponent: React.FC<EventContentProps> = ({ eventUuid }) => {
     },
     [setUpdateAdditionalActionIndex, setUpdateAdditionalActionModalOpen],
   );
+
+  useEffect(() => {
+    updateTriggerVariablesState({
+      variables:
+        triggers
+          ?.find(
+            (trigger) =>
+              trigger.provider.toLowerCase() ===
+              event?.triggerInteraction.provider,
+          )
+          ?.interactions.find(
+            (interaction) => interaction.name === interaction.name,
+          )?.variables || {},
+    });
+  }, [event]);
 
   const updateTriggerEventMutation = useMutation({
     mutationFn: updateTriggerEvent,

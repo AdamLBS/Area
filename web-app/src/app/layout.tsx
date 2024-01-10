@@ -4,6 +4,7 @@ import React from 'react';
 import TanstackProvider from '@/providers/TanstackProvider';
 import StyledComponentsRegistry from '@/lib/registry';
 import { ThemeProvider } from '@/components/theme-provider';
+import { GlobalProvider } from '@/context/TriggerContext';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -18,18 +19,20 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <TanstackProvider>
-          <StyledComponentsRegistry>
-            <ThemeProvider
-              attribute="class"
-              defaultTheme="dark"
-              enableSystem
-              disableTransitionOnChange
-            >
-              {children}
-            </ThemeProvider>
-          </StyledComponentsRegistry>
-        </TanstackProvider>
+        <GlobalProvider>
+          <TanstackProvider>
+            <StyledComponentsRegistry>
+              <ThemeProvider
+                attribute="class"
+                defaultTheme="dark"
+                enableSystem
+                disableTransitionOnChange
+              >
+                {children}
+              </ThemeProvider>
+            </StyledComponentsRegistry>
+          </TanstackProvider>
+        </GlobalProvider>
       </body>
     </html>
   );

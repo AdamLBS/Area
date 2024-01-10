@@ -39,22 +39,12 @@ export const TRIGGER_EVENTS: APIEvent[] = [
       {
         id: 'startsLive',
         name: 'Streamer starts to live',
-        fields: [
-          {
-            value: 'Name of the streamer',
-            name: 'streamer',
-            type: 'input',
-            required: true,
-          },
-          {
-            value: 'Name of the user',
-            name: 'username',
-            type: 'input',
-            required: true,
-          },
-        ],
+        fields: [],
         variables: {
           streamer: 'Name of the streamer',
+          title: 'Title of the stream',
+          game: 'Name of the game',
+          url: 'Url of the stream',
         },
       },
     ],

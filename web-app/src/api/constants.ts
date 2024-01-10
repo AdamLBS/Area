@@ -29,6 +29,7 @@ export type ApiInteraction = {
   id: string;
   name: string;
   fields: Fields[];
+  variables: Record<string, string>;
 };
 
 export type ApiEvent = {
