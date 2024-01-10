@@ -55,4 +55,28 @@ export const RESPONSE_EVENTS: APIEvent[] = [
       },
     ],
   },
+  {
+    provider: 'Twitch',
+    interactions: [
+      {
+        id: 'makeAnnounce',
+        name: 'Make a stream chat announce',
+        fields: [
+          {
+            value: 'Channel name (you must be a moderator)',
+            name: 'channel',
+            type: 'input',
+            required: true,
+          },
+          {
+            value: 'Message',
+            name: 'message',
+            type: 'input',
+            required: true,
+          },
+        ],
+        variables: {},
+      },
+    ],
+  }
 ]
