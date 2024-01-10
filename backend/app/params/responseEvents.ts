@@ -127,10 +127,10 @@ export const RESPONSE_EVENTS: APIEvent[] = [
               },
             ],
             required: true,
-          }
+          },
         ],
         variables: {},
       },
     ],
-  }
+  },
 ]
