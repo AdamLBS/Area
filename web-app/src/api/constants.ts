@@ -116,11 +116,25 @@ export type UsesTimestamps = {
   ['december']: number;
 };
 
+export type Log = {
+  uuid: string;
+  user_uuid: string;
+  event_uuid: string;
+  status: 'error' | 'success' | 'failed';
+  log_id: number;
+  error_message?: string;
+  error_id?: string;
+  created_at: string;
+  updated_at: string;
+};
+
 export type EventStats = {
+  triggerApi: string;
+  responseApi: string;
   total: number;
   success: number;
   errors: number;
   today: number;
-  lastLogs: number;
+  lastLogs: Log[];
   logsByMonth: UsesTimestamps;
 };

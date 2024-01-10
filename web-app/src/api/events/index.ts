@@ -92,13 +92,13 @@ export const getEvent = async (uuid: string): Promise<Event> => {
 export const getEventStats = async (uuid: string): Promise<EventStats> => {
   try {
     const res = (
-      await axios.get(API_URL + `/events/${uuid}/stats`, {
+      await axios.get(API_URL + `/event/${uuid}/stats`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('authToken')}`,
         },
       })
     ).data;
-    return res as EventStats;
+    return res.stats as EventStats;
   } catch (error) {
     throw new Error('Error getting event stats.');
   }
