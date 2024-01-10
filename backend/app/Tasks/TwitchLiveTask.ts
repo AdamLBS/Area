@@ -1,5 +1,9 @@
 import { BaseTask, CronTimeV2 } from 'adonis5-scheduler/build/src/Scheduler/Task'
-import { eventHandler, ResponseInteraction } from '../functions/EventHandler'
+import {
+  eventHandler,
+  handleAdditionalActions,
+  ResponseInteraction,
+} from '../functions/EventHandler'
 import Database from '@ioc:Adonis/Lucid/Database'
 import axios from 'axios'
 import Cache from 'App/Models/Cache'
@@ -59,6 +63,19 @@ export default class TwitchLiveTask extends BaseTask {
     return response.data.data
   }
 
+  private useVariablesInFields = (fields: APIEventField<any>[], data: TwitchData) => {
+    for (const field of fields) {
+      if ((field.value as string).includes('$streamer')) {
+        let streamer = data.user_name
+        field.value = field.value.replace('$streamer', streamer)
+      }
+      if ((field.value as string).includes('$streamUrl')) {
+        let streamUrl = `https://twitch.tv/${data.user_name}`
+        field.value = field.value.replace('$streamUrl', streamUrl)
+      }
+    }
+  }
+
   private async updateChannelsInLive(uuid: string, channelsJSON: { user_name: string }[]) {
     await Cache.updateOrCreate(
       {
@@ -70,21 +87,16 @@ export default class TwitchLiveTask extends BaseTask {
     )
   }
 
-  private async notifyUserInLive(data: TwitchData, responseApiUuid: string, event: any) {
+  private async notifyUserInLive(data: TwitchData, event: any) {
     const responseData = JSON.parse(event.response_interaction)
     const responseInteraction = responseData.id.toString() as ResponseInteraction
     const fields = responseData.fields as APIEventField<any>[]
-    for (const field of fields) {
-      if ((field.value as string).includes('$streamer')) {
-        let streamer = data.user_name
-        field.value = field.value.replace('$streamer', streamer)
-      }
-      if ((field.value as string).includes('$streamUrl')) {
-        let streamUrl = `https://twitch.tv/${data.user_name}`
-        field.value = field.value.replace('$streamUrl', streamUrl)
-      }
+    this.useVariablesInFields(fields, data)
+    for (const additionalAction of event.additional_actions) {
+      this.useVariablesInFields(additionalAction.fields, data)
     }
-    await eventHandler(responseInteraction, fields, responseApiUuid)
+    await eventHandler(responseInteraction, fields, event.response_api)
+    await handleAdditionalActions(event)
   }
 
   private isUserNotPresent(channelsJSON: { user_name: string }[], userName: string): boolean {
@@ -95,7 +107,7 @@ export default class TwitchLiveTask extends BaseTask {
     console.log(`[Twitch] ${userName} is already in live`)
   }
 
-  public async inLive(triggerApiOauth: any, responseApiUuid: string, event: any) {
+  public async inLive(triggerApiOauth: any, event: any) {
     try {
       const userId = await this.fetchTwitchUserId(triggerApiOauth)
       const twitchData = await this.fetchTwitchData(triggerApiOauth, userId)
@@ -107,7 +119,7 @@ export default class TwitchLiveTask extends BaseTask {
         }
         await this.updateChannelsInLive(event.uuid, channels)
         twitchData.map(async (data: TwitchData) => {
-          await this.notifyUserInLive(data, responseApiUuid, event)
+          await this.notifyUserInLive(data, event)
         })
         return
       } else {
@@ -129,7 +141,7 @@ export default class TwitchLiveTask extends BaseTask {
           if (this.isUserNotPresent(channelsJSON, data.user_name)) {
             channelsJSON.push({ user_name: data.user_name })
             await this.updateChannelsInLive(event.uuid, channelsJSON)
-            await this.notifyUserInLive(data, responseApiUuid, event)
+            await this.notifyUserInLive(data, event)
           } else {
             this.logAlreadyInLive(data.user_name)
           }
@@ -153,8 +165,7 @@ export default class TwitchLiveTask extends BaseTask {
             .from('oauths')
             .where('uuid', event.trigger_api)
             .first()
-          const responseApiUuid = event.response_api
-          await this.inLive(triggerApiOauth, responseApiUuid, event)
+          await this.inLive(triggerApiOauth, event)
         })
     } catch (error) {
       console.log(error)

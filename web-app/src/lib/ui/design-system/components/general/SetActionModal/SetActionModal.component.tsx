@@ -18,7 +18,6 @@ import { CustomSelect } from '../CustomSelect';
 import { EventInteraction, ApiInteraction, Fields } from '@/api/constants';
 import { UpdateEventParamsModal } from '../UpdateEventParamsModal';
 import { useConnectedServices } from '@/functions/connectedServices';
-import { useTriggerVariablesState } from '@/context/TriggerContext';
 
 export type DeleteEventModalProps = {
   onConfirm: (response: EventInteraction) => void;
@@ -42,7 +41,6 @@ const SetActionModalComponent: React.FC<DeleteEventModalProps> = ({
   }, [responses, service]);
 
   const connectedServices = useConnectedServices(services);
-  const { triggerVariablesState } = useTriggerVariablesState();
 
   const onChangeInteraction = useCallback(
     (value: string) => {
@@ -135,7 +133,7 @@ const SetActionModalComponent: React.FC<DeleteEventModalProps> = ({
           fields={interaction?.fields || []}
           onCancel={() => setStep(0)}
           onConfirm={onAddResponse}
-          variables={triggerVariablesState.variables}
+          type="response"
         />
       )}
     </>

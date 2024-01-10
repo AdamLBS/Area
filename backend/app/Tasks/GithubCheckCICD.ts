@@ -1,6 +1,10 @@
 import Database from '@ioc:Adonis/Lucid/Database'
 import Oauth from 'App/Models/Oauth'
-import { ResponseInteraction, eventHandler } from 'App/functions/EventHandler'
+import {
+  ResponseInteraction,
+  eventHandler,
+  handleAdditionalActions,
+} from 'App/functions/EventHandler'
 import { CICDState } from 'App/types/github'
 import { BaseTask, CronTimeV2 } from 'adonis5-scheduler/build/src/Scheduler/Task'
 import axios from 'axios'
@@ -10,7 +14,7 @@ import Cache from 'App/Models/Cache'
 export default class GithubCheckCICD extends BaseTask {
   public static get schedule() {
     // Use CronTimeV2 generator:
-    return CronTimeV2.everySecond()
+    return CronTimeV2.everyThirtySeconds()
     // or just use return cron-style string (simple cron editor: crontab.guru)
   }
 
@@ -33,14 +37,27 @@ export default class GithubCheckCICD extends BaseTask {
     }
   }
 
-  private async fetchCICD(
-    fields: APIEventField<string>[],
-    oauth: Oauth,
-    eventUuid: string,
-    responseApiUuid: string,
-    reponseInteraction: ResponseInteraction,
-    responseFields: APIEventField<string>[]
-  ) {
+  private useVariablesInFields = (fields: APIEventField<any>[], response: CICDState) => {
+    for (const field of fields) {
+      if ((field.value as string).includes('$repositoryUrl')) {
+        let repoUrl = fields.at(0)?.value
+        if (repoUrl !== undefined) {
+          field.value = field.value.replace('$repositoryUrl', repoUrl)
+        }
+      }
+      if ((field.value as string).includes('$reference')) {
+        let commit = response.head_sha
+        if (commit !== undefined) {
+          field.value = field.value.replace('$reference', commit)
+        }
+      }
+      if ((field.value as string).includes('$state')) {
+        field.value = field.value.replace('$state', response.conclusion)
+      }
+    }
+  }
+
+  private async fetchCICD(fields: APIEventField<string>[], oauth: Oauth, event: any) {
     const apiUrl = fields[0].value.replace('github.com', 'api.github.com/repos')
     const cicdUrl = apiUrl + `/commits/${fields[1].value}/check-runs`
     const targetState = fields[2].value
@@ -54,33 +71,24 @@ export default class GithubCheckCICD extends BaseTask {
         })
       ).data
       const lastTest = response.check_runs[0] as CICDState
-      const userCache = await Cache.query().from('caches').where('uuid', eventUuid).first()
+      const userCache = await Cache.query().from('caches').where('uuid', event.uuid).first()
       if (!userCache || !userCache.githubLatestActionId) {
-        await this.updateLatestActionId(eventUuid, String(lastTest.id))
+        await this.updateLatestActionId(event.uuid, String(lastTest.id))
       } else if (
         userCache !== undefined &&
         userCache.githubLatestActionId !== String(lastTest.id) &&
         lastTest.conclusion === targetState
       ) {
-        await this.updateLatestActionId(eventUuid, String(lastTest.id))
-        for (const field of responseFields) {
-          if ((field.value as string).includes('$repositoryUrl')) {
-            let repoUrl = fields.at(0)?.value
-            if (repoUrl !== undefined) {
-              field.value = field.value.replace('$repositoryUrl', repoUrl)
-            }
-          }
-          if ((field.value as string).includes('$reference')) {
-            let commit = lastTest.head_sha
-            if (commit !== undefined) {
-              field.value = field.value.replace('$reference', commit)
-            }
-          }
-          if ((field.value as string).includes('$state')) {
-            field.value = field.value.replace('$state', lastTest.conclusion)
-          }
+        await this.updateLatestActionId(event.uuid, String(lastTest.id))
+        const jsonVals = JSON.parse(event.response_interaction)
+        const responseInteraction = jsonVals.id.toString() as ResponseInteraction
+        const fields = jsonVals.fields as APIEventField<any>[]
+        this.useVariablesInFields(fields, response)
+        for (const additionalAction of event.additional_actions) {
+          this.useVariablesInFields(additionalAction.fields, response)
         }
-        await eventHandler(reponseInteraction, responseFields, responseApiUuid)
+        await eventHandler(responseInteraction, fields, event.response_api)
+        await handleAdditionalActions(event)
       }
     } catch (error: any) {
       // console.error(error)
@@ -101,17 +109,7 @@ export default class GithubCheckCICD extends BaseTask {
           try {
             const jsonVals = JSON.parse(event.trigger_interaction)
             const fields = jsonVals.fields as APIEventField<string>[]
-            const jsonResponse = JSON.parse(event.response_interaction)
-            const responseFields = jsonResponse.fields as APIEventField<string>[]
-            const responseInteraction = jsonResponse.id.toString() as ResponseInteraction
-            await this.fetchCICD(
-              fields,
-              oauth,
-              event.uuid,
-              event.response_api,
-              responseInteraction,
-              responseFields
-            )
+            await this.fetchCICD(fields, oauth, event)
           } catch (error: any) {
             console.error(error)
             throw new Error('Impossible to fetch the last commit')

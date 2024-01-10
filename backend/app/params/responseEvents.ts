@@ -5,9 +5,35 @@ export const RESPONSE_EVENTS: APIEvent[] = [
     provider: 'Discord',
     interactions: [
       {
-        id: 'sendMessage',
-        name: 'Send message',
+        id: 'sendDiscordWebhookMessage',
+        name: 'Send webhook message',
         fields: [
+          {
+            value: 'Webhook url',
+            name: 'webhook',
+            type: 'input',
+            required: true,
+          },
+          {
+            value: 'Select who to ping',
+            name: 'Ping who?',
+            type: 'select',
+            values: [
+              {
+                value: '@everyone',
+                label: 'Everyone',
+              },
+              {
+                value: '@here',
+                label: 'Here',
+              },
+              {
+                value: 'none',
+                label: 'None',
+              },
+            ],
+            required: true,
+          },
           {
             value: 'Content of the message',
             name: 'message',
