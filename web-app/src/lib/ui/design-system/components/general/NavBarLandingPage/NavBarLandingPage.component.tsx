@@ -1,8 +1,6 @@
 import React, { memo, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui';
-import { useTheme } from 'next-themes';
-import { MoonIcon, SunIcon } from '@radix-ui/react-icons';
 import {
   NavBarContainer,
   TitleContainer,
@@ -15,16 +13,6 @@ import { NavigationMenu } from '@radix-ui/react-navigation-menu';
 
 const NavBarLandingPageComponent: React.FC = () => {
   const router = useRouter();
-  const { setTheme } = useTheme();
-  const theme = useTheme();
-
-  const changeTheme = () => {
-    if (theme.theme === 'light') {
-      setTheme('dark');
-    } else {
-      setTheme('light');
-    }
-  };
 
   const handleRedirection = useCallback(
     (page: string) => {
@@ -63,9 +51,6 @@ const NavBarLandingPageComponent: React.FC = () => {
         </Button>
         <Button variant="outline" onClick={() => handleRedirection(`register`)}>
           Register
-        </Button>
-        <Button variant="outline" size="icon" onClick={changeTheme}>
-          {theme.theme === 'dark' ? <SunIcon /> : <MoonIcon />}
         </Button>
       </RightContainer>
     </NavBarContainer>

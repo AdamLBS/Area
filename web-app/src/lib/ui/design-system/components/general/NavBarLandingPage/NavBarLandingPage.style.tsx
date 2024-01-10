@@ -3,7 +3,6 @@ import { NavigationMenuList as NavigationMenuList_ } from '@radix-ui/react-navig
 
 export const NavBarContainer = styled.div`
   display: flex;
-  display: flex;
   justify-content: space-between;
   align-items: center;
 `;
