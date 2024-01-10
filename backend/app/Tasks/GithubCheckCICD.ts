@@ -1,6 +1,10 @@
 import Database from '@ioc:Adonis/Lucid/Database'
 import Oauth from 'App/Models/Oauth'
-import { ResponseInteraction, eventHandler, handleAdditionalActions } from 'App/functions/EventHandler'
+import {
+  ResponseInteraction,
+  eventHandler,
+  handleAdditionalActions,
+} from 'App/functions/EventHandler'
 import { CICDState } from 'App/types/github'
 import { BaseTask, CronTimeV2 } from 'adonis5-scheduler/build/src/Scheduler/Task'
 import axios from 'axios'
@@ -33,10 +37,7 @@ export default class GithubCheckCICD extends BaseTask {
     }
   }
 
-  private useVariablesInFields = (
-    fields: APIEventField<any>[],
-    response: CICDState,
-  ) => {
+  private useVariablesInFields = (fields: APIEventField<any>[], response: CICDState) => {
     for (const field of fields) {
       if ((field.value as string).includes('$repositoryUrl')) {
         let repoUrl = fields.at(0)?.value
@@ -56,11 +57,7 @@ export default class GithubCheckCICD extends BaseTask {
     }
   }
 
-  private async fetchCICD(
-    fields: APIEventField<string>[],
-    oauth: Oauth,
-    event: any
-  ) {
+  private async fetchCICD(fields: APIEventField<string>[], oauth: Oauth, event: any) {
     const apiUrl = fields[0].value.replace('github.com', 'api.github.com/repos')
     const cicdUrl = apiUrl + `/commits/${fields[1].value}/check-runs`
     const targetState = fields[2].value
@@ -112,11 +109,7 @@ export default class GithubCheckCICD extends BaseTask {
           try {
             const jsonVals = JSON.parse(event.trigger_interaction)
             const fields = jsonVals.fields as APIEventField<string>[]
-            await this.fetchCICD(
-              fields,
-              oauth,
-              event
-            )
+            await this.fetchCICD(fields, oauth, event)
           } catch (error: any) {
             console.error(error)
             throw new Error('Impossible to fetch the last commit')

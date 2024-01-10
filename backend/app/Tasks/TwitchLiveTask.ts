@@ -1,5 +1,9 @@
 import { BaseTask, CronTimeV2 } from 'adonis5-scheduler/build/src/Scheduler/Task'
-import { eventHandler, handleAdditionalActions, ResponseInteraction } from '../functions/EventHandler'
+import {
+  eventHandler,
+  handleAdditionalActions,
+  ResponseInteraction,
+} from '../functions/EventHandler'
 import Database from '@ioc:Adonis/Lucid/Database'
 import axios from 'axios'
 import Cache from 'App/Models/Cache'
@@ -59,10 +63,7 @@ export default class TwitchLiveTask extends BaseTask {
     return response.data.data
   }
 
-  private useVariablesInFields = (
-    fields: APIEventField<any>[],
-    data: TwitchData
-  ) => {
+  private useVariablesInFields = (fields: APIEventField<any>[], data: TwitchData) => {
     for (const field of fields) {
       if ((field.value as string).includes('$streamer')) {
         let streamer = data.user_name
@@ -92,9 +93,7 @@ export default class TwitchLiveTask extends BaseTask {
     const fields = responseData.fields as APIEventField<any>[]
     this.useVariablesInFields(fields, data)
     for (const additionalAction of event.additional_actions) {
-      this.useVariablesInFields(
-        additionalAction.fields, data
-      )
+      this.useVariablesInFields(additionalAction.fields, data)
     }
     await eventHandler(responseInteraction, fields, event.response_api)
     await handleAdditionalActions(event)

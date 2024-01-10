@@ -14,7 +14,10 @@ export const discordWebhookEvent = async (data: APIEventField<any>[]) => {
   }
 }
 
-export const discordPrivateMessageEvent = async (data: APIEventField<any>[], responseApiUuid: string) => {
+export const discordPrivateMessageEvent = async (
+  data: APIEventField<any>[],
+  responseApiUuid: string
+) => {
   console.log(data)
   console.log(responseApiUuid)
 }

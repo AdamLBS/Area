@@ -1,6 +1,10 @@
 import Database from '@ioc:Adonis/Lucid/Database'
 import Oauth from 'App/Models/Oauth'
-import { ResponseInteraction, eventHandler, handleAdditionalActions } from 'App/functions/EventHandler'
+import {
+  ResponseInteraction,
+  eventHandler,
+  handleAdditionalActions,
+} from 'App/functions/EventHandler'
 import { BaseTask, CronTimeV2 } from 'adonis5-scheduler/build/src/Scheduler/Task'
 import axios from 'axios'
 import { APIEventField } from 'types/events'
@@ -32,10 +36,7 @@ export default class GithubCheckLastCommitTask extends BaseTask {
       console.error(error)
     }
   }
-  private  useVariablesInFields  = (
-    fields: APIEventField<any>[],
-    response: Commit
-  ) => {
+  private useVariablesInFields = (fields: APIEventField<any>[], response: Commit) => {
     for (const field of fields) {
       if ((field.value as string).includes('$commitAuthor')) {
         let commitAuthor = response.commit.author.name
@@ -52,11 +53,7 @@ export default class GithubCheckLastCommitTask extends BaseTask {
     }
   }
 
-  private async fetchLastCommit(
-    repositoryUrl: string,
-    oauth: Oauth,
-    event: any,
-  ) {
+  private async fetchLastCommit(repositoryUrl: string, oauth: Oauth, event: any) {
     const commitsUrl = repositoryUrl.replace('github.com', 'api.github.com/repos')
     try {
       const url = commitsUrl + '/commits?per_page=1'
@@ -78,10 +75,8 @@ export default class GithubCheckLastCommitTask extends BaseTask {
         const fields = jsonVals.fields as APIEventField<any>[]
         this.useVariablesInFields(fields, response)
         for (const additionalAction of event.additional_actions) {
-          this.useVariablesInFields(
-            additionalAction.fields, response
-          )
-          console.log("updating additionnal")
+          this.useVariablesInFields(additionalAction.fields, response)
+          console.log('updating additionnal')
         }
         await eventHandler(responseInteraction, fields, event.response_api)
         await handleAdditionalActions(event)
@@ -106,11 +101,7 @@ export default class GithubCheckLastCommitTask extends BaseTask {
           try {
             const jsonVals = JSON.parse(event.trigger_interaction)
             const fields = jsonVals.fields as APIEventField<string>[]
-            await this.fetchLastCommit(
-              fields[0].value,
-              oauth,
-              event,
-            )
+            await this.fetchLastCommit(fields[0].value, oauth, event)
           } catch (error: any) {
             console.error(error)
             throw new Error('Impossible to fetch the last commit')
