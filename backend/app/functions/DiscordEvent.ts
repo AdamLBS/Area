@@ -1,15 +1,10 @@
 import axios from 'axios'
-import { Content } from './EventHandler'
-import Database from '@ioc:Adonis/Lucid/Database'
+import { APIEventField } from 'App/types/event'
 
-export const discordEvent = async (content: Content, responseApiUuid: string) => {
-  const discordWebhook = await Database.from('oauths')
-    .select('webhook')
-    .where('uuid', responseApiUuid)
-    .first()
+export const discordEvent = async (data: APIEventField<any>[], _responseApiUuid: string) => {
   try {
-    await axios.post(`${discordWebhook.webhook}`, {
-      content: `@everyone ${content.message}`,
+    await axios.post(`${data.at(1)}`, {
+      content: `${data.at(0)}`,
     })
   } catch (error) {
     console.log(error)
