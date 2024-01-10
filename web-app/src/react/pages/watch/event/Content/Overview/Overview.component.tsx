@@ -83,7 +83,6 @@ export type EventContentProps = {
 
 const OverviewComponent: React.FC<EventContentProps> = ({ eventUuid }) => {
   const { data: eventStats, isLoading } = useEventStats(eventUuid);
-  console.log(eventStats?.logsByMonth);
 
   return (
     <OverviewContainer>
