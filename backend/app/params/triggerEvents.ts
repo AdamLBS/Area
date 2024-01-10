@@ -22,6 +22,15 @@ export const TRIGGER_EVENTS: APIEvent[] = [
           song: 'Name of the song',
         },
       },
+      {
+        id: 'changeSong',
+        name: 'When I change song',
+        fields: [],
+        variables: {
+          artist: 'Name of the artist',
+          song: 'Name of the song',
+        },
+      },
     ],
   },
   {
@@ -30,22 +39,10 @@ export const TRIGGER_EVENTS: APIEvent[] = [
       {
         id: 'startsLive',
         name: 'Streamer starts to live',
-        fields: [
-          {
-            value: 'Name of the streamer',
-            name: 'streamer',
-            type: 'input',
-            required: true,
-          },
-          {
-            value: 'Name of the user',
-            name: 'username',
-            type: 'input',
-            required: true,
-          },
-        ],
+        fields: [],
         variables: {
           streamer: 'Name of the streamer',
+          streamUrl: 'Url of the stream',
         },
       },
     ],
@@ -58,14 +55,16 @@ export const TRIGGER_EVENTS: APIEvent[] = [
         name: 'New commit',
         fields: [
           {
-            value: 'repository url',
+            value: 'Repository url',
             name: 'commitsUrl',
             type: 'input',
             required: true,
           },
         ],
         variables: {
-          commitsUrl: 'Url of the commit',
+          commitUrl: 'Url of the commit',
+          commitMsg: 'Message of the commit',
+          commitAuthor: 'Author of the commit',
         },
       },
       {
@@ -110,6 +109,24 @@ export const TRIGGER_EVENTS: APIEvent[] = [
           reference: 'Reference of the commit',
           state: 'State of the CI/CD',
         },
+      },
+    ],
+  },
+  {
+    provider: 'Timer',
+    interactions: [
+      {
+        id: 'everyDayTimer',
+        name: 'Every Day at one hour',
+        fields: [
+          {
+            value: 'Hour with format HH:MM',
+            name: 'Hour',
+            type: 'input',
+            required: true,
+          },
+        ],
+        variables: {},
       },
     ],
   },

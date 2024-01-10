@@ -10,15 +10,28 @@ import { APIEventField } from 'types/events'
 import Cache from 'App/Models/Cache'
 import { Item, useVariablesInFields } from 'App/functions/SpotifyUtils'
 
-type SpotifyLikesSong = {
-  total: number
-  items: Item[]
+type SpotifySong = {
+  shuffle_state: boolean
+  repeat_state: string
+  device: {
+    id: string
+    is_active: boolean
+    is_private_session: boolean
+    is_restricted: boolean
+    name: string
+    type: string
+    volume_percent: number
+  }
+  progress_ms: number
+  is_playing: boolean
+  currently_playing_type: string
+  item: Item
 }
 
-export default class SpotifyLikeSong extends BaseTask {
+export default class SpotifyChangeMusicTask extends BaseTask {
   public static get schedule() {
     // Use CronTimeV2 generator:
-    return CronTimeV2.everyFiveSeconds()
+    return CronTimeV2.everySecond()
     // or just use return cron-style string (simple cron editor: crontab.guru)
   }
   /**
@@ -29,60 +42,59 @@ export default class SpotifyLikeSong extends BaseTask {
     return false
   }
 
-  private async fetchSpotifyData(oauth: string): Promise<SpotifyLikesSong> {
-    try {
-      const response = await axios.get<SpotifyLikesSong>(`https://api.spotify.com/v1/me/tracks`, {
-        headers: {
-          Authorization: `Bearer ${oauth}`,
-        },
-      })
-      return response.data as SpotifyLikesSong
-    } catch (error) {
-      throw new Error('Spotify API Error')
-    }
-  }
-
-  private async updateNumberOfLikedSongs(uuid: any, songs: number) {
+  private async updateSpotifyMusicUri(uuid: string, music: string) {
     await Cache.updateOrCreate(
       {
         uuid: uuid,
       },
       {
-        spotifyLikedSongs: songs,
+        spotifySongUri: music,
       }
     )
+  }
+
+  private async fetchSpotifyData(oauth: string): Promise<SpotifySong | undefined> {
+    const response = await axios.get<SpotifySong>(`https://api.spotify.com/v1/me/player`, {
+      headers: {
+        Authorization: `Bearer ${oauth}`,
+      },
+    })
+    if (response.status !== 200) {
+      return undefined
+    }
+    return response.data
   }
 
   public async handle() {
     try {
       const events = await Database.query()
         .from('events')
-        .whereRaw(`CAST(trigger_interaction AS JSONB) #>> '{id}' = 'likeSong'`)
+        .whereRaw(`CAST(trigger_interaction AS JSONB) #>> '{id}' = 'changeSong'`)
       for (const event of events) {
         const triggerApi = await Database.query()
           .from('oauths')
           .where('uuid', event.trigger_api)
           .first()
-        const spotifyLikesSong = await this.fetchSpotifyData(triggerApi.token)
+        const spotifyMusicData = await this.fetchSpotifyData(triggerApi.token)
         const userCache = await Cache.query().from('caches').where('uuid', event.uuid).first()
         if (triggerApi && triggerApi.token) {
-          if (!userCache || !userCache.spotifyLikedSongs) {
-            await this.updateNumberOfLikedSongs(event.uuid, spotifyLikesSong.total)
-          } else if (userCache.spotifyLikedSongs < spotifyLikesSong.total) {
-            ;(async () => await this.updateNumberOfLikedSongs(event.uuid, spotifyLikesSong.total))()
+          if (!userCache || !userCache.spotifySongUri) {
+            await this.updateSpotifyMusicUri(event.uuid, spotifyMusicData?.item.uri as string)
+          } else if (
+            spotifyMusicData !== undefined &&
+            (userCache.spotifySongUri as string) !== (spotifyMusicData.item.uri as string)
+          ) {
+            ;(async () =>
+              await this.updateSpotifyMusicUri(event.uuid, spotifyMusicData?.item.uri as string))()
             const jsonVals = JSON.parse(event.response_interaction)
             const responseInteraction = jsonVals.id.toString() as ResponseInteraction
             const fields = jsonVals.fields as APIEventField<any>[]
-            useVariablesInFields(
-              fields,
-              spotifyLikesSong.items[0].track.name,
-              spotifyLikesSong.items[0].track.artists
-            )
+            useVariablesInFields(fields, spotifyMusicData.item.name, spotifyMusicData.item.artists)
             for (const additionalAction of event.additional_actions) {
               useVariablesInFields(
                 additionalAction.fields,
-                spotifyLikesSong.items[0].track.name,
-                spotifyLikesSong.items[0].track.artists
+                spotifyMusicData.item.name,
+                spotifyMusicData.item.artists
               )
             }
             await handleAdditionalActions(event)
@@ -91,7 +103,7 @@ export default class SpotifyLikeSong extends BaseTask {
         }
       }
     } catch (error) {
-      console.log('ERROR ON SPOTIFY LIKE TASK : ' + error)
+      console.log('ERROR ON SPOTIFY CHANGE MUSIC TASK : ' + error)
     }
   }
 }
