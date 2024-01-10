@@ -6,8 +6,7 @@ import {
   handleAdditionalActions,
 } from 'App/functions/EventHandler'
 import { BaseTask, CronTimeV2 } from 'adonis5-scheduler/build/src/Scheduler/Task'
-import { APIEventField, AdditionalInteraction } from 'types/events'
-import Event from 'App/Models/Event'
+import { APIEventField } from 'types/events'
 export default class Timer extends BaseTask {
   public static get schedule() {
     // Use CronTimeV2 generator:
