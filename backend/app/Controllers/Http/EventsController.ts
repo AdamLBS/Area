@@ -362,7 +362,6 @@ export default class EventsController {
     event.responseApi = actionApi.uuid
     await event.save()
 
-
     // This is for reset the crypto reach value when the user change the crypto or the limits
     const userCache = await Cache.query().from('caches').where('uuid', event.uuid).first()
     if (userCache) {
