@@ -24,6 +24,7 @@ import { FormContainer } from './UpdateEventParamsModal.style';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Textarea } from '@/components/ui/textarea';
+import { DialogDescriptionStyled } from './UpdateEventParamsModal.style';
 
 export type UpdateEventParamsModalProps = {
   onConfirm: (fields: Fields[]) => void;
@@ -112,17 +113,22 @@ const UpdateEventParamsModalComponent: React.FC<
     <>
       <DialogHeader>
         <DialogTitle>Update event params</DialogTitle>
-        <DialogDescription>
+        <DialogDescriptionStyled>
           (*) required
-          <br />
+          {variables && (
+            <span>
+              You can use the following variables in the fields to personalize
+              the message:
+            </span>
+          )}
           {variables &&
             Object.entries(variables).map(([key, value]) => (
               <span key={key}>
-                ${key}: {value}
+                - {value}: ${key}
                 <br />
               </span>
             ))}
-        </DialogDescription>
+        </DialogDescriptionStyled>
       </DialogHeader>
       <Form {...form}>
         <FormContainer onSubmit={form.handleSubmit(onSubmit)}>
