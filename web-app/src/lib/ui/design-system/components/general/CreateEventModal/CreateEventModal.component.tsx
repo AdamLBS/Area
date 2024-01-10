@@ -82,7 +82,7 @@ const CreateEventModalComponent: React.FC<CreateEventModalProps> = ({
       toast({
         title: 'Event creation failed',
         description: 'The event could not be created',
-        variant: 'default',
+        variant: 'destructive',
       });
     },
   });
