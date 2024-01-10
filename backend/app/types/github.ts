@@ -19,4 +19,5 @@ export type CICDState = {
   name: string
   status: string
   conclusion: string
+  head_sha: string
 }
