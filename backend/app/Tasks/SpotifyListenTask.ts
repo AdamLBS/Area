@@ -8,14 +8,7 @@ import {
 import axios from 'axios'
 import { APIEventField } from 'types/events'
 import Cache from 'App/Models/Cache'
-
-export interface Artist {
-  name: string
-}
-export interface Item {
-  artists: Artist[]
-  name: string
-}
+import { Item, useVariablesInFields } from 'App/functions/SpotifyUtils'
 
 type SpotifyListener = {
   shuffle_state: boolean
@@ -93,26 +86,13 @@ export default class SpotifyListenTask extends BaseTask {
               const jsonVals = JSON.parse(event.response_interaction)
               const responseInteraction = jsonVals.id.toString() as ResponseInteraction
               const fields = jsonVals.fields as APIEventField<any>[]
-              for (const field of fields) {
-                if ((field.value as string).includes('$artist')) {
-                  let replaceValue = ''
-                  for (const artist of spotifyAPIData.item.artists) {
-                    replaceValue += artist.name
-                    if (
-                      spotifyAPIData.item.artists.length === 2 &&
-                      artist === spotifyAPIData.item.artists[0]
-                    )
-                      replaceValue += ' et '
-                    else if (
-                      spotifyAPIData.item.artists.indexOf(artist) !==
-                      spotifyAPIData.item.artists.length - 1
-                    )
-                      replaceValue += ', '
-                  }
-                  field.value = field.value.replace('$artist', replaceValue)
-                }
-                if ((field.value as string).includes('$song'))
-                  field.value = field.value.replace('$song', spotifyAPIData.item.name)
+              useVariablesInFields(fields, spotifyAPIData.item.name, spotifyAPIData.item.artists)
+              for (const additionalAction of event.additional_actions) {
+                useVariablesInFields(
+                  additionalAction.fields as APIEventField<any>[],
+                  spotifyAPIData.item.name,
+                  spotifyAPIData.item.artists
+                )
               }
               await handleAdditionalActions(event)
               await eventHandler(responseInteraction, fields, event.response_api)

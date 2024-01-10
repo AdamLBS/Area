@@ -8,17 +8,7 @@ import {
 import axios from 'axios'
 import { APIEventField } from 'types/events'
 import Cache from 'App/Models/Cache'
-
-export interface Artist {
-  name: string
-}
-export interface Track {
-  artists: Artist[]
-  name: string
-}
-export interface Item {
-  track: Track
-}
+import { Item, useVariablesInFields } from 'App/functions/SpotifyUtils'
 
 type SpotifyLikesSong = {
   total: number
@@ -83,26 +73,17 @@ export default class SpotifyLikeSong extends BaseTask {
             const jsonVals = JSON.parse(event.response_interaction)
             const responseInteraction = jsonVals.id.toString() as ResponseInteraction
             const fields = jsonVals.fields as APIEventField<any>[]
-            for (const field of fields) {
-              if ((field.value as string).includes('$artist')) {
-                let replaceValue = ''
-                for (const artist of spotifyLikesSong.items[0].track.artists) {
-                  replaceValue += artist.name
-                  if (
-                    spotifyLikesSong.items[0].track.artists.length === 2 &&
-                    artist === spotifyLikesSong.items[0].track.artists[0]
-                  )
-                    replaceValue += ' et '
-                  else if (
-                    spotifyLikesSong.items[0].track.artists.indexOf(artist) !==
-                    spotifyLikesSong.items[0].track.artists.length - 1
-                  )
-                    replaceValue += ', '
-                }
-                field.value = field.value.replace('$artist', replaceValue)
-              }
-              if ((field.value as string).includes('$song'))
-                field.value = field.value.replace('$song', spotifyLikesSong.items[0].track.name)
+            useVariablesInFields(
+              fields,
+              spotifyLikesSong.items[0].track.name,
+              spotifyLikesSong.items[0].track.artists
+            )
+            for (const additionalAction of event.additional_actions) {
+              useVariablesInFields(
+                additionalAction.fields,
+                spotifyLikesSong.items[0].track.name,
+                spotifyLikesSong.items[0].track.artists
+              )
             }
             await handleAdditionalActions(event)
             await eventHandler(responseInteraction, fields, event.response_api)

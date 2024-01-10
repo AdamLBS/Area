@@ -8,15 +8,7 @@ import {
 import axios from 'axios'
 import { APIEventField } from 'types/events'
 import Cache from 'App/Models/Cache'
-
-export interface Artist {
-  name: string
-}
-export interface Item {
-  artists: Artist[]
-  name: string
-  uri: string
-}
+import { Item, useVariablesInFields } from 'App/functions/SpotifyUtils'
 
 type SpotifySong = {
   shuffle_state: boolean
@@ -97,26 +89,13 @@ export default class SpotifyChangeMusicTask extends BaseTask {
             const jsonVals = JSON.parse(event.response_interaction)
             const responseInteraction = jsonVals.id.toString() as ResponseInteraction
             const fields = jsonVals.fields as APIEventField<any>[]
-            for (const field of fields) {
-              if ((field.value as string).includes('$artist')) {
-                let replaceValue = ''
-                for (const artist of spotifyMusicData?.item.artists) {
-                  replaceValue += artist.name
-                  if (
-                    spotifyMusicData.item.artists.length === 2 &&
-                    artist === spotifyMusicData.item.artists[0]
-                  )
-                    replaceValue += ' et '
-                  else if (
-                    spotifyMusicData.item.artists.indexOf(artist) !==
-                    spotifyMusicData.item.artists.length - 1
-                  )
-                    replaceValue += ', '
-                }
-                field.value = field.value.replace('$artist', replaceValue)
-              }
-              if ((field.value as string).includes('$song'))
-                field.value = field.value.replace('$song', spotifyMusicData.item.name)
+            useVariablesInFields(fields, spotifyMusicData.item.name, spotifyMusicData.item.artists)
+            for (const additionalAction of event.additional_actions) {
+              useVariablesInFields(
+                additionalAction.fields,
+                spotifyMusicData.item.name,
+                spotifyMusicData.item.artists
+              )
             }
             await handleAdditionalActions(event)
             await eventHandler(responseInteraction, fields, event.response_api)
