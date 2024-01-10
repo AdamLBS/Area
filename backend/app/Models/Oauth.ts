@@ -18,9 +18,6 @@ export default class Oauth extends BaseModel {
   @column()
   public refreshToken: string | null
 
-  // @column()
-  // public webhook: string | null
-
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 
