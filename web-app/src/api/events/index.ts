@@ -6,6 +6,7 @@ import {
   Event,
   EventType,
   Fields,
+  EventStats,
 } from '../constants';
 
 export const getTriggers = async (): Promise<ApiEvent[]> => {
@@ -85,6 +86,21 @@ export const getEvent = async (uuid: string): Promise<Event> => {
     return res as Event;
   } catch (error) {
     throw new Error('Error getting event.');
+  }
+};
+
+export const getEventStats = async (uuid: string): Promise<EventStats> => {
+  try {
+    const res = (
+      await axios.get(API_URL + `/events/${uuid}/stats`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+        },
+      })
+    ).data;
+    return res as EventStats;
+  } catch (error) {
+    throw new Error('Error getting event stats.');
   }
 };
 

@@ -1,6 +1,6 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Log from 'App/Models/Log'
-
+@
 export default class LogsController {
   public async getLogs({ response, params }: HttpContextContract) {
     const { uuid } = params

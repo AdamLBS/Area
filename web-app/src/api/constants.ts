@@ -100,3 +100,27 @@ export type Trigger = {
   trigger_provider: string;
   triggerInteraction: Interaction;
 };
+
+export type UsesTimestamps = {
+  ['january']: number;
+  ['february']: number;
+  ['march']: number;
+  ['april']: number;
+  ['may']: number;
+  ['june']: number;
+  ['july']: number;
+  ['august']: number;
+  ['september']: number;
+  ['october']: number;
+  ['november']: number;
+  ['december']: number;
+};
+
+export type EventStats = {
+  total: number;
+  success: number;
+  errors: number;
+  today: number;
+  lastLogs: number;
+  logsByMonth: UsesTimestamps;
+};

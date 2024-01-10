@@ -24,3 +24,9 @@ export const useEvents = () =>
     queryKey: ['events'],
     queryFn: getEvents,
   });
+
+export const useEventStats = (uuid: string) =>
+  useQuery({
+    queryKey: ['event-stats', uuid],
+    queryFn: () => getEvent(uuid),
+  });
