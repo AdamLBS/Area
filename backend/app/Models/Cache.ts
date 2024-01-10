@@ -23,9 +23,6 @@ export default class Cache extends BaseModel {
   @column()
   public timerActive: boolean
 
-  @column()
-  public githubLatestActionId: string | null
-
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 

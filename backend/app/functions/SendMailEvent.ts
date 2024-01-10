@@ -4,14 +4,6 @@ import { APIEventField } from 'types/events'
 
 export const SendMailEvent = async (data: APIEventField<any>[], responseApiUuid: string) => {
   try {
-    console.log(
-      'SendMailEvent fields : ' +
-        data.at(0)?.value +
-        ' ' +
-        data.at(1)?.value +
-        ' ' +
-        data.at(2)?.value
-    )
     const mailOAuth = await Database.query().from('oauths').where('uuid', responseApiUuid).first()
     let message =
       'From: <me>\n' +
