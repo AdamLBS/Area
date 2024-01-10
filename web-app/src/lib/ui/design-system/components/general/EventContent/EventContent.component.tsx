@@ -1,4 +1,10 @@
-import { Button, CardDescription, CardTitle, Toaster } from '@/components/ui';
+import {
+  Button,
+  CardDescription,
+  CardTitle,
+  Toaster,
+  useToast,
+} from '@/components/ui';
 import React, { memo, useCallback } from 'react';
 import {
   AddButton,
@@ -24,7 +30,7 @@ import {
   IconTwitch,
 } from '../../icons';
 import { EventActivation } from '../EventActivation';
-import { useEvent } from '@/react/hooks/events';
+import { useEvent, useResponses, useTriggers } from '@/react/hooks/events';
 
 type Provider =
   | 'spotify'
@@ -47,11 +53,15 @@ const providerIcon = {
 };
 import { EventSettingsModal } from '../EventSettingsModal';
 import { DeleteEventModal } from '../DeleteEventModal';
-import { AddEventActionModal } from '../AddEventActionModal';
 import { DeleteActionModal } from '../DeleteActionModal';
-import { UpdateTriggerEventModal } from '../UpdateTriggerEventModal';
-import { UpdateActionEventModal } from '../UpdateActionEventModal';
-import { UpdateAdditionalActionModal } from '../UpdateAdditionalActionModal';
+import { EventSelectModal } from '../EventSelectModal';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import {
+  addEventAction,
+  updateActionEvent,
+  updateAdditionalAction,
+  updateTriggerEvent,
+} from '@/api/events';
 
 export type EventContentProps = {
   eventUuid: string;
@@ -59,6 +69,8 @@ export type EventContentProps = {
 
 const EventContentComponent: React.FC<EventContentProps> = ({ eventUuid }) => {
   const { data: event } = useEvent(eventUuid);
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
   const [open, setOpen] = React.useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = React.useState(false);
   const [AddEventActionModalOpen, setAddEventActionModalOpen] =
@@ -75,6 +87,9 @@ const EventContentComponent: React.FC<EventContentProps> = ({ eventUuid }) => {
   const [updateAdditionalActionIndex, setUpdateAdditionalActionIndex] =
     React.useState(-1);
 
+  const { data: triggers } = useTriggers();
+  const { data: responses } = useResponses();
+
   const onDeleteAction = useCallback(
     (index: number) => {
       setDeleteActionIndex(index);
@@ -90,6 +105,86 @@ const EventContentComponent: React.FC<EventContentProps> = ({ eventUuid }) => {
     },
     [setUpdateAdditionalActionIndex, setUpdateAdditionalActionModalOpen],
   );
+
+  const updateTriggerEventMutation = useMutation({
+    mutationFn: updateTriggerEvent,
+    onSuccess: () => {
+      toast({
+        title: 'Event action added',
+        description: 'The event action has been added',
+        variant: 'default',
+      });
+      queryClient.invalidateQueries({ queryKey: ['event', eventUuid] });
+      setUpdateTriggerEventModalOpen(false);
+    },
+    onError: () => {
+      toast({
+        title: 'Uh oh! Something went wrong.',
+        description: 'An error occurred while adding the event action.',
+        variant: 'destructive',
+      });
+    },
+  });
+
+  const updateActionEventMutation = useMutation({
+    mutationFn: updateActionEvent,
+    onSuccess: () => {
+      toast({
+        title: 'Event action added',
+        description: 'The event action has been added',
+        variant: 'default',
+      });
+      queryClient.invalidateQueries({ queryKey: ['event', eventUuid] });
+      setUpdateActionEventModalOpen(false);
+    },
+    onError: () => {
+      toast({
+        title: 'Uh oh! Something went wrong.',
+        description: 'An error occurred while adding the event action.',
+        variant: 'destructive',
+      });
+    },
+  });
+
+  const updateAdditionalActionMutation = useMutation({
+    mutationFn: updateAdditionalAction,
+    onSuccess: () => {
+      toast({
+        title: 'Action updated',
+        description: 'The additional action has been upated.',
+        variant: 'default',
+      });
+      queryClient.invalidateQueries({ queryKey: ['event', eventUuid] });
+      setUpdateAdditionalActionModalOpen(false);
+    },
+    onError: () => {
+      toast({
+        title: 'Uh oh! Something went wrong.',
+        description: 'An error occurred while updating the additional action.',
+        variant: 'destructive',
+      });
+    },
+  });
+
+  const addEventActionMutation = useMutation({
+    mutationFn: addEventAction,
+    onSuccess: () => {
+      toast({
+        title: 'Event action added',
+        description: 'The event action has been added',
+        variant: 'default',
+      });
+      queryClient.invalidateQueries({ queryKey: ['event', eventUuid] });
+      setAddEventActionModalOpen(false);
+    },
+    onError: () => {
+      toast({
+        title: 'Uh oh! Something went wrong.',
+        description: 'An error occurred while adding the event action.',
+        variant: 'destructive',
+      });
+    },
+  });
 
   return (
     <Card>
@@ -192,32 +287,52 @@ const EventContentComponent: React.FC<EventContentProps> = ({ eventUuid }) => {
         isOpen={deleteModalOpen}
         onOpenChange={setDeleteModalOpen}
       />
-      <AddEventActionModal
-        isOpen={AddEventActionModalOpen}
-        onOpenChange={setAddEventActionModalOpen}
-        eventUuid={eventUuid}
-      />
       <DeleteActionModal
         isOpen={deleteActionModalOpen}
         onOpenChange={setDeleteActionModalOpen}
         eventUuid={eventUuid}
         index={deleteActionIndex}
       />
-      <UpdateTriggerEventModal
+      <EventSelectModal
+        title="Add an action event"
+        description="Add an action event in response to the trigger event"
+        type="additional"
+        datas={responses}
+        eventUuid={eventUuid}
+        isOpen={AddEventActionModalOpen}
+        onOpenChange={setAddEventActionModalOpen}
+        mutation={addEventActionMutation}
+      />
+      <EventSelectModal
+        title="Update your event"
+        description="Update your trigger event"
+        type="trigger"
+        datas={triggers}
+        eventUuid={eventUuid}
         isOpen={updateTriggerEventModalOpen}
         onOpenChange={setUpdateTriggerEventModalOpen}
-        eventUuid={eventUuid}
+        mutation={updateTriggerEventMutation}
       />
-      <UpdateActionEventModal
+      <EventSelectModal
+        title="Update your event"
+        description="Update your action event"
+        type="response"
+        datas={responses}
+        eventUuid={eventUuid}
         isOpen={updateActionEventModalOpen}
         onOpenChange={setUpdateActionEventModalOpen}
-        eventUuid={eventUuid}
+        mutation={updateActionEventMutation}
       />
-      <UpdateAdditionalActionModal
+      <EventSelectModal
+        title="Update your event"
+        description="Update your additional action"
+        type="additional"
+        additionalActionIndex={updateAdditionalActionIndex}
+        datas={responses}
+        eventUuid={eventUuid}
         isOpen={UpdateAdditionalActionModalOpen}
         onOpenChange={setUpdateAdditionalActionModalOpen}
-        eventUuid={eventUuid}
-        index={updateAdditionalActionIndex}
+        mutation={updateAdditionalActionMutation}
       />
       <Toaster />
     </Card>
