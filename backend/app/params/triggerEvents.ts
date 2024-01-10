@@ -42,7 +42,9 @@ export const TRIGGER_EVENTS: APIEvent[] = [
         fields: [],
         variables: {
           streamer: 'Name of the streamer',
-          streamUrl: 'Url of the stream',
+          title: 'Title of the stream',
+          game: 'Name of the game',
+          url: 'Url of the stream',
         },
       },
     ],
@@ -55,16 +57,14 @@ export const TRIGGER_EVENTS: APIEvent[] = [
         name: 'New commit',
         fields: [
           {
-            value: 'Repository url',
+            value: 'repository url',
             name: 'commitsUrl',
             type: 'input',
             required: true,
           },
         ],
         variables: {
-          commitUrl: 'Url of the commit',
-          commitMsg: 'Message of the commit',
-          commitAuthor: 'Author of the commit',
+          commitsUrl: 'Url of the commit',
         },
       },
       {
