@@ -100,6 +100,34 @@ export const RESPONSE_EVENTS: APIEvent[] = [
             type: 'input',
             required: true,
           },
+          {
+            value: 'Announcement color',
+            name: 'color',
+            type: 'select',
+            values: [
+              {
+                value: 'primary',
+                label: 'Primary',
+              },
+              {
+                value: 'purple',
+                label: 'Purple',
+              },
+              {
+                value: 'blue',
+                label: 'Blue',
+              },
+              {
+                value: 'green',
+                label: 'Green',
+              },
+              {
+                value: 'orange',
+                label: 'Orange',
+              },
+            ],
+            required: true,
+          }
         ],
         variables: {},
       },
