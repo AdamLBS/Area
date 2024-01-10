@@ -38,7 +38,7 @@ const LoginFormComponent = () => {
     mutationFn: logIn,
     onSuccess: (res) => {
       localStorage.setItem('authToken', res.token);
-      router.push('/dashboard');
+      router.push('/bridge');
     },
     onError: () => {
       toast({
