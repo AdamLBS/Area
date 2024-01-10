@@ -55,6 +55,7 @@ export const TRIGGER_EVENTS: APIEvent[] = [
         ],
         variables: {
           streamer: 'Name of the streamer',
+          streamUrl: 'Url of the stream',
         },
       },
     ],
