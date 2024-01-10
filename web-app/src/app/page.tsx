@@ -4,6 +4,7 @@ import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react';
 import { getMe } from '@/api/user';
+import { NavBarLandingPage } from '@/lib/ui/design-system';
 
 export default function Home() {
   const router = useRouter();
@@ -18,18 +19,18 @@ export default function Home() {
     },
   });
 
-  useEffect(() => {
-    const token = localStorage.getItem('authToken');
-    if (token === null) {
-      router.push('/login');
-    } else {
-      checkMe.mutate();
-    }
-  }, []);
+  // useEffect(() => {
+  //   const token = localStorage.getItem('authToken');
+  //   if (token === null) {
+  //     router.push('/login');
+  //   } else {
+  //     checkMe.mutate();
+  //   }
+  // }, []);
 
   return (
-    <div>
-      <Button>Hello</Button>
+    <div style={{ padding: '24px' }}>
+      <NavBarLandingPage />
     </div>
   );
 }
