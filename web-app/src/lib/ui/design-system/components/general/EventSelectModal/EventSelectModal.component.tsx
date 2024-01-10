@@ -8,84 +8,67 @@ import {
   Dialog,
   Button,
   DialogClose,
-  useToast,
 } from '@/components/ui';
-import { useResponses } from '@/react/hooks/events';
 import {
   EventContainer,
   SelectContainer,
   SelectHeader,
-} from './AddEventActionModal.style';
+} from './EventSelectModal.style';
 import { H4, PrimaryMutted } from '../Text';
 import { CustomSelect } from '../CustomSelect';
-import { ApiInteraction, Fields } from '@/api/constants';
+import { ApiEvent, ApiInteraction, Fields } from '@/api/constants';
 import { UpdateEventParamsModal } from '../UpdateEventParamsModal';
-import { addEventAction } from '@/api/events';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { UseMutationResult } from '@tanstack/react-query';
 import { useConnectedServices } from '@/functions/connectedServices';
 
 export type DeleteEventModalProps = {
+  title: string;
+  description: string;
+  type: 'trigger' | 'response' | 'additional';
+  additionalActionIndex?: number;
+  datas?: ApiEvent[];
   eventUuid: string;
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  mutation: UseMutationResult<any, any, any, any>;
 };
 
-const AddEventActionModalComponent: React.FC<DeleteEventModalProps> = ({
+const EventSelectModalComponent: React.FC<DeleteEventModalProps> = ({
+  title,
+  description,
+  type,
+  additionalActionIndex,
+  datas,
   eventUuid,
   isOpen,
   onOpenChange,
+  mutation,
 }) => {
-  const { data: responses } = useResponses();
   const [service, setService] = React.useState<string>();
   const [interaction, setInteraction] = React.useState<ApiInteraction>();
   const [step, setStep] = React.useState(0);
-  const { toast } = useToast();
-  const queryClient = useQueryClient();
 
   const services = useMemo(() => {
-    return responses?.map((response) => response.provider);
-  }, [responses]);
+    return datas?.map((data) => data.provider);
+  }, [datas]);
   const interactions = useMemo(() => {
-    return responses
-      ?.find((response) => response.provider === service)
+    return datas
+      ?.find((data) => data.provider === service)
       ?.interactions.map((interaction) => interaction.name);
-  }, [responses, service]);
-
-  const connectedServices = useConnectedServices(services);
-
+  }, [datas, service]);
   const onChangeInteraction = useCallback(
     (value: string) => {
       setInteraction(
-        responses
-          ?.find((response) => response.provider === service)
+        datas
+          ?.find((data) => data.provider === service)
           ?.interactions.find((interaction) => interaction.name === value),
       );
     },
-    [responses, service, setInteraction],
+    [datas, service, setInteraction],
   );
 
-  const addEventActionMutation = useMutation({
-    mutationFn: addEventAction,
-    onSuccess: () => {
-      toast({
-        title: 'Event action added',
-        description: 'The event action has been added',
-        variant: 'default',
-      });
-      queryClient.invalidateQueries({ queryKey: ['event', eventUuid] });
-      onOpenChange(false);
-      setStep(0);
-      setService(undefined);
-      setInteraction(undefined);
-    },
-    onError: () => {
-      toast({
-        title: 'Uh oh! Something went wrong.',
-        description: 'An error occurred while adding the event action.',
-        variant: 'destructive',
-      });
-    },
-  });
+  const connectedServices = useConnectedServices(services);
 
   const onContinue = useCallback(() => {
     setStep(1);
@@ -96,14 +79,38 @@ const AddEventActionModalComponent: React.FC<DeleteEventModalProps> = ({
       if (!interaction || !service) {
         return;
       }
-      addEventActionMutation.mutate({
-        eventUuid,
-        action_provider: service.toLowerCase(),
-        id: interaction.id,
-        fiedls: newFields,
-      });
+      if (type === 'trigger') {
+        mutation.mutate({
+          eventUuid,
+          trigger_provider: service.toLowerCase(),
+          id: interaction.id,
+          fields: newFields,
+        });
+      } else if (type === 'response') {
+        mutation.mutate({
+          eventUuid,
+          response_provider: service.toLowerCase(),
+          id: interaction.id,
+          fields: newFields,
+        });
+      } else if (type === 'additional' && additionalActionIndex) {
+        mutation.mutate({
+          eventUuid,
+          action_provider: service.toLowerCase(),
+          id: interaction.id,
+          index: additionalActionIndex,
+          fields: newFields,
+        });
+      } else {
+        mutation.mutate({
+          eventUuid,
+          action_provider: service.toLowerCase(),
+          id: interaction.id,
+          fiedls: newFields,
+        });
+      }
     },
-    [addEventActionMutation, eventUuid, interaction],
+    [mutation, eventUuid, interaction],
   );
 
   return (
@@ -112,17 +119,15 @@ const AddEventActionModalComponent: React.FC<DeleteEventModalProps> = ({
         {step === 0 && (
           <>
             <DialogHeader>
-              <DialogTitle>Add an action event</DialogTitle>
-              <DialogDescription>
-                Add an action event in response to the trigger event
-              </DialogDescription>
+              <DialogTitle>{title}</DialogTitle>
+              <DialogDescription>{description}</DialogDescription>
             </DialogHeader>
             <EventContainer>
               <SelectContainer>
                 <SelectHeader>
                   <H4>Service</H4>
                   <PrimaryMutted>
-                    The action service in response to the trigger event
+                    The data service starting the event
                   </PrimaryMutted>
                 </SelectHeader>
                 <CustomSelect
@@ -136,8 +141,8 @@ const AddEventActionModalComponent: React.FC<DeleteEventModalProps> = ({
                 <SelectHeader>
                   <H4>Interaction</H4>
                   <PrimaryMutted>
-                    The action interaction of the action service in response to
-                    the trigger event
+                    The data interaction of the data service that is checked to
+                    start the event
                   </PrimaryMutted>
                 </SelectHeader>
                 <CustomSelect
@@ -180,4 +185,4 @@ const AddEventActionModalComponent: React.FC<DeleteEventModalProps> = ({
   );
 };
 
-export const AddEventActionModal = memo(AddEventActionModalComponent);
+export const EventSelectModal = memo(EventSelectModalComponent);
