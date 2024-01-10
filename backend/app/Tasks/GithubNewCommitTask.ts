@@ -7,7 +7,6 @@ import { APIEventField } from 'types/events'
 import Cache from 'App/Models/Cache'
 import { Commit } from 'App/types/github'
 
-
 export default class GithubCheckLastCommitTask extends BaseTask {
   public static get schedule() {
     // Use CronTimeV2 generator:
