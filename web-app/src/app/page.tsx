@@ -21,8 +21,6 @@ import {
   TextH1,
   TeamContainer,
   TeamText,
-  Elp1,
-  Elp2,
 } from './page.style';
 import { Boxes, Eye } from 'lucide-react';
 
@@ -39,12 +37,6 @@ export default function Home() {
   return (
     <LandingPage>
       <NavBarLandingPage />
-      {/* <Elp1>
-        <img src="/elp1.png" style={{ width: '100%' }} />
-      </Elp1>
-      <Elp2>
-        <img src="/elp2.png" style={{ width: '100%' }} />
-      </Elp2> */}
       <Content>
         <WorkflowContainer>
           <RainbowTextH3>Automated workflows</RainbowTextH3>
@@ -70,7 +62,7 @@ export default function Home() {
           </ServiceContent>
           <Card>
             <CardHeader>
-              <TextH1>More than {} services availables</TextH1>
+              <TextH1>More than {6} services availables</TextH1>
             </CardHeader>
             <CardContent>
               <img src="/logos.png" style={{ width: '100%' }} />
