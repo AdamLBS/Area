@@ -16,10 +16,10 @@ Future<EventCreationModel> getEventByUuid(String uuid) async {
         eventDescription: responseJson["description"],
         triggerEvent: EventModel.fromJson(
             jsonDecode(responseJson["triggerInteraction"]),
-            responseJson["provider"]),
+           ),
         responseEvent: EventModel.fromJson(
             jsonDecode(responseJson["responseInteraction"]),
-            responseJson["provider"]));
+            ));
     print(evt.responseEvent);
     return evt;
   } else {

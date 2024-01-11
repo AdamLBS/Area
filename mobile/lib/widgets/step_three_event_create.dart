@@ -253,7 +253,7 @@ class _StepThreeEventCreateState extends State<StepThreeEventCreate> {
                                   if (widget.eventCreationModel.triggerEvent !=
                                           null &&
                                       widget.eventCreationModel.triggerEvent!
-                                          .variables.isNotEmpty)
+                                          .variables!.isNotEmpty)
                                     Text(
                                         "You can use theses variables in the fields : ",
                                         style: GoogleFonts.inter(
@@ -263,12 +263,12 @@ class _StepThreeEventCreateState extends State<StepThreeEventCreate> {
                                   if (widget.eventCreationModel.triggerEvent !=
                                           null &&
                                       widget.eventCreationModel.triggerEvent!
-                                          .variables.isNotEmpty)
+                                          .variables!.isNotEmpty)
                                     SizedBox(height: 10),
                                   for (var variable in widget.eventCreationModel
-                                      .triggerEvent!.variables.keys)
+                                      .triggerEvent!.variables!.keys)
                                     Text(
-                                        "- ${widget.eventCreationModel.triggerEvent!.variables[variable]} : \$$variable",
+                                        "- ${widget.eventCreationModel.triggerEvent!.variables![variable]} : \$$variable",
                                         style: GoogleFonts.inter(
                                           fontSize: 14,
                                           color: Color(0xFFA1A1AA),
@@ -276,7 +276,7 @@ class _StepThreeEventCreateState extends State<StepThreeEventCreate> {
                                   if (widget.eventCreationModel.triggerEvent !=
                                           null &&
                                       widget.eventCreationModel.triggerEvent!
-                                          .variables.isNotEmpty)
+                                          .variables!.isNotEmpty)
                                     SizedBox(height: 10),
                                   for (var field in selectedResponse!.fields)
                                     Column(
