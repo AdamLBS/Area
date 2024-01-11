@@ -20,7 +20,7 @@ Future<void> addNewAction(EventModel evt, String uuid) async {
     url,
     body: json.encode({
       "action_provider": evt.provider.toLowerCase(),
-      "id" : evt.id,
+      "id": evt.id,
       "fields": json.decode(fieldsJson),
     }),
     headers: {

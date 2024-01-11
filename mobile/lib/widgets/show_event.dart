@@ -289,18 +289,19 @@ class _ShowEventState extends State<ShowEvent> {
                           .then((value) {
                         EventModel? eventModel = value as EventModel?;
                         if (eventModel != null) {
-                        addNewAction(widget.event.responseEvent!,
-                                widget.userEvent.uuid)
-                            .then((res) => setState(() {
-                              widget.event.additionalActions!.add(value!);
-                                  if (context.mounted) {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content: Text("Event updated"),
-                                      ),
-                                    );
-                                  }
-                                }));
+                          addNewAction(widget.event.responseEvent!,
+                                  widget.userEvent.uuid)
+                              .then((res) => setState(() {
+                                    widget.event.additionalActions!.add(value!);
+                                    if (context.mounted) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          content: Text("Event updated"),
+                                        ),
+                                      );
+                                    }
+                                  }));
                         }
                       });
                     },
