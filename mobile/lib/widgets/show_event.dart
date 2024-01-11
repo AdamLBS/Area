@@ -6,6 +6,7 @@ import 'package:area/model/user_event_model.dart';
 import 'package:area/pages/update_action_page.dart';
 import 'package:area/utils/add_new_action.dart';
 import 'package:area/utils/delete_additional_actions.dart';
+import 'package:area/utils/edit_additional_action.dart';
 import 'package:area/utils/get_event.dart';
 import 'package:area/utils/load_event_variables.dart';
 import 'package:area/utils/update_action.dart';
@@ -245,6 +246,10 @@ class _ShowEventState extends State<ShowEvent> {
                       });
                     }
 
+                    void updateAdditional() {
+                      Navigator.of(context).pop(true);
+                    }
+
                     return Column(
                       children: [
                         InkWell(
@@ -256,8 +261,53 @@ class _ShowEventState extends State<ShowEvent> {
                                   return BottomSheetEventEdit(
                                     event: e,
                                     delete: deleteAdditional,
+                                    update: updateAdditional,
                                   );
+                                }).then((value) {
+                              if (value != null && value) {
+                                EventCreationModel event = EventCreationModel(
+                                    triggerEvent: widget.event.triggerEvent,
+                                    responseEvent: null,
+                                    eventName: widget.event.eventName,
+                                    eventDescription:
+                                        widget.event.eventDescription,
+                                    additionalActions:
+                                        widget.event.additionalActions);
+                                Navigator.of(context)
+                                    .push(MaterialPageRoute(
+                                        builder: (context) => UpdateActionPage(
+                                              eventCreationModel: event,
+                                            )))
+                                    .then((value) {
+                                  EventModel? eventModel = value as EventModel?;
+                                  if (eventModel != null) {
+                                    editAdditionalAction(
+                                            eventModel,
+                                            widget.userEvent.uuid,
+                                            widget.event.additionalActions!
+                                                .indexOf(e))
+                                        .then((val) => setState(() {
+                                              int index = widget
+                                                  .event.additionalActions!
+                                                  .indexOf(e);
+                                              widget.event.additionalActions!
+                                                  .removeAt(index);
+                                              widget.event.additionalActions!
+                                                  .insert(index, value!);
+                                              if (context.mounted) {
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(
+                                                  SnackBar(
+                                                    content:
+                                                        Text("Event updated"),
+                                                  ),
+                                                );
+                                              }
+                                            }));
+                                  }
                                 });
+                              }
+                            });
                           },
                           child: EventCard(
                             desc: e.name,

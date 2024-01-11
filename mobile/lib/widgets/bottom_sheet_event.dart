@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class BottomSheetEventEdit extends StatefulWidget {
-  const BottomSheetEventEdit({super.key, required this.event, this.delete});
+  const BottomSheetEventEdit({super.key, required this.event, this.delete, required this.update});
   final EventModel event;
   final VoidCallback? delete;
+  final VoidCallback update;
 
   @override
   State<BottomSheetEventEdit> createState() => _BottomSheetEventEditState();
@@ -48,7 +49,9 @@ class _BottomSheetEventEditState extends State<BottomSheetEventEdit> {
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
-              onPressed: () {},
+              onPressed: () {
+                widget.update();
+              },
               child: Text(
                 "Update",
                 style: GoogleFonts.inter(
