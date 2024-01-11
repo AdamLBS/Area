@@ -20,20 +20,23 @@ class EventCard extends StatelessWidget {
       "spotify": "assets/icons/spotify.svg",
     };
     return Container(
-      constraints: BoxConstraints(minHeight: 100, minWidth: 320),
+      constraints: BoxConstraints(minHeight: 102, maxWidth: 320),
       decoration: BoxDecoration(
-        color: Color(0xFF94A3B8),
+        border: Border.all(
+          color: Color(0xFF94A3B8).withOpacity(0.5),
+        ),
         borderRadius: BorderRadius.circular(10),
       ),
       padding: EdgeInsets.all(24),
       child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
           children: [
             Row(
               children: [
                 SvgPicture.asset(
-                  svgs[name]!,
+                  svgs[name.toLowerCase()]!,
                   height: 32,
                   width: 32,
                 ),
@@ -41,7 +44,7 @@ class EventCard extends StatelessWidget {
                   width: 10,
                 ),
                 Text(
-                  name,
+                  name[0].toUpperCase() + name.substring(1).toLowerCase(),
                   style: GoogleFonts.inter(
                     fontSize: 20,
                     fontWeight: FontWeight.w500,

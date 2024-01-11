@@ -75,22 +75,24 @@ class _BridgePageState extends State<BridgePage> {
                     height: 20,
                   ),
                   Text(
-                    "Your events",
+                    selectedEvt == null ? "Your events" : "Your event",
                     style: GoogleFonts.inter(
                       fontSize: 20,
                       fontWeight: FontWeight.w500,
                       color: Colors.white,
                     ),
                   ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Text("All of the events you have already created",
-                      style: GoogleFonts.inter(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0xFFA1A1AA),
-                      )),
+                  if (selectedEvt == null)
+                    SizedBox(
+                      height: 10,
+                    ),
+                  if (selectedEvt == null)
+                    Text("All of the events you have already created",
+                        style: GoogleFonts.inter(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xFFA1A1AA),
+                        )),
                   SizedBox(
                     height: 10,
                   ),

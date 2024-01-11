@@ -287,7 +287,7 @@ class _StepThreeEventCreateState extends State<StepThreeEventCreate> {
                                               widget
                                                   .eventCreationModel
                                                   .triggerEvent!
-                                                  .variables
+                                                  .variables!
                                                   .isNotEmpty)
                                             Text(
                                                 "You can use theses variables in the fields : ",
@@ -301,16 +301,16 @@ class _StepThreeEventCreateState extends State<StepThreeEventCreate> {
                                               widget
                                                   .eventCreationModel
                                                   .triggerEvent!
-                                                  .variables
+                                                  .variables!
                                                   .isNotEmpty)
                                             SizedBox(height: 10),
                                           for (var variable in widget
                                               .eventCreationModel
                                               .triggerEvent!
-                                              .variables
+                                              .variables!
                                               .keys)
                                             Text(
-                                                "- ${widget.eventCreationModel.triggerEvent!.variables[variable]} : \$$variable",
+                                                "- ${widget.eventCreationModel.triggerEvent!.variables![variable]} : \$$variable",
                                                 style: GoogleFonts.inter(
                                                   fontSize: 14,
                                                   color: Color(0xFFA1A1AA),
@@ -321,7 +321,7 @@ class _StepThreeEventCreateState extends State<StepThreeEventCreate> {
                                               widget
                                                   .eventCreationModel
                                                   .triggerEvent!
-                                                  .variables
+                                                  .variables!
                                                   .isNotEmpty)
                                             SizedBox(height: 10),
                                           for (var field

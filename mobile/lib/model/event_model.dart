@@ -3,24 +3,26 @@ class EventModel {
   final String id;
   final String name;
   late List<Field> fields;
-  final Map<String, String> variables;
+  final Map<String, String>? variables;
   EventModel({
     required this.provider,
     required this.id,
     required this.name,
     required this.fields,
-    required this.variables,
+    this.variables,
   });
 
-  factory EventModel.fromJson(Map<String, dynamic> json, String provider) {
+  factory EventModel.fromJson(Map<String, dynamic> json) {
     return EventModel(
-      provider: provider,
+      provider: json['provider'],
       id: json['id'],
       name: json['name'],
       fields: (json['fields'] as List)
           .map((field) => Field.fromJson(field))
           .toList(),
-      variables: Map<String, String>.from(json['variables']),
+      variables: json['variables'] != null
+          ? Map<String, String>.from(json['variables'] as Map<String, dynamic>)
+          : null,
     );
   }
   @override
