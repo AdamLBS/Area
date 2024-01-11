@@ -1,6 +1,9 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:area/model/event_create_model.dart';
+import 'package:area/model/event_model.dart';
+import 'package:area/model/user_event_model.dart';
+import 'package:area/utils/delete_additional_actions.dart';
 import 'package:area/widgets/bottom_sheet_event.dart';
 import 'package:area/widgets/event_card.dart';
 import 'package:flutter/material.dart';
@@ -8,8 +11,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ShowEvent extends StatefulWidget {
-  const ShowEvent({super.key, required this.event});
+  const ShowEvent({super.key, required this.event, required this.userEvent});
   final EventCreationModel event;
+  final UserEvent userEvent;
 
   @override
   State<ShowEvent> createState() => _ShowEventState();
@@ -19,10 +23,7 @@ class _ShowEventState extends State<ShowEvent> {
   @override
   Widget build(BuildContext context) {
     print(widget.event.responseEvent!.name);
-    return ListView(
-      shrinkWrap: true,
-      scrollDirection: Axis.vertical,
-      physics: NeverScrollableScrollPhysics(),
+    return Column(
       children: [
         Container(
           constraints: BoxConstraints(minHeight: 102, minWidth: 320),
@@ -107,7 +108,7 @@ class _ShowEventState extends State<ShowEvent> {
                 builder: (context) {
                   return BottomSheetEventEdit(
                     event: widget.event.triggerEvent!,
-                    triggerEvent: true,
+                    delete: null,
                   );
                 });
           },
@@ -139,7 +140,7 @@ class _ShowEventState extends State<ShowEvent> {
                 builder: (context) {
                   return BottomSheetEventEdit(
                     event: widget.event.responseEvent!,
-                    triggerEvent: false,
+                    delete: null,
                   );
                 });
           },
@@ -151,10 +152,14 @@ class _ShowEventState extends State<ShowEvent> {
         SizedBox(
           height: 10,
         ),
+                if(widget.event.additionalActions != null && widget.event.additionalActions!.isNotEmpty)
+
         Divider(
           color: Color(0xFFFFFFFF),
           thickness: 0.1,
         ),
+        if(widget.event.additionalActions != null && widget.event.additionalActions!.isNotEmpty)
+
         Text(
           "Additional actions",
           style: GoogleFonts.inter(
@@ -165,6 +170,10 @@ class _ShowEventState extends State<ShowEvent> {
         ),
         if (widget.event.additionalActions != null && widget.event.additionalActions!.isNotEmpty)
           ...widget.event.additionalActions!.map((e) {
+            print("here");
+            void deleteAdditional() {
+              deleteAdditionalAction(widget.userEvent, widget.event.additionalActions!.indexOf(e));
+            }
             return InkWell(
               onTap: () {
                 showModalBottomSheet(
@@ -173,8 +182,10 @@ class _ShowEventState extends State<ShowEvent> {
                     builder: (context) {
                       return BottomSheetEventEdit(
                         event: e,
-                        triggerEvent: false,
+                        delete: deleteAdditional,
                       );
+                    }).then((value) {
+                      setState(() {});
                     });
               },
               child: EventCard(

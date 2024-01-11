@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class BottomSheetEventEdit extends StatefulWidget {
-  const BottomSheetEventEdit({super.key, required this.event, required this.triggerEvent});
+  const BottomSheetEventEdit({super.key, required this.event, this.delete});
   final EventModel event;
-  final bool triggerEvent;
+  final VoidCallback? delete;
 
   @override
   State<BottomSheetEventEdit> createState() => _BottomSheetEventEditState();
@@ -27,7 +27,7 @@ class _BottomSheetEventEditState extends State<BottomSheetEventEdit> {
         mainAxisSize: MainAxisSize.max,
         children: [
           Text(
-            "Do you want to update or delete this event?",
+            widget.delete != null ? "Do you want to update or delete this event?" : "Do you want to update this event?",
             style: GoogleFonts.inter(
               fontSize: 14,
               color: Color(0xFFA1A1AA),
@@ -56,9 +56,11 @@ class _BottomSheetEventEditState extends State<BottomSheetEventEdit> {
               ),
             ),
           ),
+          if (widget.delete != null)
           SizedBox(
             height: 10,
           ),
+          if (widget.delete != null)
           SizedBox(
             width: double.infinity,
             height: 40,
@@ -69,7 +71,7 @@ class _BottomSheetEventEditState extends State<BottomSheetEventEdit> {
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
-              onPressed: () {},
+              onPressed: widget.delete,
               child: Text(
                 "Delete",
                 style: GoogleFonts.inter(
