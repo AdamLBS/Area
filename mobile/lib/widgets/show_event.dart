@@ -111,19 +111,23 @@ class _ShowEventState extends State<ShowEvent> {
         ),
         InkWell(
           onTap: () {
-                        EventCreationModel event = EventCreationModel(
+            EventCreationModel event = EventCreationModel(
                 triggerEvent: null,
                 responseEvent: null,
                 eventName: widget.event.eventName,
                 eventDescription: widget.event.eventDescription,
                 additionalActions: widget.event.additionalActions);
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => UpdateTriggerPage(eventCreationModel: event,))).then((value) => setState(() {
-                  EventModel? eventModel = value as EventModel?;
-                  if (eventModel != null) {
-                    widget.event.triggerEvent = eventModel;
-                  }
-                }));
+            Navigator.of(context)
+                .push(MaterialPageRoute(
+                    builder: (context) => UpdateTriggerPage(
+                          eventCreationModel: event,
+                        )))
+                .then((value) => setState(() {
+                      EventModel? eventModel = value as EventModel?;
+                      if (eventModel != null) {
+                        widget.event.triggerEvent = eventModel;
+                      }
+                    }));
           },
           child: EventCard(
             desc: event!.triggerEvent!.name,
@@ -131,7 +135,7 @@ class _ShowEventState extends State<ShowEvent> {
           ),
         ),
         SizedBox(
-          height: 10, 
+          height: 10,
         ),
         Divider(
           color: Color(0xFFFFFFFF),
@@ -153,14 +157,17 @@ class _ShowEventState extends State<ShowEvent> {
                 eventName: widget.event.eventName,
                 eventDescription: widget.event.eventDescription,
                 additionalActions: widget.event.additionalActions);
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => UpdateActionPage(eventCreationModel: event,))).then((value) => setState(() {
-                  EventModel? eventModel = value as EventModel?;
-                  if (eventModel != null) {
-                    widget.event.responseEvent = eventModel;
-                  }
-                }));
-
+            Navigator.of(context)
+                .push(MaterialPageRoute(
+                    builder: (context) => UpdateActionPage(
+                          eventCreationModel: event,
+                        )))
+                .then((value) => setState(() {
+                      EventModel? eventModel = value as EventModel?;
+                      if (eventModel != null) {
+                        widget.event.responseEvent = eventModel;
+                      }
+                    }));
           },
           child: EventCard(
             desc: event!.responseEvent!.name,

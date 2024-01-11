@@ -17,19 +17,19 @@ class UpdateTriggerPage extends StatefulWidget {
 }
 
 class _UpdateTriggerPageState extends State<UpdateTriggerPage> {
-  String? selectedApi ;
+  String? selectedApi;
   EventModel? selectedTrigger;
   String errorMessage = "";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-              resizeToAvoidBottomInset: false,
-        endDrawer: Theme(
-          data: Theme.of(context).copyWith(
-            canvasColor: Color(0xFF09090B),
-          ),
-          child: DrawerBridgePage(),
+      resizeToAvoidBottomInset: false,
+      endDrawer: Theme(
+        data: Theme.of(context).copyWith(
+          canvasColor: Color(0xFF09090B),
         ),
+        child: DrawerBridgePage(),
+      ),
       body: LayoutBuilder(builder: (context, constraint) {
         return FutureBuilder(
             future: getLoggedInServices(),
@@ -42,60 +42,61 @@ class _UpdateTriggerPageState extends State<UpdateTriggerPage> {
                     ),
                     child: IntrinsicHeight(
                       child: Container(
-                                  padding: EdgeInsets.only(right: 20, left: 20, bottom: 20, top: 20),
-        
+                        padding: EdgeInsets.only(
+                            right: 20, left: 20, bottom: 20, top: 20),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                                              Row(
-                                              mainAxisAlignment: MainAxisAlignment.start,
-                                              crossAxisAlignment: CrossAxisAlignment.center,
-                                              children: [
-                        SvgPicture.asset(
-                          "assets/icons/bridge.svg",
-                          width: 30,
-                          height: 50,
-                        ),
-                        SizedBox(width: 10),
-                        Text(
-                          "Bridge",
-                          style: TextStyle(
-                            fontSize: 30,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                        Spacer(),
-                        InkWell(
-                          onTap: () {
-                            Scaffold.of(context).openEndDrawer();
-                          },
-                          child: Icon(
-                            Icons.menu,
-                            color: Colors.white,
-                          ),
-                        )
-                                              ],
-                                            ),
-                                            SizedBox(height: 20),
-                                              Text(
-                                            "Update an event",
-                                            style: GoogleFonts.inter(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.w600,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                          SizedBox(height: 10),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                SvgPicture.asset(
+                                  "assets/icons/bridge.svg",
+                                  width: 30,
+                                  height: 50,
+                                ),
+                                SizedBox(width: 10),
+                                Text(
+                                  "Bridge",
+                                  style: TextStyle(
+                                    fontSize: 30,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.white,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                                Spacer(),
+                                InkWell(
+                                  onTap: () {
+                                    Scaffold.of(context).openEndDrawer();
+                                  },
+                                  child: Icon(
+                                    Icons.menu,
+                                    color: Colors.white,
+                                  ),
+                                )
+                              ],
+                            ),
+                            SizedBox(height: 20),
+                            Text(
+                              "Update an event",
+                              style: GoogleFonts.inter(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.white,
+                              ),
+                            ),
+                            SizedBox(height: 10),
                             FutureBuilder(
                               future: getTriggerApis(),
                               builder: (context,
                                   AsyncSnapshot<List<EventModel>> snapshot) {
                                 if (snapshot.connectionState ==
                                     ConnectionState.waiting) {
-                                  return Center(child: CircularProgressIndicator());
+                                  return Center(
+                                      child: CircularProgressIndicator());
                                 } else if (snapshot.hasData) {
                                   List<String> providerList = [];
                                   selectedTrigger =
@@ -104,7 +105,8 @@ class _UpdateTriggerPageState extends State<UpdateTriggerPage> {
                                     selectedApi = selectedTrigger!.provider;
                                   }
                                   for (var element in snapshot.data!) {
-                                    if (!providerList.contains(element.provider)) {
+                                    if (!providerList
+                                        .contains(element.provider)) {
                                       providerList.add(element.provider);
                                     }
                                   }
@@ -117,13 +119,16 @@ class _UpdateTriggerPageState extends State<UpdateTriggerPage> {
                                       }
                                       if (selectedTrigger != null &&
                                           element.id == selectedTrigger!.id) {
-                                        element.fields = selectedTrigger!.fields;
+                                        element.fields =
+                                            selectedTrigger!.fields;
                                         selectedTrigger = element;
                                       }
                                     }
                                     return Column(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text("API",
                                             style: GoogleFonts.inter(
@@ -132,7 +137,8 @@ class _UpdateTriggerPageState extends State<UpdateTriggerPage> {
                                               fontWeight: FontWeight.w600,
                                             )),
                                         SizedBox(height: 10),
-                                        Text("The API that will trigger the event",
+                                        Text(
+                                            "The API that will trigger the event",
                                             style: GoogleFonts.inter(
                                               fontSize: 14,
                                               color: Color(0xFFA1A1AA),
@@ -177,8 +183,8 @@ class _UpdateTriggerPageState extends State<UpdateTriggerPage> {
                                                   color: Colors.white),
                                               menuStyle: MenuStyle(
                                                 backgroundColor:
-                                                    MaterialStateColor.resolveWith(
-                                                        (states) =>
+                                                    MaterialStateColor
+                                                        .resolveWith((states) =>
                                                             Color(0xFF09090B)),
                                               ),
                                               onSelected: (String? api) {
@@ -190,20 +196,24 @@ class _UpdateTriggerPageState extends State<UpdateTriggerPage> {
                                                 });
                                               },
                                               dropdownMenuEntries: providerList
-                                                  .map<DropdownMenuEntry<String>>(
+                                                  .map<
+                                                          DropdownMenuEntry<
+                                                              String>>(
                                                       (String value) {
-                                                return DropdownMenuEntry<String>(
+                                                return DropdownMenuEntry<
+                                                        String>(
                                                     value: value,
                                                     label: value,
                                                     enabled: services.data!
-                                                        .contains(
-                                                            value.toLowerCase()),
+                                                        .contains(value
+                                                            .toLowerCase()),
                                                     style: MenuItemButton.styleFrom(
                                                         foregroundColor:
                                                             Colors.white,
                                                         disabledForegroundColor:
                                                             Colors.grey
-                                                                .withOpacity(0.5)));
+                                                                .withOpacity(
+                                                                    0.5)));
                                               }).toList(),
                                             ),
                                           ),
@@ -234,7 +244,8 @@ class _UpdateTriggerPageState extends State<UpdateTriggerPage> {
                                             ),
                                             child: DropdownMenu<EventModel>(
                                               key: selectedApi != null
-                                                  ? ValueKey<String>(selectedApi!)
+                                                  ? ValueKey<String>(
+                                                      selectedApi!)
                                                   : null,
                                               expandedInsets: EdgeInsets.all(0),
                                               inputDecorationTheme:
@@ -264,11 +275,13 @@ class _UpdateTriggerPageState extends State<UpdateTriggerPage> {
                                                   color: Colors.white),
                                               menuStyle: MenuStyle(
                                                 backgroundColor:
-                                                    MaterialStateColor.resolveWith(
+                                                    MaterialStateColor
+                                                        .resolveWith(
                                                   (states) => Color(0xFF09090B),
                                                 ),
                                               ),
-                                              onSelected: (EventModel? trigger) {
+                                              onSelected:
+                                                  (EventModel? trigger) {
                                                 updateApi(() {
                                                   selectedTrigger = trigger;
                                                   widget.eventCreationModel
@@ -278,8 +291,8 @@ class _UpdateTriggerPageState extends State<UpdateTriggerPage> {
                                                       .fields.length);
                                                 });
                                               },
-                                              dropdownMenuEntries: availableTriggers
-                                                  .map<
+                                              dropdownMenuEntries:
+                                                  availableTriggers.map<
                                                           DropdownMenuEntry<
                                                               EventModel>>(
                                                       (EventModel value) {
@@ -287,8 +300,10 @@ class _UpdateTriggerPageState extends State<UpdateTriggerPage> {
                                                         EventModel>(
                                                     value: value,
                                                     label: value.name,
-                                                    style: MenuItemButton.styleFrom(
-                                                      foregroundColor: Colors.white,
+                                                    style: MenuItemButton
+                                                        .styleFrom(
+                                                      foregroundColor:
+                                                          Colors.white,
                                                     ));
                                               }).toList(),
                                             ),
@@ -326,7 +341,8 @@ class _UpdateTriggerPageState extends State<UpdateTriggerPage> {
                                                       CrossAxisAlignment.start,
                                                   children: [
                                                     Text(field.name,
-                                                        style: GoogleFonts.inter(
+                                                        style:
+                                                            GoogleFonts.inter(
                                                           fontSize: 14,
                                                           color: Colors.white,
                                                         )),
@@ -337,7 +353,8 @@ class _UpdateTriggerPageState extends State<UpdateTriggerPage> {
                                                             WidgetType.textarea)
                                                       SizedBox(
                                                         height: field.type ==
-                                                                WidgetType.textarea
+                                                                WidgetType
+                                                                    .textarea
                                                             ? 40 * 3
                                                             : 40,
                                                         width: double.infinity,
@@ -345,21 +362,25 @@ class _UpdateTriggerPageState extends State<UpdateTriggerPage> {
                                                           key: ValueKey<String>(
                                                               field.name),
                                                           style: TextStyle(
-                                                              color: Colors.white),
+                                                              color:
+                                                                  Colors.white),
                                                           onChanged: (value) {
                                                             field.value = value;
                                                             field.edited = true;
                                                           },
-                                                          initialValue: field.edited
-                                                              ? field.value
-                                                              : null,
+                                                          initialValue:
+                                                              field.edited
+                                                                  ? field.value
+                                                                  : null,
                                                           validator: (value) {
-                                                            if (value!.isEmpty) {
+                                                            if (value!
+                                                                .isEmpty) {
                                                               return "Please enter a description";
                                                             }
                                                             return null;
                                                           },
-                                                          maxLines: field.type ==
+                                                          maxLines: field
+                                                                      .type ==
                                                                   WidgetType
                                                                       .textarea
                                                               ? 3
@@ -367,23 +388,28 @@ class _UpdateTriggerPageState extends State<UpdateTriggerPage> {
                                                           decoration:
                                                               InputDecoration(
                                                             filled: true,
-                                                            fillColor:
-                                                                Color(0xFF21212B),
-                                                            hintText: field.name,
-                                                            hintStyle: TextStyle(
+                                                            fillColor: Color(
+                                                                0xFF21212B),
+                                                            hintText:
+                                                                field.name,
+                                                            hintStyle:
+                                                                TextStyle(
                                                               fontSize: 14,
                                                               fontWeight:
-                                                                  FontWeight.w400,
-                                                              color:
-                                                                  Color(0xFFA1A1AA),
+                                                                  FontWeight
+                                                                      .w400,
+                                                              color: Color(
+                                                                  0xFFA1A1AA),
                                                             ),
                                                             border:
                                                                 OutlineInputBorder(
                                                               borderRadius:
                                                                   BorderRadius
-                                                                      .circular(10),
+                                                                      .circular(
+                                                                          10),
                                                               borderSide:
-                                                                  BorderSide.none,
+                                                                  BorderSide
+                                                                      .none,
                                                             ),
                                                           ),
                                                         ),
@@ -393,11 +419,13 @@ class _UpdateTriggerPageState extends State<UpdateTriggerPage> {
                                                         WidgetType.select)
                                                       Container(
                                                         height: 40,
-                                                        decoration: BoxDecoration(
-                                                          color: Color(0xFF21212B),
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color:
+                                                              Color(0xFF21212B),
                                                           borderRadius:
-                                                              BorderRadius.circular(
-                                                                  10),
+                                                              BorderRadius
+                                                                  .circular(10),
                                                         ),
                                                         child: DropdownMenu<
                                                             SelectField>(
@@ -406,19 +434,24 @@ class _UpdateTriggerPageState extends State<UpdateTriggerPage> {
                                                           inputDecorationTheme:
                                                               InputDecorationTheme(
                                                             hintStyle:
-                                                                GoogleFonts.inter(
+                                                                GoogleFonts
+                                                                    .inter(
                                                               fontSize: 15,
                                                               fontWeight:
-                                                                  FontWeight.w600,
-                                                              color: Colors.white,
+                                                                  FontWeight
+                                                                      .w600,
+                                                              color:
+                                                                  Colors.white,
                                                             ),
                                                             border:
                                                                 OutlineInputBorder(
                                                               borderRadius:
                                                                   BorderRadius
-                                                                      .circular(10),
+                                                                      .circular(
+                                                                          10),
                                                               borderSide:
-                                                                  BorderSide.none,
+                                                                  BorderSide
+                                                                      .none,
                                                             ),
                                                             contentPadding:
                                                                 EdgeInsets
@@ -434,14 +467,14 @@ class _UpdateTriggerPageState extends State<UpdateTriggerPage> {
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .w600,
-                                                                  color:
-                                                                      Colors.white),
+                                                                  color: Colors
+                                                                      .white),
                                                           menuStyle: MenuStyle(
                                                             backgroundColor:
                                                                 MaterialStateColor
                                                                     .resolveWith(
-                                                              (states) =>
-                                                                  Color(0xFF09090B),
+                                                              (states) => Color(
+                                                                  0xFF09090B),
                                                             ),
                                                           ),
                                                           onSelected: (value) {
@@ -453,16 +486,17 @@ class _UpdateTriggerPageState extends State<UpdateTriggerPage> {
                                                               .map<
                                                                       DropdownMenuEntry<
                                                                           SelectField>>(
-                                                                  (SelectField e) {
+                                                                  (SelectField
+                                                                      e) {
                                                             return DropdownMenuEntry<
                                                                     SelectField>(
                                                                 value: e,
                                                                 label: e.label,
-                                                                style:
-                                                                    MenuItemButton
-                                                                        .styleFrom(
+                                                                style: MenuItemButton
+                                                                    .styleFrom(
                                                                   foregroundColor:
-                                                                      Colors.white,
+                                                                      Colors
+                                                                          .white,
                                                                 ));
                                                           }).toList(),
                                                         ),
@@ -477,8 +511,8 @@ class _UpdateTriggerPageState extends State<UpdateTriggerPage> {
                                 } else {
                                   print(snapshot.error);
                                   return Center(
-                                      child:
-                                          Text("Error while getting trigger apis"));
+                                      child: Text(
+                                          "Error while getting trigger apis"));
                                 }
                               },
                             ),
@@ -594,5 +628,4 @@ class _UpdateTriggerPageState extends State<UpdateTriggerPage> {
       }),
     );
   }
-
 }
