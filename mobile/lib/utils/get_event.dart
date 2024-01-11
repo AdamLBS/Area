@@ -21,11 +21,9 @@ Future<EventCreationModel> getEventByUuid(String uuid) async {
         eventName: responseJson["name"],
         eventDescription: responseJson["description"],
         triggerEvent: EventModel.fromJson(
-          jsonDecode(responseJson["triggerInteraction"]), ""
-        ),
+            jsonDecode(responseJson["triggerInteraction"]), ""),
         responseEvent: EventModel.fromJson(
-          jsonDecode(responseJson["responseInteraction"]), ""
-        ),
+            jsonDecode(responseJson["responseInteraction"]), ""),
         additionalActions: additionalActionsList);
     print(evt.responseEvent);
     return evt;
