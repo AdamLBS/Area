@@ -23,10 +23,21 @@ class _BottomSheetEventEditState extends State<BottomSheetEventEdit> {
       ),
       padding: EdgeInsets.all(24),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.max,
         children: [
+          Center(
+            child: Container(
+              width: 78,
+              height: 4,
+              decoration: BoxDecoration(
+                color: Color(0xFFFFFFFF),
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+          ),
+          Spacer(),
           Text(
             widget.delete != null
                 ? "Do you want to update or delete this event?"
@@ -37,7 +48,7 @@ class _BottomSheetEventEditState extends State<BottomSheetEventEdit> {
             ),
           ),
           SizedBox(
-            height: 10,
+            height: 32,
           ),
           SizedBox(
             width: double.infinity,
@@ -89,6 +100,7 @@ class _BottomSheetEventEditState extends State<BottomSheetEventEdit> {
                 ),
               ),
             ),
+            Spacer(),
         ],
       ),
     );

@@ -138,7 +138,6 @@ class _ShowEventState extends State<ShowEvent> {
                       EventModel? eventModel = value as EventModel?;
                       if (eventModel != null) {
                         widget.event.triggerEvent = eventModel;
-                      }
                       updateTrigger(
                               widget.event.triggerEvent!, widget.userEvent.uuid)
                           .then((value) => setState(() {
@@ -150,6 +149,7 @@ class _ShowEventState extends State<ShowEvent> {
                                   );
                                 }
                               }));
+                      }
                     });
                   },
                   child: EventCard(
@@ -191,7 +191,6 @@ class _ShowEventState extends State<ShowEvent> {
                       EventModel? eventModel = value as EventModel?;
                       if (eventModel != null) {
                         widget.event.responseEvent = eventModel;
-                      }
                       updateAction(widget.event.responseEvent!,
                               widget.userEvent.uuid)
                           .then((value) => setState(() {
@@ -203,6 +202,7 @@ class _ShowEventState extends State<ShowEvent> {
                                   );
                                 }
                               }));
+                      }
                     });
                   },
                   child: EventCard(

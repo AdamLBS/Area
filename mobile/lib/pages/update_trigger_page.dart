@@ -24,12 +24,6 @@ class _UpdateTriggerPageState extends State<UpdateTriggerPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      endDrawer: Theme(
-        data: Theme.of(context).copyWith(
-          canvasColor: Color(0xFF09090B),
-        ),
-        child: DrawerBridgePage(),
-      ),
       body: LayoutBuilder(builder: (context, constraint) {
         return FutureBuilder(
             future: getLoggedInServices(),
