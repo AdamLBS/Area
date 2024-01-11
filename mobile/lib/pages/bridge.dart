@@ -38,8 +38,8 @@ class _BridgePageState extends State<BridgePage> {
               constraints: BoxConstraints(minHeight: constraint.maxHeight),
               child: IntrinsicHeight(
                 child: Container(
-                    padding:
-                        EdgeInsets.only(right: 20, left: 20, bottom: 20, top: 20),
+                    padding: EdgeInsets.only(
+                        right: 20, left: 20, bottom: 20, top: 20),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -104,8 +104,8 @@ class _BridgePageState extends State<BridgePage> {
                         if (selectedEvt == null)
                           FutureBuilder(
                             future: getUserEvents(),
-                            builder:
-                                ((context, AsyncSnapshot<List<UserEvent>> snapshot) {
+                            builder: ((context,
+                                AsyncSnapshot<List<UserEvent>> snapshot) {
                               if (snapshot.hasData) {
                                 if (snapshot.data!.isEmpty) {
                                   return Center(
@@ -120,61 +120,66 @@ class _BridgePageState extends State<BridgePage> {
                                   );
                                 } else {
                                   List<Widget> widgets = [];
-                                  for (var i = 0; i < snapshot.data!.length; i++) {
+                                  for (var i = 0;
+                                      i < snapshot.data!.length;
+                                      i++) {
                                     widgets.add(ElevatedButton(
-                                        onPressed: () async {
-                                          selectedEvt = await getEventByUuid(
-                                              snapshot.data![i].uuid);
-                                          setState(() {
-                                            selectedUserEvt = snapshot.data![i];
-                                          });
-                                        },
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor:
-                                              Colors.transparent, //TODO: A modif
-                                          minimumSize: Size.zero,
-                                          padding: EdgeInsets.zero,
-                              
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(10),
+                                      onPressed: () async {
+                                        selectedEvt = await getEventByUuid(
+                                            snapshot.data![i].uuid);
+                                        setState(() {
+                                          selectedUserEvt = snapshot.data![i];
+                                        });
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor:
+                                            Colors.transparent, //TODO: A modif
+                                        minimumSize: Size.zero,
+                                        padding: EdgeInsets.zero,
+
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                      ),
+                                      child: Container(
+                                        padding: EdgeInsets.only(
+                                            left: 16,
+                                            right: 16,
+                                            top: 12,
+                                            bottom: 12),
+                                        child: Row(children: [
+                                          if (snapshot.data![i].active == true)
+                                            SvgPicture.asset(
+                                              "assets/icons/enabled_button.svg",
+                                              height: 16,
+                                              width: 16,
+                                            ),
+                                          if (snapshot.data![i].active == false)
+                                            SvgPicture.asset(
+                                              "assets/icons/disabled_button.svg",
+                                              height: 16,
+                                              width: 16,
+                                            ),
+                                          SizedBox(
+                                            width: 8,
                                           ),
-                                        ),
-                                        child: Container(
-                                          padding: EdgeInsets.only(
-                                              left: 16,
-                                              right: 16,
-                                              top: 12,
-                                              bottom: 12),
-                                          child: Row(children: [
-                                            if (snapshot.data![i].active == true)
-                                              SvgPicture.asset(
-                                                "assets/icons/enabled_button.svg",
-                                                height: 16,
-                                                width: 16,
-                                              ),
-                                            if (snapshot.data![i].active == false)
-                                              SvgPicture.asset(
-                                                "assets/icons/disabled_button.svg",
-                                                height: 16,
-                                                width: 16,
-                                              ),
-                                            SizedBox(
-                                              width: 8,
+                                          Text(
+                                            snapshot.data![i].name,
+                                            style: GoogleFonts.inter(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w500,
+                                              color: Colors.white,
                                             ),
-                                            Text(
-                                              snapshot.data![i].name,
-                                              style: GoogleFonts.inter(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w500,
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                          ]),
-                                        ),
-                                      ));
+                                          ),
+                                        ]),
+                                      ),
+                                    ));
                                     widgets.add(SizedBox(height: 10));
                                   }
-                                    return Column(children: widgets,);
+                                  return Column(
+                                    children: widgets,
+                                  );
                                 }
                               } else {
                                 return Center(

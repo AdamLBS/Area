@@ -27,7 +27,9 @@ class _BottomSheetEventEditState extends State<BottomSheetEventEdit> {
         mainAxisSize: MainAxisSize.max,
         children: [
           Text(
-            widget.delete != null ? "Do you want to update or delete this event?" : "Do you want to update this event?",
+            widget.delete != null
+                ? "Do you want to update or delete this event?"
+                : "Do you want to update this event?",
             style: GoogleFonts.inter(
               fontSize: 14,
               color: Color(0xFFA1A1AA),
@@ -57,30 +59,30 @@ class _BottomSheetEventEditState extends State<BottomSheetEventEdit> {
             ),
           ),
           if (widget.delete != null)
-          SizedBox(
-            height: 10,
-          ),
+            SizedBox(
+              height: 10,
+            ),
           if (widget.delete != null)
-          SizedBox(
-            width: double.infinity,
-            height: 40,
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xFF7F1D1D),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
+            SizedBox(
+              width: double.infinity,
+              height: 40,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(0xFF7F1D1D),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                 ),
-              ),
-              onPressed: widget.delete,
-              child: Text(
-                "Delete",
-                style: GoogleFonts.inter(
-                  fontSize: 14,
-                  color: Colors.white,
+                onPressed: widget.delete,
+                child: Text(
+                  "Delete",
+                  style: GoogleFonts.inter(
+                    fontSize: 14,
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ),
-          ),
         ],
       ),
     );

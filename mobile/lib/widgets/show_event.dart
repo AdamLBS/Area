@@ -152,28 +152,31 @@ class _ShowEventState extends State<ShowEvent> {
         SizedBox(
           height: 10,
         ),
-                if(widget.event.additionalActions != null && widget.event.additionalActions!.isNotEmpty)
-
-        Divider(
-          color: Color(0xFFFFFFFF),
-          thickness: 0.1,
-        ),
-        if(widget.event.additionalActions != null && widget.event.additionalActions!.isNotEmpty)
-
-        Text(
-          "Additional actions",
-          style: GoogleFonts.inter(
-              fontWeight: FontWeight.w500, fontSize: 16, color: Colors.white),
-        ),
+        if (widget.event.additionalActions != null &&
+            widget.event.additionalActions!.isNotEmpty)
+          Divider(
+            color: Color(0xFFFFFFFF),
+            thickness: 0.1,
+          ),
+        if (widget.event.additionalActions != null &&
+            widget.event.additionalActions!.isNotEmpty)
+          Text(
+            "Additional actions",
+            style: GoogleFonts.inter(
+                fontWeight: FontWeight.w500, fontSize: 16, color: Colors.white),
+          ),
         SizedBox(
           height: 10,
         ),
-        if (widget.event.additionalActions != null && widget.event.additionalActions!.isNotEmpty)
+        if (widget.event.additionalActions != null &&
+            widget.event.additionalActions!.isNotEmpty)
           ...widget.event.additionalActions!.map((e) {
             print("here");
             void deleteAdditional() {
-              deleteAdditionalAction(widget.userEvent, widget.event.additionalActions!.indexOf(e));
+              deleteAdditionalAction(
+                  widget.userEvent, widget.event.additionalActions!.indexOf(e));
             }
+
             return InkWell(
               onTap: () {
                 showModalBottomSheet(
@@ -185,8 +188,8 @@ class _ShowEventState extends State<ShowEvent> {
                         delete: deleteAdditional,
                       );
                     }).then((value) {
-                      setState(() {});
-                    });
+                  setState(() {});
+                });
               },
               child: EventCard(
                 desc: e.name,
