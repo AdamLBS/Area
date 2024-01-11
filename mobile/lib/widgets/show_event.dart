@@ -228,37 +228,40 @@ class _ShowEventState extends State<ShowEvent> {
               ),
             );
           }).toList(),
-          SizedBox(
-            width: double.infinity,
-            height: 40,
-            child: ElevatedButton(
-              onPressed: () async {
-                await updateAction(widget.event.responseEvent!, widget.userEvent.uuid);
-                await updateTrigger(widget.event.triggerEvent!, widget.userEvent.uuid);
-                if (context.mounted) {
-                  ScaffoldMessenger.of(context).showSnackBar(
+        SizedBox(
+          width: double.infinity,
+          height: 40,
+          child: ElevatedButton(
+            onPressed: () async {
+              await updateAction(
+                  widget.event.responseEvent!, widget.userEvent.uuid);
+              await updateTrigger(
+                  widget.event.triggerEvent!, widget.userEvent.uuid);
+              if (context.mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text("Event updated"),
                   ),
                 );
-                }
-              },
-                        child: Text(
-                          "Apply changes",
-                          style: GoogleFonts.inter(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xFF6D28D9),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-            ),)
+              }
+            },
+            child: Text(
+              "Apply changes",
+              style: GoogleFonts.inter(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                color: Colors.white,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Color(0xFF6D28D9),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+          ),
+        )
       ],
     );
   }

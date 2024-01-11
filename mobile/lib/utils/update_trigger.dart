@@ -20,10 +20,7 @@ Future<void> updateTrigger(EventModel evt, String uuid) async {
     url,
     body: json.encode({
       "trigger_provider": evt.provider.toLowerCase(),
-      "triggerInteraction": {
-        "id": evt.id,
-        "fields": json.decode(fields)
-      },
+      "triggerInteraction": {"id": evt.id, "fields": json.decode(fields)},
     }),
     headers: {
       "Authorization": "Bearer ${globals.token}",

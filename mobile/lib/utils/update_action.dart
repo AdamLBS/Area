@@ -20,10 +20,7 @@ Future<void> updateAction(EventModel evt, String uuid) async {
     url,
     body: json.encode({
       "response_provider": evt.provider.toLowerCase(),
-      "responseInteraction": {
-        "id": evt.id,
-        "fields": json.decode(fieldsJson)
-      },
+      "responseInteraction": {"id": evt.id, "fields": json.decode(fieldsJson)},
     }),
     headers: {
       "Authorization": "Bearer ${globals.token}",
