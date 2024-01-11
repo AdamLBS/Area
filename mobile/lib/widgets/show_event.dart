@@ -21,6 +21,8 @@ class _ShowEventState extends State<ShowEvent> {
     print(widget.event.responseEvent!.name);
     return ListView(
       shrinkWrap: true,
+      scrollDirection: Axis.vertical,
+      physics: NeverScrollableScrollPhysics(),
       children: [
         Container(
           constraints: BoxConstraints(minHeight: 102, minWidth: 320),
@@ -103,7 +105,10 @@ class _ShowEventState extends State<ShowEvent> {
                 context: context,
                 backgroundColor: Colors.transparent,
                 builder: (context) {
-                  return BottomSheetEventEdit();
+                  return BottomSheetEventEdit(
+                    event: widget.event.triggerEvent!,
+                    triggerEvent: true,
+                  );
                 });
           },
           child: EventCard(
@@ -132,7 +137,10 @@ class _ShowEventState extends State<ShowEvent> {
                 context: context,
                 backgroundColor: Colors.transparent,
                 builder: (context) {
-                  return BottomSheetEventEdit();
+                  return BottomSheetEventEdit(
+                    event: widget.event.responseEvent!,
+                    triggerEvent: false,
+                  );
                 });
           },
           child: EventCard(
@@ -140,6 +148,41 @@ class _ShowEventState extends State<ShowEvent> {
             name: widget.event.responseEvent!.provider,
           ),
         ),
+        SizedBox(
+          height: 10,
+        ),
+        Divider(
+          color: Color(0xFFFFFFFF),
+          thickness: 0.1,
+        ),
+        Text(
+          "Additional actions",
+          style: GoogleFonts.inter(
+              fontWeight: FontWeight.w500, fontSize: 16, color: Colors.white),
+        ),
+        SizedBox(
+          height: 10,
+        ),
+        if (widget.event.additionalActions != null && widget.event.additionalActions!.isNotEmpty)
+          ...widget.event.additionalActions!.map((e) {
+            return InkWell(
+              onTap: () {
+                showModalBottomSheet(
+                    context: context,
+                    backgroundColor: Colors.transparent,
+                    builder: (context) {
+                      return BottomSheetEventEdit(
+                        event: e,
+                        triggerEvent: false,
+                      );
+                    });
+              },
+              child: EventCard(
+                desc: e.name,
+                name: e.provider,
+              ),
+            );
+          }).toList(),
       ],
     );
   }

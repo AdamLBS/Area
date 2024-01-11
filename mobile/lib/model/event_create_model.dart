@@ -5,10 +5,12 @@ class EventCreationModel {
   EventModel? responseEvent;
   String? eventName;
   String? eventDescription;
+  List<EventModel>? additionalActions;
   EventCreationModel({
     this.triggerEvent,
     this.responseEvent,
     this.eventName,
     this.eventDescription,
+    this.additionalActions,
   });
 }
