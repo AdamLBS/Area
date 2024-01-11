@@ -16,6 +16,7 @@ Future<void> addNewAction(EventModel evt, String uuid) async {
     });
   }
   var fieldsJson = json.encode(fieldList);
+  print("fields !!!: " + fieldsJson);
   var request = await http.post(
     url,
     body: json.encode({

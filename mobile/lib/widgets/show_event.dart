@@ -244,28 +244,33 @@ class _ShowEventState extends State<ShowEvent> {
                         });
                       });
                     }
-
-                    return InkWell(
-                      onTap: () async {
-                        await showModalBottomSheet(
-                            context: context,
-                            backgroundColor: Colors.transparent,
-                            builder: (context) {
-                              return BottomSheetEventEdit(
-                                event: e,
-                                delete: deleteAdditional,
-                              );
-                            });
-                      },
-                      child: EventCard(
-                        desc: e.name,
-                        name: e.provider,
-                      ),
+                    return Column(
+                      children: [
+                        InkWell(
+                        
+                          onTap: () async {
+                            await showModalBottomSheet(
+                                context: context,
+                                backgroundColor: Colors.transparent,
+                                builder: (context) {
+                                  return BottomSheetEventEdit(
+                                    event: e,
+                                    delete: deleteAdditional,
+                                  );
+                                });
+                          },
+                          child: EventCard(
+                            desc: e.name,
+                            name: e.provider,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                      ],
                     );
                   }).toList(),
-                SizedBox(
-                  height: 10,
-                ),
+
                 Divider(
                   color: Color(0xFFFFFFFF),
                   thickness: 0.1,
@@ -289,7 +294,7 @@ class _ShowEventState extends State<ShowEvent> {
                           .then((value) {
                         EventModel? eventModel = value as EventModel?;
                         if (eventModel != null) {
-                          addNewAction(widget.event.responseEvent!,
+                          addNewAction(eventModel,
                                   widget.userEvent.uuid)
                               .then((res) => setState(() {
                                     widget.event.additionalActions!.add(value!);
@@ -311,14 +316,24 @@ class _ShowEventState extends State<ShowEvent> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
-                    child: Text(
-                      "Add a new action",
-                      style: GoogleFonts.inter(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white,
-                      ),
-                      textAlign: TextAlign.center,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SvgPicture.asset("assets/icons/plus.svg"),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          "Add a new action",
+                          style: GoogleFonts.inter(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
                     ),
                   ),
                 ),
