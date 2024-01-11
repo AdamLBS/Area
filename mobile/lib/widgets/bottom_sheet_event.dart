@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class BottomSheetEventEdit extends StatefulWidget {
-  const BottomSheetEventEdit({super.key, required this.event, this.delete});
+  const BottomSheetEventEdit(
+      {super.key, required this.event, this.delete, required this.update});
   final EventModel event;
   final VoidCallback? delete;
+  final VoidCallback update;
 
   @override
   State<BottomSheetEventEdit> createState() => _BottomSheetEventEditState();
@@ -22,10 +24,21 @@ class _BottomSheetEventEditState extends State<BottomSheetEventEdit> {
       ),
       padding: EdgeInsets.all(24),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.max,
         children: [
+          Center(
+            child: Container(
+              width: 78,
+              height: 4,
+              decoration: BoxDecoration(
+                color: Color(0xFFFFFFFF),
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+          ),
+          Spacer(),
           Text(
             widget.delete != null
                 ? "Do you want to update or delete this event?"
@@ -36,7 +49,7 @@ class _BottomSheetEventEditState extends State<BottomSheetEventEdit> {
             ),
           ),
           SizedBox(
-            height: 10,
+            height: 32,
           ),
           SizedBox(
             width: double.infinity,
@@ -48,7 +61,9 @@ class _BottomSheetEventEditState extends State<BottomSheetEventEdit> {
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
-              onPressed: () {},
+              onPressed: () {
+                widget.update();
+              },
               child: Text(
                 "Update",
                 style: GoogleFonts.inter(
@@ -86,6 +101,7 @@ class _BottomSheetEventEditState extends State<BottomSheetEventEdit> {
                 ),
               ),
             ),
+          Spacer(),
         ],
       ),
     );
