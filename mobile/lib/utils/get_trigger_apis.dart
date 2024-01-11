@@ -15,12 +15,13 @@ Future<List<EventModel>> getTriggerApis() async {
     for (var provider in json) {
       var data = (provider["interactions"]);
       for (var interaction in data) {
-        events.add(EventModel.fromJson(interaction));
+        events.add(EventModel.fromJson(interaction, provider["provider"]));
       }
     }
     print("Trigger events: $events");
     return events;
   } else {
+    print(request.body);
     print("Error while getting trigger events");
     return Future.error("error");
   }
