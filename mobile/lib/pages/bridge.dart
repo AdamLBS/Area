@@ -71,6 +71,9 @@ class _BridgePageState extends State<BridgePage> {
                       )
                     ],
                   ),
+                  SizedBox(
+                    height: 20,
+                  ),
                   Text(
                     "Your events",
                     style: GoogleFonts.inter(
