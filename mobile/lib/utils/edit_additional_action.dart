@@ -5,7 +5,8 @@ import 'package:area/constants.dart';
 import 'package:area/globals.dart' as globals;
 import 'package:http/http.dart' as http;
 
-Future<void> editAdditionalAction(EventModel evt, String uuid, int index) async {
+Future<void> editAdditionalAction(
+    EventModel evt, String uuid, int index) async {
   var url = Uri.parse("$backendUrl/api/event/$uuid/additionalAction/update");
   var fieldList = [];
   for (var field in evt.fields) {

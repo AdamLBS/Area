@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class BottomSheetEventEdit extends StatefulWidget {
-  const BottomSheetEventEdit({super.key, required this.event, this.delete, required this.update});
+  const BottomSheetEventEdit(
+      {super.key, required this.event, this.delete, required this.update});
   final EventModel event;
   final VoidCallback? delete;
   final VoidCallback update;
