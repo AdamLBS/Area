@@ -133,9 +133,9 @@ class _DrawerBridgePageState extends State<DrawerBridgePage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     SvgPicture.asset("assets/icons/plus.svg"),
-                        SizedBox(
-                          width: 10,
-                        ),
+                    SizedBox(
+                      width: 10,
+                    ),
                     Text(
                       "Add a new event",
                       style: GoogleFonts.inter(

@@ -244,10 +244,10 @@ class _ShowEventState extends State<ShowEvent> {
                         });
                       });
                     }
+
                     return Column(
                       children: [
                         InkWell(
-                        
                           onTap: () async {
                             await showModalBottomSheet(
                                 context: context,
@@ -270,7 +270,6 @@ class _ShowEventState extends State<ShowEvent> {
                       ],
                     );
                   }).toList(),
-
                 Divider(
                   color: Color(0xFFFFFFFF),
                   thickness: 0.1,
@@ -294,8 +293,7 @@ class _ShowEventState extends State<ShowEvent> {
                           .then((value) {
                         EventModel? eventModel = value as EventModel?;
                         if (eventModel != null) {
-                          addNewAction(eventModel,
-                                  widget.userEvent.uuid)
+                          addNewAction(eventModel, widget.userEvent.uuid)
                               .then((res) => setState(() {
                                     widget.event.additionalActions!.add(value!);
                                     if (context.mounted) {
