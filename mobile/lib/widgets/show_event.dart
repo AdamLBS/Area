@@ -6,6 +6,8 @@ import 'package:area/model/user_event_model.dart';
 import 'package:area/pages/update_action_page.dart';
 import 'package:area/utils/delete_additional_actions.dart';
 import 'package:area/utils/get_event.dart';
+import 'package:area/utils/update_action.dart';
+import 'package:area/utils/update_trigger.dart';
 import 'package:area/widgets/bottom_sheet_event.dart';
 import 'package:area/widgets/event_card.dart';
 import 'package:area/pages/update_trigger_page.dart';
@@ -226,6 +228,37 @@ class _ShowEventState extends State<ShowEvent> {
               ),
             );
           }).toList(),
+          SizedBox(
+            width: double.infinity,
+            height: 40,
+            child: ElevatedButton(
+              onPressed: () async {
+                await updateAction(widget.event.responseEvent!, widget.userEvent.uuid);
+                await updateTrigger(widget.event.triggerEvent!, widget.userEvent.uuid);
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text("Event updated"),
+                  ),
+                );
+                }
+              },
+                        child: Text(
+                          "Apply changes",
+                          style: GoogleFonts.inter(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+style: ElevatedButton.styleFrom(
+                          backgroundColor: Color(0xFF6D28D9),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+            ),)
       ],
     );
   }
