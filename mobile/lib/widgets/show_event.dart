@@ -138,17 +138,17 @@ class _ShowEventState extends State<ShowEvent> {
                       EventModel? eventModel = value as EventModel?;
                       if (eventModel != null) {
                         widget.event.triggerEvent = eventModel;
-                      updateTrigger(
-                              widget.event.triggerEvent!, widget.userEvent.uuid)
-                          .then((value) => setState(() {
-                                if (context.mounted) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text("Event updated"),
-                                    ),
-                                  );
-                                }
-                              }));
+                        updateTrigger(widget.event.triggerEvent!,
+                                widget.userEvent.uuid)
+                            .then((value) => setState(() {
+                                  if (context.mounted) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text("Event updated"),
+                                      ),
+                                    );
+                                  }
+                                }));
                       }
                     });
                   },
@@ -191,17 +191,17 @@ class _ShowEventState extends State<ShowEvent> {
                       EventModel? eventModel = value as EventModel?;
                       if (eventModel != null) {
                         widget.event.responseEvent = eventModel;
-                      updateAction(widget.event.responseEvent!,
-                              widget.userEvent.uuid)
-                          .then((value) => setState(() {
-                                if (context.mounted) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text("Event updated"),
-                                    ),
-                                  );
-                                }
-                              }));
+                        updateAction(widget.event.responseEvent!,
+                                widget.userEvent.uuid)
+                            .then((value) => setState(() {
+                                  if (context.mounted) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text("Event updated"),
+                                      ),
+                                    );
+                                  }
+                                }));
                       }
                     });
                   },

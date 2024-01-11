@@ -101,7 +101,7 @@ class _BottomSheetEventEditState extends State<BottomSheetEventEdit> {
                 ),
               ),
             ),
-            Spacer(),
+          Spacer(),
         ],
       ),
     );
