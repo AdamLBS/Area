@@ -88,7 +88,7 @@ export default class CoinbaseCryptoListener extends BaseTask {
         const minimumPrice = Number(fields[2].value)
         const maximumPrice = Number(fields[3].value)
         const userCache = await Cache.query().from('caches').where('uuid', event.uuid).first()
-        if (!userCache) {
+        if (!userCache || userCache.cryptoReachValue === null) {
           await this.updateCryptoPrice(event.uuid, false)
           return
         }
