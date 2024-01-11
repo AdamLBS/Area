@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:area/model/event_create_model.dart';
+import 'package:area/widgets/bottom_sheet_event.dart';
 import 'package:area/widgets/event_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -96,9 +97,19 @@ class _ShowEventState extends State<ShowEvent> {
         SizedBox(
           height: 10,
         ),
-        EventCard(
-          desc: widget.event.triggerEvent!.name,
-          name: widget.event.triggerEvent!.provider,
+        InkWell(
+          onTap: () {
+            showModalBottomSheet(
+                context: context,
+                backgroundColor: Colors.transparent,
+                builder: (context) {
+                  return BottomSheetEventEdit();
+                });
+          },
+          child: EventCard(
+            desc: widget.event.triggerEvent!.name,
+            name: widget.event.triggerEvent!.provider,
+          ),
         ),
         SizedBox(
           height: 10,
@@ -115,9 +126,19 @@ class _ShowEventState extends State<ShowEvent> {
         SizedBox(
           height: 10,
         ),
-        EventCard(
-          desc: widget.event.responseEvent!.name,
-          name: widget.event.responseEvent!.provider,
+        InkWell(
+          onTap: () {
+            showModalBottomSheet(
+                context: context,
+                backgroundColor: Colors.transparent,
+                builder: (context) {
+                  return BottomSheetEventEdit();
+                });
+          },
+          child: EventCard(
+            desc: widget.event.responseEvent!.name,
+            name: widget.event.responseEvent!.provider,
+          ),
         ),
       ],
     );
