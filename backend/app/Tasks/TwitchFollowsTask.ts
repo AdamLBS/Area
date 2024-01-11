@@ -44,22 +44,23 @@ export default class TwitchLiveTask extends BaseTask {
   }
 
   private async fetchTwitchData(oauth: any, channel_id: string): Promise<TwitchData> {
-    const response = await axios.get<TwitchData>(
-      `https://api.twitch.tv/helix/channels/followers`,
-      {
-        headers: {
-          'Client-ID': process.env.TWITCH_CLIENT_ID,
-          'Authorization': `Bearer ${oauth.token}`,
-        },
-        params: {
-          broadcaster_id: channel_id,
-        },
-      }
-    )
+    const response = await axios.get<TwitchData>(`https://api.twitch.tv/helix/channels/followers`, {
+      headers: {
+        'Client-ID': process.env.TWITCH_CLIENT_ID,
+        'Authorization': `Bearer ${oauth.token}`,
+      },
+      params: {
+        broadcaster_id: channel_id,
+      },
+    })
     return response.data
   }
 
-  private useVariablesInFields = (fields: APIEventField<any>[], data: TwitchData, currentFollowersNumb: number) => {
+  private useVariablesInFields = (
+    fields: APIEventField<any>[],
+    data: TwitchData,
+    currentFollowersNumb: number
+  ) => {
     for (const field of fields) {
       if ((field.value as string).includes('$followers')) {
         const followers: string[] = []
@@ -105,7 +106,11 @@ export default class TwitchLiveTask extends BaseTask {
       const twitchData = await this.fetchTwitchData(triggerApiOauth, channelId)
       if (!twitchData) return
       const userCache = await Database.query().from('caches').where('uuid', event.uuid).first()
-      if (!userCache || !userCache.twitch_followers || userCache.twitch_followers > twitchData.total) {
+      if (
+        !userCache ||
+        !userCache.twitch_followers ||
+        userCache.twitch_followers > twitchData.total
+      ) {
         this.updateFollowers(event.uuid, twitchData.total)
         return
       }
