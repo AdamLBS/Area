@@ -47,34 +47,34 @@ class _ShowEventState extends State<ShowEvent> {
                     ),
                     Text(
                       widget.event.eventDescription!,
-                      style: GoogleFonts.inter(fontSize: 14, color: Colors.white),
+                      style:
+                          GoogleFonts.inter(fontSize: 14, color: Colors.white),
                     ),
                     SizedBox(
                       height: 10,
                     ),
-              
                   ]),
-                                  Container(
-                  width: 42,
-                  height: 42,
-                  padding: EdgeInsets.all(4),
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Color(0xFF94A3B8).withOpacity(0.5),
-                    ),
-                    borderRadius: BorderRadius.circular(10),
+              Container(
+                width: 42,
+                height: 42,
+                padding: EdgeInsets.all(4),
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Color(0xFF94A3B8).withOpacity(0.5),
                   ),
-                  child: Center(
-                    child: SizedBox(
-                      height: 20,
-                      width: 20,
-                      child: SvgPicture.asset(
-                        "assets/icons/settings.svg",
-                        color: Colors.white,
-                      ),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Center(
+                  child: SizedBox(
+                    height: 20,
+                    width: 20,
+                    child: SvgPicture.asset(
+                      "assets/icons/settings.svg",
+                      color: Colors.white,
                     ),
                   ),
-                )
+                ),
+              )
             ],
           ),
         ),
