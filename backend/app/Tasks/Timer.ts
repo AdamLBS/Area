@@ -44,7 +44,7 @@ export default class Timer extends BaseTask {
       const now = new Date()
       const [hours, minutes] = time.split(':').map(Number)
       const userCache = await Cache.query().from('caches').where('uuid', event.uuid).first()
-      if (!userCache) {
+      if (!userCache || userCache.timerActive === null) {
         await this.updateLastTimerActive(event.uuid, false)
       }
       if (now.getHours() === hours && now.getMinutes() === minutes) {

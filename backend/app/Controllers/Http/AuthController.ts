@@ -25,6 +25,16 @@ export default class AuthController {
         refreshToken: 'timer',
       }
     )
+    await Oauth.updateOrCreate(
+      {
+        userUuid: userToken.user.uuid,
+        provider: 'crypto',
+      },
+      {
+        token: 'crypto',
+        refreshToken: 'crypto',
+      }
+    )
 
     return response.ok({
       message: 'User signed up successfully',
@@ -124,6 +134,9 @@ export default class AuthController {
     return [
       {
         provider: 'timer',
+      },
+      {
+        provider: 'crypto',
       },
       ...services,
     ]
