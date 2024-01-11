@@ -8,7 +8,7 @@ export default class extends BaseSchema {
       table.uuid('uuid').primary()
       table.uuid('user_uuid').notNullable()
       table
-        .uuid('event_uuid')
+        .string('event_uuid')
         .notNullable()
         .references('uuid')
         .inTable('events')
