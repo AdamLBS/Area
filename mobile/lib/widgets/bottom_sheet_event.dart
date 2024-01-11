@@ -73,10 +73,10 @@ class _BottomSheetEventEditState extends State<BottomSheetEventEdit> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                              onPressed: () {
-                widget.delete!();
-                Navigator.pop(context);
-              },
+                onPressed: () {
+                  widget.delete!();
+                  Navigator.pop(context);
+                },
                 child: Text(
                   "Delete",
                   style: GoogleFonts.inter(
