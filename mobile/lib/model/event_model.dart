@@ -12,9 +12,9 @@ class EventModel {
     this.variables,
   });
 
-  factory EventModel.fromJson(Map<String, dynamic> json) {
+  factory EventModel.fromJson(Map<String, dynamic> json, String provider) {
     return EventModel(
-      provider: json['provider'],
+      provider: provider != "" ? provider : json['provider'],
       id: json['id'],
       name: json['name'],
       fields: (json['fields'] as List)
@@ -25,6 +25,21 @@ class EventModel {
           : null,
     );
   }
+
+  factory EventModel.fromJsonAdditional(Map<String, dynamic> json) {
+    return EventModel(
+      provider: json['action_provider'],
+      id: json['id'],
+      name: json['name'],
+      fields: (json['fields'] as List)
+          .map((field) => Field.fromJson(field))
+          .toList(),
+      variables: json['variables'] != null
+          ? Map<String, String>.from(json['variables'] as Map<String, dynamic>)
+          : null,
+    );
+  }
+
   @override
   String toString() {
     return 'EventModel{provider: $provider, id: $id, name: $name, fields: $fields variables: $variables}';

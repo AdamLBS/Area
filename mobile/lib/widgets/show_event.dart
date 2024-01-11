@@ -1,25 +1,40 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:area/model/event_create_model.dart';
+import 'package:area/model/event_model.dart';
+import 'package:area/model/user_event_model.dart';
+import 'package:area/pages/update_action_page.dart';
+import 'package:area/utils/delete_additional_actions.dart';
+import 'package:area/utils/get_event.dart';
+import 'package:area/utils/update_action.dart';
+import 'package:area/utils/update_trigger.dart';
+import 'package:area/widgets/bottom_sheet_event.dart';
 import 'package:area/widgets/event_card.dart';
+import 'package:area/pages/update_trigger_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ShowEvent extends StatefulWidget {
-  const ShowEvent({super.key, required this.event});
+  const ShowEvent({super.key, required this.event, required this.userEvent});
   final EventCreationModel event;
+  final UserEvent userEvent;
 
   @override
   State<ShowEvent> createState() => _ShowEventState();
 }
 
 class _ShowEventState extends State<ShowEvent> {
+  EventCreationModel? event;
+  @override
+  void initState() {
+    event ??= widget.event;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    print(widget.event.responseEvent!.name);
-    return ListView(
-      shrinkWrap: true,
+    return Column(
       children: [
         Container(
           constraints: BoxConstraints(minHeight: 102, minWidth: 320),
@@ -39,14 +54,14 @@ class _ShowEventState extends State<ShowEvent> {
                   mainAxisSize: MainAxisSize.max,
                   children: [
                     Text(
-                      widget.event.eventName!,
+                      event!.eventName!,
                       style: GoogleFonts.inter(
                           fontSize: 20,
                           fontWeight: FontWeight.w600,
                           color: Colors.white),
                     ),
                     Text(
-                      widget.event.eventDescription!,
+                      event!.eventDescription!,
                       style:
                           GoogleFonts.inter(fontSize: 14, color: Colors.white),
                     ),
@@ -96,9 +111,30 @@ class _ShowEventState extends State<ShowEvent> {
         SizedBox(
           height: 10,
         ),
-        EventCard(
-          desc: widget.event.triggerEvent!.name,
-          name: widget.event.triggerEvent!.provider,
+        InkWell(
+          onTap: () {
+            EventCreationModel event = EventCreationModel(
+                triggerEvent: null,
+                responseEvent: null,
+                eventName: widget.event.eventName,
+                eventDescription: widget.event.eventDescription,
+                additionalActions: widget.event.additionalActions);
+            Navigator.of(context)
+                .push(MaterialPageRoute(
+                    builder: (context) => UpdateTriggerPage(
+                          eventCreationModel: event,
+                        )))
+                .then((value) => setState(() {
+                      EventModel? eventModel = value as EventModel?;
+                      if (eventModel != null) {
+                        widget.event.triggerEvent = eventModel;
+                      }
+                    }));
+          },
+          child: EventCard(
+            desc: event!.triggerEvent!.name,
+            name: event!.triggerEvent!.provider,
+          ),
         ),
         SizedBox(
           height: 10,
@@ -115,10 +151,114 @@ class _ShowEventState extends State<ShowEvent> {
         SizedBox(
           height: 10,
         ),
-        EventCard(
-          desc: widget.event.responseEvent!.name,
-          name: widget.event.responseEvent!.provider,
+        InkWell(
+          onTap: () {
+            EventCreationModel event = EventCreationModel(
+                triggerEvent: widget.event.triggerEvent,
+                responseEvent: null,
+                eventName: widget.event.eventName,
+                eventDescription: widget.event.eventDescription,
+                additionalActions: widget.event.additionalActions);
+            Navigator.of(context)
+                .push(MaterialPageRoute(
+                    builder: (context) => UpdateActionPage(
+                          eventCreationModel: event,
+                        )))
+                .then((value) => setState(() {
+                      EventModel? eventModel = value as EventModel?;
+                      if (eventModel != null) {
+                        widget.event.responseEvent = eventModel;
+                      }
+                    }));
+          },
+          child: EventCard(
+            desc: event!.responseEvent!.name,
+            name: event!.responseEvent!.provider,
+          ),
         ),
+        SizedBox(
+          height: 10,
+        ),
+        if (event!.additionalActions != null &&
+            event!.additionalActions!.isNotEmpty)
+          Divider(
+            color: Color(0xFFFFFFFF),
+            thickness: 0.1,
+          ),
+        if (event!.additionalActions != null &&
+            event!.additionalActions!.isNotEmpty)
+          Text(
+            "Additional actions",
+            style: GoogleFonts.inter(
+                fontWeight: FontWeight.w500, fontSize: 16, color: Colors.white),
+          ),
+        SizedBox(
+          height: 10,
+        ),
+        if (event!.additionalActions != null &&
+            event!.additionalActions!.isNotEmpty)
+          ...event!.additionalActions!.map((e) {
+            void deleteAdditional() {
+              deleteAdditionalAction(
+                      widget.userEvent, event!.additionalActions!.indexOf(e))
+                  .then((e) {
+                getEventByUuid(widget.userEvent.uuid).then((evt) {
+                  event = evt;
+                  print(event);
+                  setState(() {});
+                });
+              });
+            }
+
+            return InkWell(
+              onTap: () async {
+                await showModalBottomSheet(
+                    context: context,
+                    backgroundColor: Colors.transparent,
+                    builder: (context) {
+                      return BottomSheetEventEdit(
+                        event: e,
+                        delete: deleteAdditional,
+                      );
+                    });
+              },
+              child: EventCard(
+                desc: e.name,
+                name: e.provider,
+              ),
+            );
+          }).toList(),
+          SizedBox(
+            width: double.infinity,
+            height: 40,
+            child: ElevatedButton(
+              onPressed: () async {
+                await updateAction(widget.event.responseEvent!, widget.userEvent.uuid);
+                await updateTrigger(widget.event.triggerEvent!, widget.userEvent.uuid);
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text("Event updated"),
+                  ),
+                );
+                }
+              },
+                        child: Text(
+                          "Apply changes",
+                          style: GoogleFonts.inter(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+style: ElevatedButton.styleFrom(
+                          backgroundColor: Color(0xFF6D28D9),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+            ),)
       ],
     );
   }
