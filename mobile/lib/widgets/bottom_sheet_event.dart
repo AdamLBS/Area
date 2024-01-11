@@ -23,44 +23,57 @@ class _BottomSheetEventEditState extends State<BottomSheetEventEdit> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisSize: MainAxisSize.max,
         children: [
-          Text("Do you want to update or delete this event?", style: GoogleFonts.inter(
-            fontSize: 14,
-            color: Color(0xFFA1A1AA),
-          ),),
-          SizedBox(height: 10,),
-          SizedBox(
-            width: double.infinity,
-            height: 40,
-            child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xFF6D28D9),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-              onPressed: () {},
-              child: Text("Update", style: GoogleFonts.inter(
-                          fontSize: 14,
-                          color: Colors.white,
-                        ),),
+          Text(
+            "Do you want to update or delete this event?",
+            style: GoogleFonts.inter(
+              fontSize: 14,
+              color: Color(0xFFA1A1AA),
             ),
           ),
-          SizedBox(height: 10,),
+          SizedBox(
+            height: 10,
+          ),
           SizedBox(
             width: double.infinity,
             height: 40,
             child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xFF7F1D1D),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color(0xFF6D28D9),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
               onPressed: () {},
-              child: Text("Delete", style: GoogleFonts.inter(
-                          fontSize: 14,
-                          color: Colors.white,
-                        ),),
+              child: Text(
+                "Update",
+                style: GoogleFonts.inter(
+                  fontSize: 14,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          SizedBox(
+            width: double.infinity,
+            height: 40,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color(0xFF7F1D1D),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              onPressed: () {},
+              child: Text(
+                "Delete",
+                style: GoogleFonts.inter(
+                  fontSize: 14,
+                  color: Colors.white,
+                ),
+              ),
             ),
           ),
         ],
