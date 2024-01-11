@@ -16,12 +16,6 @@ Future<void> addNewAction(EventModel evt, String uuid) async {
     });
   }
   var fieldsJson = json.encode(fieldList);
-  var jsonReq = json.encode({
-      "action_provider": evt.provider.toLowerCase(),
-      "id:" : evt.id,
-      "fields": json.decode(fieldsJson),
-    });
-    print(jsonReq);
   var request = await http.post(
     url,
     body: json.encode({
