@@ -4,6 +4,7 @@ import 'package:area/model/event_create_model.dart';
 import 'package:area/model/event_model.dart';
 import 'package:area/model/user_event_model.dart';
 import 'package:area/utils/delete_additional_actions.dart';
+import 'package:area/utils/get_event.dart';
 import 'package:area/widgets/bottom_sheet_event.dart';
 import 'package:area/widgets/event_card.dart';
 import 'package:flutter/material.dart';
@@ -20,9 +21,15 @@ class ShowEvent extends StatefulWidget {
 }
 
 class _ShowEventState extends State<ShowEvent> {
+  EventCreationModel? event;
+  @override
+  void initState() {
+    event ??= widget.event;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    print(widget.event.responseEvent!.name);
     return Column(
       children: [
         Container(
@@ -43,14 +50,14 @@ class _ShowEventState extends State<ShowEvent> {
                   mainAxisSize: MainAxisSize.max,
                   children: [
                     Text(
-                      widget.event.eventName!,
+                      event!.eventName!,
                       style: GoogleFonts.inter(
                           fontSize: 20,
                           fontWeight: FontWeight.w600,
                           color: Colors.white),
                     ),
                     Text(
-                      widget.event.eventDescription!,
+                      event!.eventDescription!,
                       style:
                           GoogleFonts.inter(fontSize: 14, color: Colors.white),
                     ),
@@ -107,14 +114,14 @@ class _ShowEventState extends State<ShowEvent> {
                 backgroundColor: Colors.transparent,
                 builder: (context) {
                   return BottomSheetEventEdit(
-                    event: widget.event.triggerEvent!,
+                    event: event!.triggerEvent!,
                     delete: null,
                   );
                 });
           },
           child: EventCard(
-            desc: widget.event.triggerEvent!.name,
-            name: widget.event.triggerEvent!.provider,
+            desc: event!.triggerEvent!.name,
+            name: event!.triggerEvent!.provider,
           ),
         ),
         SizedBox(
@@ -139,44 +146,53 @@ class _ShowEventState extends State<ShowEvent> {
                 backgroundColor: Colors.transparent,
                 builder: (context) {
                   return BottomSheetEventEdit(
-                    event: widget.event.responseEvent!,
+                    event: event!.responseEvent!,
                     delete: null,
                   );
                 });
           },
           child: EventCard(
-            desc: widget.event.responseEvent!.name,
-            name: widget.event.responseEvent!.provider,
+            desc: event!.responseEvent!.name,
+            name: event!.responseEvent!.provider,
           ),
         ),
         SizedBox(
           height: 10,
         ),
-                if(widget.event.additionalActions != null && widget.event.additionalActions!.isNotEmpty)
-
-        Divider(
-          color: Color(0xFFFFFFFF),
-          thickness: 0.1,
-        ),
-        if(widget.event.additionalActions != null && widget.event.additionalActions!.isNotEmpty)
-
-        Text(
-          "Additional actions",
-          style: GoogleFonts.inter(
-              fontWeight: FontWeight.w500, fontSize: 16, color: Colors.white),
-        ),
+        if (event!.additionalActions != null &&
+            event!.additionalActions!.isNotEmpty)
+          Divider(
+            color: Color(0xFFFFFFFF),
+            thickness: 0.1,
+          ),
+        if (event!.additionalActions != null &&
+            event!.additionalActions!.isNotEmpty)
+          Text(
+            "Additional actions",
+            style: GoogleFonts.inter(
+                fontWeight: FontWeight.w500, fontSize: 16, color: Colors.white),
+          ),
         SizedBox(
           height: 10,
         ),
-        if (widget.event.additionalActions != null && widget.event.additionalActions!.isNotEmpty)
-          ...widget.event.additionalActions!.map((e) {
-            print("here");
+        if (event!.additionalActions != null &&
+            event!.additionalActions!.isNotEmpty)
+          ...event!.additionalActions!.map((e) {
             void deleteAdditional() {
-              deleteAdditionalAction(widget.userEvent, widget.event.additionalActions!.indexOf(e));
+              deleteAdditionalAction(
+                      widget.userEvent, event!.additionalActions!.indexOf(e))
+                  .then((e) {
+                getEventByUuid(widget.userEvent.uuid).then((evt) {
+                  event = evt;
+                  print(event);
+                  setState(() {});
+                });
+              });
             }
+
             return InkWell(
-              onTap: () {
-                showModalBottomSheet(
+              onTap: () async {
+                await showModalBottomSheet(
                     context: context,
                     backgroundColor: Colors.transparent,
                     builder: (context) {
@@ -184,8 +200,6 @@ class _ShowEventState extends State<ShowEvent> {
                         event: e,
                         delete: deleteAdditional,
                       );
-                    }).then((value) {
-                      setState(() {});
                     });
               },
               child: EventCard(
