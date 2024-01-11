@@ -45,6 +45,21 @@ export const TRIGGER_EVENTS: APIEvent[] = [
           streamUrl: 'Url of the stream',
         },
       },
+      {
+        id: 'followsStreamer',
+        name: 'User starts following a streamer',
+        fields: [
+          {
+            value: 'Streamer name',
+            name: 'streamer',
+            type: 'input',
+            required: true,
+          },
+        ],
+        variables: {
+          follower: 'Name of the follower',
+        },
+      },
     ],
   },
   {

@@ -117,7 +117,7 @@ const EventContentComponent: React.FC<EventContentProps> = ({ eventUuid }) => {
               event?.triggerInteraction.provider,
           )
           ?.interactions.find(
-            (interaction) => interaction.name === interaction.name,
+            (interact) => interact.name === event?.triggerInteraction.name,
           )?.variables || {},
     });
   }, [event]);

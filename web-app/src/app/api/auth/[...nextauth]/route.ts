@@ -53,7 +53,7 @@ const handler = NextAuth({
       authorization: {
         params: {
           scope:
-            'openid user:read:email user:read:follows channel:read:subscriptions user:edit',
+            'openid user:read:email user:read:follows channel:read:subscriptions user:edit user:read:subscriptions moderator:read:followers',
         },
       },
       httpOptions: {
