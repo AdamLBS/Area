@@ -1,4 +1,3 @@
-import 'package:area/widgets/drawer_bridge.dart';
 import 'package:flutter/material.dart';
 import 'package:area/model/event_create_model.dart';
 import 'package:area/model/event_model.dart';
