@@ -13,6 +13,7 @@ export default class extends BaseSchema {
       table.text('spotify_song_uri').nullable()
       table.boolean('timer_active').defaultTo(false)
       table.string('github_latest_action_id').nullable()
+      table.integer('twitch_followers').nullable()
 
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL

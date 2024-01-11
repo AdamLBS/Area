@@ -50,14 +50,17 @@ export const TRIGGER_EVENTS: APIEvent[] = [
         name: 'User starts following a streamer',
         fields: [
           {
-            value: 'Streamer name',
+            value: 'Streamer name (you must be a moderator)',
             name: 'streamer',
             type: 'input',
             required: true,
           },
         ],
         variables: {
-          follower: 'Name of the follower',
+          follower: 'Name of the last follower',
+          followers: 'Name of the last followers',
+          number: 'Number of new followers',
+          streamer: 'Name of the streamer',
         },
       },
     ],

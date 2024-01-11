@@ -10,143 +10,118 @@ import Cache from 'App/Models/Cache'
 import { APIEventField } from 'types/events'
 
 type TwitchData = {
-  id: string
-  user_id: string
-  user_name: string
-  game_id: string
-  type: string
-  title: string
-  viewer_count: number
-  started_at: string
-  language: string
-  thumbnail_url: string
-  tag_ids: string[]
-}
-
-type TwitchResponse = {
-  data: TwitchData[]
+  total: number
+  data: {
+    user_id: string
+    user_login: string
+    user_name: string
+    followed_at: string
+  }[]
+  pagination: {}
 }
 
 export default class TwitchLiveTask extends BaseTask {
   public static get schedule() {
     console.log('[Twitch] schedule')
-    return CronTimeV2.everyFiveSeconds()
+    return CronTimeV2.everyFifteenSeconds()
   }
 
   public static get useLock() {
     return false
   }
 
-  private async fetchTwitchUserId(oauth: any): Promise<string> {
+  private async fetchTwitchUserId(oauth: any, username: string): Promise<string> {
     const repose = await axios.get('https://api.twitch.tv/helix/users', {
       headers: {
         'Client-ID': process.env.TWITCH_CLIENT_ID,
         'Authorization': `Bearer ${oauth.token}`,
       },
+      params: {
+        login: username,
+      },
     })
     return repose.data.data[0].id
   }
 
-  private async fetchTwitchData(oauth: any, user_id: string): Promise<TwitchData[]> {
-    const response = await axios.get<TwitchResponse>(
-      `https://api.twitch.tv/helix/streams/followed`,
+  private async fetchTwitchData(oauth: any, channel_id: string): Promise<TwitchData> {
+    const response = await axios.get<TwitchData>(
+      `https://api.twitch.tv/helix/channels/followers`,
       {
         headers: {
           'Client-ID': process.env.TWITCH_CLIENT_ID,
           'Authorization': `Bearer ${oauth.token}`,
         },
         params: {
-          user_id: user_id,
+          broadcaster_id: channel_id,
         },
       }
     )
-    return response.data.data
+    return response.data
   }
 
-  private useVariablesInFields = (fields: APIEventField<any>[], data: TwitchData) => {
+  private useVariablesInFields = (fields: APIEventField<any>[], data: TwitchData, currentFollowersNumb: number) => {
     for (const field of fields) {
+      if ((field.value as string).includes('$followers')) {
+        const followers: string[] = []
+        let i = 0
+        data.data.map((user) => {
+          if (i === data.total - currentFollowersNumb) return
+          followers.push(user.user_name)
+          i++
+        })
+        const stringFollowers = followers.join(', ')
+        field.value = field.value.replace('$followers', stringFollowers)
+      } else if ((field.value as string).includes('$follower')) {
+        const follower = data.data[0].user_name
+        field.value = field.value.replace('$follower', follower)
+      }
       if ((field.value as string).includes('$streamer')) {
-        let streamer = data.user_name
+        const streamer = fields.at(0)?.value
         field.value = field.value.replace('$streamer', streamer)
       }
-      if ((field.value as string).includes('$streamUrl')) {
-        let streamUrl = `https://twitch.tv/${data.user_name}`
-        field.value = field.value.replace('$streamUrl', streamUrl)
+      if ((field.value as string).includes('$number')) {
+        const number = data.total - currentFollowersNumb
+        field.value = field.value.replace('$number', number)
       }
     }
   }
 
-  private async updateChannelsInLive(uuid: string, channelsJSON: { user_name: string }[]) {
+  private async updateFollowers(uuid: string, followers: number) {
     await Cache.updateOrCreate(
       {
         uuid: uuid,
       },
       {
-        twitchInLive: JSON.stringify(channelsJSON),
+        twitchFollowers: followers,
       }
     )
   }
 
-  private async notifyUserInLive(data: TwitchData, event: any) {
-    const responseData = JSON.parse(event.response_interaction)
-    const responseInteraction = responseData.id.toString() as ResponseInteraction
-    const fields = responseData.fields as APIEventField<any>[]
-    this.useVariablesInFields(fields, data)
-    for (const additionalAction of event.additional_actions) {
-      this.useVariablesInFields(additionalAction.fields, data)
-    }
-    await eventHandler(responseInteraction, fields, event.response_api)
-    await handleAdditionalActions(event)
-  }
-
-  private isUserNotPresent(channelsJSON: { user_name: string }[], userName: string): boolean {
-    return !channelsJSON.some((channel) => channel.user_name === userName)
-  }
-
-  private logAlreadyInLive(userName: string) {
-    console.log(`[Twitch] ${userName} is already in live`)
-  }
-
-  public async inLive(triggerApiOauth: any, event: any) {
+  public async newFollowe(triggerApiOauth: any, event: any) {
     try {
-      const userId = await this.fetchTwitchUserId(triggerApiOauth)
-      // const twitchData = await this.fetchTwitchData(triggerApiOauth, userId)
-      // const userCache = await Database.query().from('caches').where('uuid', event.uuid).first()
-      // if (!userCache || !userCache.twitch_in_live) {
-      //   const channels = twitchData.map((data: TwitchData) => ({ user_name: data.user_name }))
-      //   if (channels === null) {
-      //     return
-      //   }
-      //   await this.updateChannelsInLive(event.uuid, channels)
-      //   twitchData.map(async (data: TwitchData) => {
-      //     await this.notifyUserInLive(data, event)
-      //   })
-      //   return
-      // } else {
-      //   const channelsJSON = JSON.parse(userCache.twitch_in_live)
-
-      //   for (const channel of channelsJSON) {
-      //     const data = twitchData.find((data: TwitchData) => data.user_name === channel.user_name)
-      //     if (data === undefined) {
-      //       channelsJSON.splice(channelsJSON.indexOf(channel), 1)
-      //       await this.updateChannelsInLive(event.uuid, channelsJSON)
-      //     }
-      //   }
-
-      //   for (const data of twitchData) {
-      //     if (triggerApiOauth.twitch_in_live === null) {
-      //       return
-      //     }
-
-      //     if (this.isUserNotPresent(channelsJSON, data.user_name)) {
-      //       channelsJSON.push({ user_name: data.user_name })
-      //       await this.updateChannelsInLive(event.uuid, channelsJSON)
-      //       await this.notifyUserInLive(data, event)
-      //     } else {
-      //       this.logAlreadyInLive(data.user_name)
-      //     }
-      //   }
-      // }
+      const triggerData = JSON.parse(event.trigger_interaction)
+      const username = triggerData.fields[0].value
+      const channelId = await this.fetchTwitchUserId(triggerApiOauth, username)
+      const twitchData = await this.fetchTwitchData(triggerApiOauth, channelId)
+      if (!twitchData) return
+      const userCache = await Database.query().from('caches').where('uuid', event.uuid).first()
+      if (!userCache || !userCache.twitch_followers || userCache.twitch_followers > twitchData.total) {
+        this.updateFollowers(event.uuid, twitchData.total)
+        return
+      }
+      console.log('userCache.twitch_followers', userCache.twitch_followers)
+      if (userCache.twitch_followers < twitchData.total) {
+        const responseData = JSON.parse(event.response_interaction)
+        const responseInteraction = responseData.id.toString() as ResponseInteraction
+        const fields = JSON.parse(event.response_interaction).fields as APIEventField<any>[]
+        this.useVariablesInFields(fields, twitchData, userCache.twitch_followers)
+        for (const additionalAction of event.additional_actions) {
+          this.useVariablesInFields(additionalAction.fields, twitchData, userCache.twitch_followers)
+        }
+        await eventHandler(responseInteraction, fields, event.response_api)
+        await handleAdditionalActions(event)
+        this.updateFollowers(event.uuid, twitchData.total)
+      }
     } catch (error) {
       console.log(error)
     }
@@ -165,7 +140,7 @@ export default class TwitchLiveTask extends BaseTask {
             .from('oauths')
             .where('uuid', event.trigger_api)
             .first()
-          await this.inLive(triggerApiOauth, event)
+          await this.newFollowe(triggerApiOauth, event)
         })
     } catch (error) {
       console.log(error)

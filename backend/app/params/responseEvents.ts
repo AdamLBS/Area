@@ -89,8 +89,8 @@ export const RESPONSE_EVENTS: APIEvent[] = [
         name: 'Make a stream chat announce',
         fields: [
           {
-            value: 'Channel name (you must be a moderator)',
-            name: 'channel',
+            value: 'Streamer name (you must be a moderator)',
+            name: 'streamer',
             type: 'input',
             required: true,
           },
