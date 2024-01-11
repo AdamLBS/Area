@@ -3,10 +3,12 @@
 import 'package:area/model/event_create_model.dart';
 import 'package:area/model/event_model.dart';
 import 'package:area/model/user_event_model.dart';
+import 'package:area/pages/update_action_page.dart';
 import 'package:area/utils/delete_additional_actions.dart';
 import 'package:area/utils/get_event.dart';
 import 'package:area/widgets/bottom_sheet_event.dart';
 import 'package:area/widgets/event_card.dart';
+import 'package:area/pages/update_trigger_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -109,15 +111,19 @@ class _ShowEventState extends State<ShowEvent> {
         ),
         InkWell(
           onTap: () {
-            showModalBottomSheet(
-                context: context,
-                backgroundColor: Colors.transparent,
-                builder: (context) {
-                  return BottomSheetEventEdit(
-                    event: event!.triggerEvent!,
-                    delete: null,
-                  );
-                });
+                        EventCreationModel event = EventCreationModel(
+                triggerEvent: null,
+                responseEvent: null,
+                eventName: widget.event.eventName,
+                eventDescription: widget.event.eventDescription,
+                additionalActions: widget.event.additionalActions);
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => UpdateTriggerPage(eventCreationModel: event,))).then((value) => setState(() {
+                  EventModel? eventModel = value as EventModel?;
+                  if (eventModel != null) {
+                    widget.event.triggerEvent = eventModel;
+                  }
+                }));
           },
           child: EventCard(
             desc: event!.triggerEvent!.name,
@@ -125,7 +131,7 @@ class _ShowEventState extends State<ShowEvent> {
           ),
         ),
         SizedBox(
-          height: 10,
+          height: 10, 
         ),
         Divider(
           color: Color(0xFFFFFFFF),
@@ -141,15 +147,20 @@ class _ShowEventState extends State<ShowEvent> {
         ),
         InkWell(
           onTap: () {
-            showModalBottomSheet(
-                context: context,
-                backgroundColor: Colors.transparent,
-                builder: (context) {
-                  return BottomSheetEventEdit(
-                    event: event!.responseEvent!,
-                    delete: null,
-                  );
-                });
+            EventCreationModel event = EventCreationModel(
+                triggerEvent: widget.event.triggerEvent,
+                responseEvent: null,
+                eventName: widget.event.eventName,
+                eventDescription: widget.event.eventDescription,
+                additionalActions: widget.event.additionalActions);
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => UpdateActionPage(eventCreationModel: event,))).then((value) => setState(() {
+                  EventModel? eventModel = value as EventModel?;
+                  if (eventModel != null) {
+                    widget.event.responseEvent = eventModel;
+                  }
+                }));
+
           },
           child: EventCard(
             desc: event!.responseEvent!.name,
