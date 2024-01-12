@@ -11,7 +11,6 @@ type RefreshToken = {
   refresh_token: string
 }
 
-
 export default class RefreshTokensTask extends BaseTask {
   public static get schedule() {
     console.log('[Refresh Token] schedule')
@@ -20,6 +19,35 @@ export default class RefreshTokensTask extends BaseTask {
 
   public static get useLock() {
     return false
+  }
+
+  private async discordRefreshToken(oauth: any) {
+    try {
+      const data = new URLSearchParams({
+        grant_type: 'refresh_token',
+        refresh_token: oauth.refresh_token,
+      })
+      const auth = Buffer.from(`${process.env.DISCORD_CLIENT_ID}:${process.env.DISCORD_CLIENT_SECRET}`).toString('base64')
+      const authHeader = `Basic ${auth}`
+      const response = await axios.post<RefreshToken>('https://discord.com/api/oauth2/token', data, {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          Authorization: authHeader,
+        },
+      })
+      await Oauth.updateOrCreate(
+        {
+          userUuid: oauth.user_uuid,
+          provider: 'discord',
+        },
+        {
+          token: response.data.access_token,
+          refreshToken: response.data.refresh_token,
+        }
+      )
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   private async refreshToken(
@@ -77,14 +105,7 @@ export default class RefreshTokensTask extends BaseTask {
             process.env.SPOTIFY_CLIENT_SECRET
           )
         } else if (oauth.provider === 'discord') {
-          //NOT WORKING, BUG TRELLO https://trello.com/c/FzeyVOEp/322-aadev-discord-refresh-token
-          await this.refreshToken(
-            oauth,
-            'discord',
-            'https://discord.com/api/oauth2/token',
-            process.env.DISCORD_CLIENT_ID,
-            process.env.DISCORD_CLIENT_SECRET
-          )
+          await this.discordRefreshToken(oauth)
         } else if (oauth.provider === 'github') {
           await this.refreshToken(
             oauth,
