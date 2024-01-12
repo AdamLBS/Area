@@ -194,6 +194,9 @@ class _ShowEventState extends State<ShowEvent> {
                   color: Color(0xFFFFFFFF),
                   thickness: 0.1,
                 ),
+                SizedBox(
+                  height: 10,
+                ),
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
