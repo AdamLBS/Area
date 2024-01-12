@@ -1,19 +1,14 @@
-import 'package:area/model/event_model.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class BottomSheetEventEdit extends StatefulWidget {
-  const BottomSheetEventEdit(
-      {super.key, required this.event, this.delete, required this.update});
-  final EventModel event;
-  final VoidCallback? delete;
-  final VoidCallback update;
+class BottomSheetOAuth extends StatefulWidget {
+  const BottomSheetOAuth({super.key});
 
   @override
-  State<BottomSheetEventEdit> createState() => _BottomSheetEventEditState();
+  State<BottomSheetOAuth> createState() => _BottomSheetOAuthState();
 }
 
-class _BottomSheetEventEditState extends State<BottomSheetEventEdit> {
+class _BottomSheetOAuthState extends State<BottomSheetOAuth> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -42,9 +37,7 @@ class _BottomSheetEventEditState extends State<BottomSheetEventEdit> {
             height: 32,
           ),
           Text(
-            widget.delete != null
-                ? "Do you want to update or delete this event?"
-                : "Do you want to update this event?",
+            "Do you want to update or delete this account?",
             style: GoogleFonts.inter(
               fontSize: 14,
               color: Color(0xFFA1A1AA),
@@ -64,7 +57,7 @@ class _BottomSheetEventEditState extends State<BottomSheetEventEdit> {
                 ),
               ),
               onPressed: () {
-                widget.update();
+                Navigator.of(context).pop(0);
               },
               child: Text(
                 "Update",
@@ -75,11 +68,9 @@ class _BottomSheetEventEditState extends State<BottomSheetEventEdit> {
               ),
             ),
           ),
-          if (widget.delete != null)
             SizedBox(
               height: 10,
             ),
-          if (widget.delete != null)
             SizedBox(
               width: double.infinity,
               height: 40,
@@ -91,8 +82,7 @@ class _BottomSheetEventEditState extends State<BottomSheetEventEdit> {
                   ),
                 ),
                 onPressed: () {
-                  widget.delete!();
-                  Navigator.pop(context);
+                  Navigator.of(context).pop(1);
                 },
                 child: Text(
                   "Delete",
