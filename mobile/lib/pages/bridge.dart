@@ -125,13 +125,12 @@ class _BridgePageState extends State<BridgePage> {
                               if (snapshot.hasData) {
                                 if (snapshot.data!.isEmpty) {
                                   listSize = snapshot.data!.length;
-                                  WidgetsBinding.instance.addPostFrameCallback((_){
-
-setState(() {
-  listSize = snapshot.data!.length;
-});
-
-});
+                                  WidgetsBinding.instance
+                                      .addPostFrameCallback((_) {
+                                    setState(() {
+                                      listSize = snapshot.data!.length;
+                                    });
+                                  });
                                   return Container();
                                 } else {
                                   listSize = snapshot.data!.length;
