@@ -124,6 +124,7 @@ class _BridgePageState extends State<BridgePage> {
                                   listSize = snapshot.data!.length;
                                   return Container();
                                 } else {
+                                  listSize = snapshot.data!.length;
                                   List<Widget> widgets = [];
                                   for (var i = 0;
                                       i < snapshot.data!.length;
