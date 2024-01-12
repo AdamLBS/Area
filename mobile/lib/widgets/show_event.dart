@@ -52,7 +52,6 @@ class _ShowEventState extends State<ShowEvent> {
               children: [
                 Container(
                   constraints: BoxConstraints(minHeight: 102, minWidth: 320),
-
                   padding: EdgeInsets.only(top: 20),
                   child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -130,7 +129,6 @@ class _ShowEventState extends State<ShowEvent> {
                         ),
                       ]),
                 ),
-
                 Divider(
                   color: Color(0xFFFFFFFF),
                   thickness: 0.1,
