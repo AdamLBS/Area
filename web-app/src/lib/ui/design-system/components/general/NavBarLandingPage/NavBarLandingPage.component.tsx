@@ -38,7 +38,7 @@ const NavBarLandingPageComponent: React.FC = () => {
             variant="ghost"
             onClick={() => handleRedirection(`documentation`)}
           >
-            Documentation
+            About
           </Button>
         </NavigationMenuList>
       </NavigationMenu>

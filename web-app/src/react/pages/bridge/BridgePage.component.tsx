@@ -27,7 +27,7 @@ const Bridge: React.FC = () => {
             <Text>or you can create a new event</Text>
             <EventPanelButton onClick={() => setCreateEventModalOpen(true)}>
               <PlusIcon size={16} />
-              Add a new event
+              Add a new bridge
             </EventPanelButton>
             <CreateEventModal
               isOpen={createEventModalOpen}

@@ -55,9 +55,9 @@ const DeleteEventModalComponent: React.FC<DeleteEventModalProps> = ({
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Delete this event</DialogTitle>
+          <DialogTitle>Delete this bridge</DialogTitle>
           <DialogDescription>
-            Do you want to delete this event?
+            Do you want to delete this bridge?
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>

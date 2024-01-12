@@ -20,7 +20,7 @@ const Activation = ({ activated, eventUuid }: ActivationProps) => {
       const message = activated ? 'desactivated' : 'activated';
       toast({
         title: 'Success!',
-        description: 'Your event has been ' + message + '.',
+        description: 'Your bridge has been ' + message + '.',
       });
       queryClient.invalidateQueries({ queryKey: ['event'] });
     },

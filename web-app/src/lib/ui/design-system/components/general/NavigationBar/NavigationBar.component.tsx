@@ -64,7 +64,7 @@ const NavigationBarComponent: React.FC<NavBarProps> = ({ pageName, icon }) => {
             variant="ghost"
             onClick={() => handleRedirection(`documentation`)}
           >
-            Documentation
+            About
           </Button>
         </MenuContainer>
         <DarkContainer>
