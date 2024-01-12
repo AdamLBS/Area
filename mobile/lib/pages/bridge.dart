@@ -28,6 +28,7 @@ class _BridgePageState extends State<BridgePage> {
       selectedUserEvt = null;
       setState(() {});
     }
+
     return Scaffold(
         resizeToAvoidBottomInset: false,
         endDrawer: Theme(
@@ -201,7 +202,8 @@ class _BridgePageState extends State<BridgePage> {
                             child: ElevatedButton(
                               onPressed: () {
                                 Scaffold.of(context).closeEndDrawer();
-                                Navigator.pushNamed(context, '/eventcreate').then((value) {
+                                Navigator.pushNamed(context, '/eventcreate')
+                                    .then((value) {
                                   setState(() {});
                                 });
                               },

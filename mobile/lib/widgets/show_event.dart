@@ -20,7 +20,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ShowEvent extends StatefulWidget {
-  const ShowEvent({super.key, required this.event, required this.userEvent, required this.refresh});
+  const ShowEvent(
+      {super.key,
+      required this.event,
+      required this.userEvent,
+      required this.refresh});
   final EventCreationModel event;
   final UserEvent userEvent;
   final VoidCallback refresh;
@@ -106,7 +110,8 @@ class _ShowEventState extends State<ShowEvent> {
                             height: 40,
                             child: ElevatedButton(
                               onPressed: () async {
-                                showDialogDeleteEvent(widget.userEvent, context).then((value) {
+                                showDialogDeleteEvent(widget.userEvent, context)
+                                    .then((value) {
                                   if (value != null && value) {
                                     widget.refresh();
                                   }
