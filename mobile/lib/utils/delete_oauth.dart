@@ -1,4 +1,3 @@
-import 'package:area/model/oauth_model.dart';
 import 'package:area/constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:area/globals.dart' as globals;
