@@ -12,6 +12,7 @@ import 'package:area/utils/load_event_variables.dart';
 import 'package:area/utils/update_action.dart';
 import 'package:area/utils/update_trigger.dart';
 import 'package:area/widgets/bottom_sheet_event.dart';
+import 'package:area/widgets/dialog_delete_event.dart';
 import 'package:area/widgets/event_card.dart';
 import 'package:area/pages/update_trigger_page.dart';
 import 'package:flutter/material.dart';
@@ -19,9 +20,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ShowEvent extends StatefulWidget {
-  const ShowEvent({super.key, required this.event, required this.userEvent});
+  const ShowEvent({super.key, required this.event, required this.userEvent, required this.refresh});
   final EventCreationModel event;
   final UserEvent userEvent;
+  final VoidCallback refresh;
 
   @override
   State<ShowEvent> createState() => _ShowEventState();
@@ -76,27 +78,56 @@ class _ShowEventState extends State<ShowEvent> {
                             SizedBox(
                               height: 10,
                             ),
+                            Container(
+                              width: 42,
+                              height: 42,
+                              padding: EdgeInsets.all(4),
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Color(0xFF94A3B8).withOpacity(0.5),
+                                ),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Center(
+                                child: SizedBox(
+                                  height: 20,
+                                  width: 20,
+                                  child: SvgPicture.asset(
+                                    "assets/icons/settings.svg",
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ),
                           ]),
-                      Container(
-                        width: 42,
-                        height: 42,
-                        padding: EdgeInsets.all(4),
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Color(0xFF94A3B8).withOpacity(0.5),
-                          ),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Center(
-                          child: SizedBox(
-                            height: 20,
-                            width: 20,
-                            child: SvgPicture.asset(
-                              "assets/icons/settings.svg",
-                              color: Colors.white,
+                      Column(
+                        children: [
+                          SizedBox(
+                            height: 40,
+                            child: ElevatedButton(
+                              onPressed: () async {
+                                showDialogDeleteEvent(widget.userEvent, context).then((value) {
+                                  if (value != null && value) {
+                                    widget.refresh();
+                                  }
+                                });
+                              },
+                              style: ElevatedButton.styleFrom(
+                                primary: Color(0xFF7F1D1D),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                              child: Text(
+                                "Delete",
+                                style: GoogleFonts.inter(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.white),
+                              ),
                             ),
                           ),
-                        ),
+                        ],
                       )
                     ],
                   ),

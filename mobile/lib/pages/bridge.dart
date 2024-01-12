@@ -23,6 +23,11 @@ class _BridgePageState extends State<BridgePage> {
   UserEvent? selectedUserEvt;
   @override
   Widget build(BuildContext context) {
+    void refresh() {
+      selectedEvt = null;
+      selectedUserEvt = null;
+      setState(() {});
+    }
     return Scaffold(
         resizeToAvoidBottomInset: false,
         endDrawer: Theme(
@@ -196,7 +201,9 @@ class _BridgePageState extends State<BridgePage> {
                             child: ElevatedButton(
                               onPressed: () {
                                 Scaffold.of(context).closeEndDrawer();
-                                Navigator.pushNamed(context, '/eventcreate');
+                                Navigator.pushNamed(context, '/eventcreate').then((value) {
+                                  setState(() {});
+                                });
                               },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Color(0xFF6D28D9),
@@ -229,6 +236,7 @@ class _BridgePageState extends State<BridgePage> {
                           ShowEvent(
                             event: selectedEvt!,
                             userEvent: selectedUserEvt!,
+                            refresh: refresh,
                           )
                       ],
                     )),
