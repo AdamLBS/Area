@@ -92,9 +92,9 @@ class _BridgePageState extends State<BridgePage> {
                           ],
                         ),
                         if (selectedEvt == null)
-                        SizedBox(
-                          height: 20,
-                        ),
+                          SizedBox(
+                            height: 20,
+                          ),
                         Text(
                           selectedEvt == null ? "Your events" : "",
                           style: GoogleFonts.inter(

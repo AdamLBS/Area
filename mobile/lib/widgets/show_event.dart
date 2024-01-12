@@ -59,80 +59,81 @@ class _ShowEventState extends State<ShowEvent> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   padding: EdgeInsets.all(24),
-                  child:                      Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.max,
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Text(
+                          event!.eventName!,
+                          style: GoogleFonts.inter(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white),
+                        ),
+                        Text(
+                          event!.eventDescription!,
+                          style: GoogleFonts.inter(
+                              fontSize: 14, color: Colors.white),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Text(
-                              event!.eventName!,
-                              style: GoogleFonts.inter(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.white),
-                            ),
-                            Text(
-                              event!.eventDescription!,
-                              style: GoogleFonts.inter(
-                                  fontSize: 14, color: Colors.white),
+                            Container(
+                              width: 42,
+                              height: 42,
+                              padding: EdgeInsets.all(4),
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Color(0xFF94A3B8).withOpacity(0.5),
+                                ),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Center(
+                                child: SizedBox(
+                                  height: 20,
+                                  width: 20,
+                                  child: SvgPicture.asset(
+                                    "assets/icons/settings.svg",
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
                             ),
                             SizedBox(
-                              height: 10,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Container(
-                                  width: 42,
-                                  height: 42,
-                                  padding: EdgeInsets.all(4),
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                      color: Color(0xFF94A3B8).withOpacity(0.5),
-                                    ),
+                              height: 40,
+                              child: ElevatedButton(
+                                onPressed: () async {
+                                  showDialogDeleteEvent(
+                                          widget.userEvent, context)
+                                      .then((value) {
+                                    if (value != null && value) {
+                                      widget.refresh();
+                                    }
+                                  });
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  primary: Color(0xFF7F1D1D),
+                                  shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10),
                                   ),
-                                  child: Center(
-                                    child: SizedBox(
-                                      height: 20,
-                                      width: 20,
-                                      child: SvgPicture.asset(
-                                        "assets/icons/settings.svg",
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ),
                                 ),
-                                                    SizedBox(
-                            height: 40,
-                            child: ElevatedButton(
-                              onPressed: () async {
-                                showDialogDeleteEvent(widget.userEvent, context)
-                                    .then((value) {
-                                  if (value != null && value) {
-                                    widget.refresh();
-                                  }
-                                });
-                              },
-                              style: ElevatedButton.styleFrom(
-                                primary: Color(0xFF7F1D1D),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
+                                child: Text(
+                                  "Delete",
+                                  style: GoogleFonts.inter(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.white),
                                 ),
                               ),
-                              child: Text(
-                                "Delete",
-                                style: GoogleFonts.inter(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.white),
-                              ),
                             ),
-                          ),
-                              ],
-                            ),
-                          ]),
+                          ],
+                        ),
+                      ]),
                 ),
                 SizedBox(
                   height: 10,
