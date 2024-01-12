@@ -59,10 +59,7 @@ class _ShowEventState extends State<ShowEvent> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   padding: EdgeInsets.all(24),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
+                  child:                      Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisSize: MainAxisSize.max,
@@ -82,31 +79,32 @@ class _ShowEventState extends State<ShowEvent> {
                             SizedBox(
                               height: 10,
                             ),
-                            Container(
-                              width: 42,
-                              height: 42,
-                              padding: EdgeInsets.all(4),
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: Color(0xFF94A3B8).withOpacity(0.5),
-                                ),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Center(
-                                child: SizedBox(
-                                  height: 20,
-                                  width: 20,
-                                  child: SvgPicture.asset(
-                                    "assets/icons/settings.svg",
-                                    color: Colors.white,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Container(
+                                  width: 42,
+                                  height: 42,
+                                  padding: EdgeInsets.all(4),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: Color(0xFF94A3B8).withOpacity(0.5),
+                                    ),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Center(
+                                    child: SizedBox(
+                                      height: 20,
+                                      width: 20,
+                                      child: SvgPicture.asset(
+                                        "assets/icons/settings.svg",
+                                        color: Colors.white,
+                                      ),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ),
-                          ]),
-                      Column(
-                        children: [
-                          SizedBox(
+                                                    SizedBox(
                             height: 40,
                             child: ElevatedButton(
                               onPressed: () async {
@@ -132,10 +130,9 @@ class _ShowEventState extends State<ShowEvent> {
                               ),
                             ),
                           ),
-                        ],
-                      )
-                    ],
-                  ),
+                              ],
+                            ),
+                          ]),
                 ),
                 SizedBox(
                   height: 10,
