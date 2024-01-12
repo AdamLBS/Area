@@ -22,7 +22,7 @@ class _BridgePageState extends State<BridgePage> {
   EventCreationModel? selectedEvt;
   UserEvent? selectedUserEvt;
   Future<List<UserEvent>>? userEvents;
-  int listSize = 0;
+  int listSize = -1;
   @override
   void initState() {
     userEvents = getUserEvents();
@@ -33,6 +33,7 @@ class _BridgePageState extends State<BridgePage> {
     void refresh() {
       selectedEvt = null;
       selectedUserEvt = null;
+      userEvents = getUserEvents();
       setState(() {});
     }
 
@@ -122,9 +123,17 @@ class _BridgePageState extends State<BridgePage> {
                               if (snapshot.hasData) {
                                 if (snapshot.data!.isEmpty) {
                                   listSize = snapshot.data!.length;
+                                  WidgetsBinding.instance.addPostFrameCallback((_){
+
+setState(() {
+  listSize = snapshot.data!.length;
+});
+
+});
                                   return Container();
                                 } else {
                                   listSize = snapshot.data!.length;
+                                  print(listSize);
                                   List<Widget> widgets = [];
                                   for (var i = 0;
                                       i < snapshot.data!.length;
@@ -215,7 +224,9 @@ class _BridgePageState extends State<BridgePage> {
                                 Scaffold.of(context).closeEndDrawer();
                                 Navigator.pushNamed(context, '/eventcreate')
                                     .then((value) {
-                                  setState(() {});
+                                  setState(() {
+                                    userEvents = getUserEvents();
+                                  });
                                 });
                               },
                               style: ElevatedButton.styleFrom(
