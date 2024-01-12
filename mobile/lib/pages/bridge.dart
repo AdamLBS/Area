@@ -21,8 +21,23 @@ class BridgePage extends StatefulWidget {
 class _BridgePageState extends State<BridgePage> {
   EventCreationModel? selectedEvt;
   UserEvent? selectedUserEvt;
+  Future<List<UserEvent>>? userEvents;
+  int listSize = -1;
+  @override
+  void initState() {
+    userEvents = getUserEvents();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    void refresh() {
+      selectedEvt = null;
+      selectedUserEvt = null;
+      userEvents = getUserEvents();
+      setState(() {});
+    }
+
     return Scaffold(
         resizeToAvoidBottomInset: false,
         endDrawer: Theme(
@@ -76,17 +91,19 @@ class _BridgePageState extends State<BridgePage> {
                             )
                           ],
                         ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Text(
-                          selectedEvt == null ? "Your events" : "Your event",
-                          style: GoogleFonts.inter(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.white,
+                        if (selectedEvt == null)
+                          SizedBox(
+                            height: 20,
                           ),
-                        ),
+                        if (selectedEvt == null)
+                          Text(
+                            selectedEvt == null ? "Your events" : "",
+                            style: GoogleFonts.inter(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.white,
+                            ),
+                          ),
                         if (selectedEvt == null)
                           SizedBox(
                             height: 10,
@@ -103,22 +120,22 @@ class _BridgePageState extends State<BridgePage> {
                         ),
                         if (selectedEvt == null)
                           FutureBuilder(
-                            future: getUserEvents(),
+                            future: userEvents,
                             builder: ((context,
                                 AsyncSnapshot<List<UserEvent>> snapshot) {
                               if (snapshot.hasData) {
                                 if (snapshot.data!.isEmpty) {
-                                  return Center(
-                                    child: Text(
-                                      "You don't have any event yet",
-                                      style: GoogleFonts.inter(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w400,
-                                        color: Color(0xFFA1A1AA),
-                                      ),
-                                    ),
-                                  );
+                                  listSize = snapshot.data!.length;
+                                  WidgetsBinding.instance
+                                      .addPostFrameCallback((_) {
+                                    setState(() {
+                                      listSize = snapshot.data!.length;
+                                    });
+                                  });
+                                  return Container();
                                 } else {
+                                  listSize = snapshot.data!.length;
+                                  print(listSize);
                                   List<Widget> widgets = [];
                                   for (var i = 0;
                                       i < snapshot.data!.length;
@@ -188,6 +205,18 @@ class _BridgePageState extends State<BridgePage> {
                               }
                             }),
                           ),
+                        if (listSize == 0) Spacer(),
+                        if (listSize == 0)
+                          Center(
+                            child: Text(
+                              "You don't have any event yet",
+                              style: GoogleFonts.inter(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                                color: Color(0xFFA1A1AA),
+                              ),
+                            ),
+                          ),
                         if (selectedEvt == null) Spacer(),
                         if (selectedEvt == null)
                           SizedBox(
@@ -196,7 +225,12 @@ class _BridgePageState extends State<BridgePage> {
                             child: ElevatedButton(
                               onPressed: () {
                                 Scaffold.of(context).closeEndDrawer();
-                                Navigator.pushNamed(context, '/eventcreate');
+                                Navigator.pushNamed(context, '/eventcreate')
+                                    .then((value) {
+                                  setState(() {
+                                    userEvents = getUserEvents();
+                                  });
+                                });
                               },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Color(0xFF6D28D9),
@@ -229,6 +263,7 @@ class _BridgePageState extends State<BridgePage> {
                           ShowEvent(
                             event: selectedEvt!,
                             userEvent: selectedUserEvt!,
+                            refresh: refresh,
                           )
                       ],
                     )),

@@ -20,10 +20,10 @@ class EventCard extends StatelessWidget {
       "spotify": "assets/icons/spotify.svg",
     };
     return Container(
-      constraints: BoxConstraints(minHeight: 102, maxWidth: 320),
+      constraints: BoxConstraints(minHeight: 102),
       decoration: BoxDecoration(
         border: Border.all(
-          color: Color(0xFF94A3B8).withOpacity(0.5),
+          color: Color(0xFF27272A).withOpacity(0.5),
         ),
         borderRadius: BorderRadius.circular(10),
       ),
