@@ -52,7 +52,6 @@ class _ShowEventState extends State<ShowEvent> {
               children: [
                 Container(
                   constraints: BoxConstraints(minHeight: 102, minWidth: 320),
-
                   padding: EdgeInsets.all(24),
                   child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
