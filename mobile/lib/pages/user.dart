@@ -185,8 +185,8 @@ class _AccountPageState extends State<AccountPage> {
                                           return BottomSheetOAuth();
                                         }).then((value) async {
                                       if (value != null && value == 0) {
-await handleOAuthFlow(client, "google",
-                                        scopes, googleClientId, null);
+                                        await handleOAuthFlow(client, "google",
+                                            scopes, googleClientId, null);
                                         if (context.mounted) {
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(SnackBar(
@@ -243,12 +243,12 @@ await handleOAuthFlow(client, "google",
                                           return BottomSheetOAuth();
                                         }).then((value) async {
                                       if (value != null && value == 0) {
-                                    await handleOAuthFlow(
-                                        client,
-                                        "github",
-                                        scopes,
-                                        githubClientId,
-                                        githubClientSecret);
+                                        await handleOAuthFlow(
+                                            client,
+                                            "github",
+                                            scopes,
+                                            githubClientId,
+                                            githubClientSecret);
                                         if (context.mounted) {
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(SnackBar(
