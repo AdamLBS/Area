@@ -28,6 +28,7 @@ class _BridgePageState extends State<BridgePage> {
     userEvents = getUserEvents();
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     void refresh() {
@@ -203,16 +204,17 @@ setState(() {
                               }
                             }),
                           ),
-                          if (listSize == 0) Spacer(),
-                          if (listSize == 0) Center(
+                        if (listSize == 0) Spacer(),
+                        if (listSize == 0)
+                          Center(
                             child: Text(
-                                        "You don't have any event yet",
-                                        style: GoogleFonts.inter(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w400,
-                                          color: Color(0xFFA1A1AA),
-                                        ),
-                                      ),
+                              "You don't have any event yet",
+                              style: GoogleFonts.inter(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                                color: Color(0xFFA1A1AA),
+                              ),
+                            ),
                           ),
                         if (selectedEvt == null) Spacer(),
                         if (selectedEvt == null)
