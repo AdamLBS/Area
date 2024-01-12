@@ -52,12 +52,7 @@ class _ShowEventState extends State<ShowEvent> {
               children: [
                 Container(
                   constraints: BoxConstraints(minHeight: 102, minWidth: 320),
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Color(0xFF94A3B8).withOpacity(0.5),
-                    ),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
+
                   padding: EdgeInsets.all(24),
                   child:                      Column(
                           mainAxisAlignment: MainAxisAlignment.start,
