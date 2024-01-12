@@ -69,7 +69,7 @@ const SetTriggerModalComponent: React.FC<DeleteEventModalProps> = ({
           triggers
             ?.find((trigger) => trigger.provider === service)
             ?.interactions.find(
-              (interaction) => interaction.name === interaction.name,
+              (interact) => interact.name === interaction.name,
             )?.variables || {},
       });
       onConfirm({

@@ -12,6 +12,9 @@ export default class Cache extends BaseModel {
   public twitchInLive: string | null
 
   @column()
+  public twitchFollowers: number | null
+
+  @column()
   public spotifyLikedSongs: number | null
 
   @column()
