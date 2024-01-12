@@ -93,7 +93,7 @@ const EventSelectModalComponent: React.FC<DeleteEventModalProps> = ({
           id: interaction.id,
           fields: newFields,
         });
-      } else if (type === 'additional' && additionalActionIndex) {
+      } else if (type === 'additional' && additionalActionIndex !== undefined) {
         mutation.mutate({
           eventUuid,
           action_provider: service.toLowerCase(),

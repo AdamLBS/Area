@@ -24,10 +24,13 @@ export default class Cache extends BaseModel {
   public spotifySongUri: string | null
 
   @column()
-  public timerActive: boolean
+  public timerActive: boolean | null
 
   @column()
   public githubLatestActionId: string | null
+
+  @column()
+  public cryptoReachValue: boolean | null
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

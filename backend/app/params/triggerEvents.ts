@@ -148,4 +148,68 @@ export const TRIGGER_EVENTS: APIEvent[] = [
       },
     ],
   },
+  {
+    provider: 'Crypto',
+    interactions: [
+      {
+        id: 'cryptoPrice',
+        name: 'Crypto price monitoring',
+        fields: [
+          {
+            value: 'Select the crypto',
+            name: 'Crypto',
+            type: 'select',
+            values: [
+              {
+                value: 'BTC',
+                label: 'BTC',
+              },
+              {
+                value: 'ETH',
+                label: 'ETH',
+              },
+              {
+                value: 'LTC',
+                label: 'LTC',
+              },
+            ],
+            required: true,
+          },
+          {
+            value: 'Select the currency',
+            name: 'Currency',
+            type: 'select',
+            values: [
+              {
+                value: 'USD',
+                label: 'Dollar',
+              },
+              {
+                value: 'EUR',
+                label: 'Euro',
+              },
+            ],
+            required: true,
+          },
+          {
+            value: 'Minimum',
+            name: 'Minimum price of the crypto',
+            type: 'input',
+            required: true,
+          },
+          {
+            value: 'Maximum',
+            name: 'Maximum price of the crypto',
+            type: 'input',
+            required: true,
+          },
+        ],
+        variables: {
+          crypto: 'Name of the crypto',
+          amount: 'Actual value of the crypto',
+          currency: 'Currency of the crypto',
+        },
+      },
+    ],
+  },
 ]
