@@ -4,6 +4,7 @@ import 'package:area/model/event_create_model.dart';
 import 'package:area/model/event_model.dart';
 import 'package:area/model/user_event_model.dart';
 import 'package:area/pages/update_action_page.dart';
+import 'package:area/pages/update_event_page.dart';
 import 'package:area/utils/add_new_action.dart';
 import 'package:area/utils/delete_additional_actions.dart';
 import 'package:area/utils/edit_additional_action.dart';
@@ -88,12 +89,33 @@ class _ShowEventState extends State<ShowEvent> {
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: Center(
-                                child: SizedBox(
-                                  height: 20,
-                                  width: 20,
-                                  child: SvgPicture.asset(
-                                    "assets/icons/settings.svg",
-                                    color: Colors.white,
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            UpdateEventPage(
+                                          eventCreationModel: widget.event,
+                                          userEvent: widget.userEvent,
+                                        ),
+                                      ),
+                                    ).then((value) {
+                                      if (value != null && value) {
+                                        widget.refresh();
+                                      } else {
+                                        setState(() {
+                                        
+                                      });
+                                      }
+                                    });
+                                  },
+                                  child: SizedBox(
+                                    height: 20,
+                                    width: 20,
+                                    child: SvgPicture.asset(
+                                      "assets/icons/settings.svg",
+                                      color: Colors.white,
+                                    ),
                                   ),
                                 ),
                               ),

@@ -1,6 +1,6 @@
 class UserEvent {
   final String uuid;
-  final bool active;
+  bool active;
   final String name;
   UserEvent({
     required this.uuid,
@@ -14,5 +14,8 @@ class UserEvent {
       active: json['active'],
       name: json['name'],
     );
+  }
+  set activeState(bool state) {
+    active = state;
   }
 }

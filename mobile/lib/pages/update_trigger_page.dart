@@ -72,7 +72,7 @@ class _UpdateTriggerPageState extends State<UpdateTriggerPage> {
                                 )
                               ],
                             ),
-                            SizedBox(height: 20),
+                            SizedBox(height: 10),
                             Text(
                               "Update an event",
                               style: GoogleFonts.inter(
