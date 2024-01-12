@@ -2,7 +2,7 @@ import 'package:area/model/event_create_model.dart';
 import 'package:area/model/user_event_model.dart';
 import 'package:area/utils/update_event_details.dart';
 import 'package:area/utils/update_event_state.dart';
-import 'package:area/widgets/dialog_delete_event.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -153,25 +153,10 @@ class _UpdateEventPageState extends State<UpdateEventPage> {
                     SizedBox(
                       width: 44,
                       height: 24,
-                      child: Switch(
+                      child: CupertinoSwitch(
                           activeColor: Color(0xFF6D28D9),
-                          inactiveTrackColor: Color(0xFF21212B),
-                          inactiveThumbColor: Color(0xFF6D28D9),
-                          trackOutlineColor:
-                              MaterialStateProperty.resolveWith<Color>(
-                                  (Set<MaterialState> states) {
-                            if (states.contains(MaterialState.disabled)) {
-                              return Color(0xFF030712);
-                            }
-                            return Color(0xFF030712);
-                          }),
-                          thumbColor: MaterialStateProperty.resolveWith<Color>(
-                              (Set<MaterialState> states) {
-                            if (states.contains(MaterialState.disabled)) {
-                              return Color(0xFF030712);
-                            }
-                            return Color(0xFF030712);
-                          }),
+                          trackColor: Color(0xFFA1A1AA),
+                          thumbColor: Color(0xFF030712),
                           value: widget.userEvent.active,
                           onChanged: (val) async {
                             try {
@@ -202,36 +187,6 @@ class _UpdateEventPageState extends State<UpdateEventPage> {
                           }),
                     )
                   ],
-                ),
-                SizedBox(height: 20),
-                SizedBox(
-                  width: double.infinity,
-                  height: 36,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      showDialogDeleteEvent(widget.userEvent, context)
-                          .then((value) {
-                        if (value != null && value) {
-                          Navigator.of(context).pop(true);
-                        }
-                      });
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFF7F1D1D),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      minimumSize: Size(double.infinity, 50),
-                    ),
-                    child: Text(
-                      "Delete",
-                      style: GoogleFonts.inter(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        color: Color(0xFFF9FAFB),
-                      ),
-                    ),
-                  ),
                 ),
                 SizedBox(
                   height: 20,
