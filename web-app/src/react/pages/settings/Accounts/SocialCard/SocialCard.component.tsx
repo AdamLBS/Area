@@ -77,6 +77,8 @@ const Cards: React.FC<CardsProps> = ({
             <DialogTitle>Unlink your account</DialogTitle>
             <DialogDescription>
               Do you want to unlink your account?
+              <br />
+              All your bridges which depend on this account will be deleted.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>

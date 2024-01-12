@@ -68,7 +68,7 @@ const LandingPageComponent = () => {
           <Title>Link all your services</Title>
           <RainbowTextH1>Simple. Fast. Efficient.</RainbowTextH1>
         </TitleContainer>
-        <TextH3>Join us now to start your first event</TextH3>
+        <TextH3>Join us now to start your first bridge</TextH3>
         <RainbowButton onClick={() => handleRedirection(`register`)}>
           Join us
         </RainbowButton>
@@ -79,7 +79,7 @@ const LandingPageComponent = () => {
               <Boxes size={64} />
             </LogoBox>
             <TitleContainer>
-              <Title>Create your events</Title>
+              <Title>Create your bridges</Title>
               <RainbowTextH1>Make your own automated task</RainbowTextH1>
             </TitleContainer>
           </ServiceContent>
@@ -99,7 +99,7 @@ const LandingPageComponent = () => {
             </LogoBox>
             <TitleContainer>
               <Title>Watch your logs</Title>
-              <RainbowTextH1>Have a feedback of your events</RainbowTextH1>
+              <RainbowTextH1>Have a feedback of your bridges</RainbowTextH1>
             </TitleContainer>
           </ServiceContent>
           <img src="/Watch.png" style={{ width: '85%' }} />

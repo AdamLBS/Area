@@ -69,8 +69,8 @@ const CreateEventModalComponent: React.FC<CreateEventModalProps> = ({
     mutationFn: createEvent,
     onSuccess: (res) => {
       toast({
-        title: 'Event created',
-        description: 'The event has been created',
+        title: 'Bridge created',
+        description: 'The bridge has been created',
         variant: 'default',
       });
       queryClient.invalidateQueries({ queryKey: ['events'] });
@@ -80,8 +80,8 @@ const CreateEventModalComponent: React.FC<CreateEventModalProps> = ({
     },
     onError: () => {
       toast({
-        title: 'Event creation failed',
-        description: 'The event could not be created',
+        title: 'Bridge creation failed',
+        description: 'The bridge could not be created',
         variant: 'destructive',
       });
     },
@@ -124,9 +124,9 @@ const CreateEventModalComponent: React.FC<CreateEventModalProps> = ({
         {state === 1 && (
           <>
             <DialogHeader>
-              <DialogTitle>Create a new event</DialogTitle>
+              <DialogTitle>Create a new bridge</DialogTitle>
               <DialogDescription>
-                Let’s start to create a new event (* required)
+                Let’s start to create a new bridge (* required)
               </DialogDescription>
             </DialogHeader>
             <Form {...form}>
@@ -136,9 +136,9 @@ const CreateEventModalComponent: React.FC<CreateEventModalProps> = ({
                   name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Event name*</FormLabel>
+                      <FormLabel>Bridge name*</FormLabel>
                       <FormControl>
-                        <Input placeholder="Event name" {...field} />
+                        <Input placeholder="Bridge name" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -149,9 +149,9 @@ const CreateEventModalComponent: React.FC<CreateEventModalProps> = ({
                   name="description"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Event description</FormLabel>
+                      <FormLabel>Bridge description</FormLabel>
                       <FormControl>
-                        <Input placeholder="Event description" {...field} />
+                        <Input placeholder="Bridge description" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>

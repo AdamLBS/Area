@@ -32,9 +32,9 @@ const MenuEventComponent: React.FC<EventsProps> = ({ currentUuid }) => {
   return (
     <EventPanel>
       <CardHeader>
-        <CardTitle>Your events</CardTitle>
+        <CardTitle>Your bridges</CardTitle>
         <CardDescription>
-          All of your events you have already created
+          All your bridges you have created are listed here.
         </CardDescription>
       </CardHeader>
       <EventPanelContent>
@@ -57,7 +57,7 @@ const MenuEventComponent: React.FC<EventsProps> = ({ currentUuid }) => {
       <Footer>
         <EventPanelButton onClick={() => setCreateEventModalOpen(true)}>
           <PlusIcon size={16} />
-          Add a new event
+          Add a new bridge
         </EventPanelButton>
       </Footer>
       <CreateEventModal
