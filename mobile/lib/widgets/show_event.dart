@@ -53,7 +53,7 @@ class _ShowEventState extends State<ShowEvent> {
                 Container(
                   constraints: BoxConstraints(minHeight: 102, minWidth: 320),
 
-                  padding: EdgeInsets.all(24),
+                  padding: EdgeInsets.only(top: 20),
                   child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -84,7 +84,7 @@ class _ShowEventState extends State<ShowEvent> {
                               padding: EdgeInsets.all(4),
                               decoration: BoxDecoration(
                                 border: Border.all(
-                                  color: Color(0xFF94A3B8).withOpacity(0.5),
+                                  color: Color(0xFF27272A).withOpacity(0.5),
                                 ),
                                 borderRadius: BorderRadius.circular(10),
                               ),
@@ -130,9 +130,7 @@ class _ShowEventState extends State<ShowEvent> {
                         ),
                       ]),
                 ),
-                SizedBox(
-                  height: 10,
-                ),
+
                 Divider(
                   color: Color(0xFFFFFFFF),
                   thickness: 0.1,
@@ -140,12 +138,15 @@ class _ShowEventState extends State<ShowEvent> {
                 SizedBox(
                   height: 10,
                 ),
-                Text(
-                  "Trigger event",
-                  style: GoogleFonts.inter(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 16,
-                      color: Colors.white),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "Trigger event",
+                    style: GoogleFonts.inter(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 16,
+                        color: Colors.white),
+                  ),
                 ),
                 SizedBox(
                   height: 10,
@@ -193,12 +194,15 @@ class _ShowEventState extends State<ShowEvent> {
                   color: Color(0xFFFFFFFF),
                   thickness: 0.1,
                 ),
-                Text(
-                  "Action event",
-                  style: GoogleFonts.inter(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 16,
-                      color: Colors.white),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "Action event",
+                    style: GoogleFonts.inter(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 16,
+                        color: Colors.white),
+                  ),
                 ),
                 SizedBox(
                   height: 10,
