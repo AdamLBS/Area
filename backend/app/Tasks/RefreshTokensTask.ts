@@ -27,14 +27,20 @@ export default class RefreshTokensTask extends BaseTask {
         grant_type: 'refresh_token',
         refresh_token: oauth.refresh_token,
       })
-      const auth = Buffer.from(`${process.env.DISCORD_CLIENT_ID}:${process.env.DISCORD_CLIENT_SECRET}`).toString('base64')
+      const auth = Buffer.from(
+        `${process.env.DISCORD_CLIENT_ID}:${process.env.DISCORD_CLIENT_SECRET}`
+      ).toString('base64')
       const authHeader = `Basic ${auth}`
-      const response = await axios.post<RefreshToken>('https://discord.com/api/oauth2/token', data, {
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-          Authorization: authHeader,
-        },
-      })
+      const response = await axios.post<RefreshToken>(
+        'https://discord.com/api/oauth2/token',
+        data,
+        {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Authorization': authHeader,
+          },
+        }
+      )
       await Oauth.updateOrCreate(
         {
           userUuid: oauth.user_uuid,
