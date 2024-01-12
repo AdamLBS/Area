@@ -11,7 +11,6 @@ type RefreshToken = {
   refresh_token: string
 }
 
-
 export default class RefreshTokensTask extends BaseTask {
   public static get schedule() {
     console.log('[Refresh Token] schedule')
