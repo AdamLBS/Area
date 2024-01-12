@@ -4,6 +4,7 @@ import 'package:area/model/user_event_model.dart';
 import 'package:area/constants.dart';
 import 'package:area/globals.dart' as globals;
 import 'package:http/http.dart' as http;
+
 Future<void> updateEventState(bool enable, UserEvent evt) async {
   var url = Uri.parse("$backendUrl/api/events/${evt.uuid}/activate");
   var request = await http.patch(

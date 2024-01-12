@@ -10,7 +10,8 @@ import 'package:google_fonts/google_fonts.dart';
 class UpdateEventPage extends StatefulWidget {
   final EventCreationModel eventCreationModel;
   final UserEvent userEvent;
-  UpdateEventPage({super.key, required this.eventCreationModel, required this.userEvent});
+  UpdateEventPage(
+      {super.key, required this.eventCreationModel, required this.userEvent});
 
   @override
   State<UpdateEventPage> createState() => _UpdateEventPageState();
@@ -29,6 +30,7 @@ class _UpdateEventPageState extends State<UpdateEventPage> {
     print("is active ? ${widget.userEvent.active}");
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -145,7 +147,8 @@ class _UpdateEventPageState extends State<UpdateEventPage> {
                   children: [
                     Text(
                       "Active",
-                      style: GoogleFonts.inter(fontSize: 14, color: Colors.white),
+                      style:
+                          GoogleFonts.inter(fontSize: 14, color: Colors.white),
                     ),
                     SizedBox(
                       width: 44,
@@ -154,8 +157,9 @@ class _UpdateEventPageState extends State<UpdateEventPage> {
                           activeColor: Color(0xFF6D28D9),
                           inactiveTrackColor: Color(0xFF21212B),
                           inactiveThumbColor: Color(0xFF6D28D9),
-                          trackOutlineColor: MaterialStateProperty.resolveWith<Color>(
-                              (Set<MaterialState> states) {
+                          trackOutlineColor:
+                              MaterialStateProperty.resolveWith<Color>(
+                                  (Set<MaterialState> states) {
                             if (states.contains(MaterialState.disabled)) {
                               return Color(0xFF030712);
                             }
@@ -171,24 +175,28 @@ class _UpdateEventPageState extends State<UpdateEventPage> {
                           value: widget.userEvent.active,
                           onChanged: (val) async {
                             try {
-                            await updateEventState(widget.userEvent.active, widget.userEvent);
-                            setState(() {
-                              widget.userEvent.active = val;
-                            });
-                            if (context.mounted) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(val ? "Event activated" : "Event deactivated"),
-                                ),
-                              );
-                            }
+                              await updateEventState(
+                                  widget.userEvent.active, widget.userEvent);
+                              setState(() {
+                                widget.userEvent.active = val;
+                              });
+                              if (context.mounted) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(val
+                                        ? "Event activated"
+                                        : "Event deactivated"),
+                                  ),
+                                );
+                              }
                             } catch (e) {
                               if (context.mounted) {
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text("Error while updating event state"),
-                                ),
-                              );
+                                  SnackBar(
+                                    content: Text(
+                                        "Error while updating event state"),
+                                  ),
+                                );
                               }
                             }
                           }),
@@ -196,35 +204,38 @@ class _UpdateEventPageState extends State<UpdateEventPage> {
                   ],
                 ),
                 SizedBox(height: 20),
-                SizedBox(width: double.infinity,
-                height: 36,
-                child: ElevatedButton(
-                  onPressed: () {
-                  showDialogDeleteEvent(
-                                          widget.userEvent, context)
-                                      .then((value) {
-                                    if (value != null && value) {
-                                      Navigator.of(context).pop(true);
-                                    }
-                                  });
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFF7F1D1D),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+                SizedBox(
+                  width: double.infinity,
+                  height: 36,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      showDialogDeleteEvent(widget.userEvent, context)
+                          .then((value) {
+                        if (value != null && value) {
+                          Navigator.of(context).pop(true);
+                        }
+                      });
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color(0xFF7F1D1D),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      minimumSize: Size(double.infinity, 50),
                     ),
-                    minimumSize: Size(double.infinity, 50),
-                  ),
-                  child: Text(
-                    "Delete",
-                    style: GoogleFonts.inter(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: Color(0xFFF9FAFB),
+                    child: Text(
+                      "Delete",
+                      style: GoogleFonts.inter(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        color: Color(0xFFF9FAFB),
+                      ),
                     ),
                   ),
-                ),),
-                SizedBox(height: 20,),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
                 if (errorMessage != "")
                   Center(
                     child: Text(
@@ -247,20 +258,22 @@ class _UpdateEventPageState extends State<UpdateEventPage> {
                         widget.eventCreationModel.eventDescription =
                             _eventDescriptionController.text;
                         try {
-                        await updateEventDetails(widget.eventCreationModel, widget.userEvent.uuid);
-                        if (context.mounted) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text("Event details updated"),
-                            ),
-                          );
-                        Navigator.pop(context);
-                        }
+                          await updateEventDetails(
+                              widget.eventCreationModel, widget.userEvent.uuid);
+                          if (context.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text("Event details updated"),
+                              ),
+                            );
+                            Navigator.pop(context);
+                          }
                         } catch (e) {
                           if (context.mounted) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                content: Text("Error while updating event details"),
+                                content:
+                                    Text("Error while updating event details"),
                               ),
                             );
                           }

@@ -91,21 +91,20 @@ class _ShowEventState extends State<ShowEvent> {
                               child: Center(
                                 child: InkWell(
                                   onTap: () {
-                                    Navigator.of(context).push(
+                                    Navigator.of(context)
+                                        .push(
                                       MaterialPageRoute(
-                                        builder: (context) =>
-                                            UpdateEventPage(
+                                        builder: (context) => UpdateEventPage(
                                           eventCreationModel: widget.event,
                                           userEvent: widget.userEvent,
                                         ),
                                       ),
-                                    ).then((value) {
+                                    )
+                                        .then((value) {
                                       if (value != null && value) {
                                         widget.refresh();
                                       } else {
-                                        setState(() {
-                                        
-                                      });
+                                        setState(() {});
                                       }
                                     });
                                   },

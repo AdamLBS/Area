@@ -4,6 +4,7 @@ import 'package:area/constants.dart';
 import 'package:area/globals.dart' as globals;
 import 'package:area/model/event_create_model.dart';
 import 'package:http/http.dart' as http;
+
 Future<void> updateEventDetails(EventCreationModel evt, String uuid) async {
   var url = Uri.parse("$backendUrl/api/event/update/$uuid");
   var request = await http.patch(
