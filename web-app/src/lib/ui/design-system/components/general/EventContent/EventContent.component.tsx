@@ -25,28 +25,19 @@ import {
   IconDiscord,
   IconGithub,
   IconGoogle,
-  IconLinkedin,
   IconSpotify,
   IconTwitch,
 } from '../../icons';
 import { EventActivation } from '../EventActivation';
 import { useEvent, useResponses, useTriggers } from '@/react/hooks/events';
 
-type Provider =
-  | 'spotify'
-  | 'discord'
-  | 'google'
-  | 'github'
-  | 'linkedin'
-  | 'twitch'
-  | 'null';
+type Provider = 'spotify' | 'discord' | 'google' | 'github' | 'twitch' | 'null';
 
 const providerIcon = {
   spotify: <IconSpotify />,
   discord: <IconDiscord />,
   google: <IconGoogle />,
   github: <IconGithub />,
-  linkedin: <IconLinkedin />,
   twitch: <IconTwitch />,
   timer: <AlarmClock />,
   crypto: <Bitcoin />,

@@ -11,10 +11,11 @@ type RefreshToken = {
   refresh_token: string
 }
 
+
 export default class RefreshTokensTask extends BaseTask {
   public static get schedule() {
     console.log('[Refresh Token] schedule')
-    return CronTimeV2.everyTwoMinutes()
+    return CronTimeV2.everyFiveSeconds()
   }
 
   public static get useLock() {
@@ -49,6 +50,7 @@ export default class RefreshTokensTask extends BaseTask {
           refreshToken: response.data.refresh_token,
         }
       )
+      console.log(`[Refresh Token] ${provider} token refreshed`)
     } catch (error) {
       console.log(error)
     }
@@ -73,6 +75,31 @@ export default class RefreshTokensTask extends BaseTask {
             'https://accounts.spotify.com/api/token',
             process.env.SPOTIFY_CLIENT_ID,
             process.env.SPOTIFY_CLIENT_SECRET
+          )
+        } else if (oauth.provider === 'discord') {
+          //NOT WORKING, BUG TRELLO https://trello.com/c/FzeyVOEp/322-aadev-discord-refresh-token
+          await this.refreshToken(
+            oauth,
+            'discord',
+            'https://discord.com/api/oauth2/token',
+            process.env.DISCORD_CLIENT_ID,
+            process.env.DISCORD_CLIENT_SECRET
+          )
+        } else if (oauth.provider === 'github') {
+          await this.refreshToken(
+            oauth,
+            'github',
+            'https://github.com/login/oauth/access_token',
+            process.env.GITHUB_CLIENT_ID,
+            process.env.GITHUB_CLIENT_SECRET
+          )
+        } else if (oauth.provider === 'google') {
+          await this.refreshToken(
+            oauth,
+            'google',
+            'https://oauth2.googleapis.com/token',
+            process.env.GOOGLE_CLIENT_ID,
+            process.env.GOOGLE_CLIENT_SECRET
           )
         }
       }
