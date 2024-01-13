@@ -29,7 +29,6 @@ type TwitchResponse = {
 
 export default class TwitchLiveTask extends BaseTask {
   public static get schedule() {
-    console.log('[Twitch] schedule')
     return CronTimeV2.everyFiveSeconds()
   }
 
@@ -154,7 +153,6 @@ export default class TwitchLiveTask extends BaseTask {
 
   public async handle() {
     try {
-      console.log('[TwitchLiveTask] handle')
       const events = await Database.query()
         .from('events')
         .whereRaw(`CAST(trigger_interaction AS JSONB) #>> '{id}' = 'startsLive'`)

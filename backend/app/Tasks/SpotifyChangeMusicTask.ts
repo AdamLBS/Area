@@ -70,6 +70,7 @@ export default class SpotifyChangeMusicTask extends BaseTask {
       const events = await Database.query()
         .from('events')
         .whereRaw(`CAST(trigger_interaction AS JSONB) #>> '{id}' = 'changeSong'`)
+        .where('active', true)
       for (const event of events) {
         const triggerApi = await Database.query()
           .from('oauths')
@@ -84,8 +85,6 @@ export default class SpotifyChangeMusicTask extends BaseTask {
             spotifyMusicData !== undefined &&
             (userCache.spotifySongUri as string) !== (spotifyMusicData.item.uri as string)
           ) {
-            ;(async () =>
-              await this.updateSpotifyMusicUri(event.uuid, spotifyMusicData?.item.uri as string))()
             const jsonVals = JSON.parse(event.response_interaction)
             const responseInteraction = jsonVals.id.toString() as ResponseInteraction
             const fields = jsonVals.fields as APIEventField<any>[]
@@ -100,6 +99,7 @@ export default class SpotifyChangeMusicTask extends BaseTask {
             await handleAdditionalActions(event)
             await eventHandler(responseInteraction, fields, event.response_api)
           }
+          await this.updateSpotifyMusicUri(event.uuid, spotifyMusicData?.item.uri as string)
         }
       }
     } catch (error) {

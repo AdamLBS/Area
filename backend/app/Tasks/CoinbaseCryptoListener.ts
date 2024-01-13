@@ -71,6 +71,7 @@ export default class CoinbaseCryptoListener extends BaseTask {
     const events = await Database.query()
       .from('events')
       .whereRaw(`CAST(trigger_interaction AS JSONB) #>> '{id}' = 'cryptoPrice'`)
+      .where('active', true)
     for (const event of events) {
       const triggerApi = await Database.query()
         .from('oauths')

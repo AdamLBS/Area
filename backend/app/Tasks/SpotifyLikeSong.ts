@@ -58,6 +58,7 @@ export default class SpotifyLikeSong extends BaseTask {
       const events = await Database.query()
         .from('events')
         .whereRaw(`CAST(trigger_interaction AS JSONB) #>> '{id}' = 'likeSong'`)
+        .where('active', true)
       for (const event of events) {
         const triggerApi = await Database.query()
           .from('oauths')
@@ -68,8 +69,7 @@ export default class SpotifyLikeSong extends BaseTask {
         if (triggerApi && triggerApi.token) {
           if (!userCache || !userCache.spotifyLikedSongs) {
             await this.updateNumberOfLikedSongs(event.uuid, spotifyLikesSong.total)
-          } else if (userCache.spotifyLikedSongs < spotifyLikesSong.total) {
-            ;(async () => await this.updateNumberOfLikedSongs(event.uuid, spotifyLikesSong.total))()
+          } else if (Number(userCache.spotifyLikedSongs) < spotifyLikesSong.total) {
             const jsonVals = JSON.parse(event.response_interaction)
             const responseInteraction = jsonVals.id.toString() as ResponseInteraction
             const fields = jsonVals.fields as APIEventField<any>[]
@@ -88,6 +88,7 @@ export default class SpotifyLikeSong extends BaseTask {
             await handleAdditionalActions(event)
             await eventHandler(responseInteraction, fields, event.response_api)
           }
+          await this.updateNumberOfLikedSongs(event.uuid, spotifyLikesSong.total)
         }
       }
     } catch (error) {

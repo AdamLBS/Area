@@ -76,7 +76,6 @@ export default class GithubCheckLastCommitTask extends BaseTask {
         this.useVariablesInFields(fields, response)
         for (const additionalAction of event.additional_actions) {
           this.useVariablesInFields(additionalAction.fields, response)
-          console.log('updating additionnal')
         }
         await eventHandler(responseInteraction, fields, event.response_api)
         await handleAdditionalActions(event)

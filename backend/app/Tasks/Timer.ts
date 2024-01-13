@@ -37,6 +37,7 @@ export default class Timer extends BaseTask {
     const events = await Database.query()
       .from('events')
       .whereRaw(`CAST(trigger_interaction AS JSONB) #>> '{id}' = 'everyDayTimer'`)
+      .where('active', true)
     for (const event of events) {
       const jsonValsAction = JSON.parse(event.trigger_interaction)
       const fields = jsonValsAction.fields as APIEventField<any>[]
