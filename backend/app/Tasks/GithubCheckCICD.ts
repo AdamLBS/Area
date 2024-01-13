@@ -99,7 +99,6 @@ export default class GithubCheckCICD extends BaseTask {
       const events = await Database.query()
         .from('events')
         .whereRaw(`CAST(trigger_interaction AS JSONB) #>> '{id}' = 'checkCICD'`)
-        .where('active', true)
       events
         .filter((event) => event.active)
         .map(async (event) => {

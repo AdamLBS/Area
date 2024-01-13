@@ -90,7 +90,6 @@ export default class GithubCheckLastCommitTask extends BaseTask {
       const events = await Database.query()
         .from('events')
         .whereRaw(`CAST(trigger_interaction AS JSONB) #>> '{id}' = 'newCommit'`)
-        .where('active', true)
       events
         .filter((event) => event.active)
         .map(async (event) => {
