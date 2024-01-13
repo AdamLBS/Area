@@ -15,6 +15,7 @@ export default class extends BaseSchema {
       table.string('github_latest_action_id').nullable()
       table.integer('twitch_followers').nullable()
       table.boolean('crypto_reach_value').nullable()
+      table.string('latest_liked_video_id').nullable()
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
        */

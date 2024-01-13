@@ -212,4 +212,37 @@ export const TRIGGER_EVENTS: APIEvent[] = [
       },
     ],
   },
+  {
+    provider: 'Google',
+    interactions: [
+      {
+        id: 'newVideo',
+        name: 'New video - Youtube',
+        fields: [
+          {
+            value: 'Channel url',
+            name: 'channelUrl',
+            type: 'input',
+            required: true,
+          },
+        ],
+        variables: {
+          videoUrl: 'Url of the video',
+          videoTitle: 'Title of the video',
+          channelName: 'Name of the channel',
+        },
+      },
+      {
+        id: 'newVideoLike',
+        name: 'New like - Youtube',
+        fields: [
+        ],
+        variables: {
+          videoUrl: 'Url of the video',
+          videoTitle: 'Title of the video',
+          channelName: 'Name of the channel',
+        },
+      }
+    ],
+  }
 ]

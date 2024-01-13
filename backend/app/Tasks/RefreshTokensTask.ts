@@ -14,7 +14,7 @@ type RefreshToken = {
 export default class RefreshTokensTask extends BaseTask {
   public static get schedule() {
     console.log('[Refresh Token] schedule')
-    return CronTimeV2.everyFiveSeconds()
+    return CronTimeV2.everyTwoMinutes()
   }
 
   public static get useLock() {
