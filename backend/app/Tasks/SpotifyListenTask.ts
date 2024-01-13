@@ -69,6 +69,7 @@ export default class SpotifyListenTask extends BaseTask {
       const events = await Database.query()
         .from('events')
         .whereRaw(`CAST(trigger_interaction AS JSONB) #>> '{id}' = 'listenMusic'`)
+        .where('active', true)
       for (const event of events) {
         const triggerApi = await Database.query()
           .from('oauths')
@@ -79,9 +80,8 @@ export default class SpotifyListenTask extends BaseTask {
         const isListening = spotifyAPIData !== undefined && spotifyAPIData.is_playing
         if (triggerApi && triggerApi.token) {
           if (!userCache || userCache.spotifyListening === undefined) {
-            ;(async () => await this.updateSpotifyListeningStatus(event.uuid, isListening))()
+            await this.updateSpotifyListeningStatus(event.uuid, isListening)
           } else if (userCache.spotifyListening !== isListening && spotifyAPIData !== undefined) {
-            ;(async () => await this.updateSpotifyListeningStatus(event.uuid, isListening))()
             if (isListening === true) {
               const jsonVals = JSON.parse(event.response_interaction)
               const responseInteraction = jsonVals.id.toString() as ResponseInteraction
@@ -98,6 +98,7 @@ export default class SpotifyListenTask extends BaseTask {
               await eventHandler(responseInteraction, fields, event.response_api)
             }
           }
+          await this.updateSpotifyListeningStatus(event.uuid, isListening)
         }
       }
     } catch (error) {

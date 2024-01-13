@@ -76,7 +76,6 @@ export default class GithubCheckLastCommitTask extends BaseTask {
         this.useVariablesInFields(fields, response)
         for (const additionalAction of event.additional_actions) {
           this.useVariablesInFields(additionalAction.fields, response)
-          console.log('updating additionnal')
         }
         await eventHandler(responseInteraction, fields, event.response_api)
         await handleAdditionalActions(event)
@@ -91,6 +90,7 @@ export default class GithubCheckLastCommitTask extends BaseTask {
       const events = await Database.query()
         .from('events')
         .whereRaw(`CAST(trigger_interaction AS JSONB) #>> '{id}' = 'newCommit'`)
+        .where('active', true)
       events
         .filter((event) => event.active)
         .map(async (event) => {

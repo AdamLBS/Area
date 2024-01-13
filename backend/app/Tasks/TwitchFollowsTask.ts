@@ -22,7 +22,6 @@ type TwitchData = {
 
 export default class TwitchLiveTask extends BaseTask {
   public static get schedule() {
-    console.log('[Twitch] schedule')
     return CronTimeV2.everyFifteenSeconds()
   }
 
@@ -114,7 +113,6 @@ export default class TwitchLiveTask extends BaseTask {
         this.updateFollowers(event.uuid, twitchData.total)
         return
       }
-      console.log('userCache.twitch_followers', userCache.twitch_followers)
       if (userCache.twitch_followers < twitchData.total) {
         const responseData = JSON.parse(event.response_interaction)
         const responseInteraction = responseData.id.toString() as ResponseInteraction
@@ -134,10 +132,10 @@ export default class TwitchLiveTask extends BaseTask {
 
   public async handle() {
     try {
-      console.log('[TwitchLiveTask] handle')
       const events = await Database.query()
         .from('events')
         .whereRaw(`CAST(trigger_interaction AS JSONB) #>> '{id}' = 'followsStreamer'`)
+        .where('active', true)
       events
         .filter((event) => event.active)
         .map(async (event) => {
