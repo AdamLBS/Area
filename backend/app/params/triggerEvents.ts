@@ -235,14 +235,13 @@ export const TRIGGER_EVENTS: APIEvent[] = [
       {
         id: 'newVideoLike',
         name: 'New like - Youtube',
-        fields: [
-        ],
+        fields: [],
         variables: {
           videoUrl: 'Url of the video',
           videoTitle: 'Title of the video',
           channelName: 'Name of the channel',
         },
-      }
+      },
     ],
-  }
+  },
 ]
