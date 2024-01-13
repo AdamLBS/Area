@@ -8,6 +8,7 @@ import {
 import axios from 'axios'
 import { APIEventField } from 'types/events'
 import Cache from 'App/Models/Cache'
+import Oauth from 'App/Models/Oauth'
 
 interface Video {
   title: string
@@ -15,7 +16,7 @@ interface Video {
   channelTitle: string
 }
 
-interface Item {
+type Item = {
   kind: string
   id: string
   snippet: Video
@@ -90,10 +91,12 @@ export default class YoutubeCheckLike extends BaseTask {
         .whereRaw(`CAST(trigger_interaction AS JSONB) #>> '{id}' = 'newVideoLike'`)
         .where('active', true)
       for (const event of events) {
-        const triggerApi = await Database.query()
+        const triggerApi = await Oauth.query()
           .from('oauths')
           .where('uuid', event.trigger_api)
           .first()
+          if (triggerApi && triggerApi.token) {
+
         const youtubeData = await this.fetchYoutubeData(triggerApi.token)
         const cache = await Cache.query().from('caches').where('uuid', event.uuid).first()
         if (!cache || !cache.latestLikedVideoId) {
@@ -113,6 +116,8 @@ export default class YoutubeCheckLike extends BaseTask {
           await this.updateLatestLikedVideo(event.uuid, youtubeData.items[0].id)
         }
       }
+      }
+      
     } catch (error) {
       console.log('ERROR ON YOUTUBE LIKE TASK : ' + error)
     }
