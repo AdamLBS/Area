@@ -16,7 +16,7 @@ const handler = NextAuth({
           access_type: 'offline',
           response_type: 'code',
           scope:
-            'openid email profile https://www.googleapis.com/auth/gmail.send https://www.googleapis.com/auth/gmail.compose https://www.googleapis.com/auth/gmail.modify',
+            'openid email profile https://www.googleapis.com/auth/gmail.send https://www.googleapis.com/auth/gmail.compose https://www.googleapis.com/auth/gmail.modify https://www.googleapis.com/auth/youtube',
         },
       },
       httpOptions: {
