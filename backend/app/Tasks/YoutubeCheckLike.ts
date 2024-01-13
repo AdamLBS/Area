@@ -10,7 +10,7 @@ import { APIEventField } from 'types/events'
 import Cache from 'App/Models/Cache'
 import Oauth from 'App/Models/Oauth'
 
-interface Video {
+type Video = {
   title: string
   description: string
   channelTitle: string
@@ -92,13 +92,12 @@ export default class YoutubeCheckLike extends BaseTask {
         .where('active', true)
       for (const event of events) {
         const triggerApi = await Oauth.query()
-          .from('oauths')
           .where('uuid', event.trigger_api)
           .first()
           if (triggerApi && triggerApi.token) {
 
         const youtubeData = await this.fetchYoutubeData(triggerApi.token)
-        const cache = await Cache.query().from('caches').where('uuid', event.uuid).first()
+        const cache = await Cache.query().where('uuid', event.uuid).first()
         if (!cache || !cache.latestLikedVideoId) {
           await this.updateLatestLikedVideo(event.uuid, youtubeData.items[0].id)
         } else if (cache.latestLikedVideoId !== youtubeData.items[0].id) {
