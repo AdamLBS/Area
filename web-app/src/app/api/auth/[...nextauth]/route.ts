@@ -4,7 +4,6 @@ import SpotifyProvider from 'next-auth/providers/spotify';
 import GithubProvider from 'next-auth/providers/github';
 import DisordProvider from 'next-auth/providers/discord';
 import TwitchProvider from 'next-auth/providers/twitch';
-import LinkedinProvider from 'next-auth/providers/linkedin';
 
 const handler = NextAuth({
   providers: [
@@ -56,13 +55,6 @@ const handler = NextAuth({
             'openid user:read:email user:read:follows channel:read:subscriptions user:edit user:read:subscriptions moderator:read:followers channel:edit:commercial moderator:manage:announcements',
         },
       },
-      httpOptions: {
-        timeout: 10000,
-      },
-    }),
-    LinkedinProvider({
-      clientId: process.env.LINKEDIN_CLIENT_ID || '',
-      clientSecret: process.env.LINKEDIN_CLIENT_SECRET || '',
       httpOptions: {
         timeout: 10000,
       },

@@ -6,7 +6,6 @@ import {
   IconDiscord,
   IconGithub,
   IconGoogle,
-  IconLinkedin,
   IconSpotify,
   IconTwitch,
 } from '@/lib/ui/design-system';
@@ -40,12 +39,6 @@ const Accounts = () => {
         provider: 'github',
         connected: services?.some((service) => service.provider === 'github'),
         icon: <IconGithub color={color} />,
-      },
-      {
-        serviceName: 'Linkedin',
-        provider: 'linkedin',
-        connected: services?.some((service) => service.provider === 'linkedin'),
-        icon: <IconLinkedin color={color} />,
       },
       {
         serviceName: 'Spotify',

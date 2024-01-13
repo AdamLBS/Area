@@ -12,4 +12,4 @@ const String githubClientSecret = "07346112f7b73a9d4ab82b6d235a2313ce61a6f3";
 const String twitchClientId = "so4ebfhr3b4pjsgbl4py6hleemugbu";
 const String twitchClientSecret = "zkj6q8sht4c1oreo8efjr47aoww21z";
 const String discordClientId = "1181218907860774974";
-const String discordClientSecret = "WBnC4r9Ly5yTdFyx-UVEkSQ9msXp-vHL";
+const String discordClientSecret = "rusmqGzzLKN9IbI5npIV6Dvr84LplHNv";

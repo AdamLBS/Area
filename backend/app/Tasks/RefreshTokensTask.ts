@@ -14,11 +14,46 @@ type RefreshToken = {
 export default class RefreshTokensTask extends BaseTask {
   public static get schedule() {
     console.log('[Refresh Token] schedule')
-    return CronTimeV2.everyTwoMinutes()
+    return CronTimeV2.everyFiveSeconds()
   }
 
   public static get useLock() {
     return false
+  }
+
+  private async discordRefreshToken(oauth: any) {
+    try {
+      const data = new URLSearchParams({
+        grant_type: 'refresh_token',
+        refresh_token: oauth.refresh_token,
+      })
+      const auth = Buffer.from(
+        `${process.env.DISCORD_CLIENT_ID}:${process.env.DISCORD_CLIENT_SECRET}`
+      ).toString('base64')
+      const authHeader = `Basic ${auth}`
+      const response = await axios.post<RefreshToken>(
+        'https://discord.com/api/oauth2/token',
+        data,
+        {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Authorization': authHeader,
+          },
+        }
+      )
+      await Oauth.updateOrCreate(
+        {
+          userUuid: oauth.user_uuid,
+          provider: 'discord',
+        },
+        {
+          token: response.data.access_token,
+          refreshToken: response.data.refresh_token,
+        }
+      )
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   private async refreshToken(
@@ -49,6 +84,7 @@ export default class RefreshTokensTask extends BaseTask {
           refreshToken: response.data.refresh_token,
         }
       )
+      console.log(`[Refresh Token] ${provider} token refreshed`)
     } catch (error) {
       console.log(error)
     }
@@ -73,6 +109,24 @@ export default class RefreshTokensTask extends BaseTask {
             'https://accounts.spotify.com/api/token',
             process.env.SPOTIFY_CLIENT_ID,
             process.env.SPOTIFY_CLIENT_SECRET
+          )
+        } else if (oauth.provider === 'discord') {
+          await this.discordRefreshToken(oauth)
+        } else if (oauth.provider === 'github') {
+          await this.refreshToken(
+            oauth,
+            'github',
+            'https://github.com/login/oauth/access_token',
+            process.env.GITHUB_CLIENT_ID,
+            process.env.GITHUB_CLIENT_SECRET
+          )
+        } else if (oauth.provider === 'google') {
+          await this.refreshToken(
+            oauth,
+            'google',
+            'https://oauth2.googleapis.com/token',
+            process.env.GOOGLE_CLIENT_ID,
+            process.env.GOOGLE_CLIENT_SECRET
           )
         }
       }
