@@ -91,32 +91,28 @@ export default class YoutubeCheckLike extends BaseTask {
         .whereRaw(`CAST(trigger_interaction AS JSONB) #>> '{id}' = 'newVideoLike'`)
         .where('active', true)
       for (const event of events) {
-        const triggerApi = await Oauth.query()
-          .where('uuid', event.trigger_api)
-          .first()
-          if (triggerApi && triggerApi.token) {
-
-        const youtubeData = await this.fetchYoutubeData(triggerApi.token)
-        const cache = await Cache.query().where('uuid', event.uuid).first()
-        if (!cache || !cache.latestLikedVideoId) {
-          await this.updateLatestLikedVideo(event.uuid, youtubeData.items[0].id)
-        } else if (cache.latestLikedVideoId !== youtubeData.items[0].id) {
-          await this.updateLatestLikedVideo(event.uuid, youtubeData.items[0].id)
-          const jsonVals = JSON.parse(event.response_interaction)
-          const responseInteraction = jsonVals.id.toString() as ResponseInteraction
-          const fields = jsonVals.fields as APIEventField<any>[]
-          this.useVariablesInFields(fields, youtubeData.items[0])
-          for (const additionalAction of event.additional_actions) {
-            this.useVariablesInFields(additionalAction.fields, youtubeData.items[0])
+        const triggerApi = await Oauth.query().where('uuid', event.trigger_api).first()
+        if (triggerApi && triggerApi.token) {
+          const youtubeData = await this.fetchYoutubeData(triggerApi.token)
+          const cache = await Cache.query().where('uuid', event.uuid).first()
+          if (!cache || !cache.latestLikedVideoId) {
+            await this.updateLatestLikedVideo(event.uuid, youtubeData.items[0].id)
+          } else if (cache.latestLikedVideoId !== youtubeData.items[0].id) {
+            await this.updateLatestLikedVideo(event.uuid, youtubeData.items[0].id)
+            const jsonVals = JSON.parse(event.response_interaction)
+            const responseInteraction = jsonVals.id.toString() as ResponseInteraction
+            const fields = jsonVals.fields as APIEventField<any>[]
+            this.useVariablesInFields(fields, youtubeData.items[0])
+            for (const additionalAction of event.additional_actions) {
+              this.useVariablesInFields(additionalAction.fields, youtubeData.items[0])
+            }
+            await handleAdditionalActions(event)
+            await eventHandler(responseInteraction, fields, event.response_api)
+          } else {
+            await this.updateLatestLikedVideo(event.uuid, youtubeData.items[0].id)
           }
-          await handleAdditionalActions(event)
-          await eventHandler(responseInteraction, fields, event.response_api)
-        } else {
-          await this.updateLatestLikedVideo(event.uuid, youtubeData.items[0].id)
         }
       }
-      }
-      
     } catch (error) {
       console.log('ERROR ON YOUTUBE LIKE TASK : ' + error)
     }
