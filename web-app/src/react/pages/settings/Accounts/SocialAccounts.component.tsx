@@ -10,6 +10,7 @@ import {
   IconTwitch,
 } from '@/lib/ui/design-system';
 import { useTheme } from 'next-themes';
+import { Youtube } from 'lucide-react';
 import { SettingsPageContext } from '../SettingsPage.context';
 
 const Accounts = () => {
@@ -57,6 +58,12 @@ const Accounts = () => {
         provider: 'discord',
         connected: services?.some((service) => service.provider === 'discord'),
         icon: <IconDiscord color={color} />,
+      },
+      {
+        serviceName: 'Youtube',
+        provider: 'google',
+        connected: services?.some((service) => service.provider === 'google'),
+        icon: <Youtube color={color} />,
       },
     ],
     [color, services],
