@@ -1,11 +1,5 @@
 #!/bin/bash
 
-# Check if the current directory is a Git repository
-if ! git rev-parse --is-inside-work-tree &> /dev/null; then
-  echo "Not a Git repository. Exiting."
-  exit 1
-fi
-
 # Check if there are any changes
 if git diff --quiet; then
   echo "No changes in the repository."
