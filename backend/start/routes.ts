@@ -20,7 +20,6 @@
 
 import Route from '@ioc:Adonis/Core/Route'
 
-
 Route.group(() => {
   Route.get('/redirect', 'SocialAuthentificationsController.redirect')
   Route.get('/callback', 'SocialAuthentificationsController.callback')
