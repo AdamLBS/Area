@@ -1,6 +1,5 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Oauth from 'App/Models/Oauth'
-import Event from 'App/Models/Event'
 import User from 'App/Models/User'
 import AuthValidator from 'App/Validators/User/AuthValidator'
 import RegisterValidator from 'App/Validators/User/RegisterValidator'
