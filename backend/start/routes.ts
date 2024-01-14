@@ -69,6 +69,5 @@ Route.group(() => {
     .prefix('/user')
     .middleware(['auth:api'])
 
-  }).prefix('/api')
-
-Route.get('/about.json', 'AboutController.info')
+  Route.get('/about.json', 'AboutController.info')
+}).prefix('/api')
