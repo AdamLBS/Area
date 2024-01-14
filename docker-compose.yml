@@ -50,7 +50,7 @@ services:
     networks:
       - stratos_net
     volumes:
-      - app-volumes:/
+      - app-volumes:/app
     links:
       - "postgres:db"
   client_mobile:
