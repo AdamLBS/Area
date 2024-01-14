@@ -19,10 +19,15 @@ const About: React.FC = () => {
             <br />
             {service.name}:
             <br />
-            Actions: {service.actions.map((action) => action.name).join(', ')}
+            Actions -{' '}
+            {service.actions.length === 0
+              ? 'No action'
+              : service.actions.map((action) => action.name).join(', ')}
             <br />
-            Reactions:{' '}
-            {service.reactions.map((reaction) => reaction.name).join(', ')}
+            Reactions -{' '}
+            {service.reactions.length === 0
+              ? 'No reaction'
+              : service.reactions.map((reaction) => reaction.name).join(', ')}
             <br />
           </H3>
         ))}
