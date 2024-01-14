@@ -1,14 +1,16 @@
 import React, { memo } from 'react';
 import {
-  CardHeader,
   CardTitle,
   CardDescription,
-  CardContent,
   CardFooter,
   Button,
 } from '@/components/ui';
 import { useRouter } from 'next/navigation';
-import { CardComponent } from './OnboardingCard.style';
+import {
+  CardComponent,
+  CardHeaderComponent,
+  CardContentComponent,
+} from './OnboardingCard.style';
 import { PrimaryMutted } from '../../Text';
 
 export type OnboardingCardProps = {
@@ -41,12 +43,12 @@ const OnboardingCardComponent: React.FC<OnboardingCardProps> = ({
 
   return (
     <CardComponent style={{ borderColor: setColor() }}>
-      <CardHeader>
+      <CardHeaderComponent>
         <CardTitle>{title}</CardTitle>
         <CardDescription>{description}</CardDescription>
-      </CardHeader>
-      <CardContent>
-        {buttonLabel && (
+      </CardHeaderComponent>
+      {buttonLabel && (
+        <CardContentComponent>
           <Button
             variant="outline"
             onClick={() => router.push(redirectUrl)}
@@ -54,8 +56,8 @@ const OnboardingCardComponent: React.FC<OnboardingCardProps> = ({
           >
             {buttonLabel}
           </Button>
-        )}
-      </CardContent>
+        </CardContentComponent>
+      )}
       <CardFooter>
         <PrimaryMutted style={{ color: setColor() }}>
           {status.at(0)?.toUpperCase() + status.slice(1)}
