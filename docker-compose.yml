@@ -41,12 +41,6 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: ${PG_PASSWORD}
       POSTGRES_DB: lucid
-  client_mobile:
-    build:
-      context: mobile/.
-      dockerfile: Dockerfile
-    volumes:
-      - app-volumes:/usr/mobile
   client_web:
     build:
       context: web-app/.
@@ -55,8 +49,18 @@ services:
       - "8081:3000"
     networks:
       - stratos_net
+    volumes:
+      - app-volumes:/app
     links:
       - "postgres:db"
+  client_mobile:
+    depends_on:
+      - client_web
+    build:
+      context: mobile/.
+      dockerfile: Dockerfile
+    volumes:
+      - app-volumes:/usr/mobile
   backend_scheduler:
     depends_on:
       - server
