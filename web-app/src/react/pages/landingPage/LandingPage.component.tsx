@@ -184,7 +184,7 @@ const LandingPageComponent = () => {
             <DownloadContainer>
               <TextH3>Or you can download the APK</TextH3>
               <ButtonContainer>
-                <RainbowButton onClick={() => {}}>
+                <RainbowButton onClick={() => router.push('/client.apk')}>
                   Download the APK
                 </RainbowButton>
               </ButtonContainer>
