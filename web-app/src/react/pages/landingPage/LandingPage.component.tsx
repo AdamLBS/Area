@@ -21,8 +21,15 @@ import {
   TextH1,
   TeamContainer,
   TeamText,
+  MobileSection,
+  MobileCard,
+  CodeContainer,
+  MobileLine,
+  DownloadContainer,
+  ButtonContainer,
 } from './LandingPage.style';
 import { Boxes, Eye } from 'lucide-react';
+import Image from 'next/image';
 
 const teamMembers = [
   {
@@ -104,6 +111,27 @@ const LandingPageComponent = () => {
           </ServiceContent>
           <img src="/Watch.png" style={{ width: '85%' }} />
         </ServiceContainer>
+        <MobileSection>
+          <TitleContainer>
+            <Title>Also available on the little screens</Title>
+            <RainbowTextH1>Install our mobile app</RainbowTextH1>
+          </TitleContainer>
+          <MobileCard>
+            <CodeContainer>
+              <Image src="/qrcode.png" width={200} height={200} alt="QR Code" />
+              <TextH3>Scan this QR Code</TextH3>
+            </CodeContainer>
+            <MobileLine />
+            <DownloadContainer>
+              <TextH3>Or you can download the APK</TextH3>
+              <ButtonContainer>
+                <RainbowButton onClick={() => {}}>
+                  Download the APK
+                </RainbowButton>
+              </ButtonContainer>
+            </DownloadContainer>
+          </MobileCard>
+        </MobileSection>
         <ServiceContainer>
           <RainbowTextH1>The team</RainbowTextH1>
           <TeamContainer>
