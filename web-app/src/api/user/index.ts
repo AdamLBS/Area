@@ -1,11 +1,5 @@
 import axios from 'axios';
-import {
-  API_URL,
-  OnboardingOptions,
-  OnboardingStatus,
-  Token,
-  User,
-} from '../constants';
+import { API_URL, Token, User } from '../constants';
 
 export const verifyEmail = async (payload: {
   email: string;
@@ -87,45 +81,5 @@ export const getMe = async (): Promise<User> => {
     return response.data;
   } catch (error) {
     throw new Error('Error getting user.');
-  }
-};
-
-export const getOnboardingOptions = async (): Promise<OnboardingOptions> => {
-  try {
-    const response = await axios.get(API_URL + '/onboarding/options', {
-      headers: {
-        Authorization: 'Bearer ' + localStorage.getItem('authToken'),
-      },
-    });
-    return response.data;
-  } catch (error) {
-    throw new Error('Error getting onboarding options.');
-  }
-};
-
-export const updateOnboarding = async (payload: {
-  status?: string;
-}): Promise<void> => {
-  try {
-    return await axios.patch(API_URL + '/onboarding/update', payload, {
-      headers: {
-        Authorization: 'Bearer ' + localStorage.getItem('authToken'),
-      },
-    });
-  } catch (error) {
-    throw new Error('Error updating onboarding options.');
-  }
-};
-
-export const getOnboardingStatus = async (): Promise<OnboardingStatus> => {
-  try {
-    const response = await axios.get(API_URL + '/onboarding/status', {
-      headers: {
-        Authorization: 'Bearer ' + localStorage.getItem('authToken'),
-      },
-    });
-    return response.data;
-  } catch (error) {
-    throw new Error('Error getting onboarding status.');
   }
 };
