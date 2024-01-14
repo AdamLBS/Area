@@ -20,7 +20,6 @@
 
 import Route from '@ioc:Adonis/Core/Route'
 
-Route.get('/about.json', 'AboutController.info')
 
 Route.group(() => {
   Route.get('/redirect', 'SocialAuthentificationsController.redirect')
@@ -70,4 +69,6 @@ Route.group(() => {
   })
     .prefix('/user')
     .middleware(['auth:api'])
+
+  Route.get('/about.json', 'AboutController.info')
 }).prefix('/api')
