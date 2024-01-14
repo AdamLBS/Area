@@ -137,10 +137,10 @@ const LandingPageComponent = () => {
             </LogoContainer>
             <Line />
             <ExplanationContainer>
-              <TextH3>If</TextH3>
+              <TextH3>When</TextH3>
               <ActionCard>
                 <IconTwitch color="#6D28D9" size={43} />
-                <TextH3>When “jmz” is in live</TextH3>
+                <TextH3>“Squeezie” is in live</TextH3>
               </ActionCard>
               <TextH3>Then</TextH3>
               <ActionCard>
