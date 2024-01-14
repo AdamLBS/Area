@@ -11,6 +11,7 @@ import {
   ButtonOption,
   SettingsContentHeader,
   SettingsContentBody,
+  OptionsContainer,
 } from './SettingsPage.style';
 import {
   H4,
@@ -147,7 +148,12 @@ const Settings = () => {
         <SubTitle>{SUBTITLES[option]}</SubTitle>
         <Separator />
         <SettingsContainer>
-          <SettingsOptions>{displayOptionsButtons}</SettingsOptions>
+          <SettingsOptions>
+            <OptionsContainer>{displayOptionsButtons}</OptionsContainer>
+            <div>
+              <ButtonOption>Logout</ButtonOption>
+            </div>
+          </SettingsOptions>
           <SettingsContent>
             <SettingsContentHeader>
               <H4>{BODY_TITLES[option]}</H4>

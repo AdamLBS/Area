@@ -37,7 +37,7 @@ export const SettingsOptions = styled.div`
   display: flex;
   flex-direction: column;
   text-align: start;
-  justify-content: flex-start;
+  justify-content: space-between;
   width: 14%;
   gap: 4px;
 `;
@@ -65,4 +65,10 @@ export const SettingsContentBody = styled.div`
   width: 100%;
   height: 100%;
   margin-top: 20px;
+`;
+
+export const OptionsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 `;
