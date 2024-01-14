@@ -26,10 +26,10 @@ services:
       - "postgres:db"
     environment:
       DATABASE_CONNECTION: pg
-      DB_HOST: postgres
+      DB_HOST: db
       DB_PORT: 5432
       DB_USER: postgres
-      DB_PASSWORD: password
+      DB_PASSWORD: gZq1gGTXUUFu5l6O
       DB_NAME: lucid
   postgres:
     image: postgres:latest
@@ -39,7 +39,7 @@ services:
       - stratos_net
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
+      POSTGRES_PASSWORD: ${PG_PASSWORD}
       POSTGRES_DB: lucid
   client_mobile:
     build:
@@ -53,7 +53,17 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8081:3000"
-      - "3000:3000"
+    networks:
+      - stratos_net
+    links:
+      - "postgres:db"
+  backend_scheduler:
+    depends_on:
+      - server
+      - postgres
+    build:
+      context: backend/.
+      dockerfile: scheduler.Dockerfile
     networks:
       - stratos_net
     links:

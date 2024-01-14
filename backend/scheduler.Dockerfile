@@ -56,8 +56,6 @@ COPY --from=production-deps /app/node_modules /app/node_modules
 COPY --from=build /app/build /app
 
 # Expose the port
-EXPOSE 3333
 
 # Start the application
-RUN node ace migration:fresh
-CMD ["node", "./server.js"]
+CMD ["node", "ace", "scheduler:run"]
