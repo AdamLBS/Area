@@ -22,8 +22,8 @@ if (process.env.SSL_KEY !== undefined && process.env.SSL_KEY !== '') {
   new Ignitor(__dirname).httpServer().start((handle) => {
     return createServer(
       {
-        key: process.env.SSL_KEY,
-        cert: process.env.SSL_CERT,
+        key: process.env.SSL_KEY_PATH,
+        cert: process.env.SSL_CERT_PATH,
       },
       handle
     )
