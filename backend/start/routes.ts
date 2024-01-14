@@ -68,6 +68,13 @@ Route.group(() => {
     Route.get('/me/services', 'AuthController.getServices')
     Route.get('/events', 'EventsController.getMyEvents')
   })
-    .prefix('/user')
-    .middleware(['auth:api'])
+  .prefix('/user')
+  .middleware(['auth:api'])
+  
+  Route.group(() => {
+    Route.get('/options', 'AuthController.getOnboardingOptions')
+    Route.patch('/update', 'AuthController.updateOnboarding')
+    Route.get('/status', 'AuthController.getOnboardingStatus')
+  }).prefix('/onboarding').middleware(['auth:api'])
+
 }).prefix('/api')

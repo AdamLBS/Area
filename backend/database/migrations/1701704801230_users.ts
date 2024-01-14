@@ -10,6 +10,7 @@ export default class extends BaseSchema {
       table.string('username', 255).notNullable().unique()
       table.string('password', 180).notNullable()
       table.string('remember_me_token').nullable()
+      table.string('onboarding_status').defaultTo('notDone')
       /**
        * Uses timestampz for PostgreSQL and DATETIME2 for MSSQL
        */
