@@ -36,10 +36,6 @@ WORKDIR /app
 # Copy the application code and node_modules from the previous stages
 COPY --from=production-deps /app/node_modules /app/node_modules
 COPY . .
-
-COPY /etc/letsencrypt/live/stratos-app.fr/privkey.pe[m] /etc/letsencrypt/live/stratos-app.fr/privkey.pem
-COPY /etc/letsencrypt/live/stratos-app.fr/fullchain.pe[m] /etc/letsencrypt/live/stratos-app.fr/fullchain.pem
-
 # Run the Ace build command
 RUN npm run build
 
