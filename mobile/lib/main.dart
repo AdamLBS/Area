@@ -6,11 +6,13 @@ import 'package:area/pages/profile.dart';
 import 'package:area/pages/settings.dart';
 import 'package:area/pages/user.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'pages/register.dart';
 import 'utils/transition.dart';
 
-void main() {
+Future<void> main() async {
+  await dotenv.load(fileName: ".env");
   runApp(MyApp());
 }
 
