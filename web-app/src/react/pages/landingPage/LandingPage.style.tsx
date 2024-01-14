@@ -101,6 +101,19 @@ export const TextH3 = styled.h3`
   letter-spacing: -0.6px;
 `;
 
+export const ButtonContainer = styled.div`
+  display: flex;
+  padding: 4px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 14px;
+  border: 1px solid transparent;
+
+  &:hover {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+`;
+
 export const RainbowButton = styled(Button)`
   display: inline-flex;
   width: auto;

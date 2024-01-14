@@ -21,6 +21,7 @@ import {
   TextH1,
   TeamContainer,
   TeamText,
+  ButtonContainer,
 } from './LandingPage.style';
 import { Boxes, Eye } from 'lucide-react';
 
@@ -69,9 +70,11 @@ const LandingPageComponent = () => {
           <RainbowTextH1>Simple. Fast. Efficient.</RainbowTextH1>
         </TitleContainer>
         <TextH3>Join us now to start your first bridge</TextH3>
-        <RainbowButton onClick={() => handleRedirection(`register`)}>
-          Join us
-        </RainbowButton>
+        <ButtonContainer>
+          <RainbowButton onClick={() => handleRedirection(`register`)}>
+            Join us
+          </RainbowButton>
+        </ButtonContainer>
         <img src="/exemple_event.png" style={{ width: '100%' }} />
         <ServiceContainer>
           <ServiceContent>
@@ -126,12 +129,14 @@ const LandingPageComponent = () => {
               <RainbowTextH1>Make your own automated task</RainbowTextH1>
             </TitleContainer>
           </ServiceContent>
-          <RainbowButton
-            onClick={() => handleRedirection(`register`)}
-            style={{ width: '472px' }}
-          >
-            Create your account
-          </RainbowButton>
+          <ButtonContainer>
+            <RainbowButton
+              onClick={() => handleRedirection(`register`)}
+              style={{ width: '472px' }}
+            >
+              Create your account
+            </RainbowButton>
+          </ButtonContainer>
         </ServiceContainer>
         <ServiceContainer>
           <TextH3>Copyright © 2024 La Table Ronde, made with ❤️</TextH3>
