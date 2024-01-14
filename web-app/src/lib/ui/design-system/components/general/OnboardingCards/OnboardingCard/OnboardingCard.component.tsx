@@ -1,13 +1,55 @@
 import React, { memo } from 'react';
-import { Card } from '@/components/ui';
+import {
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+  Button,
+} from '@/components/ui';
+import { useRouter } from 'next/navigation';
+import { CardComponent } from './OnboardingCard.style';
 
-// export type ServiceCardProps = {};
+export type OnboardingCardProps = {
+  title: string;
+  description: string;
+  buttonLabel?: string;
+  redirectUrl: string;
+  disabled?: boolean;
+  status: 'completed' | 'in-progress' | 'not-started';
+};
 
-const OnboardingCardComponent = () => {
+const OnboardingCardComponent: React.FC<OnboardingCardProps> = ({
+  title,
+  description,
+  buttonLabel,
+  redirectUrl,
+  disabled,
+  status,
+}) => {
+  const router = useRouter();
+
   return (
-    <Card>
-      <h1>test</h1>
-    </Card>
+    <CardComponent>
+      <CardHeader>
+        <CardTitle>{title}</CardTitle>
+        <CardDescription>{description}</CardDescription>
+      </CardHeader>
+      <CardContent>
+        {buttonLabel && (
+          <Button
+            variant="outline"
+            onClick={() => router.push(redirectUrl)}
+            disabled={disabled}
+          >
+            {buttonLabel}
+          </Button>
+        )}
+      </CardContent>
+      <CardFooter>
+        <p>{status}</p>
+      </CardFooter>
+    </CardComponent>
   );
 };
 

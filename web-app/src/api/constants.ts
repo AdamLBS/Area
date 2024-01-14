@@ -20,6 +20,7 @@ export type UserData = {
   uuid: string;
   email: string;
   username: string;
+  onboarding_status: string;
   remember_me_token: string;
   created_at: string;
   updated_at: string;
@@ -100,4 +101,15 @@ export type EventType = {
 export type Trigger = {
   trigger_provider: string;
   triggerInteraction: Interaction;
+};
+
+export type OnboardingOptions = {
+  onboardig: string[];
+};
+
+export type OnboardingStatus = {
+  enabled: boolean;
+  steps: {
+    [key: string]: boolean;
+  };
 };

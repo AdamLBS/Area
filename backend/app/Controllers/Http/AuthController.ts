@@ -1,5 +1,4 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import Database from '@ioc:Adonis/Lucid/Database'
 import Oauth from 'App/Models/Oauth'
 import Event from 'App/Models/Event'
 import User from 'App/Models/User'
@@ -167,10 +166,10 @@ export default class AuthController {
       })
     }
 
-    const { onboardingStatus } = request.body()
+    const { status } = request.body()
 
     user.merge({
-      onboardingStatus,
+      onboardingStatus: status,
     })
     await user.save()
 
@@ -191,7 +190,6 @@ export default class AuthController {
 
     const oauth = await Oauth.query().where('userUuid', user.uuid)
     const events = await Event.query().where('userUuid', user.uuid)
-    
 
     let steps = {
       link: oauth.length > 2,
@@ -199,7 +197,7 @@ export default class AuthController {
     }
 
     return {
-      onboardingStatus: user.onboardingStatus,
+      enabled: user.onboardingStatus === 'doing',
       steps: steps,
     }
   }
