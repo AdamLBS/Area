@@ -23,7 +23,7 @@ const Bridge: React.FC = () => {
           <MenuEvent />
           <RightPanel>
             <OnboardingComponent>
-              <Text>You seem to be new and lost</Text>
+              <Text>You seem to be new here,</Text>
               <Text>what if we introduce you to Stratos?</Text>
               <EventPanelButton onClick={() => console.log('start onboarding')}>
                 Start the onboarding
