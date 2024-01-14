@@ -1,7 +1,15 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import React, { memo, useCallback } from 'react';
-import { NavBarLandingPage } from '@/lib/ui/design-system';
+import React, { memo, useCallback, useEffect } from 'react';
+import {
+  IconGoogle,
+  NavBarLandingPage,
+  IconLinkedin,
+  IconTwitch,
+  IconGithub,
+  IconDiscord,
+  IconSpotify,
+} from '@/lib/ui/design-system';
 import {
   Card,
   Content,
@@ -21,9 +29,18 @@ import {
   TextH1,
   TeamContainer,
   TeamText,
+  ServicesContainer,
+  ServicesCard,
+  BridgeCard,
+  LogoContainer,
+  Line,
+  ExplanationContainer,
+  ActionCard,
   ButtonContainer,
 } from './LandingPage.style';
 import { Boxes, Eye } from 'lucide-react';
+import { useTheme } from 'next-themes';
+import Image from 'next/image';
 
 const teamMembers = [
   {
@@ -50,6 +67,7 @@ const teamMembers = [
 
 const LandingPageComponent = () => {
   const router = useRouter();
+  const { theme } = useTheme();
 
   const handleRedirection = useCallback(
     (page: string) => {
@@ -57,6 +75,16 @@ const LandingPageComponent = () => {
     },
     [router],
   );
+
+  const [color, setColor] = React.useState('');
+
+  useEffect(() => {
+    if (theme === 'dark') {
+      setColor('#fff');
+    } else {
+      setColor('#000');
+    }
+  }, [theme]);
 
   return (
     <LandingPage>
@@ -86,14 +114,44 @@ const LandingPageComponent = () => {
               <RainbowTextH1>Make your own automated task</RainbowTextH1>
             </TitleContainer>
           </ServiceContent>
-          <Card>
+          <ServicesCard>
             <CardHeader>
               <TextH1>More than {6} services availables</TextH1>
             </CardHeader>
             <CardContent>
-              <img src="/logos.png" style={{ width: '100%' }} />
+              <ServicesContainer>
+                <IconGoogle color={color} size={43} />
+                <IconLinkedin color={color} size={43} />
+                <IconTwitch color={color} size={43} />
+                <IconGithub color={color} size={43} />
+                <IconDiscord color={color} size={43} />
+                <IconSpotify color={color} size={43} />
+              </ServicesContainer>
             </CardContent>
-          </Card>
+          </ServicesCard>
+          <BridgeCard>
+            <LogoContainer>
+              <Image
+                src="/bridge.png"
+                alt="brigeLogo"
+                width={180}
+                height={300}
+              />
+            </LogoContainer>
+            <Line />
+            <ExplanationContainer>
+              <TextH3>When</TextH3>
+              <ActionCard>
+                <IconTwitch color="#6D28D9" size={43} />
+                <TextH3>“Squeezie” is in live</TextH3>
+              </ActionCard>
+              <TextH3>Then</TextH3>
+              <ActionCard>
+                <TextH3>Send to me an email</TextH3>
+                <IconGoogle color="#6D28D9" size={43} />
+              </ActionCard>
+            </ExplanationContainer>
+          </BridgeCard>
         </ServiceContainer>
         <ServiceContainer>
           <ServiceContent>
