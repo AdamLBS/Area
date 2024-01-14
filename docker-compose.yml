@@ -31,7 +31,6 @@ services:
       DB_USER: postgres
       DB_PASSWORD: gZq1gGTXUUFu5l6O
       DB_NAME: lucid
-      SSL_ENABLED: ${SSL_ENABLED}
   postgres:
     image: postgres:latest
     ports:

@@ -50,12 +50,6 @@ ENV NODE_ENV=production
 # Set the working directory to /app
 WORKDIR /app
 
-# Copy node_modules and the built application from the previous stages
-RUN if [ "$SSL_ENABLED" = "true" ] ; then \
-    cp /etc/letsencrypt/live/stratos-app.fr/privkey.pem /app/privkey.pem ; \
-    cp /etc/letsencrypt/live/stratos-app.fr/fullchain.pem /app/fullchain.pem ; \
-    fi
-
 # Expose the port
 EXPOSE 3333
 
