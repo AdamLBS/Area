@@ -34,20 +34,20 @@ const MenuEventComponent: React.FC<EventsProps> = ({ currentUuid }) => {
 
   return (
     <EventPanel>
-      {theme.theme === 'dark' ? (
-        <CardHeaderDark>
-          <CardTitle>Your bridges</CardTitle>
-          <CardDescription>
-            All your bridges you have created are listed here.
-          </CardDescription>
-        </CardHeaderDark>
-      ) : (
+      {theme.theme === 'light' ? (
         <CardHeaderLight>
           <CardTitle>Your bridges</CardTitle>
           <CardDescription>
             All your bridges you have created are listed here.
           </CardDescription>
         </CardHeaderLight>
+      ) : (
+        <CardHeaderDark>
+          <CardTitle>Your bridges</CardTitle>
+          <CardDescription>
+            All your bridges you have created are listed here.
+          </CardDescription>
+        </CardHeaderDark>
       )}
       <EventPanelContent>
         {events &&

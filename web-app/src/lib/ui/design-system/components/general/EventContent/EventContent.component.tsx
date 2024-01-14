@@ -199,16 +199,16 @@ const EventContentComponent: React.FC<EventContentProps> = ({ eventUuid }) => {
 
   return (
     <Card>
-      {theme.theme === 'dark' ? (
-        <CardHeaderDark>
-          <CardTitle>{event?.name}</CardTitle>
-          <CardDescription>{event?.description}</CardDescription>
-        </CardHeaderDark>
-      ) : (
+      {theme.theme === 'light' ? (
         <CardHeaderLight>
           <CardTitle>{event?.name}</CardTitle>
           <CardDescription>{event?.description}</CardDescription>
         </CardHeaderLight>
+      ) : (
+        <CardHeaderDark>
+          <CardTitle>{event?.name}</CardTitle>
+          <CardDescription>{event?.description}</CardDescription>
+        </CardHeaderDark>
       )}
       <Container>
         <Header>
