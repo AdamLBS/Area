@@ -2,19 +2,21 @@
 import React, { memo } from 'react';
 import {
   EventButton,
-  CardHeader,
   EventPanel,
   EventPanelContent,
   LogoRight,
   LogoLeft,
   Footer,
   EventPanelButton,
+  CardHeaderLight,
+  CardHeaderDark,
 } from './MenuEvent.style';
 import { CreateEventModal } from '@/lib/ui/design-system';
 import { useRouter } from 'next/navigation';
 import { useEvents } from '@/react/hooks/events';
 import { PlusIcon } from 'lucide-react';
 import { CardDescription, CardTitle } from '@/components/ui';
+import { useTheme } from 'next-themes';
 
 export type EventsProps = {
   currentUuid?: string;
@@ -24,6 +26,7 @@ const MenuEventComponent: React.FC<EventsProps> = ({ currentUuid }) => {
   const router = useRouter();
   const { data: events } = useEvents();
   const [createEventModalOpen, setCreateEventModalOpen] = React.useState(false);
+  const theme = useTheme();
 
   const handleRedirection = (uuid: string) => {
     router.push('/bridge/' + uuid);
@@ -31,12 +34,21 @@ const MenuEventComponent: React.FC<EventsProps> = ({ currentUuid }) => {
 
   return (
     <EventPanel>
-      <CardHeader>
-        <CardTitle>Your bridges</CardTitle>
-        <CardDescription>
-          All your bridges you have created are listed here.
-        </CardDescription>
-      </CardHeader>
+      {theme.theme === 'dark' ? (
+        <CardHeaderDark>
+          <CardTitle>Your bridges</CardTitle>
+          <CardDescription>
+            All your bridges you have created are listed here.
+          </CardDescription>
+        </CardHeaderDark>
+      ) : (
+        <CardHeaderLight>
+          <CardTitle>Your bridges</CardTitle>
+          <CardDescription>
+            All your bridges you have created are listed here.
+          </CardDescription>
+        </CardHeaderLight>
+      )}
       <EventPanelContent>
         {events &&
           events.map((event, index) => {
