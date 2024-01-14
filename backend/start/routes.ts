@@ -68,7 +68,6 @@ Route.group(() => {
   })
     .prefix('/user')
     .middleware(['auth:api'])
-
-  }).prefix('/api')
+}).prefix('/api')
 
 Route.get('/about.json', 'AboutController.info')
