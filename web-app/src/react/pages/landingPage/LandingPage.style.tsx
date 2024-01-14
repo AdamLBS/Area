@@ -76,7 +76,7 @@ export const RainbowTextH1 = styled.h1`
   font-size: 48px;
   font-style: normal;
   font-weight: 800;
-  line-height: 40px;
+  line-height: 53px;
   letter-spacing: -1.2px;
   background: var(
     --header_text_gradient,
@@ -161,6 +161,65 @@ export const Card = styled(Card_)`
   backdrop-filter: blur(10px);
 `;
 
+export const ServicesCard = styled(Card_)`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 10px;
+  border-radius: var(--radius-rounded-md, 10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  min-width: 800px;
+`;
+
+export const BridgeCard = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  border-radius: var(--radius-rounded-md, 10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  min-width: 800px;
+`;
+
+export const LogoContainer = styled.div`
+  display: flex;
+  padding: 24px;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+`;
+
+export const Line = styled.div`
+  width: 1px;
+  height: 350px;
+  background: rgba(255, 255, 255, 0.1);
+`;
+
+export const ExplanationContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+`;
+
+export const ActionCard = styled(Card_)`
+  display: flex;
+  flex-direction: row;
+  gap: 24px;
+  padding: 12px 28px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.03);
+  align-items: center;
+`;
+
 export const CardHeader = styled(CardHeader_)`
   display: flex;
   padding: 24px;
@@ -235,4 +294,10 @@ export const Elp2 = styled.div`
   right: 59px;
   top: 146px;
   z-index: 1;
+`;
+
+export const ServicesContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 48px;
 `;
