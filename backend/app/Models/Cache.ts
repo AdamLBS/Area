@@ -35,6 +35,9 @@ export default class Cache extends BaseModel {
   @column()
   public latestLikedVideoId: string | null
 
+  @column()
+  public latestNumberOfLikes: string | null
+
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 
