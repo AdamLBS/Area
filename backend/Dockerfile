@@ -50,6 +50,10 @@ ENV NODE_ENV=production
 # Set the working directory to /app
 WORKDIR /app
 
+# Copy node_modules and the built application from the previous stages
+COPY --from=production-deps /app/node_modules /app/node_modules
+COPY --from=build /app/build /app
+
 # Expose the port
 EXPOSE 3333
 
