@@ -12,4 +12,5 @@ COPY . $APP
 WORKDIR $APP
 RUN flutter clean
 RUN flutter pub get
-CMD ["flutter", "build", "apk"]
+RUN flutter build apk
+CMD ["cp", "build/app/outputs/flutter-apk/app-release.apk", "/usr/mobile/app/public/client.apk"]
