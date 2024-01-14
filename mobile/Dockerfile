@@ -12,4 +12,4 @@ COPY . $APP
 WORKDIR $APP
 RUN flutter clean
 RUN flutter pub get
-RUN flutter build apk
+CMD ["flutter", "build", "apk"]
