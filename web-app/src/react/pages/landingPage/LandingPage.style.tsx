@@ -99,6 +99,7 @@ export const TextH3 = styled.h3`
   font-weight: 600;
   line-height: 32px;
   letter-spacing: -0.6px;
+  color: rgba(255, 255, 255, 0.8);
 `;
 
 export const RainbowButton = styled(Button)`

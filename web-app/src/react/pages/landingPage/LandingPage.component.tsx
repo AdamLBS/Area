@@ -9,7 +9,6 @@ import {
   IconGithub,
   IconDiscord,
   IconSpotify,
-  H3,
 } from '@/lib/ui/design-system';
 import {
   Card,
@@ -138,14 +137,14 @@ const LandingPageComponent = () => {
             </LogoContainer>
             <Line />
             <ExplanationContainer>
-              <H3>If</H3>
+              <TextH3>If</TextH3>
               <ActionCard>
                 <IconTwitch color="#6D28D9" size={43} />
-                <H3>When “jmz” is in live</H3>
+                <TextH3>When “jmz” is in live</TextH3>
               </ActionCard>
-              <H3>Then</H3>
+              <TextH3>Then</TextH3>
               <ActionCard>
-                <H3>Send to me an email</H3>
+                <TextH3>Send to me an email</TextH3>
                 <IconGoogle color="#6D28D9" size={43} />
               </ActionCard>
             </ExplanationContainer>
