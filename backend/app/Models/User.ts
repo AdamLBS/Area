@@ -22,9 +22,6 @@ export default class User extends BaseModel {
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 
-  @column()
-  public onboardingStatus: 'done' | 'doing' | 'notDone'
-
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
 

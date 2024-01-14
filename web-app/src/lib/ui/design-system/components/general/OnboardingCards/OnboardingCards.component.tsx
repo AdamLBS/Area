@@ -1,8 +1,6 @@
-import React, { memo, useCallback, useEffect, useState } from 'react';
+import React, { memo } from 'react';
 import { OnboardingComponent } from './OnboardingCards.style';
 import { OnboardingCard } from './OnboardingCard';
-import { useOnboardingOptions, useOnboardingStatus } from '@/react/hooks/user';
-import { on } from 'events';
 
 const CardsContent: {
   title: string;
@@ -44,35 +42,19 @@ const CardsContent: {
 ];
 
 const OnboardingCardsComponents = () => {
-  const { data: onboardingOptions } = useOnboardingOptions();
-  const { data: onboardingStatus } = useOnboardingStatus();
-
-  const currentStep = useCallback(() => {
-    if (!onboardingStatus?.steps[0]) {
-      return [false, true, true, true];
-    }
-    if (!onboardingStatus?.steps[1]) {
-      return [true, false, true, true];
-    }
-    if (!onboardingStatus?.steps[2]) {
-      return [true, true, true, false];
-    }
-  }, [onboardingStatus]);
-
   return (
     <OnboardingComponent>
-      {onboardingStatus?.enabled &&
-        CardsContent.map((card, index) => (
-          <OnboardingCard
-            key={index}
-            title={card.title}
-            description={card.description}
-            buttonLabel={card.buttonLabel}
-            redirectUrl={card.redirectUrl}
-            status={card.status}
-            disabled={currentStep()?.[index]}
-          />
-        ))}
+      {CardsContent.map((card, index) => (
+        <OnboardingCard
+          key={index}
+          title={card.title}
+          description={card.description}
+          buttonLabel={card.buttonLabel}
+          redirectUrl={card.redirectUrl}
+          status={card.status}
+          disabled={true}
+        />
+      ))}
     </OnboardingComponent>
   );
 };
