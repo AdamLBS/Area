@@ -8,6 +8,7 @@ else
 
   # Stop all running Docker containers
   docker-compose down -v
+  docker rm -vf $(docker ps -aq)
   # Bring up Docker services using docker-compose
   docker-compose up -d --build --force-recreate
 fi
