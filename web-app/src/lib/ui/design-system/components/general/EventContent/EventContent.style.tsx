@@ -11,8 +11,12 @@ export const Card = styled(_Card)`
   overflow: auto;
 `;
 
-export const CardHeader = styled(_CardHeader)`
-  border-bottom: 1px solid #27272a;
+export const CardHeaderDark = styled(_CardHeader)`
+  border-bottom: 1px solid #212936;
+`;
+
+export const CardHeaderLight = styled(_CardHeader)`
+  border-bottom: 1px solid #e5e7eb;
 `;
 
 export const Container = styled.div`
