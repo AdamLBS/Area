@@ -1,4 +1,4 @@
 #!/usr/bin/env node
 
-node ace migration:fresh
-node ./server.js
+npm run migrate
+npm run start
