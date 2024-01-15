@@ -66,8 +66,6 @@ services:
       - app-volumes:/usr/mobile
   backend_scheduler:
     depends_on:
-      server:
-        condition: service_healthy
       postgres:
         condition: service_healthy
     build:
