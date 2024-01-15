@@ -58,4 +58,4 @@ COPY --from=build /app/build /app
 EXPOSE 3333
 
 # Start the application
-CMD ["bash" "./run.sh"]
+CMD ["bash" "-c", "node ace migration:run" "&&" "node ./server.js"]
