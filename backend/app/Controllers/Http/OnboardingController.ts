@@ -39,7 +39,6 @@ export default class OnboardingController {
     const events = await Event.query().where('user_uuid', userDb.uuid)
     const log = await Log.query().where('user_uuid', userDb.uuid)
 
-
     if (oauth.length > 2) {
       await User.updateOrCreate({ uuid: userDb.uuid }, { onboarding: '2' })
     } else if (userDb.onboarding) {
