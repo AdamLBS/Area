@@ -336,3 +336,31 @@ export const ServicesContainer = styled.div`
   flex-direction: row;
   gap: 48px;
 `;
+
+export const Footer = styled.div`
+  display: flex;
+  padding: 24px 48px;
+  align-items: flex-start;
+  gap: 400px;
+`;
+
+export const FooterContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+`;
+
+export const Logo = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 20px;
+`;
+
+export const RedirectionContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  flex: 1;
+`;
