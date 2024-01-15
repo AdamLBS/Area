@@ -39,7 +39,7 @@ COPY . .
 # Run the Ace build command
 RUN npm run build
 
-COPY .env.local build/.env
+COPY .env build/.env
 
 ENV NODE_ENV=production
 

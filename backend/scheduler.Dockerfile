@@ -36,6 +36,7 @@ WORKDIR /app
 # Copy the application code and node_modules from the previous stages
 COPY --from=production-deps /app/node_modules /app/node_modules
 COPY . .
+
 # Run the Ace build command
 RUN npm run build
 
@@ -55,7 +56,6 @@ COPY --from=production-deps /app/node_modules /app/node_modules
 COPY --from=build /app/build /app
 
 # Expose the port
-EXPOSE 3333
 
 # Start the application
-CMD ["sh", "-c", "node ace migration:fresh --force ; node ./server.js"]
+CMD ["node", "ace", "scheduler:run"]
