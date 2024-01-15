@@ -1,12 +1,15 @@
 import React, { memo, useEffect } from 'react';
 import { OnboardingComponent } from './OnboardingCards.style';
 import { OnboardingCard } from './OnboardingCard';
+import { finishOnboarding } from '@/api/user';
+import { useQueryClient } from '@tanstack/react-query';
 
 const CardsContent: {
   title: string;
   description: string;
   buttonLabel?: string;
   redirectUrl: string;
+  callback?: () => void;
 }[] = [
   {
     title: '1/ Link first account',
@@ -33,6 +36,11 @@ const CardsContent: {
     description: 'Go to watch your logs now',
     buttonLabel: 'Go to Watch',
     redirectUrl: '/watch',
+    callback: () => {
+      // const queryClient = useQueryClient();
+      // queryClient.invalidateQueries({ queryKey: ['onboarding'] });
+      finishOnboarding();
+    },
   },
 ];
 
@@ -57,15 +65,21 @@ const OnboardingCardsComponents = ({
   ]);
 
   useEffect(() => {
-    if (currentStep === '1.00') {
+    if (currentStep === '1') {
       setButtons([false, true, true, true]);
       setStatus(['pending', 'not-started', 'not-started', 'not-started']);
-    } else if (currentStep === '2.00') {
+    } else if (currentStep === '2') {
       setButtons([true, false, true, true]);
       setStatus(['done', 'pending', 'not-started', 'not-started']);
-    } else if (currentStep === '4.00') {
+    } else if (currentStep === '3') {
+      setButtons([true, true, true, true]);
+      setStatus(['done', 'done', 'pending', 'not-started']);
+    } else if (currentStep === '4') {
       setButtons([true, true, true, false]);
       setStatus(['done', 'done', 'done', 'pending']);
+    } else if (currentStep === '5') {
+      setButtons([true, true, true, true]);
+      setStatus(['done', 'done', 'done', 'done']);
     }
   }, [currentStep]);
 
@@ -80,6 +94,7 @@ const OnboardingCardsComponents = ({
           redirectUrl={card.redirectUrl}
           status={status[index]}
           disabled={buttons[index]}
+          callback={card.callback}
         />
       ))}
     </OnboardingComponent>

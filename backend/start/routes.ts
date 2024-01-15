@@ -69,7 +69,7 @@ Route.group(() => {
     Route.get('/events', 'EventsController.getMyEvents')
     Route.post('/onboarding/start', 'OnboardingController.startOnboarding')
     Route.get('/onboarding/', 'OnboardingController.getOnboardingStep')
-    Route.post('/onboarding/update', 'OnboardingController.updateOnboardingStep')
+    Route.post('/onboarding/finished', 'OnboardingController.finishOnboarding')
   })
     .prefix('/user')
     .middleware(['auth:api'])

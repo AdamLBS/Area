@@ -1,37 +1,71 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import Oauth from 'App/Models/Oauth'
 import User from 'App/Models/User'
+import Event from 'App/Models/Event'
+import Log from 'App/Models/Log'
 
 export default class OnboardingController {
   public async startOnboarding({ auth, response }: HttpContextContract) {
-    const user = await auth.user
+    const user = auth.user
     const userDb = await User.findByOrFail('uuid', user?.uuid)
     if (!userDb) {
       throw new Error('User not found')
     }
-    await User.updateOrCreate({ uuid: userDb.uuid }, { onboarding: 1 })
+    await User.updateOrCreate({ uuid: userDb.uuid }, { onboarding: '1' })
     return response.ok({
       message: 'Onboarding started',
     })
   }
   public async getOnboardingStep({ auth, response }: HttpContextContract) {
-    const user = await auth.user
-    const userDb = await User.findByOrFail('uuid', user?.uuid)
+    const user = auth.user
+    let userDb = await User.findByOrFail('uuid', user?.uuid)
     if (!userDb) {
       throw new Error('User not found')
     }
+
+    if (userDb.onboarding === '5') {
+      userDb = await User.updateOrCreate({ uuid: userDb.uuid }, { onboarding: '6' })
+      return response.ok({
+        step: '5',
+      })
+    }
+    if (userDb.onboarding === '6') {
+      return response.ok({
+        step: userDb.onboarding,
+      })
+    }
+
+    const oauth = await Oauth.query().where('user_uuid', userDb.uuid)
+    const events = await Event.query().where('user_uuid', userDb.uuid)
+    const log = await Log.query().where('user_uuid', userDb.uuid)
+
+
+    if (oauth.length > 2) {
+      await User.updateOrCreate({ uuid: userDb.uuid }, { onboarding: '2' })
+    } else if (userDb.onboarding) {
+      await User.updateOrCreate({ uuid: userDb.uuid }, { onboarding: '1' })
+    }
+    if (events.length > 0) {
+      await User.updateOrCreate({ uuid: userDb.uuid }, { onboarding: '4' })
+    }
+    if (log.length > 0) {
+      await User.updateOrCreate({ uuid: userDb.uuid }, { onboarding: '4' })
+    }
+    userDb = await User.findByOrFail('uuid', user?.uuid)
+
     return response.ok({
       step: userDb.onboarding,
     })
   }
-  public async updateOnboardingStep({ auth, request, response }: HttpContextContract) {
-    const user = await auth.user
+  public async finishOnboarding({ auth, response }: HttpContextContract) {
+    const user = auth.user
     const userDb = await User.findByOrFail('uuid', user?.uuid)
-    const { step } = await request.body()
+
     if (!userDb) {
       throw new Error('User not found')
     }
-    const stepNumber = step === 4 ? null : step
-    await User.updateOrCreate({ uuid: userDb.uuid }, { onboarding: stepNumber })
+    await User.updateOrCreate({ uuid: userDb.uuid }, { onboarding: '5' })
+
     return response.ok({
       message: 'Onboarding step updated',
     })

@@ -109,3 +109,15 @@ export const getOnboardingStatus = async (): Promise<{ step: string }> => {
     throw new Error('Error getting onboarding status.');
   }
 };
+
+export const finishOnboarding = async () => {
+  try {
+    return await axios.post(API_URL + '/user/onboarding/finished', null, {
+      headers: {
+        Authorization: 'Bearer ' + localStorage.getItem('authToken'),
+      },
+    });
+  } catch (error) {
+    throw new Error('Error updating onboarding status.');
+  }
+};

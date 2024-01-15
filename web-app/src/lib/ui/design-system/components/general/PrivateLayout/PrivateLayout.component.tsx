@@ -22,7 +22,9 @@ const PrivateLayoutComponent: React.FC<PrivateLayoutProps> = ({
   return (
     <Layout>
       <NavBar pageName={pageName} icon={icon} />
-      {status && status.step && <OnboardingCards currentStep={status.step} />}
+      {status && status.step && status.step !== '6' && (
+        <OnboardingCards currentStep={status.step} />
+      )}
       <AuthGard>{children}</AuthGard>
     </Layout>
   );

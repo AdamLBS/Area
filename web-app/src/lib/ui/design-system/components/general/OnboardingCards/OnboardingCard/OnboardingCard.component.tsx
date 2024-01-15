@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useCallback } from 'react';
 import {
   CardTitle,
   CardDescription,
@@ -20,6 +20,7 @@ export type OnboardingCardProps = {
   redirectUrl: string;
   disabled?: boolean;
   status: 'done' | 'pending' | 'not-started';
+  callback?: () => void;
 };
 
 const TITLES = {
@@ -35,6 +36,7 @@ const OnboardingCardComponent: React.FC<OnboardingCardProps> = ({
   redirectUrl,
   disabled,
   status,
+  callback,
 }) => {
   const router = useRouter();
 
@@ -47,6 +49,13 @@ const OnboardingCardComponent: React.FC<OnboardingCardProps> = ({
     }
   };
 
+  const onButtonClick = useCallback(() => {
+    if (callback) {
+      callback();
+    }
+    router.push(redirectUrl);
+  }, [redirectUrl]);
+
   return (
     <CardComponent style={{ borderColor: setColor() }}>
       <CardHeaderComponent>
@@ -55,11 +64,7 @@ const OnboardingCardComponent: React.FC<OnboardingCardProps> = ({
       </CardHeaderComponent>
       {buttonLabel && (
         <CardContentComponent>
-          <Button
-            variant="outline"
-            onClick={() => router.push(redirectUrl)}
-            disabled={disabled}
-          >
+          <Button variant="outline" onClick={onButtonClick} disabled={disabled}>
             {buttonLabel}
           </Button>
         </CardContentComponent>

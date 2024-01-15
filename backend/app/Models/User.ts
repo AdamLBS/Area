@@ -20,7 +20,7 @@ export default class User extends BaseModel {
   public rememberMeToken: string | null
 
   @column()
-  public onboarding: number | null
+  public onboarding: string | null
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
