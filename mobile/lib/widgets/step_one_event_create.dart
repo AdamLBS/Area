@@ -38,7 +38,7 @@ class _StepOneEventCreateState extends State<StepOneEventCreate> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Event name",
+            "Bridge name",
             style: GoogleFonts.inter(
               fontSize: 14,
               color: Colors.white,
@@ -75,7 +75,7 @@ class _StepOneEventCreateState extends State<StepOneEventCreate> {
           ),
           SizedBox(height: 20),
           Text(
-            "Event description",
+            "Bridge description",
             style: GoogleFonts.inter(
               fontSize: 14,
               color: Colors.white,

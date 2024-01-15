@@ -82,7 +82,7 @@ class _EventCreatePageState extends State<EventCreatePage> {
                   ),
                   SizedBox(height: 20),
                   Text(
-                    "Create a new event",
+                    "Create a new bridge",
                     style: GoogleFonts.inter(
                       fontSize: 20,
                       fontWeight: FontWeight.w600,

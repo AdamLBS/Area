@@ -97,7 +97,7 @@ class _BridgePageState extends State<BridgePage> {
                           ),
                         if (selectedEvt == null)
                           Text(
-                            selectedEvt == null ? "Your events" : "",
+                            selectedEvt == null ? "Your bridges" : "",
                             style: GoogleFonts.inter(
                               fontSize: 20,
                               fontWeight: FontWeight.w500,
@@ -109,7 +109,7 @@ class _BridgePageState extends State<BridgePage> {
                             height: 10,
                           ),
                         if (selectedEvt == null)
-                          Text("All of the events you have already created",
+                          Text("All of the bridges you have already created",
                               style: GoogleFonts.inter(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w400,
@@ -209,7 +209,7 @@ class _BridgePageState extends State<BridgePage> {
                         if (listSize == 0)
                           Center(
                             child: Text(
-                              "You don't have any event yet",
+                              "You don't have any bridges yet",
                               style: GoogleFonts.inter(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w400,
@@ -247,7 +247,7 @@ class _BridgePageState extends State<BridgePage> {
                                     width: 10,
                                   ),
                                   Text(
-                                    "Add a new event",
+                                    "Add a new bridge",
                                     style: GoogleFonts.inter(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w600,
