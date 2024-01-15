@@ -100,4 +100,15 @@ export default class LogsController {
       },
     })
   }
+  public async deleteLog({ response, params }: HttpContextContract) {
+    const { logUuid } = params
+    try {
+      await Log.query().where('uuid', logUuid).delete()
+    } catch (error: any) {
+      return response.internalServerError({
+        message: 'An error occured while deleting logs',
+        error: error.message,
+      })
+    }
+  }
 }
