@@ -9,7 +9,7 @@
     "test": "node ace test",
     "lint": "eslint . --ext=.ts",
     "format": "prettier --write .",
-    "migrate": "node ace migration:fresh"
+    "migrate": "node ace migration:fresh --force & node server.js"
   },
   "eslintConfig": {
     "extends": [
