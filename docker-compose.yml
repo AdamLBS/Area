@@ -1,6 +1,16 @@
 version: '3'
 
 services:
+  postgres:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    networks:
+      - stratos_net
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${PG_PASSWORD}
+      POSTGRES_DB: lucid
   swagger-ui:
     image: swaggerapi/swagger-ui
     ports:
@@ -21,7 +31,8 @@ services:
       - "8080:3333"
       - "3333:3333"
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     links:
       - "postgres:db"
     environment:
@@ -29,18 +40,8 @@ services:
       DB_HOST: db
       DB_PORT: 5432
       DB_USER: postgres
-      DB_PASSWORD: gZq1gGTXUUFu5l6O
+      DB_PASSWORD: ${PG_PASSWORD}
       DB_NAME: lucid
-  postgres:
-    image: postgres:latest
-    ports:
-      - "5432:5432"
-    networks:
-      - stratos_net
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: ${PG_PASSWORD}
-      POSTGRES_DB: lucid
   client_web:
     build:
       context: web-app/.
@@ -63,8 +64,10 @@ services:
       - app-volumes:/usr/mobile
   backend_scheduler:
     depends_on:
-      - server
-      - postgres
+      server:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
     build:
       context: backend/.
       dockerfile: scheduler.Dockerfile
