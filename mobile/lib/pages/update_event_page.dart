@@ -68,7 +68,7 @@ class _UpdateEventPageState extends State<UpdateEventPage> {
                   height: 10,
                 ),
                 Text(
-                  "Event name",
+                  "Bridge name",
                   style: GoogleFonts.inter(
                     fontSize: 14,
                     color: Colors.white,
@@ -105,7 +105,7 @@ class _UpdateEventPageState extends State<UpdateEventPage> {
                 ),
                 SizedBox(height: 20),
                 Text(
-                  "Event description",
+                  "Bridge description",
                   style: GoogleFonts.inter(
                     fontSize: 14,
                     color: Colors.white,
