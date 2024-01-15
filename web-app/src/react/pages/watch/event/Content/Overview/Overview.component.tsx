@@ -73,10 +73,6 @@ const getLogStatus = (status: 'success' | 'error' | 'failed') => {
   }
 };
 
-const apiUpFirstLetterCase = (api: string) => {
-  return api.charAt(0).toUpperCase() + api.slice(1);
-};
-
 export type EventContentProps = {
   eventUuid: string;
 };
@@ -101,9 +97,7 @@ const OverviewComponent: React.FC<EventContentProps> = ({ eventUuid }) => {
               <CardContent>
                 <H3>{eventStats.total}</H3>
                 <StatCardDescription>
-                  {`calls from ${apiUpFirstLetterCase(
-                    eventStats.triggerApi,
-                  )} event`}
+                  {`calls from the Bridge`}
                 </StatCardDescription>
               </CardContent>
             </StatCard>
@@ -115,9 +109,7 @@ const OverviewComponent: React.FC<EventContentProps> = ({ eventUuid }) => {
               <CardContent>
                 <H3>{eventStats.success}</H3>
                 <StatCardDescription>
-                  {`responses from ${apiUpFirstLetterCase(
-                    eventStats.responseApi,
-                  )} event`}
+                  {`responses from the Bridge`}
                 </StatCardDescription>
               </CardContent>
             </StatCard>

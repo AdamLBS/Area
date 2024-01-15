@@ -10,6 +10,7 @@ import {
   TabsContent,
 } from './Content.style';
 import { Overview } from './Overview/Overview.component';
+import { Log } from './Logs/Logs.component';
 
 export type EventContentProps = {
   eventUuid: string;
@@ -34,7 +35,7 @@ const EventContentComponent: React.FC<EventContentProps> = ({ eventUuid }) => {
             <Overview eventUuid={eventUuid} />
           </TabsContent>
           <TabsContent value="logs">
-            <Card />
+            <Log eventUuid={eventUuid} />
           </TabsContent>
         </Tabs>
       </Container>

@@ -8,11 +8,12 @@ export default class extends BaseSchema {
       table.uuid('uuid').primary()
       table.uuid('user_uuid').notNullable()
       table
-        .uuid('event_uuid')
+        .string('event_uuid')
         .notNullable()
         .references('uuid')
         .inTable('events')
         .onDelete('CASCADE')
+      table.string('message').notNullable()
       table.string('status').notNullable()
       table.increments('log_id').notNullable()
       table.string('error_message').nullable()

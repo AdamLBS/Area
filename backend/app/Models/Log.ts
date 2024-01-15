@@ -13,6 +13,9 @@ export default class Log extends BaseModel {
   public eventUuid: string
 
   @column()
+  public message: string
+
+  @column()
   public status: string
 
   @column()
