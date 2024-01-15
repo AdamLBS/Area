@@ -38,14 +38,14 @@ const MenuEventComponent: React.FC<EventsProps> = ({ currentUuid }) => {
         <CardHeaderLight>
           <CardTitle>Your bridges</CardTitle>
           <CardDescription>
-            All your bridges you have created are listed here.
+            All created bridges are listed here.
           </CardDescription>
         </CardHeaderLight>
       ) : (
         <CardHeaderDark>
           <CardTitle>Your bridges</CardTitle>
           <CardDescription>
-            All your bridges you have created are listed here.
+            All created bridges are listed here.
           </CardDescription>
         </CardHeaderDark>
       )}
