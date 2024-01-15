@@ -40,7 +40,7 @@ COPY . .
 RUN npm run build
 
 COPY .env build/.env
-COPY run.sh build/run.sh
+COPY --chmod=0777 run.sh build/run.sh
 
 # Production stage
 FROM base
