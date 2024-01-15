@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { NavigationMenuList as NavigationMenuList_ } from '@radix-ui/react-navigation-menu';
+import { Button as Button_ } from '@/components/ui';
 
 export const NavBarContainer = styled.div`
   display: flex;
@@ -42,4 +43,13 @@ export const RightContainer = styled.div`
   align-items: flex-start;
   gap: 10px;
   flex: 1;
+`;
+
+export const ButtonHover = styled(Button_)`
+  border-radius: var(--radius-rounded-md, 20px);
+  border: 1px solid transparent;
+  &:hover {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: #27272a;
+  }
 `;

@@ -1,13 +1,14 @@
 import React, { memo, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import { Button } from '@/components/ui';
 import {
   NavBarContainer,
   TitleContainer,
   NavBarText,
   NavigationMenuList,
   RightContainer,
+  ButtonHover,
 } from './NavBarLandingPage.style';
+import { Button } from '@/components/ui';
 import { IconStratos } from '../../icons';
 import { NavigationMenu } from '@radix-ui/react-navigation-menu';
 
@@ -28,18 +29,24 @@ const NavBarLandingPageComponent: React.FC = () => {
       </TitleContainer>
       <NavigationMenu>
         <NavigationMenuList>
-          <Button variant="ghost" onClick={() => handleRedirection(`bridge`)}>
+          <ButtonHover
+            variant="ghost"
+            onClick={() => handleRedirection(`bridge`)}
+          >
             Bridge
-          </Button>
-          <Button variant="ghost" onClick={() => handleRedirection(`settings`)}>
+          </ButtonHover>
+          <ButtonHover
+            variant="ghost"
+            onClick={() => handleRedirection(`settings`)}
+          >
             Account
-          </Button>
-          <Button
+          </ButtonHover>
+          <ButtonHover
             variant="ghost"
             onClick={() => handleRedirection(`documentation`)}
           >
             About
-          </Button>
+          </ButtonHover>
         </NavigationMenuList>
       </NavigationMenu>
       <RightContainer>
