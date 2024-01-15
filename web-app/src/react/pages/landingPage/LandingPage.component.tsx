@@ -9,6 +9,7 @@ import {
   IconGithub,
   IconDiscord,
   IconSpotify,
+  IconStratos,
 } from '@/lib/ui/design-system';
 import {
   Card,
@@ -42,10 +43,15 @@ import {
   CodeContainer,
   MobileLine,
   DownloadContainer,
+  Footer,
+  FooterContent,
+  Logo,
+  RedirectionContainer,
 } from './LandingPage.style';
 import { Boxes, Eye } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import Image from 'next/image';
+import { Button } from '@/components/ui';
 
 const teamMembers = [
   {
@@ -80,6 +86,10 @@ const LandingPageComponent = () => {
     },
     [router],
   );
+
+  const redirect = useCallback(() => {
+    window.open('https://status.stratos-app.fr/');
+  }, []);
 
   const [color, setColor] = React.useState('');
 
@@ -222,10 +232,24 @@ const LandingPageComponent = () => {
             </RainbowButton>
           </ButtonContainer>
         </ServiceContainer>
-        <ServiceContainer>
-          <TextH3>Copyright © 2024 La Table Ronde, made with ❤️</TextH3>
-        </ServiceContainer>
       </Content>
+      <Footer>
+        <FooterContent>
+          <Logo>
+            <IconStratos size={50} />
+            <Title>Stratos</Title>
+          </Logo>
+          <TextH3>Copyright © 2024 La Table Ronde, made with ❤️</TextH3>
+        </FooterContent>
+        <RedirectionContainer>
+          <Button variant="ghost" onClick={redirect}>
+            Status
+          </Button>
+          <Button variant="ghost" onClick={() => handleRedirection(`about`)}>
+            About
+          </Button>
+        </RedirectionContainer>
+      </Footer>
     </LandingPage>
   );
 };
