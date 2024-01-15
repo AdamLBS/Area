@@ -83,3 +83,29 @@ export const getMe = async (): Promise<User> => {
     throw new Error('Error getting user.');
   }
 };
+
+export const startOnboarding = async (): Promise<void> => {
+  try {
+    return await axios.post(API_URL + '/user/onboarding/start', null, {
+      headers: {
+        Authorization: 'Bearer ' + localStorage.getItem('authToken'),
+      },
+    });
+  } catch (error) {
+    throw new Error('Error starting onboarding.');
+  }
+};
+
+export const getOnboardingStatus = async (): Promise<{ step: string }> => {
+  try {
+    return (
+      await axios.get(API_URL + '/user/onboarding', {
+        headers: {
+          Authorization: 'Bearer ' + localStorage.getItem('authToken'),
+        },
+      })
+    ).data;
+  } catch (error) {
+    throw new Error('Error getting onboarding status.');
+  }
+};

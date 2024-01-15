@@ -19,7 +19,13 @@ export type OnboardingCardProps = {
   buttonLabel?: string;
   redirectUrl: string;
   disabled?: boolean;
-  status: 'done' | 'pending' | 'Complete the last step before';
+  status: 'done' | 'pending' | 'not-started';
+};
+
+const TITLES = {
+  done: 'Done',
+  pending: 'Pending',
+  'not-started': 'Complete the last step before',
 };
 
 const OnboardingCardComponent: React.FC<OnboardingCardProps> = ({
@@ -60,7 +66,7 @@ const OnboardingCardComponent: React.FC<OnboardingCardProps> = ({
       )}
       <CardFooter>
         <PrimaryMutted style={{ color: setColor() }}>
-          {status.at(0)?.toUpperCase() + status.slice(1)}
+          {TITLES[status]}
         </PrimaryMutted>
       </CardFooter>
     </CardComponent>

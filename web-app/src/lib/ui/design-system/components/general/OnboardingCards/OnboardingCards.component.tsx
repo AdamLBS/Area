@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 import { OnboardingComponent } from './OnboardingCards.style';
 import { OnboardingCard } from './OnboardingCard';
 
@@ -7,7 +7,6 @@ const CardsContent: {
   description: string;
   buttonLabel?: string;
   redirectUrl: string;
-  status: 'done' | 'pending' | 'Complete the last step before';
 }[] = [
   {
     title: '1/ Link first account',
@@ -15,7 +14,6 @@ const CardsContent: {
       'Link your first OAuth accounts to create some Bridges for the future',
     buttonLabel: 'Go to settings',
     redirectUrl: '/settings',
-    status: 'done',
   },
   {
     title: '2/ Create your first bridge',
@@ -23,25 +21,54 @@ const CardsContent: {
       'You’re now ready to create your first bridge using your OAuth.',
     buttonLabel: 'Go to Bridge',
     redirectUrl: '/bridge',
-    status: 'pending',
   },
   {
     title: '3/ Receive your first log',
     description:
       'When you create a Bridge, you receive some logs about your bridge working',
     redirectUrl: '/',
-    status: 'Complete the last step before',
   },
   {
     title: '4/ Watch your first logs',
     description: 'Go to watch your logs now',
     buttonLabel: 'Go to Watch',
     redirectUrl: '/watch',
-    status: 'Complete the last step before',
   },
 ];
 
-const OnboardingCardsComponents = () => {
+type Status = 'done' | 'pending' | 'not-started';
+
+const OnboardingCardsComponents = ({
+  currentStep,
+}: {
+  currentStep: string;
+}) => {
+  const [buttons, setButtons] = React.useState<boolean[]>([
+    false,
+    false,
+    false,
+    false,
+  ]);
+  const [status, setStatus] = React.useState<Status[]>([
+    'not-started',
+    'not-started',
+    'not-started',
+    'not-started',
+  ]);
+
+  useEffect(() => {
+    if (currentStep === '1.00') {
+      setButtons([false, true, true, true]);
+      setStatus(['pending', 'not-started', 'not-started', 'not-started']);
+    } else if (currentStep === '2.00') {
+      setButtons([true, false, true, true]);
+      setStatus(['done', 'pending', 'not-started', 'not-started']);
+    } else if (currentStep === '4.00') {
+      setButtons([true, true, true, false]);
+      setStatus(['done', 'done', 'done', 'pending']);
+    }
+  }, [currentStep]);
+
   return (
     <OnboardingComponent>
       {CardsContent.map((card, index) => (
@@ -51,8 +78,8 @@ const OnboardingCardsComponents = () => {
           description={card.description}
           buttonLabel={card.buttonLabel}
           redirectUrl={card.redirectUrl}
-          status={card.status}
-          disabled={true}
+          status={status[index]}
+          disabled={buttons[index]}
         />
       ))}
     </OnboardingComponent>
