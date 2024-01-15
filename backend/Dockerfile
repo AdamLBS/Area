@@ -53,9 +53,9 @@ WORKDIR /app
 # Copy node_modules and the built application from the previous stages
 COPY --from=production-deps /app/node_modules /app/node_modules
 COPY --from=build /app/build /app
-
+COPY --from=build /app/run.sh /app
 # Expose the port
 EXPOSE 3333
 
 # Start the application
-CMD ["sh", "-c", "./run.sh"]
+CMD ["sh", "-c", "run.sh"]
