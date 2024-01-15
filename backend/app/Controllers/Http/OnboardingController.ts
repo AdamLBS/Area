@@ -22,7 +22,6 @@ export default class OnboardingController {
     if (!userDb) {
       throw new Error('User not found')
     }
-
     if (userDb.onboarding === '5') {
       userDb = await User.updateOrCreate({ uuid: userDb.uuid }, { onboarding: '6' })
       return response.ok({
@@ -46,7 +45,7 @@ export default class OnboardingController {
       await User.updateOrCreate({ uuid: userDb.uuid }, { onboarding: '1' })
     }
     if (events.length > 0) {
-      await User.updateOrCreate({ uuid: userDb.uuid }, { onboarding: '4' })
+      await User.updateOrCreate({ uuid: userDb.uuid }, { onboarding: '3' })
     }
     if (log.length > 0) {
       await User.updateOrCreate({ uuid: userDb.uuid }, { onboarding: '4' })
