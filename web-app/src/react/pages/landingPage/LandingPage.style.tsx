@@ -12,7 +12,6 @@ export const LandingPage = styled.div`
   flex-direction: column;
   gap: 24px;
   background: url('/background.png') center/cover no-repeat;
-  z-index: 0;
 `;
 
 export const Content = styled.div`
@@ -21,7 +20,6 @@ export const Content = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 24px;
-  z-index: 20;
 `;
 
 export const WorkflowContainer = styled.div`
@@ -294,62 +292,4 @@ export const TeamText = styled.h2`
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-`;
-
-export const Elp1 = styled.div`
-  position: absolute;
-  left: 120px;
-  top: 232px;
-  z-index: 2;
-`;
-
-export const Elp2 = styled.div`
-  position: absolute;
-  right: 59px;
-  top: 146px;
-  z-index: 1;
-`;
-
-export const MobileSection = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 86px 0;
-  gap: 24px;
-`;
-
-export const MobileCard = styled(Card_)`
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
-  padding: 24px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.03);
-  align-items: center;
-`;
-
-export const CodeContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-`;
-
-export const MobileLine = styled.div`
-  width: 1px;
-  height: 250px;
-  background: rgba(255, 255, 255, 0.1);
-`;
-
-export const DownloadContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  justify-content: center;
-  align-items: center;
-`;
-
-export const ServicesContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 48px;
 `;

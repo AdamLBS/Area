@@ -11,7 +11,8 @@ import {
   AdditionnalActionsHeader,
   BreakLine,
   Card,
-  CardHeader,
+  CardHeaderLight,
+  CardHeaderDark,
   Container,
   EventPart,
   EventPartContent,
@@ -55,6 +56,7 @@ import {
   updateAdditionalAction,
   updateTriggerEvent,
 } from '@/api/events';
+import { useTheme } from 'next-themes';
 
 export type EventContentProps = {
   eventUuid: string;
@@ -82,6 +84,7 @@ const EventContentComponent: React.FC<EventContentProps> = ({ eventUuid }) => {
   const { updateTriggerVariablesState } = useTriggerVariablesState();
   const { data: triggers } = useTriggers();
   const { data: responses } = useResponses();
+  const theme = useTheme();
 
   const onDeleteAction = useCallback(
     (index: number) => {
@@ -196,10 +199,17 @@ const EventContentComponent: React.FC<EventContentProps> = ({ eventUuid }) => {
 
   return (
     <Card>
-      <CardHeader>
-        <CardTitle>{event?.name}</CardTitle>
-        <CardDescription>{event?.description}</CardDescription>
-      </CardHeader>
+      {theme.theme === 'light' ? (
+        <CardHeaderLight>
+          <CardTitle>{event?.name}</CardTitle>
+          <CardDescription>{event?.description}</CardDescription>
+        </CardHeaderLight>
+      ) : (
+        <CardHeaderDark>
+          <CardTitle>{event?.name}</CardTitle>
+          <CardDescription>{event?.description}</CardDescription>
+        </CardHeaderDark>
+      )}
       <Container>
         <Header>
           <HeaderPart>
