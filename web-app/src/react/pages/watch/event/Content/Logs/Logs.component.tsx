@@ -25,6 +25,8 @@ const LogComponent: React.FC<LogProps> = ({ eventUuid }) => {
     const formattedId = log.log_id.toString();
 
     return {
+      eventUuid: log.event_uuid,
+      uuid: log.uuid,
       id: formattedId,
       date: formattedDate, // Use the formatted date
       title: log.message,

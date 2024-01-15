@@ -120,6 +120,24 @@ export const getEventLogs = async (uuid: string): Promise<Log[]> => {
   }
 };
 
+export const deleteEventLog = async (payload: {
+  uuid: string;
+  logUuid: string;
+}): Promise<void> => {
+  try {
+    await axios.delete(
+      API_URL + `/event/${payload.uuid}/logs/${payload.logUuid}`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+        },
+      },
+    );
+  } catch (error) {
+    throw new Error('Error deleting event log.');
+  }
+};
+
 export const updateEventSettings = async (payload: {
   uuid: string;
   name?: string;

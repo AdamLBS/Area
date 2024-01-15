@@ -107,6 +107,11 @@ export const columns: ColumnDef<Task>[] = [
   },
   {
     id: 'actions',
-    cell: () => <DataTableRowActions />,
+    cell: ({ row }) => (
+      <DataTableRowActions
+        uuid={row.original.uuid}
+        eventUuid={row.original.eventUuid}
+      />
+    ),
   },
 ];
