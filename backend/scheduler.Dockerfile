@@ -36,12 +36,12 @@ WORKDIR /app
 # Copy the application code and node_modules from the previous stages
 COPY --from=production-deps /app/node_modules /app/node_modules
 COPY . .
+
 # Run the Ace build command
 RUN npm run build
 
 COPY .env build/.env
-COPY run.sh build/run.sh
-RUN chmod 0777 build/run.sh
+
 # Production stage
 FROM base
 
@@ -54,8 +54,8 @@ WORKDIR /app
 # Copy node_modules and the built application from the previous stages
 COPY --from=production-deps /app/node_modules /app/node_modules
 COPY --from=build /app/build /app
+
 # Expose the port
-EXPOSE 3333
 
 # Start the application
-CMD ["sh", "-c", "npm run migrate"]
+CMD ["node", "ace", "scheduler:run"]

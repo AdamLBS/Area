@@ -143,7 +143,7 @@ class _LoginPageState extends State<LoginPage> {
                       await logUserIn(
                           emailController.text, passController.text);
                       if (context.mounted) {
-                        Navigator.of(context).pushReplacementNamed("/home");
+                        Navigator.of(context).pushReplacementNamed("/bridge");
                       }
                     } catch (e) {
                       print(e);

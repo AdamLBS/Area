@@ -60,16 +60,13 @@ const NavigationBarComponent: React.FC<NavBarProps> = ({ pageName, icon }) => {
           <Button variant="ghost" onClick={() => handleRedirection(`settings`)}>
             Settings
           </Button>
-          <Button
-            variant="ghost"
-            onClick={() => handleRedirection(`documentation`)}
-          >
+          <Button variant="ghost" onClick={() => handleRedirection(`about`)}>
             About
           </Button>
         </MenuContainer>
         <DarkContainer>
           <Button variant="outline" size="icon" onClick={changeTheme}>
-            {theme.theme === 'dark' ? <SunIcon /> : <MoonIcon />}
+            {theme.theme === 'light' ? <MoonIcon /> : <SunIcon />}
           </Button>
         </DarkContainer>
       </HeaderContainer>
