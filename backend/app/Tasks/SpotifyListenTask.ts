@@ -17,7 +17,7 @@ export interface Item {
   artists: Artist[]
   name: string
 }
-import { Item, useVariablesInFields } from 'App/functions/SpotifyUtils'
+import { useVariablesInFields } from 'App/functions/SpotifyUtils'
 
 type SpotifyListener = {
   shuffle_state: boolean

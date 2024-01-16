@@ -123,7 +123,7 @@ export default class TwitchLiveTask extends BaseTask {
             await this.notifyUserInLive(data, event)
           } catch (error) {
             console.error(error)
-            throw new TriggerEventErrorException('Impossible to notify user', eventUuid)
+            throw new TriggerEventErrorException('Impossible to notify user', event.uuid)
           }
         })
         return

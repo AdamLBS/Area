@@ -10,7 +10,6 @@ import {
 import { BaseTask, CronTimeV2 } from 'adonis5-scheduler/build/src/Scheduler/Task'
 import axios from 'axios'
 import { APIEventField } from 'types/events'
-import Cache from 'App/Models/Cache'
 import { Commit } from 'App/types/github'
 
 export default class GithubCheckLastCommitTask extends BaseTask {
@@ -84,7 +83,7 @@ export default class GithubCheckLastCommitTask extends BaseTask {
       }
     } catch (error: any) {
       console.error(error)
-      throw new TriggerEventErrorException('Impossible to check the last commit', eventUuid)
+      throw new TriggerEventErrorException('Impossible to check the last commit', event.uuid)
     }
   }
 

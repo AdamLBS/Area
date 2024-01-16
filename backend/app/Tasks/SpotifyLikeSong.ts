@@ -20,7 +20,7 @@ export interface Track {
 export interface Item {
   track: Track
 }
-import { Item, useVariablesInFields } from 'App/functions/SpotifyUtils'
+import { useVariablesInFields } from 'App/functions/SpotifyUtils'
 
 type SpotifyLikesSong = {
   total: number

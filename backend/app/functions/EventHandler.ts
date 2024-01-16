@@ -31,7 +31,7 @@ export enum ResponseInteraction {
 export const handleAdditionalActions = async (event: any) => {
   for (const additionalAction of event.additional_actions) {
     const responseInteraction = additionalAction.id as ResponseInteraction
-    await eventHandler(responseInteraction, additionalAction.fields, event.response_api)
+    await eventHandler(responseInteraction, additionalAction.fields, event.response_api, event.uuid)
   }
 }
 
