@@ -93,7 +93,7 @@ export default class GithubCheckCICD extends BaseTask {
       }
     } catch (error: any) {
       console.error(error)
-      throw new TriggerEventErrorException('Impossible to check the last CI/CD', eventUuid)
+      throw new TriggerEventErrorException('Impossible to check the last CI/CD', event.uuid)
     }
   }
   public async handle() {

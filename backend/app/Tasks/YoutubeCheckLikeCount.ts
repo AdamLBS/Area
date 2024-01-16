@@ -9,6 +9,7 @@ import axios from 'axios'
 import { APIEventField } from 'types/events'
 import Cache from 'App/Models/Cache'
 import Oauth from 'App/Models/Oauth'
+import TriggerEventErrorException from 'App/Exceptions/TriggerEventErrorException'
 
 type Statistics = {
   viewCount: string
@@ -86,7 +87,13 @@ export default class YoutubeCheckLikeCount extends BaseTask {
           const jsonValsAction = JSON.parse(event.trigger_interaction)
           const fields = jsonValsAction.fields as APIEventField<any>[]
           const videoId = fields[0].value
-          const youtubeData = await this.fetchVideoStats(triggerApi.token, videoId)
+          let youtubeData
+          try {
+            youtubeData = await this.fetchVideoStats(triggerApi.token, videoId)
+          } catch (error) {
+            console.log(error)
+            throw new TriggerEventErrorException('Impossible to fetch youtube data', event.uuid)
+          }
           const cache = await Cache.query().where('uuid', event.uuid).first()
           if (!cache || !cache.latestNumberOfLikes) {
             await this.updateLikesCount(event.uuid, youtubeData.items[0].statistics.likeCount)
@@ -100,7 +107,7 @@ export default class YoutubeCheckLikeCount extends BaseTask {
               this.useVariablesInFields(additionalAction.fields, youtubeData.items[0].statistics)
             }
             await handleAdditionalActions(event)
-            await eventHandler(responseInteraction, fields, event.response_api)
+            await eventHandler(responseInteraction, fields, event.response_api, event.uuid)
           } else {
             await this.updateLikesCount(event.uuid, youtubeData.items[0].statistics.likeCount)
           }

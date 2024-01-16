@@ -13,11 +13,6 @@ import TriggerEventErrorException from 'App/Exceptions/TriggerEventErrorExceptio
 export interface Artist {
   name: string
 }
-export interface Item {
-  artists: Artist[]
-  name: string
-  uri: string
-}
 import { Item, useVariablesInFields } from 'App/functions/SpotifyUtils'
 
 type SpotifySong = {

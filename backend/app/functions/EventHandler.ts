@@ -31,7 +31,7 @@ export enum ResponseInteraction {
 export const handleAdditionalActions = async (event: any) => {
   for (const additionalAction of event.additional_actions) {
     const responseInteraction = additionalAction.id as ResponseInteraction
-    await eventHandler(responseInteraction, additionalAction.fields, event.response_api)
+    await eventHandler(responseInteraction, additionalAction.fields, event.response_api, event.uuid)
   }
 }
 
@@ -55,7 +55,7 @@ export const eventHandler = async (
       try {
         await SendMailEvent(content, responseApiUuid)
         await createLog('Message sent to Discord', eventUuid)
-      } catch(error) {
+      } catch (error) {
         console.error(error)
         throw new ResponseEventFailedException('Failed to send email', eventUuid)
       }
@@ -64,7 +64,7 @@ export const eventHandler = async (
       try {
         await discordWebhookEvent(content)
         await createLog('Message sent to Discord', eventUuid)
-      } catch(error) {
+      } catch (error) {
         console.error(error)
         throw new ResponseEventFailedException('Failed to send email', eventUuid)
       }
@@ -73,7 +73,7 @@ export const eventHandler = async (
       try {
         await discordPrivateMessageEvent(content, responseApiUuid)
         await createLog('Message sent to Discord', eventUuid)
-      } catch(error) {
+      } catch (error) {
         console.error(error)
         throw new ResponseEventFailedException('Failed to send email', eventUuid)
       }
@@ -82,7 +82,7 @@ export const eventHandler = async (
       try {
         await makeAnnounceEvent(content, responseApiUuid)
         await createLog('Message sent to Discord', eventUuid)
-      } catch(error) {
+      } catch (error) {
         console.error(error)
         throw new ResponseEventFailedException('Failed to send email', eventUuid)
       }
@@ -91,7 +91,7 @@ export const eventHandler = async (
       try {
         await playSong(responseApiUuid)
         await createLog('Message sent to Discord', eventUuid)
-      } catch(error) {
+      } catch (error) {
         console.error(error)
         throw new ResponseEventFailedException('Failed to send email', eventUuid)
       }
@@ -100,7 +100,7 @@ export const eventHandler = async (
       try {
         await pauseSong(responseApiUuid)
         await createLog('Message sent to Discord', eventUuid)
-      } catch(error) {
+      } catch (error) {
         console.error(error)
         throw new ResponseEventFailedException('Failed to send email', eventUuid)
       }
@@ -109,7 +109,7 @@ export const eventHandler = async (
       try {
         await skipToNextSong(responseApiUuid)
         await createLog('Message sent to Discord', eventUuid)
-      } catch(error) {
+      } catch (error) {
         console.error(error)
         throw new ResponseEventFailedException('Failed to send email', eventUuid)
       }
@@ -118,7 +118,7 @@ export const eventHandler = async (
       try {
         await skipToPreviousSong(responseApiUuid)
         await createLog('Message sent to Discord', eventUuid)
-      } catch(error) {
+      } catch (error) {
         console.error(error)
         throw new ResponseEventFailedException('Failed to send email', eventUuid)
       }
@@ -127,7 +127,7 @@ export const eventHandler = async (
       try {
         await repeatSong(responseApiUuid)
         await createLog('Message sent to Discord', eventUuid)
-      } catch(error) {
+      } catch (error) {
         console.error(error)
         throw new ResponseEventFailedException('Failed to send email', eventUuid)
       }
@@ -136,7 +136,7 @@ export const eventHandler = async (
       try {
         await setPlaybackVolume(content, responseApiUuid)
         await createLog('Message sent to Discord', eventUuid)
-      } catch(error) {
+      } catch (error) {
         console.error(error)
         throw new ResponseEventFailedException('Failed to send email', eventUuid)
       }
@@ -145,7 +145,7 @@ export const eventHandler = async (
       try {
         await toggleShuffle(content, responseApiUuid)
         await createLog('Message sent to Discord', eventUuid)
-      } catch(error) {
+      } catch (error) {
         console.error(error)
         throw new ResponseEventFailedException('Failed to send email', eventUuid)
       }
