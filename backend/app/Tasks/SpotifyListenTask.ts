@@ -8,7 +8,16 @@ import {
 import axios from 'axios'
 import { APIEventField } from 'types/events'
 import Cache from 'App/Models/Cache'
-import { Item, useVariablesInFields } from 'App/functions/SpotifyUtils'
+import TriggerEventErrorException from 'App/Exceptions/TriggerEventErrorException'
+
+export interface Artist {
+  name: string
+}
+export interface Item {
+  artists: Artist[]
+  name: string
+}
+import { useVariablesInFields } from 'App/functions/SpotifyUtils'
 
 type SpotifyListener = {
   shuffle_state: boolean
@@ -80,7 +89,15 @@ export default class SpotifyListenTask extends BaseTask {
         const isListening = spotifyAPIData !== undefined && spotifyAPIData.is_playing
         if (triggerApi && triggerApi.token) {
           if (!userCache || userCache.spotifyListening === undefined) {
-            await this.updateSpotifyListeningStatus(event.uuid, isListening)
+            try {
+              await this.updateSpotifyListeningStatus(event.uuid, isListening)
+            } catch (error) {
+              console.error(error)
+              throw new TriggerEventErrorException(
+                'Impossible to update the spotify listening status',
+                event.uuid
+              )
+            }
           } else if (userCache.spotifyListening !== isListening && spotifyAPIData !== undefined) {
             if (isListening === true) {
               const jsonVals = JSON.parse(event.response_interaction)
@@ -95,7 +112,7 @@ export default class SpotifyListenTask extends BaseTask {
                 )
               }
               await handleAdditionalActions(event)
-              await eventHandler(responseInteraction, fields, event.response_api)
+              await eventHandler(responseInteraction, fields, event.response_api, event.uuid)
             }
           }
           await this.updateSpotifyListeningStatus(event.uuid, isListening)

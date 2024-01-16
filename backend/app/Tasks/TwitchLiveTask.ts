@@ -7,6 +7,7 @@ import {
 import Database from '@ioc:Adonis/Lucid/Database'
 import axios from 'axios'
 import Cache from 'App/Models/Cache'
+import TriggerEventErrorException from 'App/Exceptions/TriggerEventErrorException'
 import { APIEventField } from 'types/events'
 
 type TwitchData = {
@@ -94,7 +95,7 @@ export default class TwitchLiveTask extends BaseTask {
     for (const additionalAction of event.additional_actions) {
       this.useVariablesInFields(additionalAction.fields, data)
     }
-    await eventHandler(responseInteraction, fields, event.response_api)
+    await eventHandler(responseInteraction, fields, event.response_api, event.uuid)
     await handleAdditionalActions(event)
   }
 
@@ -118,7 +119,12 @@ export default class TwitchLiveTask extends BaseTask {
         }
         await this.updateChannelsInLive(event.uuid, channels)
         twitchData.map(async (data: TwitchData) => {
-          await this.notifyUserInLive(data, event)
+          try {
+            await this.notifyUserInLive(data, event)
+          } catch (error) {
+            console.error(error)
+            throw new TriggerEventErrorException('Impossible to notify user', event.uuid)
+          }
         })
         return
       } else {
@@ -131,7 +137,6 @@ export default class TwitchLiveTask extends BaseTask {
             await this.updateChannelsInLive(event.uuid, channelsJSON)
           }
         }
-
         for (const data of twitchData) {
           if (triggerApiOauth.twitch_in_live === null) {
             return

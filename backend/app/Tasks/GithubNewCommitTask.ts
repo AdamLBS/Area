@@ -1,4 +1,6 @@
 import Database from '@ioc:Adonis/Lucid/Database'
+import TriggerEventErrorException from 'App/Exceptions/TriggerEventErrorException'
+import Cache from 'App/Models/Cache'
 import Oauth from 'App/Models/Oauth'
 import {
   ResponseInteraction,
@@ -8,7 +10,6 @@ import {
 import { BaseTask, CronTimeV2 } from 'adonis5-scheduler/build/src/Scheduler/Task'
 import axios from 'axios'
 import { APIEventField } from 'types/events'
-import Cache from 'App/Models/Cache'
 import { Commit } from 'App/types/github'
 
 export default class GithubCheckLastCommitTask extends BaseTask {
@@ -77,11 +78,12 @@ export default class GithubCheckLastCommitTask extends BaseTask {
         for (const additionalAction of event.additional_actions) {
           this.useVariablesInFields(additionalAction.fields, response)
         }
-        await eventHandler(responseInteraction, fields, event.response_api)
+        await eventHandler(responseInteraction, fields, event.response_api, event.uuid)
         await handleAdditionalActions(event)
       }
     } catch (error: any) {
       console.error(error)
+      throw new TriggerEventErrorException('Impossible to check the last commit', event.uuid)
     }
   }
 
@@ -103,7 +105,7 @@ export default class GithubCheckLastCommitTask extends BaseTask {
             await this.fetchLastCommit(fields[0].value, oauth, event)
           } catch (error: any) {
             console.error(error)
-            throw new Error('Impossible to fetch the last commit')
+            throw new TriggerEventErrorException('Impossible to check the last commit', event.uuid)
           }
         })
     } catch (error: any) {
