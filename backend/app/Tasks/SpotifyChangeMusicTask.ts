@@ -8,6 +8,11 @@ import {
 import axios from 'axios'
 import { APIEventField } from 'types/events'
 import Cache from 'App/Models/Cache'
+import TriggerEventErrorException from 'App/Exceptions/TriggerEventErrorException'
+
+export interface Artist {
+  name: string
+}
 import { Item, useVariablesInFields } from 'App/functions/SpotifyUtils'
 
 type SpotifySong = {
@@ -80,11 +85,26 @@ export default class SpotifyChangeMusicTask extends BaseTask {
         const userCache = await Cache.query().from('caches').where('uuid', event.uuid).first()
         if (triggerApi && triggerApi.token) {
           if (!userCache || !userCache.spotifySongUri) {
-            await this.updateSpotifyMusicUri(event.uuid, spotifyMusicData?.item.uri as string)
+            try {
+              await this.updateSpotifyMusicUri(event.uuid, spotifyMusicData?.item.uri as string)
+            } catch (error) {
+              console.error(error)
+              throw new TriggerEventErrorException('Impossible to update spotify uri', event.uuid)
+            }
           } else if (
             spotifyMusicData !== undefined &&
             (userCache.spotifySongUri as string) !== (spotifyMusicData.item.uri as string)
           ) {
+            try {
+              ;(async () =>
+                await this.updateSpotifyMusicUri(
+                  event.uuid,
+                  spotifyMusicData?.item.uri as string
+                ))()
+            } catch (error) {
+              console.error(error)
+              throw new TriggerEventErrorException('Impossible to update spotify uri', event.uuid)
+            }
             const jsonVals = JSON.parse(event.response_interaction)
             const responseInteraction = jsonVals.id.toString() as ResponseInteraction
             const fields = jsonVals.fields as APIEventField<any>[]
@@ -97,7 +117,7 @@ export default class SpotifyChangeMusicTask extends BaseTask {
               )
             }
             await handleAdditionalActions(event)
-            await eventHandler(responseInteraction, fields, event.response_api)
+            await eventHandler(responseInteraction, fields, event.response_api, event.uuid)
           }
           await this.updateSpotifyMusicUri(event.uuid, spotifyMusicData?.item.uri as string)
         }

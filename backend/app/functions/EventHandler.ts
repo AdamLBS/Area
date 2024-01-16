@@ -1,6 +1,8 @@
 import { APIEventField } from 'types/events'
 import { discordWebhookEvent, discordPrivateMessageEvent } from './DiscordEvent'
 import { SendMailEvent } from './SendMailEvent'
+import ResponseEventFailedException from 'App/Exceptions/ResponseEventFailedException'
+import Log from 'App/Models/Log'
 import { makeAnnounceEvent } from './MakeAnnounceEvent'
 import {
   pauseSong,
@@ -29,49 +31,124 @@ export enum ResponseInteraction {
 export const handleAdditionalActions = async (event: any) => {
   for (const additionalAction of event.additional_actions) {
     const responseInteraction = additionalAction.id as ResponseInteraction
-    await eventHandler(responseInteraction, additionalAction.fields, event.response_api)
+    await eventHandler(responseInteraction, additionalAction.fields, event.response_api, event.uuid)
   }
+}
+
+const createLog = async (message: string, eventUuid: string) => {
+  await Log.create({
+    message,
+    status: 'success',
+    eventUuid,
+  })
 }
 
 export const eventHandler = async (
   eventTrigger: ResponseInteraction,
   content: APIEventField<any>[],
-  responseApiUuid: string
+  responseApiUuid: string,
+  eventUuid: string
 ) => {
   console.log(`[EventHandler] ${eventTrigger} triggered`)
   switch (eventTrigger) {
     case ResponseInteraction.SEND_EMAIL:
-      await SendMailEvent(content, responseApiUuid)
+      try {
+        await SendMailEvent(content, responseApiUuid)
+        await createLog('Message sent to Discord', eventUuid)
+      } catch (error) {
+        console.error(error)
+        throw new ResponseEventFailedException('Failed to send email', eventUuid)
+      }
       break
     case ResponseInteraction.SEND_DISCORD_WEBHOOK_MESSAGE:
-      await discordWebhookEvent(content)
+      try {
+        await discordWebhookEvent(content)
+        await createLog('Message sent to Discord', eventUuid)
+      } catch (error) {
+        console.error(error)
+        throw new ResponseEventFailedException('Failed to send email', eventUuid)
+      }
       break
     case ResponseInteraction.SEND_DISCORD_PRIVATE_MESSAGE:
-      await discordPrivateMessageEvent(content, responseApiUuid)
+      try {
+        await discordPrivateMessageEvent(content, responseApiUuid)
+        await createLog('Message sent to Discord', eventUuid)
+      } catch (error) {
+        console.error(error)
+        throw new ResponseEventFailedException('Failed to send email', eventUuid)
+      }
       break
     case ResponseInteraction.MAKE_ANNOUNCE:
-      await makeAnnounceEvent(content, responseApiUuid)
+      try {
+        await makeAnnounceEvent(content, responseApiUuid)
+        await createLog('Message sent to Discord', eventUuid)
+      } catch (error) {
+        console.error(error)
+        throw new ResponseEventFailedException('Failed to send email', eventUuid)
+      }
       break
     case ResponseInteraction.PLAY_SONG:
-      await playSong(responseApiUuid)
+      try {
+        await playSong(responseApiUuid)
+        await createLog('Message sent to Discord', eventUuid)
+      } catch (error) {
+        console.error(error)
+        throw new ResponseEventFailedException('Failed to send email', eventUuid)
+      }
       break
     case ResponseInteraction.PAUSE_SONG:
-      await pauseSong(responseApiUuid)
+      try {
+        await pauseSong(responseApiUuid)
+        await createLog('Message sent to Discord', eventUuid)
+      } catch (error) {
+        console.error(error)
+        throw new ResponseEventFailedException('Failed to send email', eventUuid)
+      }
       break
     case ResponseInteraction.SKIP_TO_NEXT_SONG:
-      await skipToNextSong(responseApiUuid)
+      try {
+        await skipToNextSong(responseApiUuid)
+        await createLog('Message sent to Discord', eventUuid)
+      } catch (error) {
+        console.error(error)
+        throw new ResponseEventFailedException('Failed to send email', eventUuid)
+      }
       break
     case ResponseInteraction.SKIP_TO_PREVIOUS_SONG:
-      await skipToPreviousSong(responseApiUuid)
+      try {
+        await skipToPreviousSong(responseApiUuid)
+        await createLog('Message sent to Discord', eventUuid)
+      } catch (error) {
+        console.error(error)
+        throw new ResponseEventFailedException('Failed to send email', eventUuid)
+      }
       break
     case ResponseInteraction.REPEAT_SONG:
-      await repeatSong(responseApiUuid)
+      try {
+        await repeatSong(responseApiUuid)
+        await createLog('Message sent to Discord', eventUuid)
+      } catch (error) {
+        console.error(error)
+        throw new ResponseEventFailedException('Failed to send email', eventUuid)
+      }
       break
     case ResponseInteraction.SET_PLAYBACK_VOLUME:
-      await setPlaybackVolume(content, responseApiUuid)
+      try {
+        await setPlaybackVolume(content, responseApiUuid)
+        await createLog('Message sent to Discord', eventUuid)
+      } catch (error) {
+        console.error(error)
+        throw new ResponseEventFailedException('Failed to send email', eventUuid)
+      }
       break
     case ResponseInteraction.TOGGLE_SHUFFLE:
-      await toggleShuffle(content, responseApiUuid)
+      try {
+        await toggleShuffle(content, responseApiUuid)
+        await createLog('Message sent to Discord', eventUuid)
+      } catch (error) {
+        console.error(error)
+        throw new ResponseEventFailedException('Failed to send email', eventUuid)
+      }
       break
     default:
       break

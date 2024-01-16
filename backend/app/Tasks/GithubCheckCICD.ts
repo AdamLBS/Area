@@ -1,4 +1,5 @@
 import Database from '@ioc:Adonis/Lucid/Database'
+import TriggerEventErrorException from 'App/Exceptions/TriggerEventErrorException'
 import Oauth from 'App/Models/Oauth'
 import {
   ResponseInteraction,
@@ -87,11 +88,12 @@ export default class GithubCheckCICD extends BaseTask {
         for (const additionalAction of event.additional_actions) {
           this.useVariablesInFields(additionalAction.fields, response)
         }
-        await eventHandler(responseInteraction, fields, event.response_api)
+        await eventHandler(responseInteraction, fields, event.response_api, event.uuid)
         await handleAdditionalActions(event)
       }
     } catch (error: any) {
-      // console.error(error)
+      console.error(error)
+      throw new TriggerEventErrorException('Impossible to check the last CI/CD', event.uuid)
     }
   }
   public async handle() {
@@ -112,12 +114,12 @@ export default class GithubCheckCICD extends BaseTask {
             await this.fetchCICD(fields, oauth, event)
           } catch (error: any) {
             console.error(error)
-            throw new Error('Impossible to fetch the last commit')
+            throw new TriggerEventErrorException('Impossible to check the last CI/CD', event.uuid)
           }
         })
     } catch (error: any) {
       console.error(error)
-      throw new Error('Something went wrong when fetching the last commit')
+      throw new Error('Impossible to find the target event')
     }
   }
 }
