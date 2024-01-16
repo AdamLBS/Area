@@ -36,7 +36,13 @@ export default class OnboardingController {
 
     const oauth = await Oauth.query().where('user_uuid', userDb.uuid)
     const events = await Event.query().where('user_uuid', userDb.uuid)
-    const log = await Log.query().where('user_uuid', userDb.uuid)
+    let hasLog = false
+    events.map(async (event) => {
+      const log = await Log.query().where('event', event.uuid)
+      if (log.length > 0) {
+        hasLog = true
+      }
+    })
 
     if (oauth.length > 2) {
       await User.updateOrCreate({ uuid: userDb.uuid }, { onboarding: '2' })
@@ -46,7 +52,7 @@ export default class OnboardingController {
     if (events.length > 0) {
       await User.updateOrCreate({ uuid: userDb.uuid }, { onboarding: '3' })
     }
-    if (log.length > 0) {
+    if (hasLog) {
       await User.updateOrCreate({ uuid: userDb.uuid }, { onboarding: '4' })
     }
     userDb = await User.findByOrFail('uuid', user?.uuid)
