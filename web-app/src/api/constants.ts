@@ -23,6 +23,7 @@ export type UserData = {
   email: string;
   username: string;
   remember_me_token: string;
+  onboarding: string;
   created_at: string;
   updated_at: string;
 };
