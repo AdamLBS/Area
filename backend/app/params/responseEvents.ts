@@ -133,4 +133,75 @@ export const RESPONSE_EVENTS: APIEvent[] = [
       },
     ],
   },
+  {
+    provider: 'Spotify',
+    interactions: [
+      {
+        id: 'playSong',
+        name: 'Play song',
+        fields: [],
+        variables: {},
+      },
+      {
+        id: 'pauseSong',
+        name: 'Pause song',
+        fields: [],
+        variables: {},
+      },
+      {
+        id: 'skipToNextSong',
+        name: 'Skip to next song',
+        fields: [],
+        variables: {},
+      },
+      {
+        id: 'skipToPreviousSong',
+        name: 'Skip to previous song',
+        fields: [],
+        variables: {},
+      },
+      {
+        id: 'repeatSong',
+        name: 'Repeat song',
+        fields: [],
+        variables: {},
+      },
+      {
+        id: 'setPlaybackVolume',
+        name: 'Set playback volume',
+        fields: [
+          {
+            value: 'Volume in percent (0-100)',
+            name: 'volume',
+            type: 'input',
+            required: true,
+          },
+        ],
+        variables: {},
+      },
+      {
+        id: 'toggleShuffle',
+        name: 'Toggle shuffle',
+        fields: [
+          {
+            value: 'Shuffle',
+            name: 'shuffle',
+            type: 'select',
+            values: [
+              {
+                value: 'on',
+                label: 'On',
+              },
+              {
+                value: 'off',
+                label: 'Off',
+              },
+            ],
+            required: true,
+          },
+        ],
+        variables: {},
+      },
+    ],
+  },
 ]
