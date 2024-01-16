@@ -129,7 +129,7 @@ export default class SpotifyChangeMusicTask extends BaseTask {
                 field.value = field.value.replace('$song', spotifyMusicData.item.name)
             }
 
-            await eventHandler(responseInteraction, fields, event.response_api)
+            await eventHandler(responseInteraction, fields, event.response_api, event.uuid)
           }
         }
       }

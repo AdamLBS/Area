@@ -55,7 +55,7 @@ export default class Timer extends BaseTask {
           const jsonVals = JSON.parse(event.response_interaction)
           const responseInteraction = jsonVals.id.toString() as ResponseInteraction
           const fields = jsonVals.fields as APIEventField<any>[]
-          await eventHandler(responseInteraction, fields, event.response_api)
+          await eventHandler(responseInteraction, fields, event.response_api, event.uuid)
           await this.updateLastTimerActive(event.uuid, true)
         }
       } else if (userCache && userCache.timerActive) {
