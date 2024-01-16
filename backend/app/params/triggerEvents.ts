@@ -39,21 +39,27 @@ export const TRIGGER_EVENTS: APIEvent[] = [
       {
         id: 'startsLive',
         name: 'Streamer starts to live',
+        fields: [],
+        variables: {
+          streamer: 'Name of the streamer',
+          streamUrl: 'Url of the stream',
+        },
+      },
+      {
+        id: 'followsStreamer',
+        name: 'User starts following a streamer',
         fields: [
           {
-            value: 'Name of the streamer',
+            value: 'Streamer name (you must be a moderator)',
             name: 'streamer',
-            type: 'input',
-            required: true,
-          },
-          {
-            value: 'Name of the user',
-            name: 'username',
             type: 'input',
             required: true,
           },
         ],
         variables: {
+          follower: 'Name of the last follower',
+          followers: 'Name of the last followers',
+          number: 'Number of new followers',
           streamer: 'Name of the streamer',
         },
       },
@@ -67,14 +73,16 @@ export const TRIGGER_EVENTS: APIEvent[] = [
         name: 'New commit',
         fields: [
           {
-            value: 'repository url',
+            value: 'Repository url',
             name: 'commitsUrl',
             type: 'input',
             required: true,
           },
         ],
         variables: {
-          commitsUrl: 'Url of the commit',
+          commitUrl: 'Url of the commit',
+          commitMsg: 'Message of the commit',
+          commitAuthor: 'Author of the commit',
         },
       },
       {
@@ -137,6 +145,100 @@ export const TRIGGER_EVENTS: APIEvent[] = [
           },
         ],
         variables: {},
+      },
+    ],
+  },
+  {
+    provider: 'Crypto',
+    interactions: [
+      {
+        id: 'cryptoPrice',
+        name: 'Crypto price monitoring',
+        fields: [
+          {
+            value: 'Select the crypto',
+            name: 'Crypto',
+            type: 'select',
+            values: [
+              {
+                value: 'BTC',
+                label: 'BTC',
+              },
+              {
+                value: 'ETH',
+                label: 'ETH',
+              },
+              {
+                value: 'LTC',
+                label: 'LTC',
+              },
+            ],
+            required: true,
+          },
+          {
+            value: 'Select the currency',
+            name: 'Currency',
+            type: 'select',
+            values: [
+              {
+                value: 'USD',
+                label: 'Dollar',
+              },
+              {
+                value: 'EUR',
+                label: 'Euro',
+              },
+            ],
+            required: true,
+          },
+          {
+            value: 'Minimum',
+            name: 'Minimum price of the crypto',
+            type: 'input',
+            required: true,
+          },
+          {
+            value: 'Maximum',
+            name: 'Maximum price of the crypto',
+            type: 'input',
+            required: true,
+          },
+        ],
+        variables: {
+          crypto: 'Name of the crypto',
+          amount: 'Actual value of the crypto',
+          currency: 'Currency of the crypto',
+        },
+      },
+    ],
+  },
+  {
+    provider: 'Google',
+    interactions: [
+      {
+        id: 'checkLikeCount',
+        name: 'New like on a video - Youtube',
+        fields: [
+          {
+            value: 'Video ID',
+            name: 'videoId',
+            type: 'input',
+            required: true,
+          },
+        ],
+        variables: {
+          likesCount: 'Number of likes',
+        },
+      },
+      {
+        id: 'newVideoLike',
+        name: 'New like - Youtube',
+        fields: [],
+        variables: {
+          videoUrl: 'Url of the video',
+          videoTitle: 'Title of the video',
+          channelName: 'Name of the channel',
+        },
       },
     ],
   },

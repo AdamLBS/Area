@@ -4,7 +4,6 @@ import SpotifyProvider from 'next-auth/providers/spotify';
 import GithubProvider from 'next-auth/providers/github';
 import DisordProvider from 'next-auth/providers/discord';
 import TwitchProvider from 'next-auth/providers/twitch';
-import LinkedinProvider from 'next-auth/providers/linkedin';
 
 const handler = NextAuth({
   providers: [
@@ -17,7 +16,7 @@ const handler = NextAuth({
           access_type: 'offline',
           response_type: 'code',
           scope:
-            'openid email profile https://www.googleapis.com/auth/gmail.send https://www.googleapis.com/auth/gmail.compose https://www.googleapis.com/auth/gmail.modify',
+            'openid email profile https://www.googleapis.com/auth/gmail.send https://www.googleapis.com/auth/gmail.compose https://www.googleapis.com/auth/gmail.modify https://www.googleapis.com/auth/youtube https://www.googleapis.com/auth/youtubepartner',
         },
       },
       httpOptions: {
@@ -28,7 +27,7 @@ const handler = NextAuth({
       clientId: process.env.SPOTIFY_CLIENT_ID || '',
       clientSecret: process.env.SPOTIFY_CLIENT_SECRET || '',
       authorization:
-        'https://accounts.spotify.com/authorize?scope=user-read-email,user-top-read,user-follow-read,user-read-playback-state,user-library-read',
+        'https://accounts.spotify.com/authorize?scope=user-read-email,user-top-read,user-follow-read,user-read-playback-state,user-library-read,user-modify-playback-state',
       httpOptions: {
         timeout: 10000,
       },
@@ -53,16 +52,9 @@ const handler = NextAuth({
       authorization: {
         params: {
           scope:
-            'openid user:read:email user:read:follows channel:read:subscriptions user:edit',
+            'openid user:read:email user:read:follows channel:read:subscriptions user:edit user:read:subscriptions moderator:read:followers channel:edit:commercial moderator:manage:announcements',
         },
       },
-      httpOptions: {
-        timeout: 10000,
-      },
-    }),
-    LinkedinProvider({
-      clientId: process.env.LINKEDIN_CLIENT_ID || '',
-      clientSecret: process.env.LINKEDIN_CLIENT_SECRET || '',
       httpOptions: {
         timeout: 10000,
       },

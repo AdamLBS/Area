@@ -18,6 +18,7 @@ import { CustomSelect } from '../CustomSelect';
 import { ApiInteraction, Fields, Trigger } from '@/api/constants';
 import { UpdateEventParamsModal } from '../UpdateEventParamsModal';
 import { useConnectedServices } from '@/functions/connectedServices';
+import { useTriggerVariablesState } from '@/context/TriggerContext';
 
 export type DeleteEventModalProps = {
   onConfirm: (trigger: Trigger) => void;
@@ -30,6 +31,7 @@ const SetTriggerModalComponent: React.FC<DeleteEventModalProps> = ({
   const [service, setService] = React.useState<string>();
   const [interaction, setInteraction] = React.useState<ApiInteraction>();
   const [step, setStep] = React.useState(0);
+  const { updateTriggerVariablesState } = useTriggerVariablesState();
 
   const services = useMemo(() => {
     return triggers?.map((trigger) => trigger.provider);
@@ -62,6 +64,14 @@ const SetTriggerModalComponent: React.FC<DeleteEventModalProps> = ({
       if (!interaction || !service) {
         return;
       }
+      updateTriggerVariablesState({
+        variables:
+          triggers
+            ?.find((trigger) => trigger.provider === service)
+            ?.interactions.find(
+              (interact) => interact.name === interaction.name,
+            )?.variables || {},
+      });
       onConfirm({
         trigger_provider: service?.toLowerCase(),
         triggerInteraction: {
@@ -134,6 +144,7 @@ const SetTriggerModalComponent: React.FC<DeleteEventModalProps> = ({
           fields={interaction?.fields || []}
           onCancel={() => setStep(0)}
           onConfirm={onAddTrigger}
+          type="trigger"
         />
       )}
     </>

@@ -1,6 +1,10 @@
 import Database from '@ioc:Adonis/Lucid/Database'
 import { BaseTask, CronTimeV2 } from 'adonis5-scheduler/build/src/Scheduler/Task'
-import { eventHandler, ResponseInteraction } from 'App/functions/EventHandler'
+import {
+  eventHandler,
+  handleAdditionalActions,
+  ResponseInteraction,
+} from 'App/functions/EventHandler'
 import axios from 'axios'
 import { APIEventField } from 'types/events'
 import Cache from 'App/Models/Cache'
@@ -13,6 +17,7 @@ export interface Item {
   artists: Artist[]
   name: string
 }
+import { Item, useVariablesInFields } from 'App/functions/SpotifyUtils'
 
 type SpotifyListener = {
   shuffle_state: boolean
@@ -35,7 +40,7 @@ type SpotifyListener = {
 export default class SpotifyListenTask extends BaseTask {
   public static get schedule() {
     // Use CronTimeV2 generator:
-    return CronTimeV2.everySecond()
+    return CronTimeV2.everyTenSeconds()
     // or just use return cron-style string (simple cron editor: crontab.guru)
   }
   /**
@@ -73,6 +78,7 @@ export default class SpotifyListenTask extends BaseTask {
       const events = await Database.query()
         .from('events')
         .whereRaw(`CAST(trigger_interaction AS JSONB) #>> '{id}' = 'listenMusic'`)
+        .where('active', true)
       for (const event of events) {
         const triggerApi = await Database.query()
           .from('oauths')
@@ -84,8 +90,8 @@ export default class SpotifyListenTask extends BaseTask {
         if (triggerApi && triggerApi.token) {
           if (!userCache || userCache.spotifyListening === undefined) {
             try {
-              ;(async () => await this.updateSpotifyListeningStatus(event.uuid, isListening))()
-            } catch (error) {
+              await this.updateSpotifyListeningStatus(event.uuid, isListening)
+            } catch(error) {
               console.error(error)
               throw new TriggerEventErrorException(
                 'Impossible to update the spotify listening status',
@@ -93,35 +99,23 @@ export default class SpotifyListenTask extends BaseTask {
               )
             }
           } else if (userCache.spotifyListening !== isListening && spotifyAPIData !== undefined) {
-            ;(async () => await this.updateSpotifyListeningStatus(event.uuid, isListening))()
             if (isListening === true) {
               const jsonVals = JSON.parse(event.response_interaction)
               const responseInteraction = jsonVals.id.toString() as ResponseInteraction
               const fields = jsonVals.fields as APIEventField<any>[]
-              for (const field of fields) {
-                if ((field.value as string).includes('$artist')) {
-                  let replaceValue = ''
-                  for (const artist of spotifyAPIData.item.artists) {
-                    replaceValue += artist.name
-                    if (
-                      spotifyAPIData.item.artists.length === 2 &&
-                      artist === spotifyAPIData.item.artists[0]
-                    )
-                      replaceValue += ' et '
-                    else if (
-                      spotifyAPIData.item.artists.indexOf(artist) !==
-                      spotifyAPIData.item.artists.length - 1
-                    )
-                      replaceValue += ', '
-                  }
-                  field.value = field.value.replace('$artist', replaceValue)
-                }
-                if ((field.value as string).includes('$song'))
-                  field.value = field.value.replace('$song', spotifyAPIData.item.name)
+              useVariablesInFields(fields, spotifyAPIData.item.name, spotifyAPIData.item.artists)
+              for (const additionalAction of event.additional_actions) {
+                useVariablesInFields(
+                  additionalAction.fields as APIEventField<any>[],
+                  spotifyAPIData.item.name,
+                  spotifyAPIData.item.artists
+                )
               }
+              await handleAdditionalActions(event)
               await eventHandler(responseInteraction, fields, event.response_api, event.uuid)
             }
           }
+          await this.updateSpotifyListeningStatus(event.uuid, isListening)
         }
       }
     } catch (error) {

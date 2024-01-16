@@ -21,6 +21,7 @@ Future<List<EventModel>> getTriggerApis() async {
     print("Trigger events: $events");
     return events;
   } else {
+    print(request.body);
     print("Error while getting trigger events");
     return Future.error("error");
   }

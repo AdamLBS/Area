@@ -29,20 +29,22 @@ export const EventPanelButton = styled(Button)`
   gap: 10px;
 `;
 
-export const CardHeader = styled(_CardHeader)`
-  border-bottom: 1px solid #27272a;
+export const CardHeaderDark = styled(_CardHeader)`
+  border-bottom: 1px solid #212936;
+`;
+
+export const CardHeaderLight = styled(_CardHeader)`
+  border-bottom: 1px solid #e5e7eb;
 `;
 
 export const LogoRight = styled(ToggleRight)`
   width: 16px;
   height: 16px;
-  color: #fff;
 `;
 
 export const LogoLeft = styled(ToggleLeft)`
   width: 16px;
   height: 16px;
-  color: #fff;
 `;
 
 export const EventButton = styled(Button)`

@@ -62,7 +62,7 @@ const SettingsModal = ({
       toast({
         variant: 'default',
         title: 'Success!',
-        description: 'Your event has been updated.',
+        description: 'Your bridge has been updated.',
       });
       queryClient.invalidateQueries({ queryKey: ['event'] });
       queryClient.invalidateQueries({ queryKey: ['events'] });
@@ -90,8 +90,8 @@ const SettingsModal = ({
     <Dialog open={isOpen} onOpenChange={setOpen}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Event settings</DialogTitle>
-          <DialogDescription>Settings of your Bridge event</DialogDescription>
+          <DialogTitle>Bridge settings</DialogTitle>
+          <DialogDescription>Settings of your bridge</DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <FormContainer onSubmit={form.handleSubmit(onSubmit)}>

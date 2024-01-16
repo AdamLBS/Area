@@ -3,7 +3,6 @@ import React, { memo, useCallback } from 'react';
 import {
   DialogHeader,
   DialogTitle,
-  DialogDescription,
   DialogFooter,
   Button,
   Form,
@@ -24,16 +23,20 @@ import { FormContainer } from './UpdateEventParamsModal.style';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Textarea } from '@/components/ui/textarea';
+import { DialogDescriptionStyled } from './UpdateEventParamsModal.style';
+import { useTriggerVariablesState } from '@/context/TriggerContext';
 
 export type UpdateEventParamsModalProps = {
   onConfirm: (fields: Fields[]) => void;
   onCancel: () => void;
   fields: Fields[];
+  type?: 'trigger' | 'response' | 'additional';
 };
 
 const UpdateEventParamsModalComponent: React.FC<
   UpdateEventParamsModalProps
-> = ({ onConfirm, onCancel, fields }) => {
+> = ({ onConfirm, onCancel, fields, type }) => {
+  const { triggerVariablesState } = useTriggerVariablesState();
   const formParam = (field: Fields) => {
     if (field.required) {
       return z.string().min(1, { message: `${field.name} is required` });
@@ -111,7 +114,26 @@ const UpdateEventParamsModalComponent: React.FC<
     <>
       <DialogHeader>
         <DialogTitle>Update event params</DialogTitle>
-        <DialogDescription>(*) required</DialogDescription>
+        <DialogDescriptionStyled>
+          (*) required
+          {(type === 'additional' || type === 'response') &&
+            Object.keys(triggerVariablesState.variables).length > 0 && (
+              <span>
+                You can use the following variables in the fields to personalize
+                the message:
+              </span>
+            )}
+          {(type === 'additional' || type === 'response') &&
+            Object.keys(triggerVariablesState.variables).length > 0 &&
+            Object.entries(triggerVariablesState.variables).map(
+              ([key, value]) => (
+                <span key={key}>
+                  - {value}: ${key}
+                  <br />
+                </span>
+              ),
+            )}
+        </DialogDescriptionStyled>
       </DialogHeader>
       <Form {...form}>
         <FormContainer onSubmit={form.handleSubmit(onSubmit)}>

@@ -9,3 +9,9 @@ linter:
     prefer_final_fields: false
     unnecessary_breaks: true
     use_key_in_widget_constructors: false
+analyzer:
+  errors:
+    # allow for asset_does_not_exist
+    unrecognized_error_code: ignore
+    # ignore this in pubspec.yaml
+    asset_does_not_exist: ignore

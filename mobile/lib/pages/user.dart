@@ -2,8 +2,10 @@ import 'package:area/constants.dart';
 import 'package:area/oauth/discord.dart';
 import 'package:area/oauth/google.dart';
 import 'package:area/oauth/spotify.dart';
+import 'package:area/utils/delete_oauth.dart';
 import 'package:area/utils/get_loggedin_services.dart';
 import 'package:area/utils/handle_oauth.dart';
+import 'package:area/widgets/bottom_sheet_oauth.dart';
 import 'package:area/widgets/service_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -36,8 +38,8 @@ class _AccountPageState extends State<AccountPage> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 SvgPicture.asset(
                                   "assets/logos/icon.svg",
@@ -67,12 +69,44 @@ class _AccountPageState extends State<AccountPage> {
                                     'user-follow-read',
                                     'user-read-playback-state',
                                     'user-library-read',
+                                    'user-modify-playback-state'
                                   ];
+
                                   MySpotifyOAuth2Client client =
                                       MySpotifyOAuth2Client();
-                                  await handleOAuthFlow(client, "spotify",
-                                      scopes, spotifyClientId, null);
-                                  setState(() {});
+                                  if (snapshot.data!.contains("spotify")) {
+                                    await showModalBottomSheet(
+                                        context: context,
+                                        backgroundColor: Colors.transparent,
+                                        builder: (context) {
+                                          return BottomSheetOAuth();
+                                        }).then((value) async {
+                                      if (value != null && value == 0) {
+                                        await handleOAuthFlow(client, "spotify",
+                                            scopes, spotifyClientId, null);
+                                        if (context.mounted) {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                                  content: Text(
+                                                      "Spotify account updated")));
+                                        }
+                                      } else if (value != null && value == 1) {
+                                        await deleteOAuth("spotify");
+                                        if (context.mounted) {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                                  content: Text(
+                                                      "Spotify account deleted")));
+                                        }
+                                      }
+                                    });
+                                  } else {
+                                    await handleOAuthFlow(client, "spotify",
+                                        scopes, spotifyClientId, null);
+                                  }
+                                  setState(() {
+                                    getLoggedInServices();
+                                  });
                                 },
                                 image: "assets/icons/spotify.svg"),
                             SizedBox(height: 20),
@@ -86,12 +120,44 @@ class _AccountPageState extends State<AccountPage> {
                                     'identify',
                                     'email',
                                   ];
-                                  await handleOAuthFlow(
-                                      client,
-                                      "discord",
-                                      scopes,
-                                      discordClientId,
-                                      discordClientSecret);
+                                  if (snapshot.data!.contains("discord")) {
+                                    await showModalBottomSheet(
+                                        context: context,
+                                        backgroundColor: Colors.transparent,
+                                        builder: (context) {
+                                          return BottomSheetOAuth();
+                                        }).then((value) async {
+                                      if (value != null && value == 0) {
+                                        await handleOAuthFlow(
+                                            client,
+                                            "discord",
+                                            scopes,
+                                            discordClientId,
+                                            discordClientSecret);
+                                        if (context.mounted) {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                                  content: Text(
+                                                      "Discord account updated")));
+                                        }
+                                      } else if (value != null && value == 1) {
+                                        await deleteOAuth("discord");
+                                        if (context.mounted) {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                                  content: Text(
+                                                      "Discord account deleted")));
+                                        }
+                                      }
+                                    });
+                                  } else {
+                                    await handleOAuthFlow(
+                                        client,
+                                        "discord",
+                                        scopes,
+                                        discordClientId,
+                                        discordClientSecret);
+                                  }
                                   setState(() {
                                     getLoggedInServices();
                                   });
@@ -108,12 +174,42 @@ class _AccountPageState extends State<AccountPage> {
                                     'https://www.googleapis.com/auth/gmail.send',
                                     'https://www.googleapis.com/auth/gmail.compose',
                                     'https://www.googleapis.com/auth/gmail.modify',
-                                    'https://mail.google.com/'
+                                    'https://mail.google.com/',
+                                    'https://www.googleapis.com/auth/youtube',
+                                    'https://www.googleapis.com/auth/youtubepartner'
                                   ];
                                   MyGoogleOAuth2Client client =
                                       MyGoogleOAuth2Client();
-                                  await handleOAuthFlow(client, "google",
-                                      scopes, googleClientId, null);
+                                  if (snapshot.data!.contains("google")) {
+                                    await showModalBottomSheet(
+                                        context: context,
+                                        backgroundColor: Colors.transparent,
+                                        builder: (context) {
+                                          return BottomSheetOAuth();
+                                        }).then((value) async {
+                                      if (value != null && value == 0) {
+                                        await handleOAuthFlow(client, "google",
+                                            scopes, googleClientId, null);
+                                        if (context.mounted) {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                                  content: Text(
+                                                      "Google account updated")));
+                                        }
+                                      } else if (value != null && value == 1) {
+                                        await deleteOAuth("google");
+                                        if (context.mounted) {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                                  content: Text(
+                                                      "Google account deleted")));
+                                        }
+                                      }
+                                    });
+                                  } else {
+                                    await handleOAuthFlow(client, "google",
+                                        scopes, googleClientId, null);
+                                  }
                                   setState(() {
                                     getLoggedInServices();
                                   });
@@ -142,12 +238,44 @@ class _AccountPageState extends State<AccountPage> {
                                               "my.test.app://oauth2redirect",
                                           customUriScheme: "my.test.app");
                                   List<String> scopes = ['user:email'];
-                                  await handleOAuthFlow(
-                                      client,
-                                      "github",
-                                      scopes,
-                                      githubClientId,
-                                      githubClientSecret);
+                                  if (snapshot.data!.contains("github")) {
+                                    await showModalBottomSheet(
+                                        context: context,
+                                        backgroundColor: Colors.transparent,
+                                        builder: (context) {
+                                          return BottomSheetOAuth();
+                                        }).then((value) async {
+                                      if (value != null && value == 0) {
+                                        await handleOAuthFlow(
+                                            client,
+                                            "github",
+                                            scopes,
+                                            githubClientId,
+                                            githubClientSecret);
+                                        if (context.mounted) {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                                  content: Text(
+                                                      "Github account updated")));
+                                        }
+                                      } else if (value != null && value == 1) {
+                                        await deleteOAuth("github");
+                                        if (context.mounted) {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                                  content: Text(
+                                                      "Github account deleted")));
+                                        }
+                                      }
+                                    });
+                                  } else {
+                                    await handleOAuthFlow(
+                                        client,
+                                        "github",
+                                        scopes,
+                                        githubClientId,
+                                        githubClientSecret);
+                                  }
                                   setState(() {
                                     getLoggedInServices();
                                   });

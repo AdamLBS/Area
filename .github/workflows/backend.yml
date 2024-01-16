@@ -52,13 +52,3 @@ jobs:
         run: |
           cd backend
           npm run build
-
-      - name: Install production dependencies
-        run: |
-          cd backend/build
-          npm install --only=production
-
-      - name: Start the application
-        run: |
-          cd backend/build
-          npm start

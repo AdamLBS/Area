@@ -12,6 +12,14 @@ class DrawerBridgePage extends StatefulWidget {
 }
 
 class _DrawerBridgePageState extends State<DrawerBridgePage> {
+  Future<List<UserEvent>>? _userEvtsFuture;
+
+  @override
+  void initState() {
+    _userEvtsFuture = getUserEvents();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -23,7 +31,7 @@ class _DrawerBridgePageState extends State<DrawerBridgePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Your events",
+              "Your bridges",
               style: GoogleFonts.inter(
                 fontSize: 20,
                 fontWeight: FontWeight.w500,
@@ -33,7 +41,7 @@ class _DrawerBridgePageState extends State<DrawerBridgePage> {
             SizedBox(
               height: 10,
             ),
-            Text("All of the events you have already created",
+            Text("All of the bridges you have already created",
                 style: GoogleFonts.inter(
                   fontSize: 12,
                   fontWeight: FontWeight.w400,
@@ -43,13 +51,13 @@ class _DrawerBridgePageState extends State<DrawerBridgePage> {
               height: 10,
             ),
             FutureBuilder(
-              future: getUserEvents(),
+              future: _userEvtsFuture,
               builder: ((context, AsyncSnapshot<List<UserEvent>> snapshot) {
                 if (snapshot.hasData) {
                   if (snapshot.data!.isEmpty) {
                     return Center(
                       child: Text(
-                        "You don't have any event yet",
+                        "You don't have any bridges yet",
                         style: GoogleFonts.inter(
                           fontSize: 12,
                           fontWeight: FontWeight.w400,
@@ -128,14 +136,24 @@ class _DrawerBridgePageState extends State<DrawerBridgePage> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                child: Text(
-                  "Add a new event",
-                  style: GoogleFonts.inter(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white,
-                  ),
-                  textAlign: TextAlign.center,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SvgPicture.asset("assets/icons/plus.svg"),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      "Add a new bridge",
+                      style: GoogleFonts.inter(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
                 ),
               ),
             ),

@@ -1,6 +1,10 @@
 import Database from '@ioc:Adonis/Lucid/Database'
 import { BaseTask, CronTimeV2 } from 'adonis5-scheduler/build/src/Scheduler/Task'
-import { eventHandler, ResponseInteraction } from 'App/functions/EventHandler'
+import {
+  eventHandler,
+  handleAdditionalActions,
+  ResponseInteraction,
+} from 'App/functions/EventHandler'
 import axios from 'axios'
 import { APIEventField } from 'types/events'
 import Cache from 'App/Models/Cache'
@@ -16,6 +20,7 @@ export interface Track {
 export interface Item {
   track: Track
 }
+import { Item, useVariablesInFields } from 'App/functions/SpotifyUtils'
 
 type SpotifyLikesSong = {
   total: number
@@ -25,7 +30,7 @@ type SpotifyLikesSong = {
 export default class SpotifyLikeSong extends BaseTask {
   public static get schedule() {
     // Use CronTimeV2 generator:
-    return CronTimeV2.everyFiveSeconds()
+    return CronTimeV2.everyTenSeconds()
     // or just use return cron-style string (simple cron editor: crontab.guru)
   }
   /**
@@ -65,6 +70,7 @@ export default class SpotifyLikeSong extends BaseTask {
       const events = await Database.query()
         .from('events')
         .whereRaw(`CAST(trigger_interaction AS JSONB) #>> '{id}' = 'likeSong'`)
+        .where('active', true)
       for (const event of events) {
         const triggerApi = await Database.query()
           .from('oauths')
@@ -76,50 +82,33 @@ export default class SpotifyLikeSong extends BaseTask {
           if (!userCache || !userCache.spotifyLikedSongs) {
             try {
               await this.updateNumberOfLikedSongs(event.uuid, spotifyLikesSong.total)
-            } catch (error) {
+            } catch(error) {
               console.error(error)
               throw new TriggerEventErrorException(
                 'Impossible to update spotify liked songs',
                 event.uuid
               )
             }
-          } else if (userCache.spotifyLikedSongs < spotifyLikesSong.total) {
-            try {
-              ;(async () =>
-                await this.updateNumberOfLikedSongs(event.uuid, spotifyLikesSong.total))()
-            } catch (error) {
-              console.error(error)
-              throw new TriggerEventErrorException(
-                'Impossible to update spotify liked songs',
-                event.uuid
-              )
-            }
+          } else if (Number(userCache.spotifyLikedSongs) < spotifyLikesSong.total) {
             const jsonVals = JSON.parse(event.response_interaction)
             const responseInteraction = jsonVals.id.toString() as ResponseInteraction
             const fields = jsonVals.fields as APIEventField<any>[]
-            for (const field of fields) {
-              if ((field.value as string).includes('$artist')) {
-                let replaceValue = ''
-                for (const artist of spotifyLikesSong.items[0].track.artists) {
-                  replaceValue += artist.name
-                  if (
-                    spotifyLikesSong.items[0].track.artists.length === 2 &&
-                    artist === spotifyLikesSong.items[0].track.artists[0]
-                  )
-                    replaceValue += ' et '
-                  else if (
-                    spotifyLikesSong.items[0].track.artists.indexOf(artist) !==
-                    spotifyLikesSong.items[0].track.artists.length - 1
-                  )
-                    replaceValue += ', '
-                }
-                field.value = field.value.replace('$artist', replaceValue)
-              }
-              if ((field.value as string).includes('$song'))
-                field.value = field.value.replace('$song', spotifyLikesSong.items[0].track.name)
+            useVariablesInFields(
+              fields,
+              spotifyLikesSong.items[0].track.name,
+              spotifyLikesSong.items[0].track.artists
+            )
+            for (const additionalAction of event.additional_actions) {
+              useVariablesInFields(
+                additionalAction.fields,
+                spotifyLikesSong.items[0].track.name,
+                spotifyLikesSong.items[0].track.artists
+              )
             }
+            await handleAdditionalActions(event)
             await eventHandler(responseInteraction, fields, event.response_api, event.uuid)
           }
+          await this.updateNumberOfLikedSongs(event.uuid, spotifyLikesSong.total)
         }
       }
     } catch (error) {

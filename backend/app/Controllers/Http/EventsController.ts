@@ -11,6 +11,7 @@ import DeleteActionValidator from 'App/Validators/Event/DeleteActionValidator'
 import UpdateActionValidator from 'App/Validators/Event/UpdateActionValidator'
 import UpdateTriggerValidator from 'App/Validators/Event/UpdateTriggerValidator'
 import UpdateAdditionalActionValidator from 'App/Validators/Event/UpdateAdditionalActionValidator'
+import Cache from 'App/Models/Cache'
 
 export default class EventsController {
   public async createEvent({ request, response, auth }: HttpContextContract) {
@@ -359,6 +360,13 @@ export default class EventsController {
     event.responseInteraction = newResponse
     event.responseApi = actionApi.uuid
     await event.save()
+
+    // This is for reset the crypto reach value when the user change the crypto or the limits
+    const userCache = await Cache.query().from('caches').where('uuid', event.uuid).first()
+    if (userCache) {
+      userCache.cryptoReachValue = false
+      await userCache.save()
+    }
 
     return response.ok({
       message: 'Action updated',

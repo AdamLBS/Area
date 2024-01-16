@@ -20,18 +20,12 @@
 
 import Route from '@ioc:Adonis/Core/Route'
 
-Route.get('/about.json', 'AboutController.info')
-
 Route.group(() => {
   Route.get('/redirect', 'SocialAuthentificationsController.redirect')
   Route.get('/callback', 'SocialAuthentificationsController.callback')
   Route.post('/save', 'SocialAuthentificationsController.save').middleware(['auth:api'])
   Route.delete('/delete', 'SocialAuthentificationsController.delete').middleware(['auth:api'])
 }).prefix('/oauth/:provider')
-
-Route.group(() => {
-  Route.post('/', 'DiscordsController.add').middleware(['auth:api'])
-}).prefix('/oauth/discord/add-webhook')
 
 Route.group(() => {
   Route.get('/', async () => {
@@ -78,3 +72,4 @@ Route.group(() => {
     .prefix('/user')
     .middleware(['auth:api'])
 }).prefix('/api')
+Route.get('/about.json', 'AboutController.info')

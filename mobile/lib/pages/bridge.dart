@@ -20,8 +20,24 @@ class BridgePage extends StatefulWidget {
 
 class _BridgePageState extends State<BridgePage> {
   EventCreationModel? selectedEvt;
+  UserEvent? selectedUserEvt;
+  Future<List<UserEvent>>? userEvents;
+  int listSize = -1;
+  @override
+  void initState() {
+    userEvents = getUserEvents();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    void refresh() {
+      selectedEvt = null;
+      selectedUserEvt = null;
+      userEvents = getUserEvents();
+      setState(() {});
+    }
+
     return Scaffold(
         resizeToAvoidBottomInset: false,
         endDrawer: Theme(
@@ -31,188 +47,229 @@ class _BridgePageState extends State<BridgePage> {
           child: DrawerBridgePage(),
         ),
         bottomNavigationBar: BottomNavBar(index: 1),
-        body: Builder(builder: (context) {
-          return Container(
-              padding:
-                  EdgeInsets.only(right: 20, left: 20, bottom: 20, top: 20),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      SvgPicture.asset(
-                        "assets/icons/bridge.svg",
-                        width: 30,
-                        height: 50,
-                      ),
-                      SizedBox(width: 10),
-                      Text(
-                        "Bridge",
-                        style: TextStyle(
-                          fontSize: 30,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white,
+        body: LayoutBuilder(builder: (context, constraint) {
+          return SingleChildScrollView(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(minHeight: constraint.maxHeight),
+              child: IntrinsicHeight(
+                child: Container(
+                    padding: EdgeInsets.only(
+                        right: 20, left: 20, bottom: 20, top: 20),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            SvgPicture.asset(
+                              "assets/icons/bridge.svg",
+                              width: 30,
+                              height: 50,
+                            ),
+                            SizedBox(width: 10),
+                            Text(
+                              "Bridge",
+                              style: TextStyle(
+                                fontSize: 30,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.white,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                            Spacer(),
+                            InkWell(
+                              onTap: () {
+                                Scaffold.of(context).openEndDrawer();
+                              },
+                              child: Icon(
+                                Icons.menu,
+                                color: Colors.white,
+                              ),
+                            )
+                          ],
                         ),
-                        textAlign: TextAlign.center,
-                      ),
-                      Spacer(),
-                      InkWell(
-                        onTap: () {
-                          Scaffold.of(context).openEndDrawer();
-                        },
-                        child: Icon(
-                          Icons.menu,
-                          color: Colors.white,
+                        if (selectedEvt == null)
+                          SizedBox(
+                            height: 20,
+                          ),
+                        if (selectedEvt == null)
+                          Text(
+                            selectedEvt == null ? "Your bridges" : "",
+                            style: GoogleFonts.inter(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.white,
+                            ),
+                          ),
+                        if (selectedEvt == null)
+                          SizedBox(
+                            height: 10,
+                          ),
+                        if (selectedEvt == null)
+                          Text("All of the bridges you have already created",
+                              style: GoogleFonts.inter(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400,
+                                color: Color(0xFFA1A1AA),
+                              )),
+                        SizedBox(
+                          height: 10,
                         ),
-                      )
-                    ],
-                  ),
-                  Text(
-                    "Your events",
-                    style: GoogleFonts.inter(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.white,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Text("All of the events you have already created",
-                      style: GoogleFonts.inter(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0xFFA1A1AA),
-                      )),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  if (selectedEvt == null)
-                    FutureBuilder(
-                      future: getUserEvents(),
-                      builder:
-                          ((context, AsyncSnapshot<List<UserEvent>> snapshot) {
-                        if (snapshot.hasData) {
-                          if (snapshot.data!.isEmpty) {
-                            return Center(
-                              child: Text(
-                                "You don't have any event yet",
-                                style: GoogleFonts.inter(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400,
-                                  color: Color(0xFFA1A1AA),
+                        if (selectedEvt == null)
+                          FutureBuilder(
+                            future: userEvents,
+                            builder: ((context,
+                                AsyncSnapshot<List<UserEvent>> snapshot) {
+                              if (snapshot.hasData) {
+                                if (snapshot.data!.isEmpty) {
+                                  listSize = snapshot.data!.length;
+                                  WidgetsBinding.instance
+                                      .addPostFrameCallback((_) {
+                                    setState(() {
+                                      listSize = snapshot.data!.length;
+                                    });
+                                  });
+                                  return Container();
+                                } else {
+                                  listSize = snapshot.data!.length;
+                                  print(listSize);
+                                  List<Widget> widgets = [];
+                                  for (var i = 0;
+                                      i < snapshot.data!.length;
+                                      i++) {
+                                    widgets.add(ElevatedButton(
+                                      onPressed: () async {
+                                        selectedEvt = await getEventByUuid(
+                                            snapshot.data![i].uuid);
+                                        setState(() {
+                                          selectedUserEvt = snapshot.data![i];
+                                        });
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor:
+                                            Colors.transparent, //TODO: A modif
+                                        minimumSize: Size.zero,
+                                        padding: EdgeInsets.zero,
+
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                      ),
+                                      child: Container(
+                                        padding: EdgeInsets.only(
+                                            left: 16,
+                                            right: 16,
+                                            top: 12,
+                                            bottom: 12),
+                                        child: Row(children: [
+                                          if (snapshot.data![i].active == true)
+                                            SvgPicture.asset(
+                                              "assets/icons/enabled_button.svg",
+                                              height: 16,
+                                              width: 16,
+                                            ),
+                                          if (snapshot.data![i].active == false)
+                                            SvgPicture.asset(
+                                              "assets/icons/disabled_button.svg",
+                                              height: 16,
+                                              width: 16,
+                                            ),
+                                          SizedBox(
+                                            width: 8,
+                                          ),
+                                          Text(
+                                            snapshot.data![i].name,
+                                            style: GoogleFonts.inter(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w500,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ]),
+                                      ),
+                                    ));
+                                    widgets.add(SizedBox(height: 10));
+                                  }
+                                  return Column(
+                                    children: widgets,
+                                  );
+                                }
+                              } else {
+                                return Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              }
+                            }),
+                          ),
+                        if (listSize == 0) Spacer(),
+                        if (listSize == 0)
+                          Center(
+                            child: Text(
+                              "You don't have any bridges yet",
+                              style: GoogleFonts.inter(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                                color: Color(0xFFA1A1AA),
+                              ),
+                            ),
+                          ),
+                        if (selectedEvt == null) Spacer(),
+                        if (selectedEvt == null)
+                          SizedBox(
+                            width: double.infinity,
+                            height: 40,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                Scaffold.of(context).closeEndDrawer();
+                                Navigator.pushNamed(context, '/eventcreate')
+                                    .then((value) {
+                                  setState(() {
+                                    userEvents = getUserEvents();
+                                  });
+                                });
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Color(0xFF6D28D9),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
                                 ),
                               ),
-                            );
-                          } else {
-                            return ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: snapshot.data!.length,
-                              itemBuilder: (context, index) {
-                                return ElevatedButton(
-                                  onPressed: () async {
-                                    selectedEvt = await getEventByUuid(
-                                        snapshot.data![index].uuid);
-                                    setState(() {});
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor:
-                                        Colors.transparent, //TODO: A modif
-                                    minimumSize: Size.zero,
-                                    padding: EdgeInsets.zero,
-
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  SvgPicture.asset("assets/icons/plus.svg"),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    "Add a new bridge",
+                                    style: GoogleFonts.inter(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.white,
                                     ),
+                                    textAlign: TextAlign.center,
                                   ),
-                                  child: Container(
-                                    padding: EdgeInsets.only(
-                                        left: 16,
-                                        right: 16,
-                                        top: 12,
-                                        bottom: 12),
-                                    child: Row(children: [
-                                      if (snapshot.data![index].active == true)
-                                        SvgPicture.asset(
-                                          "assets/icons/enabled_button.svg",
-                                          height: 16,
-                                          width: 16,
-                                        ),
-                                      if (snapshot.data![index].active == false)
-                                        SvgPicture.asset(
-                                          "assets/icons/disabled_button.svg",
-                                          height: 16,
-                                          width: 16,
-                                        ),
-                                      SizedBox(
-                                        width: 8,
-                                      ),
-                                      Text(
-                                        snapshot.data![index].name,
-                                        style: GoogleFonts.inter(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ]),
-                                  ),
-                                );
-                              },
-                            );
-                          }
-                        } else {
-                          return Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        }
-                      }),
-                    ),
-                  if (selectedEvt == null) Spacer(),
-                  if (selectedEvt == null)
-                    SizedBox(
-                      width: double.infinity,
-                      height: 40,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          Scaffold.of(context).closeEndDrawer();
-                          Navigator.pushNamed(context, '/eventcreate');
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xFF6D28D9),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
+                                ],
+                              ),
+                            ),
                           ),
-                        ),
-                        child: Text(
-                          "Add a new event",
-                          style: GoogleFonts.inter(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      if (selectedEvt != null)
-                        Center(
-                          child: ShowEvent(
+                        if (selectedEvt != null && selectedUserEvt != null)
+                          ShowEvent(
                             event: selectedEvt!,
-                          ),
-                        )
-                    ],
-                  )
-                ],
-              ));
+                            userEvent: selectedUserEvt!,
+                            refresh: refresh,
+                          )
+                      ],
+                    )),
+              ),
+            ),
+          );
         }));
   }
 }

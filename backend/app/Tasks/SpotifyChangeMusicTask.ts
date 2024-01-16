@@ -1,6 +1,10 @@
 import Database from '@ioc:Adonis/Lucid/Database'
 import { BaseTask, CronTimeV2 } from 'adonis5-scheduler/build/src/Scheduler/Task'
-import { eventHandler, ResponseInteraction } from 'App/functions/EventHandler'
+import {
+  eventHandler,
+  handleAdditionalActions,
+  ResponseInteraction,
+} from 'App/functions/EventHandler'
 import axios from 'axios'
 import { APIEventField } from 'types/events'
 import Cache from 'App/Models/Cache'
@@ -14,6 +18,7 @@ export interface Item {
   name: string
   uri: string
 }
+import { Item, useVariablesInFields } from 'App/functions/SpotifyUtils'
 
 type SpotifySong = {
   shuffle_state: boolean
@@ -36,7 +41,7 @@ type SpotifySong = {
 export default class SpotifyChangeMusicTask extends BaseTask {
   public static get schedule() {
     // Use CronTimeV2 generator:
-    return CronTimeV2.everySecond()
+    return CronTimeV2.everyTenSeconds()
     // or just use return cron-style string (simple cron editor: crontab.guru)
   }
   /**
@@ -75,6 +80,7 @@ export default class SpotifyChangeMusicTask extends BaseTask {
       const events = await Database.query()
         .from('events')
         .whereRaw(`CAST(trigger_interaction AS JSONB) #>> '{id}' = 'changeSong'`)
+        .where('active', true)
       for (const event of events) {
         const triggerApi = await Database.query()
           .from('oauths')
@@ -107,30 +113,18 @@ export default class SpotifyChangeMusicTask extends BaseTask {
             const jsonVals = JSON.parse(event.response_interaction)
             const responseInteraction = jsonVals.id.toString() as ResponseInteraction
             const fields = jsonVals.fields as APIEventField<any>[]
-            for (const field of fields) {
-              if ((field.value as string).includes('$artist')) {
-                let replaceValue = ''
-                for (const artist of spotifyMusicData?.item.artists) {
-                  replaceValue += artist.name
-                  if (
-                    spotifyMusicData.item.artists.length === 2 &&
-                    artist === spotifyMusicData.item.artists[0]
-                  )
-                    replaceValue += ' et '
-                  else if (
-                    spotifyMusicData.item.artists.indexOf(artist) !==
-                    spotifyMusicData.item.artists.length - 1
-                  )
-                    replaceValue += ', '
-                }
-                field.value = field.value.replace('$artist', replaceValue)
-              }
-              if ((field.value as string).includes('$song'))
-                field.value = field.value.replace('$song', spotifyMusicData.item.name)
+            useVariablesInFields(fields, spotifyMusicData.item.name, spotifyMusicData.item.artists)
+            for (const additionalAction of event.additional_actions) {
+              useVariablesInFields(
+                additionalAction.fields,
+                spotifyMusicData.item.name,
+                spotifyMusicData.item.artists
+              )
             }
-
+            await handleAdditionalActions(event)
             await eventHandler(responseInteraction, fields, event.response_api, event.uuid)
           }
+          await this.updateSpotifyMusicUri(event.uuid, spotifyMusicData?.item.uri as string)
         }
       }
     } catch (error) {

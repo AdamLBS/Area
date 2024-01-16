@@ -31,6 +31,7 @@ export type ApiInteraction = {
   id: string;
   name: string;
   fields: Fields[];
+  variables: Record<string, string>;
 };
 
 export type ApiEvent = {
@@ -101,6 +102,27 @@ export type EventType = {
 export type Trigger = {
   trigger_provider: string;
   triggerInteraction: Interaction;
+};
+
+type ActionsReactions = {
+  id: string;
+  name: string;
+  fields: Fields[];
+  variables: Record<string, string>;
+};
+
+export type About = {
+  client: {
+    host: string;
+  };
+  server: {
+    current_time: number;
+    services: {
+      name: string;
+      actions: ActionsReactions[];
+      reactions: ActionsReactions[];
+    }[];
+  };
 };
 
 export type UsesTimestamps = {
