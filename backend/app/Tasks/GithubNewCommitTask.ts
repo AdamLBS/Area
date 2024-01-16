@@ -1,4 +1,5 @@
 import Database from '@ioc:Adonis/Lucid/Database'
+import TriggerEventErrorException from 'App/Exceptions/TriggerEventErrorException'
 import Cache from 'App/Models/Cache'
 import Oauth from 'App/Models/Oauth'
 import { Content, ResponseInteraction, eventHandler } from 'App/functions/EventHandler'
@@ -22,7 +23,8 @@ export default class GithubCheckLastCommitTask extends BaseTask {
     repositoryUrl: string,
     oauth: Oauth,
     responseApiUuid: string,
-    reponseInteraction: ResponseInteraction
+    reponseInteraction: ResponseInteraction,
+    eventUuid: string
   ) {
     const userCache = await Database.query().from('caches').where('uuid', oauth.userUuid).first()
     const commitsUrl = repositoryUrl.replace('github.com', 'api.github.com/repos')
@@ -53,6 +55,7 @@ export default class GithubCheckLastCommitTask extends BaseTask {
       }
     } catch (error: any) {
       console.error(error)
+      throw new TriggerEventErrorException('Impossible to check the last commit', eventUuid)
     }
   }
 
@@ -75,11 +78,12 @@ export default class GithubCheckLastCommitTask extends BaseTask {
               fields[0].value,
               oauth,
               event.response_api,
-              event.response_interaction as ResponseInteraction
+              event.response_interaction as ResponseInteraction,
+              event.uuid
             )
           } catch (error: any) {
             console.error(error)
-            throw new Error('Impossible to fetch the last commit')
+            throw new TriggerEventErrorException('Impossible to check the last commit', event.uuid)
           }
         })
     } catch (error: any) {

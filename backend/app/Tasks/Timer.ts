@@ -1,4 +1,5 @@
 import Database from '@ioc:Adonis/Lucid/Database'
+import TriggerEventErrorException from 'App/Exceptions/TriggerEventErrorException'
 import Cache from 'App/Models/Cache'
 import { ResponseInteraction, eventHandler } from 'App/functions/EventHandler'
 import { BaseTask, CronTimeV2 } from 'adonis5-scheduler/build/src/Scheduler/Task'
@@ -42,7 +43,12 @@ export default class Timer extends BaseTask {
       const [hours, minutes] = time.split(':').map(Number)
       const userCache = await Cache.query().from('caches').where('uuid', event.uuid).first()
       if (!userCache) {
-        await this.updateLastTimerActive(event.uuid, false)
+        try {
+          await this.updateLastTimerActive(event.uuid, false)
+        } catch (error) {
+          console.error(error)
+          throw new TriggerEventErrorException('Impossible to update the timer', event.uuid)
+        }
       }
       if (now.getHours() === hours && now.getMinutes() === minutes) {
         if (userCache && !userCache.timerActive) {
