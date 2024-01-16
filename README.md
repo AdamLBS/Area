@@ -94,7 +94,7 @@ Everything about it can be found in their documentation: [https://authjs.dev/](h
 
 Steps for adding a new service:
  1. Get the Service **Client Id** and **Secret**, add it to the `.env`
- 2. Create a custom AuthJS or add an existing one
+ 2. Create a custom AuthJS or add an existing one in the  `route.ts`
  3. In the `SocialAccounts.component.tsx` file, if it is not already there, add the new service to the `socialCards` array
 
 To check if the Service SignIn `button` is added, navigate to the **Settings** page and then click on **Accounts** to check all available OAuths.
