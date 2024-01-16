@@ -1,8 +1,6 @@
 import { Exception } from '@adonisjs/core/build/standalone'
-import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Sentry from '@ioc:Adonis/Addons/Sentry'
 import Log from 'App/Models/Log'
-import { v4 as uuidv4 } from 'uuid'
 
 /*
 |--------------------------------------------------------------------------
