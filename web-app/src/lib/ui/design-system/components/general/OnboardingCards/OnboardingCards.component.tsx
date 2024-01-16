@@ -4,53 +4,53 @@ import { OnboardingCard } from './OnboardingCard';
 import { finishOnboarding } from '@/api/user';
 import { useQueryClient } from '@tanstack/react-query';
 
-const CardsContent: {
+type Status = 'done' | 'pending' | 'not-started';
+type CardContent = {
   title: string;
   description: string;
   buttonLabel?: string;
   redirectUrl: string;
   callback?: () => void;
-}[] = [
-  {
-    title: '1/ Link first account',
-    description:
-      'Link your first OAuth accounts to create some Bridges for the future',
-    buttonLabel: 'Go to settings',
-    redirectUrl: '/settings',
-  },
-  {
-    title: '2/ Create your first bridge',
-    description:
-      'You’re now ready to create your first bridge using your OAuth.',
-    buttonLabel: 'Go to Bridge',
-    redirectUrl: '/bridge',
-  },
-  {
-    title: '3/ Receive your first log',
-    description:
-      'When you create a Bridge, you receive some logs about your bridge working',
-    redirectUrl: '/',
-  },
-  {
-    title: '4/ Watch your first logs',
-    description: 'Go to watch your logs now',
-    buttonLabel: 'Go to Watch',
-    redirectUrl: '/watch',
-    callback: () => {
-      // const queryClient = useQueryClient();
-      // queryClient.invalidateQueries({ queryKey: ['onboarding'] });
-      finishOnboarding();
-    },
-  },
-];
-
-type Status = 'done' | 'pending' | 'not-started';
+}[];
 
 const OnboardingCardsComponents = ({
   currentStep,
 }: {
   currentStep: string;
 }) => {
+  const queryClient = useQueryClient();
+  const CardsContent: CardContent = [
+    {
+      title: '1/ Link first account',
+      description:
+        'Link your first OAuth accounts to create some Bridges for the future',
+      buttonLabel: 'Go to settings',
+      redirectUrl: '/settings',
+    },
+    {
+      title: '2/ Create your first bridge',
+      description:
+        'You’re now ready to create your first bridge using your OAuth.',
+      buttonLabel: 'Go to Bridge',
+      redirectUrl: '/bridge',
+    },
+    {
+      title: '3/ Receive your first log',
+      description:
+        'When you create a Bridge, you receive some logs about your bridge working',
+      redirectUrl: '/',
+    },
+    {
+      title: '4/ Watch your first logs',
+      description: 'Go to watch your logs now',
+      buttonLabel: 'Go to Watch',
+      redirectUrl: '/watch',
+      callback: async () => {
+        await finishOnboarding();
+        await queryClient.invalidateQueries({ queryKey: ['onboarding'] });
+      },
+    },
+  ];
   const [buttons, setButtons] = React.useState<boolean[]>([
     false,
     false,
