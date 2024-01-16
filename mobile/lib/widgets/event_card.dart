@@ -18,6 +18,8 @@ class EventCard extends StatelessWidget {
       "linkedin": "assets/icons/linkedin.svg",
       "microsoft": "assets/icons/microsoft.svg",
       "spotify": "assets/icons/spotify.svg",
+      "crypto": "assets/icons/bitcoin.svg",
+      "timer": "assets/icons/timer.svg",
     };
     return Container(
       constraints: BoxConstraints(minHeight: 102),
@@ -35,10 +37,18 @@ class EventCard extends StatelessWidget {
           children: [
             Row(
               children: [
-                SvgPicture.asset(
-                  svgs[name.toLowerCase()]!,
-                  height: 32,
-                  width: 32,
+                Container(
+                  padding: EdgeInsets.all(7),
+                  decoration: BoxDecoration(
+                    color: Color(0xFF94A3B8),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: SvgPicture.asset(
+                    height: 32,
+                    width: 32,
+                    svgs[name.toLowerCase()]!,
+                    color: Colors.white,
+                  ),
                 ),
                 SizedBox(
                   width: 10,
