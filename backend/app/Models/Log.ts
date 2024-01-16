@@ -7,13 +7,10 @@ export default class Log extends BaseModel {
   public uuid: string
 
   @column()
-  public userUuid: string
-
-  @column()
   public eventUuid: string
 
   @column()
-  public date: string
+  public message: string
 
   @column()
   public status: string

@@ -8,7 +8,19 @@ import {
 import axios from 'axios'
 import { APIEventField } from 'types/events'
 import Cache from 'App/Models/Cache'
-import { Item, useVariablesInFields } from 'App/functions/SpotifyUtils'
+import TriggerEventErrorException from 'App/Exceptions/TriggerEventErrorException'
+
+export interface Artist {
+  name: string
+}
+export interface Track {
+  artists: Artist[]
+  name: string
+}
+export interface Item {
+  track: Track
+}
+import { useVariablesInFields } from 'App/functions/SpotifyUtils'
 
 type SpotifyLikesSong = {
   total: number
@@ -68,7 +80,15 @@ export default class SpotifyLikeSong extends BaseTask {
         const userCache = await Cache.query().from('caches').where('uuid', event.uuid).first()
         if (triggerApi && triggerApi.token) {
           if (!userCache || !userCache.spotifyLikedSongs) {
-            await this.updateNumberOfLikedSongs(event.uuid, spotifyLikesSong.total)
+            try {
+              await this.updateNumberOfLikedSongs(event.uuid, spotifyLikesSong.total)
+            } catch (error) {
+              console.error(error)
+              throw new TriggerEventErrorException(
+                'Impossible to update spotify liked songs',
+                event.uuid
+              )
+            }
           } else if (Number(userCache.spotifyLikedSongs) < spotifyLikesSong.total) {
             const jsonVals = JSON.parse(event.response_interaction)
             const responseInteraction = jsonVals.id.toString() as ResponseInteraction
@@ -86,7 +106,7 @@ export default class SpotifyLikeSong extends BaseTask {
               )
             }
             await handleAdditionalActions(event)
-            await eventHandler(responseInteraction, fields, event.response_api)
+            await eventHandler(responseInteraction, fields, event.response_api, event.uuid)
           }
           await this.updateNumberOfLikedSongs(event.uuid, spotifyLikesSong.total)
         }

@@ -5,12 +5,11 @@ export default class extends BaseSchema {
 
   public async up() {
     this.schema.createTable(this.tableName, (table) => {
-      table.uuid('uuid').primary()
-      table.uuid('user_uuid').notNullable()
-      table.uuid('event_uuid').notNullable()
-      table.string('date').notNullable()
+      table.string('uuid').primary()
+      table.string('event_uuid').notNullable()
+      table.string('message').notNullable()
       table.string('status').notNullable()
-      table.integer('log_id').notNullable()
+      table.increments('log_id').notNullable()
       table.string('error_message').nullable()
       table.string('error_id').nullable()
 

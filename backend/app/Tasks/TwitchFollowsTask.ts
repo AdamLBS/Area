@@ -121,7 +121,7 @@ export default class TwitchLiveTask extends BaseTask {
         for (const additionalAction of event.additional_actions) {
           this.useVariablesInFields(additionalAction.fields, twitchData, userCache.twitch_followers)
         }
-        await eventHandler(responseInteraction, fields, event.response_api)
+        await eventHandler(responseInteraction, fields, event.response_api, event.uuid)
         await handleAdditionalActions(event)
         this.updateFollowers(event.uuid, twitchData.total)
       }

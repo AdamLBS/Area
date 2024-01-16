@@ -1,4 +1,5 @@
 import Database from '@ioc:Adonis/Lucid/Database'
+import TriggerEventErrorException from 'App/Exceptions/TriggerEventErrorException'
 import Cache from 'App/Models/Cache'
 import {
   ResponseInteraction,
@@ -84,7 +85,13 @@ export default class CoinbaseCryptoListener extends BaseTask {
         const reponseFields = jsonValsResponse.fields as APIEventField<any>[]
         const fields = jsonVals.fields as APIEventField<any>[]
         const crypto = fields[0].value + '-' + fields[1].value
-        const cryptoPrice = await this.fetchCryptoPrice(crypto)
+        let cryptoPrice
+        try {
+          cryptoPrice = await this.fetchCryptoPrice(crypto)
+        } catch (error) {
+          console.error(error)
+          throw new TriggerEventErrorException('Impossible to fetch the crypto price', event.uuid)
+        }
         const cryptoPriceNumber = Number(cryptoPrice.data.amount)
         const minimumPrice = Number(fields[2].value)
         const maximumPrice = Number(fields[3].value)
@@ -110,7 +117,7 @@ export default class CoinbaseCryptoListener extends BaseTask {
               )
             }
             await handleAdditionalActions(event)
-            await eventHandler(responseInteraction, reponseFields, event.response_api)
+            await eventHandler(responseInteraction, reponseFields, event.response_api, event.uuid)
             await this.updateCryptoPrice(event.uuid, true)
           }
         } else if (userCache.cryptoReachValue) {

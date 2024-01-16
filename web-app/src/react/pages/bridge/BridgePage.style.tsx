@@ -32,6 +32,16 @@ export const Text = styled(PrimaryMutted)`
 `;
 
 export const EventPanelButton = styled(Button)`
+  width: fit-content;
   padding: 10px;
   gap: 10px;
+`;
+
+export const OnboardingComponent = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+  text-align: center;
 `;

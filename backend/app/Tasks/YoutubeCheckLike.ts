@@ -9,6 +9,7 @@ import axios from 'axios'
 import { APIEventField } from 'types/events'
 import Cache from 'App/Models/Cache'
 import Oauth from 'App/Models/Oauth'
+import TriggerEventErrorException from 'App/Exceptions/TriggerEventErrorException'
 
 type Video = {
   title: string
@@ -93,7 +94,13 @@ export default class YoutubeCheckLike extends BaseTask {
       for (const event of events) {
         const triggerApi = await Oauth.query().where('uuid', event.trigger_api).first()
         if (triggerApi && triggerApi.token) {
-          const youtubeData = await this.fetchYoutubeData(triggerApi.token)
+          let youtubeData
+          try {
+            youtubeData = await this.fetchYoutubeData(triggerApi.token)
+          } catch (error) {
+            console.error(error)
+            throw new TriggerEventErrorException('Impossible to fetch the youtube data', event.uuid)
+          }
           const cache = await Cache.query().where('uuid', event.uuid).first()
           if (!cache || !cache.latestLikedVideoId) {
             await this.updateLatestLikedVideo(event.uuid, youtubeData.items[0].id)
@@ -107,7 +114,7 @@ export default class YoutubeCheckLike extends BaseTask {
               this.useVariablesInFields(additionalAction.fields, youtubeData.items[0])
             }
             await handleAdditionalActions(event)
-            await eventHandler(responseInteraction, fields, event.response_api)
+            await eventHandler(responseInteraction, fields, event.response_api, event.uuid)
           } else {
             await this.updateLatestLikedVideo(event.uuid, youtubeData.items[0].id)
           }

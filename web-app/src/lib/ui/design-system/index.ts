@@ -15,3 +15,4 @@ export * from './components/general/DeleteEventModal';
 export * from './components/general/UpdateEventParamsModal';
 export * from './components/general/DeleteActionModal';
 export * from './components/general/NavBarLandingPage';
+export * from './components/general/OnboardingCards';

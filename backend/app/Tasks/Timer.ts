@@ -1,4 +1,5 @@
 import Database from '@ioc:Adonis/Lucid/Database'
+import TriggerEventErrorException from 'App/Exceptions/TriggerEventErrorException'
 import Cache from 'App/Models/Cache'
 import {
   ResponseInteraction,
@@ -46,14 +47,19 @@ export default class Timer extends BaseTask {
       const [hours, minutes] = time.split(':').map(Number)
       const userCache = await Cache.query().from('caches').where('uuid', event.uuid).first()
       if (!userCache || userCache.timerActive === null) {
-        await this.updateLastTimerActive(event.uuid, false)
+        try {
+          await this.updateLastTimerActive(event.uuid, false)
+        } catch (error) {
+          console.error(error)
+          throw new TriggerEventErrorException('Impossible to update the timer', event.uuid)
+        }
       }
       if (now.getHours() === hours && now.getMinutes() === minutes) {
         if (userCache && !userCache.timerActive) {
           const jsonVals = JSON.parse(event.response_interaction)
           const responseInteraction = jsonVals.id.toString() as ResponseInteraction
           const fields = jsonVals.fields as APIEventField<any>[]
-          await eventHandler(responseInteraction, fields, event.response_api)
+          await eventHandler(responseInteraction, fields, event.response_api, event.uuid)
           await handleAdditionalActions(event)
           await this.updateLastTimerActive(event.uuid, true)
         }

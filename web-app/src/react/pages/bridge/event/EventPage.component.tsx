@@ -11,7 +11,7 @@ type EventPageProps = {
 const Event: React.FC<EventPageProps> = ({ currentUuid }) => (
   <PrivateLayout pageName="Bridge" icon={<Boxes />}>
     <PageContainer>
-      <MenuEvent currentUuid={currentUuid} />
+      <MenuEvent currentUuid={currentUuid} page="bridge" />
       <EventContent eventUuid={currentUuid} />
     </PageContainer>
   </PrivateLayout>
