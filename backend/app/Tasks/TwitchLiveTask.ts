@@ -3,6 +3,7 @@ import { eventHandler, ResponseInteraction } from '../functions/EventHandler'
 import Database from '@ioc:Adonis/Lucid/Database'
 import axios from 'axios'
 import Cache from 'App/Models/Cache'
+import TriggerEventErrorException from 'App/Exceptions/TriggerEventErrorException'
 
 type TwitchData = {
   id: string
@@ -92,11 +93,18 @@ export default class TwitchLiveTask extends BaseTask {
   public async inLive(
     triggerApiOauth: any,
     responseApiUuid: string,
-    reponseInteraction: ResponseInteraction
+    reponseInteraction: ResponseInteraction,
+    eventUuid: string
   ) {
     try {
       const userId = await this.fetchTwitchUserId(triggerApiOauth)
-      const twitchData = await this.fetchTwitchData(triggerApiOauth, userId)
+      let twitchData: TwitchData[] = []
+      try {
+        twitchData = await this.fetchTwitchData(triggerApiOauth, userId)
+      } catch (error) {
+        console.log(error)
+        throw new TriggerEventErrorException('Impossible to fetch twitch data', eventUuid)
+      }
       const userCache = await Database.query()
         .from('caches')
         .where('uuid', triggerApiOauth.user_uuid)
@@ -109,7 +117,12 @@ export default class TwitchLiveTask extends BaseTask {
         }
         await this.updateChannelsInLive(triggerApiOauth, channels)
         twitchData.map(async (data: TwitchData) => {
-          await this.notifyUserInLive(data, responseApiUuid, reponseInteraction)
+          try {
+            await this.notifyUserInLive(data, responseApiUuid, reponseInteraction)
+          } catch (error) {
+            console.error(error)
+            throw new TriggerEventErrorException('Impossible to notify user', eventUuid)
+          }
         })
         return
       }
@@ -160,7 +173,8 @@ export default class TwitchLiveTask extends BaseTask {
           await this.inLive(
             triggerApiOauth,
             responseApiUuid,
-            event.response_interaction as ResponseInteraction
+            event.response_interaction as ResponseInteraction,
+            event.uuid
           )
         })
     } catch (error) {

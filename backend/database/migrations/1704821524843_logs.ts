@@ -5,14 +5,8 @@ export default class extends BaseSchema {
 
   public async up() {
     this.schema.createTable(this.tableName, (table) => {
-      table.uuid('uuid').primary()
-      table.uuid('user_uuid').notNullable()
-      table
-        .string('event_uuid')
-        .notNullable()
-        .references('uuid')
-        .inTable('events')
-        .onDelete('CASCADE')
+      table.string('uuid').primary()
+      table.string('user_uuid').notNullable()
       table.string('message').notNullable()
       table.string('status').notNullable()
       table.increments('log_id').notNullable()

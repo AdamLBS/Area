@@ -4,6 +4,7 @@ import { eventHandler, ResponseInteraction } from 'App/functions/EventHandler'
 import axios from 'axios'
 import { APIEventField } from 'types/events'
 import Cache from 'App/Models/Cache'
+import TriggerEventErrorException from 'App/Exceptions/TriggerEventErrorException'
 
 export interface Artist {
   name: string
@@ -82,7 +83,15 @@ export default class SpotifyListenTask extends BaseTask {
         const isListening = spotifyAPIData !== undefined && spotifyAPIData.is_playing
         if (triggerApi && triggerApi.token) {
           if (!userCache || userCache.spotifyListening === undefined) {
-            ;(async () => await this.updateSpotifyListeningStatus(event.uuid, isListening))()
+            try {
+              ;(async () => await this.updateSpotifyListeningStatus(event.uuid, isListening))()
+            } catch (error) {
+              console.error(error)
+              throw new TriggerEventErrorException(
+                'Impossible to update the spotify listening status',
+                event.uuid
+              )
+            }
           } else if (userCache.spotifyListening !== isListening && spotifyAPIData !== undefined) {
             ;(async () => await this.updateSpotifyListeningStatus(event.uuid, isListening))()
             if (isListening === true) {
