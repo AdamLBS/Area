@@ -38,7 +38,7 @@ export default class OnboardingController {
     const events = await Event.query().where('user_uuid', userDb.uuid)
     let hasLog = false
     events.map(async (event) => {
-      const log = await Log.query().where('event', event.uuid)
+      const log = await Log.query().where('event_uuid', event.uuid)
       if (log.length > 0) {
         hasLog = true
       }
