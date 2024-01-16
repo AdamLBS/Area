@@ -20,16 +20,22 @@ import { useTheme } from 'next-themes';
 
 export type EventsProps = {
   currentUuid?: string;
+  hideCreateEvent?: boolean;
+  page: string;
 };
 
-const MenuEventComponent: React.FC<EventsProps> = ({ currentUuid }) => {
+const MenuEventComponent: React.FC<EventsProps> = ({
+  currentUuid,
+  hideCreateEvent,
+  page,
+}) => {
   const router = useRouter();
   const { data: events } = useEvents();
   const [createEventModalOpen, setCreateEventModalOpen] = React.useState(false);
   const theme = useTheme();
 
   const handleRedirection = (uuid: string) => {
-    router.push('/bridge/' + uuid);
+    router.push('/' + page + '/' + uuid);
   };
 
   return (
@@ -66,12 +72,14 @@ const MenuEventComponent: React.FC<EventsProps> = ({ currentUuid }) => {
             );
           })}
       </EventPanelContent>
-      <Footer>
-        <EventPanelButton onClick={() => setCreateEventModalOpen(true)}>
-          <PlusIcon size={16} />
-          Add a new bridge
-        </EventPanelButton>
-      </Footer>
+      {!hideCreateEvent && (
+        <Footer>
+          <EventPanelButton onClick={() => setCreateEventModalOpen(true)}>
+            <PlusIcon size={16} />
+            Add a new event
+          </EventPanelButton>
+        </Footer>
+      )}
       <CreateEventModal
         isOpen={createEventModalOpen}
         onOpenChange={setCreateEventModalOpen}
