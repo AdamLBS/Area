@@ -91,7 +91,7 @@ export default class SpotifyListenTask extends BaseTask {
           if (!userCache || userCache.spotifyListening === undefined) {
             try {
               await this.updateSpotifyListeningStatus(event.uuid, isListening)
-            } catch(error) {
+            } catch (error) {
               console.error(error)
               throw new TriggerEventErrorException(
                 'Impossible to update the spotify listening status',

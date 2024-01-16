@@ -82,7 +82,7 @@ export default class SpotifyLikeSong extends BaseTask {
           if (!userCache || !userCache.spotifyLikedSongs) {
             try {
               await this.updateNumberOfLikedSongs(event.uuid, spotifyLikesSong.total)
-            } catch(error) {
+            } catch (error) {
               console.error(error)
               throw new TriggerEventErrorException(
                 'Impossible to update spotify liked songs',
