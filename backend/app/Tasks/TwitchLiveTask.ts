@@ -73,13 +73,14 @@ export default class TwitchLiveTask extends BaseTask {
   private async notifyUserInLive(
     data: TwitchData,
     responseApiUuid: string,
-    reponseInteraction: ResponseInteraction
+    reponseInteraction: ResponseInteraction,
+    eventUuid: string
   ) {
     const content: Content = {
       title: data.title,
       message: `${data.user_name} is live on Twitch!\nhttps://www.twitch.tv/${data.user_name}`,
     }
-    await eventHandler(reponseInteraction, content, responseApiUuid)
+    await eventHandler(reponseInteraction, content, responseApiUuid, eventUuid)
   }
 
   private isUserNotPresent(channelsJSON: { user_name: string }[], userName: string): boolean {
@@ -118,7 +119,7 @@ export default class TwitchLiveTask extends BaseTask {
         await this.updateChannelsInLive(triggerApiOauth, channels)
         twitchData.map(async (data: TwitchData) => {
           try {
-            await this.notifyUserInLive(data, responseApiUuid, reponseInteraction)
+            await this.notifyUserInLive(data, responseApiUuid, reponseInteraction, eventUuid)
           } catch (error) {
             console.error(error)
             throw new TriggerEventErrorException('Impossible to notify user', eventUuid)
@@ -146,7 +147,7 @@ export default class TwitchLiveTask extends BaseTask {
         if (this.isUserNotPresent(channelsJSON, data.user_name)) {
           channelsJSON.push({ user_name: data.user_name })
           await this.updateChannelsInLive(triggerApiOauth, channelsJSON)
-          await this.notifyUserInLive(data, responseApiUuid, reponseInteraction)
+          await this.notifyUserInLive(data, responseApiUuid, reponseInteraction, eventUuid)
         } else {
           this.logAlreadyInLive(data.user_name)
         }

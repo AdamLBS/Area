@@ -51,7 +51,7 @@ export default class GithubCheckLastCommitTask extends BaseTask {
           title: '',
           message: '',
         }
-        await eventHandler(reponseInteraction, content, responseApiUuid)
+        await eventHandler(reponseInteraction, content, responseApiUuid, eventUuid)
       }
     } catch (error: any) {
       console.error(error)

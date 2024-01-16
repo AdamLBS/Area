@@ -119,7 +119,7 @@ export default class SpotifyListenTask extends BaseTask {
                 if ((field.value as string).includes('$song'))
                   field.value = field.value.replace('$song', spotifyAPIData.item.name)
               }
-              await eventHandler(responseInteraction, fields, event.response_api)
+              await eventHandler(responseInteraction, fields, event.response_api, event.uuid)
             }
           }
         }
