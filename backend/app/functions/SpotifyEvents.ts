@@ -99,14 +99,11 @@ export const repeatSong = async (responseApiUuid: string) => {
     const bearer = `Bearer ${spotifyOAuth.token}`
     const options = {
       method: 'PUT',
-      url: 'https://api.spotify.com/v1/me/player/repeat',
+      url: 'https://api.spotify.com/v1/me/player/repeat?state=track',
       headers: {
         'Content-Type': 'application/json',
         'User-Agent': 'insomnia/8.4.5',
         'Authorization': bearer,
-      },
-      data: {
-        state: 'track',
       },
     }
     await axios.request(options)
@@ -124,14 +121,11 @@ export const setPlaybackVolume = async (data: APIEventField<any>[], responseApiU
     const bearer = `Bearer ${spotifyOAuth.token}`
     const options = {
       method: 'PUT',
-      url: 'https://api.spotify.com/v1/me/player/volume',
+      url: 'https://api.spotify.com/v1/me/player/volume?volume_percent=' + data.at(0)?.value,
       headers: {
         'Content-Type': 'application/json',
         'User-Agent': 'insomnia/8.4.5',
         'Authorization': bearer,
-      },
-      data: {
-        volume_percent: data.at(0)?.value,
       },
     }
     await axios.request(options)
@@ -147,16 +141,14 @@ export const toggleShuffle = async (data: APIEventField<any>[], responseApiUuid:
       .where('uuid', responseApiUuid)
       .first()
     const bearer = `Bearer ${spotifyOAuth.token}`
+    const value = data.at(0)?.value === 'on' ? 'true' : 'false'
     const options = {
       method: 'PUT',
-      url: 'https://api.spotify.com/v1/me/player/shuffle',
+      url: 'https://api.spotify.com/v1/me/player/shuffle?state=' + value,
       headers: {
         'Content-Type': 'application/json',
         'User-Agent': 'insomnia/8.4.5',
         'Authorization': bearer,
-      },
-      data: {
-        state: data.at(0)?.value === 'on' ? true : false,
       },
     }
     await axios.request(options)
