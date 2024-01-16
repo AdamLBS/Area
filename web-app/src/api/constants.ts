@@ -1,3 +1,5 @@
+import { DateTime } from 'luxon';
+
 export const API_URL = (process.env.NEXT_PUBLIC_API_URL as string) + '/api';
 export const API_URL_OAUTH =
   (process.env.NEXT_PUBLIC_API_URL as string) + '/oauth';
@@ -122,4 +124,43 @@ export type About = {
       reactions: ActionsReactions[];
     }[];
   };
+};
+
+export type UsesTimestamps = {
+  ['january']: number;
+  ['february']: number;
+  ['march']: number;
+  ['april']: number;
+  ['may']: number;
+  ['june']: number;
+  ['july']: number;
+  ['august']: number;
+  ['september']: number;
+  ['october']: number;
+  ['november']: number;
+  ['december']: number;
+};
+
+export type Log = {
+  uuid: string;
+  user_uuid: string;
+  event_uuid: string;
+  message: string;
+  status: 'error' | 'success' | 'failed';
+  log_id: number;
+  error_message?: string;
+  error_id?: string;
+  created_at: string;
+  updated_at: string;
+};
+
+export type EventStats = {
+  triggerApi: string;
+  responseApi: string;
+  total: number;
+  success: number;
+  errors: number;
+  today: number;
+  lastLogs: Log[];
+  logsByMonth: UsesTimestamps;
 };

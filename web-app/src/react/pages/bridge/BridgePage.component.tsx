@@ -40,7 +40,7 @@ const Bridge: React.FC = () => {
     <PrivateLayout pageName="Bridge" icon={<Boxes />}>
       <PageContainer>
         <PageContent>
-          <MenuEvent />
+          <MenuEvent page="bridge" />
           <RightPanel>
             {status && !status?.step && (
               <OnboardingComponent>

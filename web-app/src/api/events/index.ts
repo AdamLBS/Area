@@ -6,6 +6,8 @@ import {
   Event,
   EventType,
   Fields,
+  EventStats,
+  Log,
 } from '../constants';
 
 export const getTriggers = async (): Promise<ApiEvent[]> => {
@@ -85,6 +87,54 @@ export const getEvent = async (uuid: string): Promise<Event> => {
     return res as Event;
   } catch (error) {
     throw new Error('Error getting event.');
+  }
+};
+
+export const getEventStats = async (uuid: string): Promise<EventStats> => {
+  try {
+    const res = (
+      await axios.get(API_URL + `/event/${uuid}/stats`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+        },
+      })
+    ).data;
+    return res.stats as EventStats;
+  } catch (error) {
+    throw new Error('Error getting event stats.');
+  }
+};
+
+export const getEventLogs = async (uuid: string): Promise<Log[]> => {
+  try {
+    const res = (
+      await axios.get(API_URL + `/event/${uuid}/logs`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+        },
+      })
+    ).data;
+    return res.logs as Log[];
+  } catch (error) {
+    throw new Error('Error getting event logs.');
+  }
+};
+
+export const deleteEventLog = async (payload: {
+  uuid: string;
+  logUuid: string;
+}): Promise<void> => {
+  try {
+    await axios.delete(
+      API_URL + `/event/${payload.uuid}/logs/${payload.logUuid}`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+        },
+      },
+    );
+  } catch (error) {
+    throw new Error('Error deleting event log.');
   }
 };
 
