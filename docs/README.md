@@ -5,31 +5,10 @@
 
 Application developement project in 3rd year of Epitech. The AREA project is a project that allows you to create automations between different services. For example, you can create an automation that sends you a message on Gmail when you changes your music on Spotify.
 
-## Backend
-
-You can find the full documentation of the backend [here](docs/back.md)
-
-![Event_flow](images/event_flow.png)
-
-### Setup
-
-In order to start using our project, the `.env` file must be set up!
-
-Use the `.env.example` file and complete it with the necessary **Client Id**, **Secret** for the services.
-
-Go to backend folder and install the web dependencies:
-
-```
-yarn install
-or
-npm install
-```
-
-
 
 ## Infrastructure
 
-You can find the full documentation of the infrastructure [here](docs/infrastructure.md)
+You can find the full documentation of the infrastructure [here](infrastructure.md)
 
 ![Infrastructure](images/infrastructure.png)
 The AREA project is splitted in 6 differents containers
@@ -76,7 +55,7 @@ To access the project, you can go to the following URLs:
 
 - Web App: http://localhost:3000 or http://localhost:8081/
 - Mobile App: http://localhost:3000/client.apk or http://localhost:8081/client.apk
-- Swagger: http://localhost:4444/
+- Swagger: http://localhost:3333/docs
 - API: http://localhost:8080/ or http://localhost:3333/
 
 The officials endpoints currently available are:
@@ -87,7 +66,7 @@ The officials endpoints currently available are:
 
 # Front-end
 
-You can find the full documentation of the front-end [here](docs/front.md)
+You can find the full documentation of the front-end [here](front.md)
 
 ## Setup
 
