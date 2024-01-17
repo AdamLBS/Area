@@ -21,7 +21,7 @@ components:
         description: Unauthorized (invalid token)
 
 /api/user/me/update:
-  post:
+  patch:
     tags:
       - User
     security:
