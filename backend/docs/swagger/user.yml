@@ -1,13 +1,81 @@
 openapi: 3.0.0
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
 /api/user/me:
   get:
     tags:
       - User
     security:
-      - cookieAuth: []
+      - bearerAuth: []
     description: Me
     produces:
       - application/json
     responses:
       200:
         description: User data
+      401:
+        description: Unauthorized (invalid token)
+
+/api/user/me/update:
+  patch:
+    tags:
+      - User
+    security:
+      - bearerAuth: []
+    description: Update user data
+    produces:
+      - application/json
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              username:
+                type: string
+                example: "testuser"
+              email:
+                type: string
+                example: "testuser@gmail.com"
+              password:
+                type: string
+                example: "password"
+              password_confirmation:
+                type: string
+                example: "password"
+
+/api/user/me/services:
+  get:
+    tags:
+      - User
+    security:
+      - bearerAuth: []
+    description: Get user services
+    produces:
+      - application/json
+    responses:
+      200:
+        description: User services
+      401:
+        description: Unauthorized (invalid token)
+
+/api/user/events:
+  get:
+    tags:
+      - User
+    security:
+      - bearerAuth: []
+    description: Get user events
+    produces:
+      - application/json
+    responses:
+      200:
+        description: User events
+      401:
+        description: Unauthorized (invalid token)
+

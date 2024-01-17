@@ -1,0 +1,292 @@
+openapi: 3.0.0
+components:
+  securitySchemes:
+    bearerAuth:            # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+/api/event/create:
+  post:
+    tags:
+      - Event
+    description: Create an event
+    summary: Create an event
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                example: "test event"
+                required: true
+              description:
+                type: string
+                example: "test description"
+              trigger_provider:
+                type: string
+                example: "test trigger provider"
+                required: true
+              response_provider:
+                type: string
+                example: "test response provider"
+                required: true
+              triggerInteraction:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: "test trigger interaction id"
+                    required: true
+                  fields:
+                    type: array
+                    example: [{"name": "test field name", "value": "test field value"}]
+              responseInteraction:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: "test response interaction id"
+                    required: true
+                  fields:
+                    type: array
+                    example: [{"name": "test field name", "value": "test field value"}]
+              additionalActions:
+                type: array
+                example: [{"name": "test action name", "provider": "test action provider", "interaction": {"id": "test action interaction id", "fields": [{"name": "test field name", "value": "test field value"}]}}]
+    responses:
+      200:
+        description: Event created successfully
+      401:
+        description: Unauthorized (invalid token)
+
+/api/event/update/:uuid:
+  patch:
+    tags:
+      - Event
+    description: Update an event
+    summary: Update an event
+    parameters:
+      - name: uuid
+        in: path
+        description: Event uuid
+        required: true
+        schema:
+          type: string
+          example: "test event uuid"
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                example: "test event"
+                required: true
+              description:
+                type: string
+                example: "test description"
+    responses:
+      200:
+        description: Event updated successfully
+      401:
+        description: Unauthorized (invalid token)
+
+/api/event/:uuid/action/add:
+  post:
+    tags:
+      - Event
+    description: Add an action to an event
+    summary: Add an action to an event
+    parameters:
+      - name: uuid
+        in: path
+        description: Event uuid
+        required: true
+        schema:
+          type: string
+          example: "test event uuid"
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                example: "test action name"
+                required: true
+              provider:
+                type: string
+                example: "test action provider"
+                required: true
+              interaction:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: "test action interaction id"
+                    required: true
+                  fields:
+                    type: array
+                    example: [{"name": "test field name", "value": "test field value"}]
+    responses:
+      200:
+        description: Action added successfully
+      401:
+        description: Unauthorized (invalid token)
+
+/api/event/:uuid/action/delete:
+  delete:
+    tags:
+      - Event
+    description: Delete an action from an event
+    summary: Delete an action from an event
+    parameters:
+      - name: uuid
+        in: path
+        description: Event uuid
+        required: true
+        schema:
+          type: string
+          example: "test event uuid"
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+                example: "index of the action"
+                required: true
+    responses:
+      200:
+        description: Action deleted successfully
+      401:
+        description: Unauthorized (invalid token)
+
+/api/event/:uuid/action/update:
+  patch:
+    tags:
+      - Event
+    description: Update an action from an event
+    summary: Update an action from an event
+    parameters:
+      - name: uuid
+        in: path
+        description: Event uuid
+        required: true
+        schema:
+          type: string
+          example: "test event uuid"
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              response_provider:
+                type: string
+                example: "response provider"
+                required: true
+              responseInteraction:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: "response interaction"
+                    required: true
+                  fields:
+                    type: array
+                    example: [{"name": "field name", "value": "field value"}]
+    responses:
+      200:
+        description: Action updated successfully
+      401:
+        description: Unauthorized (invalid token)
+
+/api/event/:uuid/trigger/update:
+  patch:
+    tags:
+      - Event
+    description: Update the trigger of an event
+    summary: Update the trigger of an event
+    parameters:
+      - name: uuid
+        in: path
+        description: Event uuid
+        required: true
+        schema:
+          type: string
+          example: "test event uuid"
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              trigger_provider:
+                type: string
+                example: "trigger provider"
+                required: true
+              triggerInteraction:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: "trigger interaction"
+                    required: true
+                  fields:
+                    type: array
+                    example: [{"name": "field name", "value": "field value"}]
+    responses:
+      200:
+        description: Trigger updated successfully
+      401:
+        description: Unauthorized (invalid token)
+
+/api/event/:uuid/additionalAction/update:
+  patch:
+    tags:
+      - Event
+    description: Update an additional action from an event
+    summary: Update an additional action from an event
+    parameters:
+      - name: uuid
+        in: path
+        description: Event uuid
+        required: true
+        schema:
+          type: string
+          example: "test event uuid"
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              index:
+                type: number
+                example: "index of the additional action"
+                required: true
+              action_provider:
+                type: string
+                example: "action provider"
+                required: true
+              id:
+                type: string
+                example: "action id"
+                required: true
+              fields:
+                type: array
+                example: [{"name": "field name", "value": "field value"}]
+    responses:
+      200:
+        description: Additional action updated successfully
+      401:
+        description: Unauthorized (invalid token)

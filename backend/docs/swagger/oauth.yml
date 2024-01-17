@@ -1,0 +1,64 @@
+openapi: 3.0.0
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+/oauth/:provider/save:
+  post:
+    tags:
+      - OAuth
+    security:
+      - bearerAuth: []
+    description: Save OAuth user
+    summary: Save OAuth user
+    parameters:
+      - in: path
+        name: provider
+        schema:
+          type: string
+        required: true
+        description: OAuth provider
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              token:
+                type: string
+                example: "token"
+                required: true
+              refreshToken:
+                type: string
+                example: "refreshToken"
+                required: true
+    responses:
+      200:
+        description: User saved successfully
+      401:
+        description: Unauthorized (invalid token)
+
+/oauth/:provider/delete:
+  delete:
+    tags:
+      - OAuth
+    security:
+      - bearerAuth: []
+    description: Delete OAuth user
+    summary: Delete OAuth user
+    parameters:
+      - in: path
+        name: provider
+        schema:
+          type: string
+        required: true
+        description: OAuth provider
+    responses:
+      200:
+        description: User deleted successfully
+      401:
+        description: Unauthorized (invalid token)

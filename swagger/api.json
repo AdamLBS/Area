@@ -12,64 +12,64 @@
       }
     ],
     "paths": {
-      "/user/register": {
-        "post": {
-          "summary": "Register a new user",
-          "description": "Endpoint to register a new user",
-          "requestBody": {
-            "required": true,
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "email": {
-                      "type": "string",
-                      "format": "email"
-                    },
-                    "username": {
-                      "type": "string"
-                    },
-                    "password": {
-                      "type": "string"
-                    },
-                    "password_confirmation": {
-                      "type": "string"
-                    }
-                  },
-                  "required": ["email", "username", "password", "password_confirmation"]
-                }
-              }
-            }
-          }
-        }
-      },
-      "/user/login": {
-        "post": {
-          "summary": "Login user",
-          "description": "Endpoint to login an existing user",
-          "requestBody": {
-            "required": true,
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "email": {
-                      "type": "string",
-                      "format": "email"
-                    },
-                    "password": {
-                      "type": "string"
-                    }
-                  },
-                  "required": ["email", "password"]
-                }
-              }
-            }
-          }
-        }
-      },
+      // "/user/register": {
+      //   "post": {
+      //     "summary": "Register a new user",
+      //     "description": "Endpoint to register a new user",
+      //     "requestBody": {
+      //       "required": true,
+      //       "content": {
+      //         "application/json": {
+      //           "schema": {
+      //             "type": "object",
+      //             "properties": {
+      //               "email": {
+      //                 "type": "string",
+      //                 "format": "email"
+      //               },
+      //               "username": {
+      //                 "type": "string"
+      //               },
+      //               "password": {
+      //                 "type": "string"
+      //               },
+      //               "password_confirmation": {
+      //                 "type": "string"
+      //               }
+      //             },
+      //             "required": ["email", "username", "password", "password_confirmation"]
+      //           }
+      //         }
+      //       }
+      //     }
+      //   }
+      // },
+      // "/user/login": {
+      //   "post": {
+      //     "summary": "Login user",
+      //     "description": "Endpoint to login an existing user",
+      //     "requestBody": {
+      //       "required": true,
+      //       "content": {
+      //         "application/json": {
+      //           "schema": {
+      //             "type": "object",
+      //             "properties": {
+      //               "email": {
+      //                 "type": "string",
+      //                 "format": "email"
+      //               },
+      //               "password": {
+      //                 "type": "string"
+      //               }
+      //             },
+      //             "required": ["email", "password"]
+      //           }
+      //         }
+      //       }
+      //     }
+      //   }
+      // },
       "/user/me": {
         "get": {
           "summary": "Get user information",
@@ -134,6 +134,28 @@
               }
             }
           }
+        }
+      },
+      "/api/user/me/services": {
+        "get": {
+          "summary": "Get user services",
+          "description": "Endpoint to retrieve user services",
+          "security": [
+            {
+              "tokenAuth": []
+            }
+          ]
+        }
+      },
+      "api/user/events": {
+        "get": {
+          "summary": "Get user events",
+          "description": "Endpoint to retrieve user events",
+          "security": [
+            {
+              "tokenAuth": []
+            }
+          ]
         }
       }
     },
