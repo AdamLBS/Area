@@ -2,20 +2,20 @@
 
 ## Setup
 
-In order to start using our project, the `.env` file must be set up! 
+In order to start using our project, the `.env` file must be set up!
 Use the `.env.example` file and complete it with the necessary **Client Id**, **Secret** for the services and the **Backend URL**.
 
 Go to web-app folder and install the web dependencies:
 
 ```
 yarn install
-or 
+or
 npm install
 ```
 Start the web application:
 ```
 yarn dev
-or 
+or
 npm run dev
 ```
 
