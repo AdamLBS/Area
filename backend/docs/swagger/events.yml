@@ -1,0 +1,85 @@
+openapi: 3.0.0
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+/api/events/trigger:
+  get:
+    tags:
+      - Events
+    description: Get all triggers services
+    responses:
+      200:
+        description: Triggers services
+
+/api/events/response:
+  get:
+    tags:
+      - Events
+    description: Get all responses services
+    responses:
+      200:
+        description: Responses services
+
+/api/events/:uuid:
+  get:
+    tags:
+      - Events
+    security:
+      - bearerAuth: []
+    description: Get event by uuid
+    parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        required: true
+        description: Event uuid
+    responses:
+      200:
+        description: Event data
+      401:
+        description: Unauthorized (invalid token)
+
+/api/events/:uuid/delete:
+  delete:
+    tags:
+      - Events
+    security:
+      - bearerAuth: []
+    description: Delete event by uuid
+    parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        required: true
+        description: Event uuid
+    responses:
+      200:
+        description: Event deleted successfully
+      401:
+        description: Unauthorized (invalid token)
+
+/api/events/:uuid/activate:
+  patch:
+    tags:
+      - Events
+    security:
+      - bearerAuth: []
+    description: Activate event by uuid
+    parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        required: true
+        description: Event uuid
+    responses:
+      200:
+        description: Event activated successfully
+      401:
+        description: Unauthorized (invalid token)
