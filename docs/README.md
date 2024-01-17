@@ -55,7 +55,7 @@ To access the project, you can go to the following URLs:
 
 - Web App: http://localhost:3000 or http://localhost:8081/
 - Mobile App: http://localhost:3000/client.apk or http://localhost:8081/client.apk
-- Swagger: http://localhost:4444/
+- Swagger: http://localhost:3333/docs
 - API: http://localhost:8080/ or http://localhost:3333/
 
 The officials endpoints currently available are:
