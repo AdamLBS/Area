@@ -5,6 +5,27 @@
 
 Application developement project in 3rd year of Epitech. The AREA project is a project that allows you to create automations between different services. For example, you can create an automation that sends you a message on Gmail when you changes your music on Spotify.
 
+# Backend
+
+You can find the full documentation of the backend [here](back.md)
+
+![Event_flow](images/event_flow.png)
+
+## Setup
+
+In order to start using our project, the `.env` file must be set up!
+
+Use the `.env.example` file and complete it with the necessary **Client Id**, **Secret** for the services.
+
+Go to backend folder and install the web dependencies:
+
+```
+yarn install
+or
+npm install
+```
+
+
 
 ## Infrastructure
 
@@ -55,7 +76,7 @@ To access the project, you can go to the following URLs:
 
 - Web App: http://localhost:3000 or http://localhost:8081/
 - Mobile App: http://localhost:3000/client.apk or http://localhost:8081/client.apk
-- Swagger: http://localhost:3333/docs
+- Swagger: http://localhost:4444/
 - API: http://localhost:8080/ or http://localhost:3333/
 
 The officials endpoints currently available are:
@@ -102,3 +123,35 @@ Steps for adding a new service:
  3. In the `SocialAccounts.component.tsx` file, if it is not already there, add the new service to the `socialCards` array
 
 To check if the Service SignIn `button` is added, navigate to the **Settings** page and then click on **Accounts** to check all available OAuths.
+
+# Mobile
+
+You can find the full documentation of the mobile [here](mobile.md)
+
+## Setup
+
+In order to start using our project, the `.env` file must be set up!
+Use the `.env.example` file and complete it with the necessary **Client Id**, **Secret** for the services and the **Backend URL**.
+
+You also need to have flutter installed on your computer.
+
+Go to mobile folder and install the mobile dependencies:
+
+```bash
+flutter pub get
+```
+
+## Run the project
+
+To run the project, you just need to run the following command:
+
+```bash
+flutter run
+```
+
+## OAuth
+
+The mobile app use the oauth2 package to handle the OAuth2 authentication. The package is available here: [https://pub.dev/packages/oauth2](https://pub.dev/packages/oauth2)
+
+To add a new OAuth2 service, you need to add it to the `lib/services/oauth.dart` file. You can get inspired by the other services already implemented.
+
