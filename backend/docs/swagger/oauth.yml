@@ -14,6 +14,13 @@ components:
       - bearerAuth: []
     description: Save OAuth user
     summary: Save OAuth user
+    parameters:
+      - in: path
+        name: provider
+        schema:
+          type: string
+        required: true
+        description: OAuth provider
     requestBody:
       required: true
       content:
@@ -43,6 +50,13 @@ components:
       - bearerAuth: []
     description: Delete OAuth user
     summary: Delete OAuth user
+    parameters:
+      - in: path
+        name: provider
+        schema:
+          type: string
+        required: true
+        description: OAuth provider
     responses:
       200:
         description: User deleted successfully
