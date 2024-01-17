@@ -60,6 +60,8 @@ components:
     responses:
       200:
         description: Event created successfully
+      401:
+        description: Unauthorized (invalid token)
 
 /api/event/update/:uuid:
   patch:
@@ -91,6 +93,8 @@ components:
     responses:
       200:
         description: Event updated successfully
+      401:
+        description: Unauthorized (invalid token)
 
 /api/event/:uuid/action/add:
   post:
@@ -133,3 +137,156 @@ components:
     responses:
       200:
         description: Action added successfully
+      401:
+        description: Unauthorized (invalid token)
+
+/api/event/:uuid/action/delete:
+  delete:
+    tags:
+      - Event
+    description: Delete an action from an event
+    summary: Delete an action from an event
+    parameters:
+      - name: uuid
+        in: path
+        description: Event uuid
+        required: true
+        schema:
+          type: string
+          example: "test event uuid"
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+                example: "index of the action"
+                required: true
+    responses:
+      200:
+        description: Action deleted successfully
+      401:
+        description: Unauthorized (invalid token)
+
+/api/event/:uuid/action/update:
+  patch:
+    tags:
+      - Event
+    description: Update an action from an event
+    summary: Update an action from an event
+    parameters:
+      - name: uuid
+        in: path
+        description: Event uuid
+        required: true
+        schema:
+          type: string
+          example: "test event uuid"
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              response_provider:
+                type: string
+                example: "response provider"
+                required: true
+              responseInteraction:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: "response interaction"
+                    required: true
+                  fields:
+                    type: array
+                    example: [{"name": "field name", "value": "field value"}]
+    responses:
+      200:
+        description: Action updated successfully
+      401:
+        description: Unauthorized (invalid token)
+
+/api/event/:uuid/trigger/update:
+  patch:
+    tags:
+      - Event
+    description: Update the trigger of an event
+    summary: Update the trigger of an event
+    parameters:
+      - name: uuid
+        in: path
+        description: Event uuid
+        required: true
+        schema:
+          type: string
+          example: "test event uuid"
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              trigger_provider:
+                type: string
+                example: "trigger provider"
+                required: true
+              triggerInteraction:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: "trigger interaction"
+                    required: true
+                  fields:
+                    type: array
+                    example: [{"name": "field name", "value": "field value"}]
+    responses:
+      200:
+        description: Trigger updated successfully
+      401:
+        description: Unauthorized (invalid token)
+
+/api/event/:uuid/additionalAction/update:
+  patch:
+    tags:
+      - Event
+    description: Update an additional action from an event
+    summary: Update an additional action from an event
+    parameters:
+      - name: uuid
+        in: path
+        description: Event uuid
+        required: true
+        schema:
+          type: string
+          example: "test event uuid"
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              index:
+                type: number
+                example: "index of the additional action"
+                required: true
+              action_provider:
+                type: string
+                example: "action provider"
+                required: true
+              id:
+                type: string
+                example: "action id"
+                required: true
+              fields:
+                type: array
+                example: [{"name": "field name", "value": "field value"}]
+    responses:
+      200:
+        description: Additional action updated successfully
+      401:
+        description: Unauthorized (invalid token)
