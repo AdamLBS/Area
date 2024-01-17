@@ -4,7 +4,6 @@
 
 ## Setup
 
-The backend has a docker-compose file that builds the postgresql image and the adonis image
 In order to start using our project, the `.env` file must be set up!
 Use the `.env.example` file and complete it with the necessary **Client Id**, **Secret** for the services.
 
