@@ -28,6 +28,10 @@ or
 npm run dev
 ```
 
+## Swagger
+
+Once the backend has been launched, you can access to the swagger via http://127.0.0.1:3333/docs
+
 ## AdonisJS
 
 Stratos backend uses AdonisJS. So you can use directly AdonisJS features.
