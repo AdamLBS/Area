@@ -1,13 +1,20 @@
 openapi: 3.0.0
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT 
 /api/user/me:
   get:
     tags:
       - User
     security:
-      - cookieAuth: []
+      - bearerAuth: []  
     description: Me
     produces:
       - application/json
     responses:
       200:
         description: User data
+
