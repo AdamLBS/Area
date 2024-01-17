@@ -5,13 +5,13 @@
 
 Application developement project in 3rd year of Epitech. The AREA project is a project that allows you to create automations between different services. For example, you can create an automation that sends you a message on Gmail when you changes your music on Spotify.
 
-## Backend
+# Backend
 
 You can find the full documentation of the backend [here](docs/back.md)
 
 ![Event_flow](images/event_flow.png)
 
-### Setup
+## Setup
 
 In order to start using our project, the `.env` file must be set up!
 
@@ -91,7 +91,7 @@ You can find the full documentation of the front-end [here](docs/front.md)
 
 ## Setup
 
-In order to start using our project, the `.env` file must be set up! 
+In order to start using our project, the `.env` file must be set up!
 Use the `.env.example` file and complete it with the necessary **Client Id**, **Secret** for the services and the **Backend URL**.
 
 Go to web-app folder and install the web dependencies:
@@ -154,5 +154,3 @@ flutter run
 The mobile app use the oauth2 package to handle the OAuth2 authentication. The package is available here: [https://pub.dev/packages/oauth2](https://pub.dev/packages/oauth2)
 
 To add a new OAuth2 service, you need to add it to the `lib/services/oauth.dart` file. You can get inspired by the other services already implemented.
-
-## Trigger and Response events

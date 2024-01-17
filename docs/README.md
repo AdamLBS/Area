@@ -5,13 +5,13 @@
 
 Application developement project in 3rd year of Epitech. The AREA project is a project that allows you to create automations between different services. For example, you can create an automation that sends you a message on Gmail when you changes your music on Spotify.
 
-## Backend
+# Backend
 
 You can find the full documentation of the backend [here](docs/back.md)
 
 ![Event_flow](images/event_flow.png)
 
-### Setup
+## Setup
 
 In order to start using our project, the `.env` file must be set up!
 
