@@ -8,6 +8,8 @@ Application developement project in 3rd year of Epitech. The AREA project is a p
 
 ## Infrastructure
 
+You can find the full documentation of the infrastructure [here](docs/infrastructure.md)
+
 ![Infrastructure](images/infrastructure.png)
 The AREA project is splitted in 6 differents containers
 
@@ -63,6 +65,8 @@ The officials endpoints currently available are:
 
 
 # Front-end
+
+You can find the full documentation of the front-end [here](docs/front.md)
 
 ## Setup
 
