@@ -34,7 +34,7 @@ Route.group(() => {
 
   Route.group(() => {
     Route.post('/create', 'EventsController.createEvent')
-    Route.patch('/update/:uuid', 'EventsController.updateEventSettings') // done
+    Route.patch('/update/:uuid', 'EventsController.updateEventSettings')
     Route.post('/:uuid/action/add', 'EventsController.addAction')
     Route.delete('/:uuid/action/delete', 'EventsController.deleteAction')
     Route.patch('/:uuid/action/update', 'EventsController.updateAction')
