@@ -47,6 +47,7 @@ import {
   FooterContent,
   Logo,
   RedirectionContainer,
+  RowContainer,
 } from './LandingPage.style';
 import { Boxes, Eye } from 'lucide-react';
 import { useTheme } from 'next-themes';
@@ -87,8 +88,8 @@ const LandingPageComponent = () => {
     [router],
   );
 
-  const redirect = useCallback(() => {
-    window.open('https://status.stratos-app.fr/');
+  const redirect = useCallback((link: string) => {
+    window.open(link);
   }, []);
 
   const [color, setColor] = React.useState('');
@@ -242,9 +243,20 @@ const LandingPageComponent = () => {
           <TextH3>Copyright © 2024 La Table Ronde, made with ❤️</TextH3>
         </FooterContent>
         <RedirectionContainer>
-          <Button variant="ghost" onClick={redirect}>
-            Status
-          </Button>
+          <RowContainer>
+            <Button
+              variant="ghost"
+              onClick={() => redirect('https://status.stratos-app.fr/')}
+            >
+              Status
+            </Button>
+            <Button
+              variant="ghost"
+              onClick={() => redirect('https://docs.stratos-app.fr/')}
+            >
+              Docs
+            </Button>
+          </RowContainer>
           <Button variant="ghost" onClick={() => handleRedirection(`about`)}>
             About
           </Button>

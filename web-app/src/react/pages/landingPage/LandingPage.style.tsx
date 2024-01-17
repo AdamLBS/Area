@@ -364,3 +364,9 @@ export const RedirectionContainer = styled.div`
   gap: 10px;
   flex: 1;
 `;
+
+export const RowContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+`;
